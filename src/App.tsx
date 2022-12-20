@@ -1,32 +1,26 @@
 import React from "react";
-import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
-import logo from "./logo.svg";
-import "./App.css";
-
-const GlobalStyle = createGlobalStyle`
-  ${reset}
-`;
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Nav from "./components/Nav";
+import Main from "./pages/main/Main";
+import Login from "./pages/login/Login";
+import SignUp from "./pages/signUp/SignUp";
+import ExhibitionList from "./pages/exhibitionList/ExhibitionList";
+import Exhibition from "./pages/exhibition/Exhibition";
+import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="App">
-      <GlobalStyle />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup/:type" element={<SignUp />} />
+        <Route path="/exhibition-list" element={<ExhibitionList />} />
+        <Route path="/exhibition/:id" element={<Exhibition />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
 
