@@ -13,9 +13,10 @@ const GlobalStyle = createGlobalStyle`
     font-family:'Maven Pro', sans-serif;
     //글씨체 추후 확정되면 수정
   }
-  input, button {
+  div, input, button {
     background-color: transparent;
     border: none;
+    border-radius: 30px;
     outline: none;
   }
   h1, h2, h3, h4, h5, h6{
