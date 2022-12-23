@@ -10,7 +10,7 @@ const reportWebVitals = (onPerfEntry?: ReportHandler) => {
         getLCP(onPerfEntry);
         getTTFB(onPerfEntry);
       })
-      .catch((e: object) => {
+      .catch(() => {
         throw new Error("바이탈 데이터 취득 실패");
       });
   }
