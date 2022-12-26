@@ -2,11 +2,16 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import LoginSignUp from "../../components/LoginSignUp.style";
-import { dayArr, monthArr, yearArr } from "../../function/signUp/signUpBirth";
+import { yearArr, monthArr, dayArr } from "../../function/signUp/signUpBirth";
 
 // 회원용/관리자용 회원가입 컴포넌트_박예선_22.12.28
 const SignUp = () => {
   const location = useLocation();
+  const emailValid = false;
+  const pwValid = false;
+  const pwCheckValid = true;
+  const nickNameValid = false;
+  const adminNumberValid = true;
 
   return (
     <LoginSignUp category="회원가입">
@@ -19,14 +24,27 @@ const SignUp = () => {
             placeholder="ex_mail@exhibition.com"
           />
         </label>
+        <div className={`notice ${emailValid ? "pass" : "err"}`}>
+          {emailValid ? "이미 등록된 이메일입니다" : "사용 가능한 이메일입니다"}
+        </div>
         <label htmlFor="pw" className="title">
           비밀번호
           <input type="password" name="pw" placeholder="Password" />
         </label>
+        <div className={`notice ${pwValid ? "pass" : "err"}`}>
+          {pwValid
+            ? "안전한 비밀번호입니다"
+            : "  영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요"}
+        </div>
         <label htmlFor="pwValid" className="title">
           비밀번호 재확인
           <input type="password" name="pwValid" placeholder="Password" />
         </label>
+        <div className={`notice pw-check ${pwCheckValid ? "pass" : "err"}`}>
+          {pwCheckValid
+            ? "동일한 비밀번호입니다"
+            : "비밀번호가 일치하지 않습니다"}
+        </div>
         {/* 회원용 회원가입 */}
         {location.search !== "?admin" && (
           <>
@@ -34,6 +52,11 @@ const SignUp = () => {
               별명
               <input type="text" placeholder="Nickname" />
             </label>
+            <div className={`notice ${nickNameValid ? "pass" : "err"}`}>
+              {nickNameValid
+                ? "사용 가능한 별명입니다"
+                : "이미 사용 중인 별명입니다 "}
+            </div>
             <div>
               <span className="title">생년월일</span>
               <BirthDropDownContainer>
@@ -63,7 +86,7 @@ const SignUp = () => {
                 </select>
               </BirthDropDownContainer>
             </div>
-            <GenderDropDown>
+            <GenderDropDownContainer>
               <div className="title">성별</div>
               <select required>
                 <option value="" disabled selected>
@@ -72,16 +95,22 @@ const SignUp = () => {
                 <option>남</option>
                 <option>여</option>
               </select>
-            </GenderDropDown>
+            </GenderDropDownContainer>
           </>
         )}
         {/* 관리자용 회원가입 */}
         {location.search === "?admin" && (
           <>
-            <span className="title">관리자 고유번호</span>
-            <input />
-            <span className="title ">이름</span>
-            <input />
+            <div className="title">관리자 고유번호</div>
+            <input type="number" placeholder="관리자 고유번호" />
+            <div className={`notice ${adminNumberValid ? "pass" : "err"}`}>
+              관리자 고유 번호가 확인이 되었습니다
+            </div>
+            <div className="title ">이름</div>
+            <input
+              type="text"
+              placeholder="신분증에 적힌 본명을 입력해주세요"
+            />
           </>
         )}
         <button type="submit"> 가입하기</button>
@@ -91,6 +120,9 @@ const SignUp = () => {
 };
 
 const SignUpContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   select {
     height: 40px;
     margin: 10px 0;
@@ -134,7 +166,7 @@ const BirthDropDownContainer = styled.div`
   }
 `;
 
-const GenderDropDown = styled.div`
+const GenderDropDownContainer = styled.div`
   select {
     width: 320px;
   }

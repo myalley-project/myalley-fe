@@ -24,12 +24,10 @@ function LoginSignUp({ category, children }: LoginSignUpType) {
 const LoginSignUpSection = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   .logo {
     width: 175px;
     height: 60px;
-    margin: 30px 0px;
+    margin: 30px auto;
   }
 `;
 
@@ -47,23 +45,49 @@ const InputContainer = styled.div`
   }
   .title {
     color: #9c9c9c;
+    font-weight: 700;
+  }
+  .notice {
+    margin: -1px 0 13px;
+    font-size: 12px;
+    /* display: none; */
+    &.err {
+      color: #ff4545;
+    }
+    &.pass {
+      color: #54c60e;
+    }
+    &.pw-check {
+      margin-bottom: 30px;
+    }
   }
   label {
     display: flex;
     flex-direction: column;
-    input {
-      width: 320px;
-      height: 40px;
-      margin: 10px 0;
-      padding-left: 20px;
-      border: 1px solid #e0e0e0;
-      background-color: #fbfbfb;
+  }
+  input {
+    width: 320px;
+    height: 40px;
+    margin: 10px 0;
+    padding-left: 20px;
+    border: 1px solid #e0e0e0;
+    background-color: #fbfbfb;
+    color: #333333;
+    font-size: 14px;
+    &::placeholder {
+      color: #9c9c9c;
+    }
+    ::-webkit-outer-spin-button,
+    ::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
   }
   button {
     width: 84.21%;
     height: 48px;
-    margin: 30px;
+    margin: 30px auto;
+    /* padding: 0; */
     border: none;
     background-color: #9c9c9c;
     color: white;
