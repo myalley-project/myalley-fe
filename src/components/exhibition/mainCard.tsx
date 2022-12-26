@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import likeIcon from "../../assets/icons/like-icon.svg";
+import shareIcon from "../../assets/icons/share-icon.svg";
 
 // 나중에 수정 필요
 interface MainCardType {
@@ -36,10 +38,10 @@ function MainCard({ title, date, place, time, charge }: MainCardType) {
             </InfoDetail>
           </div>
           <Footer>
-            <div>사이트 방문</div>
-            {/* 추후 아이콘 추가예정 */}
-            <div></div>
-            <div></div>
+            {/* 나중에 링크로 수정 */}
+            <p>사이트 방문</p>
+            <img src={likeIcon} alt="like icon"></img>
+            <img src={shareIcon} alt="share icon"></img>
           </Footer>
         </InfoContainer>
       </Card>
@@ -112,6 +114,7 @@ const InfoDetail = styled.dl`
 
 const Footer = styled.div`
   display: flex;
+  gap: 10px;
   justify-content: flex-end;
   width: 100%;
   font-weight: 500;
@@ -119,4 +122,7 @@ const Footer = styled.div`
   letter-spacing: -0.5px;
   color: #9c9c9c;
   text-align: right;
+  p {
+    line-height: 24px;
+  }
 `;
