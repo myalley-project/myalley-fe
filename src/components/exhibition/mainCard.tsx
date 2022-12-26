@@ -16,7 +16,7 @@ function MainCard({ title, date, place, time, charge }: MainCardType) {
   return (
     <CardContainer>
       <Card>
-        <ImageContainer></ImageContainer>
+        <ImageContainer />
         <InfoContainer>
           <Title>{title}</Title>
           <div style={{ padding: "30px 0" }}>
@@ -40,8 +40,8 @@ function MainCard({ title, date, place, time, charge }: MainCardType) {
           <Footer>
             {/* 나중에 링크로 수정 */}
             <p>사이트 방문</p>
-            <img src={likeIcon} alt="like icon"></img>
-            <img src={shareIcon} alt="share icon"></img>
+            <img src={likeIcon} alt="like icon" />
+            <img src={shareIcon} alt="share icon" />
           </Footer>
         </InfoContainer>
       </Card>
