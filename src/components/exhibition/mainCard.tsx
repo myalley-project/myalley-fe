@@ -12,7 +12,7 @@ interface MainCardType {
 
 function MainCard({ title, date, place, time, charge }: MainCardType) {
   return (
-    <Header>
+    <CardContainer>
       <Card>
         <ImageContainer></ImageContainer>
         <InfoContainer>
@@ -43,13 +43,13 @@ function MainCard({ title, date, place, time, charge }: MainCardType) {
           </Footer>
         </InfoContainer>
       </Card>
-    </Header>
+    </CardContainer>
   );
 }
 
 export default MainCard;
 
-const Header = styled.div`
+const CardContainer = styled.div`
   display: flex;
   width: 100%;
   height: 458px;
@@ -60,7 +60,8 @@ const Header = styled.div`
 
 const Card = styled.div`
   display: flex;
-  width: 1200px;
+  max-width: 1200px;
+  width: 83vw;
   height: 358px;
   border: 1px solid #e0e0e0;
   background-color: #ffffff;
