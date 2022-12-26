@@ -60,24 +60,24 @@ const SignUp = () => {
             <div>
               <span className="title">생년월일</span>
               <BirthDropDownContainer>
-                <select required className="birth-year">
-                  <option value="" disabled selected>
+                <select required className="birth-year" defaultValue="">
+                  <option value="" disabled>
                     년도
                   </option>
                   {yearArr().map((year) => (
                     <option key={year}>{year}</option>
                   ))}
                 </select>
-                <select required>
-                  <option value="" disabled selected>
+                <select required defaultValue="">
+                  <option value="" disabled>
                     월
                   </option>
                   {monthArr().map((month) => (
                     <option key={month}>{month}</option>
                   ))}
                 </select>
-                <select required>
-                  <option value="" disabled selected>
+                <select required defaultValue="">
+                  <option value="" disabled>
                     일
                   </option>
                   {dayArr().map((day) => (
@@ -88,8 +88,8 @@ const SignUp = () => {
             </div>
             <GenderDropDownContainer>
               <div className="title">성별</div>
-              <select required>
-                <option value="" disabled selected>
+              <select required defaultValue="">
+                <option value="" disabled>
                   선택없음
                 </option>
                 <option>남</option>

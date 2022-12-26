@@ -24,6 +24,7 @@ function LoginSignUp({ category, children }: LoginSignUpType) {
 const LoginSignUpSection = styled.form`
   display: flex;
   flex-direction: column;
+  margin-bottom: 94px;
   .logo {
     width: 175px;
     height: 60px;
