@@ -4,8 +4,6 @@ import MainCard from "../../components/exhibition/mainCard";
 import ContentCard from "../../components/exhibition/contentCard";
 
 function Exhibition() {
-  const [value, setValue] = useState("상세정보");
-
   return (
     <ExhibitionContainer>
       <MainCard
@@ -16,9 +14,17 @@ function Exhibition() {
         charge="무료"
       />
       <Container>
-        <Input type="radio" id="toggle-switch" name="switch" value="상세정보" />
-        <Span />
-        <Label htmlFor="toggle-switch">상세정보</Label>
+        <Input
+          type="radio"
+          id="toggle-switch"
+          name="switch"
+          value="상세정보"
+          defaultChecked
+        />
+        <Label htmlFor="toggle-switch">
+          <Span />
+          상세정보
+        </Label>
         <Input
           type="radio"
           id="toggle-switch2"
@@ -46,50 +52,50 @@ const Container = styled.div`
   position: relative;
   width: 380px;
   height: 44px;
-  background-color: #9c9c9c;
   margin-top: 50px;
   margin-bottom: 30px;
+  background-color: #9c9c9c;
 `;
 
 const Label = styled.label`
   display: inline-block;
+  position: relative;
   width: 188px;
   height: 40px;
   margin-top: 2px;
-  line-height: 40px;
   border-radius: 1000px;
-  transition: all 0.5s ease-in-out;
-  position: relative;
   color: #ffffff;
+  line-height: 40px;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  z-index: 2;
 `;
 
 const Span = styled.span`
-  display: inline-block;
   background-color: #ffffff;
   position: absolute;
+  left: 0px;
   width: 188px;
   height: 40px;
-  top: 2px;
-  left: 2px;
   border-radius: 1000px;
   transition: all 0.5s ease-in-out;
   transform: translateX(188px);
+  z-index: 1;
 `;
 
 const Input = styled.input`
   position: absolute;
   clip: rect(0, 0, 0, 0);
-  height: 10px;
   width: 10px;
+  height: 10px;
   border: 0;
 
   &:checked + ${Label} {
     color: #9c9c9c;
   }
-  &:checked + ${Span} {
+  &:checked + ${Label} ${Span} {
     transform: translateX(0px);
   }
 `;
