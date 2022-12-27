@@ -6,15 +6,6 @@ import ContentCard from "../../components/exhibition/contentCard";
 function Exhibition() {
   const [value, setValue] = useState("상세정보");
 
-  const onClicka = (e: any) => {
-    if (value === "상세정보") {
-      setValue("전시리뷰");
-    } else if (value === "전시리뷰") {
-      setValue("상세정보");
-    }
-    console.log(value);
-  };
-
   return (
     <ExhibitionContainer>
       <MainCard
@@ -25,22 +16,15 @@ function Exhibition() {
         charge="무료"
       />
       <Container>
-        <Input
-          type="radio"
-          id="toggle-switch"
-          name="switch"
-          value="상세정보"
-          onClick={onClicka}
-        ></Input>
-        <Span></Span>
+        <Input type="radio" id="toggle-switch" name="switch" value="상세정보" />
+        <Span />
         <Label htmlFor="toggle-switch">상세정보</Label>
         <Input
           type="radio"
           id="toggle-switch2"
           name="switch"
           value="전시리뷰"
-          onClick={onClicka}
-        ></Input>
+        />
         <Label htmlFor="toggle-switch2">전시리뷰</Label>
       </Container>
       <ContentCard title="기획 의도" content="lorem" />
