@@ -22,7 +22,7 @@ function Exhibition() {
           defaultChecked
         />
         <Label htmlFor="toggle-switch">
-          <Span />
+          {/* <Span /> */}
           상세정보
         </Label>
         <Input
@@ -94,8 +94,9 @@ const Input = styled.input`
 
   &:checked + ${Label} {
     color: #9c9c9c;
+    background-color: #ffffff;
   }
-  &:checked + ${Label} ${Span} {
-    transform: translateX(0px);
-  }
+  // &:checked + ${Label} ${Span} {
+  //   transform: translateX(0px);
+  // }
 `;
