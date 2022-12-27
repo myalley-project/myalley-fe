@@ -38,6 +38,13 @@
     "eqeqeq": "warn",
     "react/jsx-pascal-case": "error",
     "react/self-closing-comp": "warn",
-    "@typescript-eslint/no-use-before-define": "off"
+    "@typescript-eslint/no-use-before-define": "off",
+    //input의 id 속성과 label의 htmlFor 속성을 연결시켜준다
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "labelAttributes": ["htmlFor"]
+      }
+    ]
   }
 }

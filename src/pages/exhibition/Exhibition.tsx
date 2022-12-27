@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import MainCard from "../../components/exhibition/mainCard";
 import ContentCard from "../../components/exhibition/contentCard";
 
 function Exhibition() {
+  const [value, setValue] = useState("상세정보");
+
+  const onClicka = (e: any) => {
+    if (value === "상세정보") {
+      setValue("전시리뷰");
+    } else if (value === "전시리뷰") {
+      setValue("상세정보");
+    }
+    console.log(value);
+  };
+
   return (
     <ExhibitionContainer>
       <MainCard
@@ -12,19 +23,29 @@ function Exhibition() {
         place="DDP"
         time="10:00 ~ 20:00"
         charge="무료"
-       />
-      <div>상세정보/전시리뷰 버튼</div>
-      <div>
-        <ToggleSwitch type="checkbox" />
-      </div>
+      />
+      <Container>
+        <Input
+          type="radio"
+          id="toggle-switch"
+          name="switch"
+          value="상세정보"
+          onClick={onClicka}
+        ></Input>
+        <Span></Span>
+        <Label htmlFor="toggle-switch">상세정보</Label>
+        <Input
+          type="radio"
+          id="toggle-switch2"
+          name="switch"
+          value="전시리뷰"
+          onClick={onClicka}
+        ></Input>
+        <Label htmlFor="toggle-switch2">전시리뷰</Label>
+      </Container>
       <ContentCard title="기획 의도" content="lorem" />
       <ContentCard title="전시 내용" content="lorem" />
       <ContentCard title="작가 정보" content="lorem" />
-      {/* <div>
-        <div>기획의도 box</div>
-        <div>전시내용 box</div>
-        <div>작가 정보 box</div>
-      </div> */}
     </ExhibitionContainer>
   );
 }
@@ -36,37 +57,55 @@ const ExhibitionContainer = styled.div`
   text-align: center;
 `;
 
-const ToggleSwitch = styled.input`
-  border: 1px solid #000000;
+const Container = styled.div`
+  display: inline-block;
+  position: relative;
   width: 380px;
-  ::before {
-    content: "상세정보";
-  }
-  ::after {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #ffc8c8;
-    transition: all 1s ease-in-out;
-  }
+  height: 44px;
+  background-color: #9c9c9c;
+  margin-top: 50px;
+  margin-bottom: 30px;
+`;
 
-  &:checked {
-    ::before {
-      content: "전시 리뷰";
-    }
-    ::after {
-      content: "";
-      display: block;
-      position: absolute;
-      right: 0;
-      width: 30px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: #ffc8c8;
-      transition: all 1s ease-in-out;
-    }
+const Label = styled.label`
+  display: inline-block;
+  width: 188px;
+  height: 40px;
+  margin-top: 2px;
+  line-height: 40px;
+  border-radius: 1000px;
+  transition: all 0.5s ease-in-out;
+  position: relative;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
+const Span = styled.span`
+  display: inline-block;
+  background-color: #ffffff;
+  position: absolute;
+  width: 188px;
+  height: 40px;
+  top: 2px;
+  left: 2px;
+  border-radius: 1000px;
+  transition: all 0.5s ease-in-out;
+  transform: translateX(188px);
+`;
+
+const Input = styled.input`
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  height: 10px;
+  width: 10px;
+  border: 0;
+
+  &:checked + ${Label} {
+    color: #9c9c9c;
+  }
+  &:checked + ${Span} {
+    transform: translateX(0px);
   }
 `;
