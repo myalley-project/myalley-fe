@@ -22,7 +22,8 @@ export default ContentCard;
 const CardContainer = styled.div`
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 75em;
+  margin: 0px auto;
 `;
 
 const Card = styled.div`

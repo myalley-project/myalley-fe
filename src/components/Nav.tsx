@@ -5,9 +5,9 @@ import Menu from "../assets/icons/menu.svg";
 function Nav() {
   return (
     <Navbar>
-      <Logo></Logo>
+      <Logo />
       <button type="button">
-        <img src={Menu} alt="menu-icon"></img>
+        <img src={Menu} alt="menu-icon" />
       </button>
     </Navbar>
   );
@@ -17,7 +17,7 @@ export default Nav;
 const Navbar = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 90em;
+  width: 75vw;
   height: 70px;
   margin: 0 auto;
   border-radius: 0px;

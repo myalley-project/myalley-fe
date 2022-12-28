@@ -32,9 +32,8 @@ const FooterContainer = styled.div`
 `;
 
 const Content = styled.div`
-  width: fit-content;
-  margin-left: 240px;
-  margin-top: 54px;
+  width: 75vw;
+  margin: 54px auto 0px auto;
 `;
 
 const Terms = styled.div`
