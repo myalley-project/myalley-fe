@@ -57,6 +57,7 @@ const CardContainer = styled.div`
   height: 458px;
   align-items: center;
   justify-content: center;
+  border-radius: 0px;
   background-color: ${(props) => props.theme.colors.main};
 `;
 

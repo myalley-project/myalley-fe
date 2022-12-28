@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import MainCard from "../../components/exhibition/mainCard";
 import ContentCard from "../../components/exhibition/contentCard";
@@ -22,7 +22,7 @@ function Exhibition() {
           defaultChecked
         />
         <Label htmlFor="toggle-switch">
-          {/* <Span /> */}
+          <Span />
           상세정보
         </Label>
         <Input
@@ -43,8 +43,11 @@ function Exhibition() {
 export default Exhibition;
 
 const ExhibitionContainer = styled.div`
-  width: 1920px;
+  //반응형으로 수정하기
+  width: 1903px;
   text-align: center;
+  overflow: hidden;
+  border-radius: 0px;
 `;
 
 const Container = styled.div`
@@ -69,7 +72,7 @@ const Label = styled.label`
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.7s ease-in-out;
   z-index: 2;
 `;
 
@@ -80,7 +83,7 @@ const Span = styled.span`
   width: 188px;
   height: 40px;
   border-radius: 1000px;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.7s ease-in-out;
   transform: translateX(188px);
   z-index: 1;
 `;
@@ -94,9 +97,12 @@ const Input = styled.input`
 
   &:checked + ${Label} {
     color: #9c9c9c;
-    background-color: #ffffff;
   }
-  // &:checked + ${Label} ${Span} {
-  //   transform: translateX(0px);
-  // }
+  &:checked + ${Label} ${Span} {
+    transform: translateX(0px);
+  }
+  &:checked + ${Label} ${Span}:after {
+    transform: translateX(0px);
+    content: "상세정보";
+  }
 `;
