@@ -29,7 +29,6 @@ const FooterContainer = styled.div`
   border-radius: 0px;
   background-color: #333333;
   color: #ffffff;
-  overflow: hidden;
 `;
 
 const Content = styled.div`
@@ -44,6 +43,9 @@ const Terms = styled.div`
   font-size: 12px;
   line-height: 16px;
   letter-spacing: -0.5px;
+  > span {
+    cursor: pointer;
+  }
 `;
 
 const Copyright = styled(Terms)`

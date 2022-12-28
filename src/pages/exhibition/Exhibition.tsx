@@ -46,7 +46,6 @@ const ExhibitionContainer = styled.div`
   //반응형으로 수정하기
   width: 1903px;
   text-align: center;
-  overflow: hidden;
   border-radius: 0px;
 `;
 
