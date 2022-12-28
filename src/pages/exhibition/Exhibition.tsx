@@ -1,7 +1,5 @@
 import React from "react";
 
-function Exhibition() {
-  return <div />;
-}
+const Exhibition = () => <div />;
 
 export default Exhibition;
