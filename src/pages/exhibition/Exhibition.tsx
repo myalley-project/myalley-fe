@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import MainCard from "../../components/exhibition/mainCard";
 import ContentCard from "../../components/exhibition/contentCard";
 
 function Exhibition() {
+  const [value, setValue] = useState("info");
+
+  const onChangeMode = (type: string) => {
+    if (type === "info") {
+      setValue("info");
+    } else if (type === "review") {
+      setValue("review");
+    }
+  };
+
   return (
     <ExhibitionContainer>
       <MainCard
@@ -13,26 +23,23 @@ function Exhibition() {
         time="10:00 ~ 20:00"
         charge="무료"
       />
-      <Container>
-        <Input
-          type="radio"
-          id="toggle-switch"
-          name="switch"
-          value="상세정보"
-          defaultChecked
-        />
-        <Label htmlFor="toggle-switch">
-          <Span />
+      <Switch value={value}>
+        <span></span>
+        <InfoBtn
+          type="button"
+          value={value}
+          onClick={() => onChangeMode("info")}
+        >
           상세정보
-        </Label>
-        <Input
-          type="radio"
-          id="toggle-switch2"
-          name="switch"
-          value="전시리뷰"
-        />
-        <Label htmlFor="toggle-switch2">전시리뷰</Label>
-      </Container>
+        </InfoBtn>
+        <ReviewBtn
+          type="button"
+          value={value}
+          onClick={() => onChangeMode("review")}
+        >
+          전시리뷰
+        </ReviewBtn>
+      </Switch>
       <ContentCard title="기획 의도" content="lorem" />
       <ContentCard title="전시 내용" content="lorem" />
       <ContentCard title="작가 정보" content="lorem" />
@@ -43,65 +50,50 @@ function Exhibition() {
 export default Exhibition;
 
 const ExhibitionContainer = styled.div`
-  //반응형으로 수정하기
   width: 1903px;
   text-align: center;
   border-radius: 0px;
 `;
 
-const Container = styled.div`
-  display: inline-block;
+const Switch = styled.div<{ value: string }>`
   position: relative;
   width: 380px;
   height: 44px;
-  margin-top: 50px;
-  margin-bottom: 30px;
+  margin: 50px auto 30px auto;
   background-color: #9c9c9c;
+  span {
+    position: absolute;
+    width: 188px;
+    height: 40px;
+    top: 2px;
+    border-radius: 1000px;
+    background-color: #ffffff;
+    transition: all 0.6s ease-in-out;
+    z-index: 1;
+    ${({ value }) =>
+      value === "info"
+        ? "transform: translateX(0px)"
+        : "transform: translateX(188px)"}
+  }
 `;
 
-const Label = styled.label`
-  display: inline-block;
+const button = styled.button<{ value: string }>`
   position: relative;
   width: 188px;
-  height: 40px;
-  margin-top: 2px;
-  border-radius: 1000px;
+  height: 44px;
   color: #ffffff;
-  line-height: 40px;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.7s ease-in-out;
   z-index: 2;
 `;
 
-const Span = styled.span`
-  background-color: #ffffff;
-  position: absolute;
-  left: 0px;
-  width: 188px;
-  height: 40px;
-  border-radius: 1000px;
-  transition: all 0.7s ease-in-out;
-  transform: translateX(188px);
-  z-index: 1;
+const InfoBtn = styled(button)`
+  ${({ value }) =>
+    value === "info" ? "transition:color 1s ease; color: #9C9C9C;" : null}
 `;
 
-const Input = styled.input`
-  position: absolute;
-  clip: rect(0, 0, 0, 0);
-  width: 10px;
-  height: 10px;
-  border: 0;
-
-  &:checked + ${Label} {
-    color: #9c9c9c;
-  }
-  &:checked + ${Label} ${Span} {
-    transform: translateX(0px);
-  }
-  &:checked + ${Label} ${Span}:after {
-    transform: translateX(0px);
-    content: "상세정보";
-  }
+const ReviewBtn = styled(button)`
+  ${({ value }) =>
+    value === "review" ? "transition:color 1s ease; color: #9C9C9C;" : null}
 `;
