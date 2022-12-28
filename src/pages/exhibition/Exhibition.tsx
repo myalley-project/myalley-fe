@@ -24,7 +24,7 @@ function Exhibition() {
         charge="무료"
       />
       <Switch value={value}>
-        <span></span>
+        <span />
         <InfoBtn
           type="button"
           value={value}
