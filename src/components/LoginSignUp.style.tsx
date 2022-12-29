@@ -4,8 +4,7 @@ import styled from "styled-components";
 type LoginSignUpType = { category: string; children: React.ReactNode };
 
 // 로그인, 회원가입에 공통적으로 사용되는 전체적인 레이아웃 컴포넌트_박예선_22.12.21
-function LoginSignUp({ category, children }: LoginSignUpType) {
-  return (
+const LoginSignUp = ({ category, children }: LoginSignUpType) => (
     <LoginSignUpSection>
       <img
         alt="logo"
@@ -18,8 +17,7 @@ function LoginSignUp({ category, children }: LoginSignUpType) {
         {children}
       </InputContainer>
     </LoginSignUpSection>
-  );
-}
+  )
 
 const LoginSignUpSection = styled.form`
   display: flex;
