@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Menu from "../assets/icons/menu.svg";
 
-const Nav = () => {
-  return (
+const Nav = () => (
     <Navbar>
       <Logo />
       <button type="button">
@@ -11,7 +10,6 @@ const Nav = () => {
       </button>
     </Navbar>
   );
-};
 export default Nav;
 
 const Navbar = styled.div`

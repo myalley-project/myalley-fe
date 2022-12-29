@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Footer = () => {
-  return (
+const Footer = () => (
     <FooterContainer>
       <Content>
         <div>logo</div>
@@ -17,7 +16,6 @@ const Footer = () => {
       </Content>
     </FooterContainer>
   );
-};
 
 export default Footer;
 

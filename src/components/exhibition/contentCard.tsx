@@ -6,16 +6,14 @@ interface ContentCardtype {
   content: string;
 }
 
-function ContentCard({ title, content }: ContentCardtype) {
-  return (
+const ContentCard = ({ title, content }: ContentCardtype) => (
     <CardContainer>
       <Card>
         <h1>{title}</h1>
         <p>{content}</p>
       </Card>
     </CardContainer>
-  );
-}
+  )
 
 export default ContentCard;
 

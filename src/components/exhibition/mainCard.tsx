@@ -12,8 +12,7 @@ interface MainCardType {
   charge: string;
 }
 
-function MainCard({ title, date, place, time, charge }: MainCardType) {
-  return (
+const MainCard = ({ title, date, place, time, charge }: MainCardType) => (
     <CardContainer>
       <Card>
         <ImageContainer />
@@ -46,8 +45,7 @@ function MainCard({ title, date, place, time, charge }: MainCardType) {
         </InfoContainer>
       </Card>
     </CardContainer>
-  );
-}
+  )
 
 export default MainCard;
 
