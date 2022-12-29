@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import likeIcon from "../../assets/icons/like-icon.svg";
-import shareIcon from "../../assets/icons/share-icon.svg";
+import likeIcon from "../../assets/icons/like.svg";
+import shareIcon from "../../assets/icons/share.svg";
 
 // 나중에 수정 필요
 interface MainCardType {
