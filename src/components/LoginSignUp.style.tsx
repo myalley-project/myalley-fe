@@ -5,23 +5,24 @@ type LoginSignUpType = { category: string; children: React.ReactNode };
 
 // 로그인, 회원가입에 공통적으로 사용되는 전체적인 레이아웃 컴포넌트_박예선_22.12.21
 const LoginSignUp = ({ category, children }: LoginSignUpType) => (
-    <LoginSignUpSection>
-      <img
-        alt="logo"
-        className="logo"
-        src="https://cdn.pixabay.com/photo/2021/12/17/09/34/christmas-drink-6876097_1280.jpg"
-      />
-      {/* 임시로 로고 삽입함. src 추후 수정예정 */}
-      <InputContainer>
-        <span className="category">{category}</span>
-        {children}
-      </InputContainer>
-    </LoginSignUpSection>
-  )
+  <LoginSignUpSection>
+    <img
+      alt="logo"
+      className="logo"
+      src="https://cdn.pixabay.com/photo/2021/12/17/09/34/christmas-drink-6876097_1280.jpg"
+    />
+    {/* 임시로 로고 삽입함. src 추후 수정예정 */}
+    <InputContainer>
+      <span className="category">{category}</span>
+      {children}
+    </InputContainer>
+  </LoginSignUpSection>
+);
 
 const LoginSignUpSection = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin-bottom: 94px;
   .logo {
     width: 175px;
