@@ -84,10 +84,9 @@ const InputContainer = styled.div`
     }
   }
   button {
-    width: 84.21%;
+    width: 320px;
     height: 48px;
     margin: 30px auto;
-    /* padding: 0; */
     border: none;
     background-color: #9c9c9c;
     color: white;
