@@ -38,6 +38,12 @@
     "eqeqeq": "warn",
     "react/jsx-pascal-case": "error",
     "react/self-closing-comp": "warn",
-    "@typescript-eslint/no-use-before-define": "off"
+    "@typescript-eslint/no-use-before-define": "off",
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function"
+      }
+    ]
   }
 }

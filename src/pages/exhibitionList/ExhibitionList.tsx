@@ -1,7 +1,5 @@
 import React from "react";
 
-function ExhibitionList() {
-  return <div />;
-}
+const ExhibitionList = () => <div />;
 
 export default ExhibitionList;
