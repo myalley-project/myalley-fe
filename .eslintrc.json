@@ -45,5 +45,6 @@
         "namedComponents": "arrow-function"
       }
     ]
+    "@typescript-eslint/no-use-before-define": "off"
   }
 }
