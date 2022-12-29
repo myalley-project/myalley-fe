@@ -8,20 +8,18 @@ import ExhibitionList from "./pages/exhibitionList/ExhibitionList";
 import Exhibition from "./pages/exhibition/Exhibition";
 import Footer from "./components/Footer";
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup/:type" element={<SignUp />} />
-        <Route path="/exhibition-list" element={<ExhibitionList />} />
-        <Route path="/exhibition/:id" element={<Exhibition />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
-  );
-}
+const App = () => (
+  <BrowserRouter>
+    <Nav />
+    <Routes>
+      <Route path="/" element={<Main />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup/:type" element={<SignUp />} />
+      <Route path="/exhibition-list" element={<ExhibitionList />} />
+      <Route path="/exhibition/:id" element={<Exhibition />} />
+    </Routes>
+    <Footer />
+  </BrowserRouter>
+);
 
 export default App;
