@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import Menu from "../assets/icons/menu.svg";
+import UserMenu from "../assets/icons/UserMenu.svg";
 
 const Nav = () => (
   <Navbar>
     <Logo />
     <button type="button">
-      <img src={Menu} alt="menu-icon" />
+      <img src={UserMenu} alt="menu-icon" />
     </button>
   </Navbar>
 );

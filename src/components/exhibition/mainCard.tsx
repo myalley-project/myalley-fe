@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import likeIcon from "../../assets/icons/like.svg";
-import shareIcon from "../../assets/icons/share.svg";
+import Like from "../../assets/icons/Like.svg";
+import Share from "../../assets/icons/Share.svg";
 
 // 나중에 수정 필요
 interface MainCardType {
@@ -39,8 +39,8 @@ const MainCard = ({ title, date, place, time, charge }: MainCardType) => (
         <Footer>
           {/* 나중에 링크로 수정 */}
           <p>사이트 방문</p>
-          <img src={likeIcon} alt="like icon" />
-          <img src={shareIcon} alt="share icon" />
+          <img src={Like} alt="like icon" />
+          <img src={Share} alt="share icon" />
         </Footer>
       </InfoContainer>
     </Card>
