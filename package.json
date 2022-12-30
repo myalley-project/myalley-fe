@@ -30,9 +30,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint ./src/**/*.{js,jsx,ts,tsx}",
-    "lint:fix": "eslint --fix ./src/**/*.{js,jsx,ts,tsx}",
-    "lint-staged": "eslint --cache --fix ./src/**/*.{js,jsx,ts,tsx}",
+    "lint": "eslint ./src/**/*.{ts,tsx}",
+    "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
+    "lint-staged": "eslint --cache --fix ./src/**/*.{ts,tsx}",
     "prepare": "husky install"
   },
   "browserslist": {
