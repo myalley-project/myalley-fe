@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import MainCard from "../../components/exhibition/mainCard";
-import ContentCard from "../../components/exhibition/contentCard";
-import ToggleSwitch from "../../components/exhibition/toggleSwitch";
+import MainCard from "../../components/exhibition/MainCard";
+import ContentCard from "../../components/exhibition/ContentCard";
+import ToggleSwitch from "../../components/exhibition/ToggleSwitch";
 
 const Exhibition = () => {
   // axios 호출하기
