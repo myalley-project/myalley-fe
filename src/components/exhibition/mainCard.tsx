@@ -13,39 +13,39 @@ interface MainCardType {
 }
 
 const MainCard = ({ title, date, place, time, charge }: MainCardType) => (
-    <CardContainer>
-      <Card>
-        <ImageContainer />
-        <InfoContainer>
-          <Title>{title}</Title>
-          <div style={{ padding: "30px 0" }}>
-            <InfoDetail>
-              <dt>시간</dt>
-              <dd>{date}</dd>
-            </InfoDetail>
-            <InfoDetail>
-              <dt>장소</dt>
-              <dd>{place}</dd>
-            </InfoDetail>
-            <InfoDetail>
-              <dt>시간</dt>
-              <dd>{time}</dd>
-            </InfoDetail>
-            <InfoDetail style={{ marginBottom: "0px" }}>
-              <dt>관람비용</dt>
-              <dd>{charge}</dd>
-            </InfoDetail>
-          </div>
-          <Footer>
-            {/* 나중에 링크로 수정 */}
-            <p>사이트 방문</p>
-            <img src={likeIcon} alt="like icon" />
-            <img src={shareIcon} alt="share icon" />
-          </Footer>
-        </InfoContainer>
-      </Card>
-    </CardContainer>
-  )
+  <CardContainer>
+    <Card>
+      <ImageContainer />
+      <InfoContainer>
+        <Title>{title}</Title>
+        <div style={{ padding: "30px 0" }}>
+          <InfoDetail>
+            <dt>시간</dt>
+            <dd>{date}</dd>
+          </InfoDetail>
+          <InfoDetail>
+            <dt>장소</dt>
+            <dd>{place}</dd>
+          </InfoDetail>
+          <InfoDetail>
+            <dt>시간</dt>
+            <dd>{time}</dd>
+          </InfoDetail>
+          <InfoDetail style={{ marginBottom: "0px" }}>
+            <dt>관람비용</dt>
+            <dd>{charge}</dd>
+          </InfoDetail>
+        </div>
+        <Footer>
+          {/* 나중에 링크로 수정 */}
+          <p>사이트 방문</p>
+          <img src={likeIcon} alt="like icon" />
+          <img src={shareIcon} alt="share icon" />
+        </Footer>
+      </InfoContainer>
+    </Card>
+  </CardContainer>
+);
 
 export default MainCard;
 
@@ -56,7 +56,7 @@ const CardContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 0px;
-  background-color: ${(props) => props.theme.colors.main};
+  background-color: #f5f5f5;
 `;
 
 const Card = styled.div`
@@ -87,7 +87,7 @@ const Title = styled.h1`
   font-size: 42px;
   line-height: 52px;
   letter-spacing: -0.5px;
-  color: #333333;
+  color: ${(props) => props.theme.colors.txt}
   text-align: left;
 `;
 
@@ -98,7 +98,7 @@ const InfoDetail = styled.dl`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.5px;
-  color: #666666;
+  color: ${(props) => props.theme.colors.pressed}
   text-align: left;
   margin-bottom: 10px;
   dt {
@@ -119,7 +119,7 @@ const Footer = styled.div`
   font-weight: 500;
   font-size: 14px;
   letter-spacing: -0.5px;
-  color: #9c9c9c;
+  color: ${(props) => props.theme.colors.hover}
   text-align: right;
   p {
     line-height: 24px;

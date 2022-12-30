@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { ThemeConsumer } from "styled-components";
 
 const ToggleSwitch = () => {
   const [isInfoOrReview, setIsInfoOrReview] = useState("info");
@@ -41,7 +41,7 @@ const Switch = styled.div<{ value: string }>`
   width: 380px;
   height: 44px;
   margin: 50px auto 30px auto;
-  background-color: #9c9c9c;
+  background-color: ${(props) => props.theme.colors.hover};
   span {
     position: absolute;
     width: 188px;

@@ -2,16 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import Menu from "../assets/icons/menu.svg";
 
-
 const Nav = () => (
-    <Navbar>
-      <Logo />
-      <button type="button">
-        <img src={Menu} alt="menu-icon" />
-      </button>
-    </Navbar>
-  );
-  
+  <Navbar>
+    <Logo />
+    <button type="button">
+      <img src={Menu} alt="menu-icon" />
+    </button>
+  </Navbar>
+);
+
 export default Nav;
 
 const Navbar = styled.div`
@@ -30,5 +29,5 @@ const Navbar = styled.div`
 const Logo = styled.div`
   width: 210px;
   border-radius: 0px;
-  background-color: #e0e0e0;
+  background-color: ${(props) => props.theme.colors.main};
 `;
