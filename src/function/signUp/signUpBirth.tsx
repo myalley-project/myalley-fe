@@ -24,4 +24,4 @@ export const dayArr = () => {
   return days;
 };
 
-export default { yearArr, monthArr };
+export default { yearArr, monthArr, dayArr };
