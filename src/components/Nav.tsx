@@ -1,15 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import UserMenu from "../assets/icons/UserMenu.svg";
+import HamburgerMenu from "./HamburgerMenu";
 
-const Nav = () => (
-  <Navbar>
-    <Logo />
-    <button type="button">
-      <img src={UserMenu} alt="menu-icon" />
-    </button>
-  </Navbar>
-);
+const Nav = () => {
+  const showMenu = () => {
+    console.log("1");
+  };
+
+  return (
+    <Navbar>
+      <Logo />
+      <button type="button" onClick={showMenu}>
+        <img src={UserMenu} alt="menu-icon" />
+      </button>
+      <HamburgerMenu />
+    </Navbar>
+  );
+};
 
 export default Nav;
 
