@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import styled from "styled-components";
-import LoginSignUp from "../../components/LoginSignUp.style";
-import checkboxOff from "../../assets/icons/checkboxOff.svg";
-import checkboxOn from "../../assets/icons/checkboxOn.svg";
+import LoginSignUp from "../components/LoginSignUp.style";
+import checkboxOff from "../assets/icons/checkboxOff.svg";
+import checkboxOn from "../assets/icons/checkboxOn.svg";
 
 // 로그인 컴포넌트_박예선_2023.01.01
 const Login = () => {
