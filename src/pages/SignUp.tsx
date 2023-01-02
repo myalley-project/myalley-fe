@@ -1,8 +1,8 @@
+/* eslint-disable no-plusplus */
 import React from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import LoginSignUp from "../../components/LoginSignUp.style";
-import { yearArr, monthArr, dayArr } from "../../function/signUp/signUpBirth";
+import LoginSignUp from "../components/LoginSignUp.style";
 
 // 회원용/관리자용 회원가입 컴포넌트_박예선_22.12.28
 const SignUp = () => {
@@ -171,5 +171,29 @@ const GenderDropDownContainer = styled.div`
     width: 320px;
   }
 `;
+
+const yearArr = () => {
+  const years: number[] = [];
+  for (let i = 1950; i < new Date().getFullYear() + 1; i++) {
+    years.push(i);
+  }
+  return years;
+};
+
+const monthArr = () => {
+  const months: number[] = [];
+  for (let i = 1; i < 12 + 1; i++) {
+    months.push(i);
+  }
+  return months;
+};
+
+const dayArr = () => {
+  const days: number[] = [];
+  for (let i = 1; i < 12 + 1; i++) {
+    days.push(i);
+  }
+  return days;
+};
 
 export default SignUp;
