@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Nav from "./components/Nav";
-import Main from "./pages/main/Main";
-import Login from "./pages/login/Login";
-import SignUp from "./pages/signUp/SignUp";
-import ExhibitionList from "./pages/exhibitionList/ExhibitionList";
-import Exhibition from "./pages/exhibition/Exhibition";
+import Main from "./pages/Main";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import ExhibitionList from "./pages/ExhibitionList";
+import Exhibition from "./pages/Exhibition";
 import Footer from "./components/Footer";
 
 const App = () => (

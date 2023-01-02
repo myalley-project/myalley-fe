@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import MainCard from "../../components/exhibition/mainCard";
-import ContentCard from "../../components/exhibition/contentCard";
+import MainCard from "../components/exhibition/mainCard";
+import ContentCard from "../components/exhibition/contentCard";
 
 const Exhibition = () => {
   const [value, setValue] = useState("info");
