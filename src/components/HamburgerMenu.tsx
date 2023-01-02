@@ -6,7 +6,7 @@ const HamburgerMenu = () => (
     <MenuWrapper>
       <h2>계정</h2>
       <div className="mypage-area">
-        <div className="profile-img"></div>
+        <div className="profile-img" />
         <div>
           <p className="nickname">Nickname</p>
           <p className="email">email11@email.com</p>
