@@ -29,6 +29,12 @@ const LoginSignUpSection = styled.form`
     height: 60px;
     margin: 30px auto;
   }
+  button {
+    cursor: pointer;
+    &:disabled {
+      cursor: auto;
+    }
+  }
 `;
 
 const InputContainer = styled.div`
@@ -50,7 +56,6 @@ const InputContainer = styled.div`
   .notice {
     margin: -1px 0 13px;
     font-size: 12px;
-    /* display: none; */
     &.err {
       color: #ff4545;
     }
@@ -83,7 +88,7 @@ const InputContainer = styled.div`
       margin: 0;
     }
   }
-  button {
+  .btn {
     width: 320px;
     height: 48px;
     margin: 30px auto;
