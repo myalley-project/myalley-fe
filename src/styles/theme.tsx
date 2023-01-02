@@ -8,11 +8,15 @@ import { DefaultTheme } from "styled-components";
 const responsive = { mobile: "375px" };
 // 임시 모바일 픽셀. 확실히 물어봐야함.
 const colors = {
-  main: "#FAEBA0",
-  // 임시 메인 컬러. 디자인 나오면 바꿔야 함.
-  txt: "#303030",
-  // 임시 main text 컬러. 디자인 나오면 바꿔야 함.
-  // 아니면 메인 텍스트컬러는 global-styles에서 지정해두고 사용해도 좋을 듯합니다.
+  main: "#E0E0E0",
+  txt: "#333333",
+  pressed: "#666666",
+  hover: "#9C9C9C",
+  alarmGreen: "#54C60E",
+  bg: "#FBFBFB",
+  hidden: "#F2F2F2",
+  error: "#FF4545",
+  white100: "#FFFFFF",
 };
 
 export type Responsive = typeof responsive;
