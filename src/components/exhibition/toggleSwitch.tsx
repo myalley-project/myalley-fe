@@ -5,11 +5,27 @@ const ToggleSwitch = () => {
   const [isInfoOrReview, setIsInfoOrReview] = useState("info");
   const onChangeMode = (type: string) => {
     setIsInfoOrReview(type);
+    const circle = document.getElementById("circle") as HTMLInputElement | null;
+    if (circle === null) return;
+    switch (type) {
+      case "info":
+        circle.style.transform = "translateX(0px)";
+        break;
+      case "review":
+        circle.style.transform = "translateX(125.33px)";
+        break;
+      case "findMate":
+        circle.style.transform = "translateX(250.66px)";
+        break;
+      default:
+        circle.style.transform = "translateX(0px)";
+        break;
+    }
   };
 
   return (
     <Switch value={isInfoOrReview}>
-      <span />
+      <span id="circle" />
       <InfoBtn
         type="button"
         value={isInfoOrReview}
@@ -22,8 +38,15 @@ const ToggleSwitch = () => {
         value={isInfoOrReview}
         onClick={() => onChangeMode("review")}
       >
-        전시리뷰
+        전시 리뷰
       </ReviewBtn>
+      <FindMateBtn
+        type="button"
+        value={isInfoOrReview}
+        onClick={() => onChangeMode("findMate")}
+      >
+        메이트 찾기
+      </FindMateBtn>
     </Switch>
   );
 };
@@ -38,7 +61,7 @@ const Switch = styled.div<{ value: string }>`
   background-color: ${(props) => props.theme.colors.hover};
   span {
     position: absolute;
-    width: 188px;
+    width: 125.33px;
     height: 40px;
     top: 2px;
     border-radius: 1000px;
@@ -48,13 +71,13 @@ const Switch = styled.div<{ value: string }>`
     ${({ value }) =>
       value === "info"
         ? "transform: translateX(0px)"
-        : "transform: translateX(188px)"}
+        : "transform: translateX(125.33px)"}
   }
 `;
 
 const button = styled.button<{ value: string }>`
   position: relative;
-  width: 188px;
+  width: 125.33px;
   height: 44px;
   color: #ffffff;
   font-weight: 700;
@@ -71,4 +94,9 @@ const InfoBtn = styled(button)`
 const ReviewBtn = styled(button)`
   ${({ value }) =>
     value === "review" ? "transition:color 1s ease; color: #9C9C9C;" : null}
+`;
+
+const FindMateBtn = styled(button)`
+  ${({ value }) =>
+    value === "findMate" ? "transition:color 1s ease; color: #9C9C9C;" : null}
 `;
