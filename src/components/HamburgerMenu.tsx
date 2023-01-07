@@ -27,6 +27,12 @@ const HamburgerMenu = () => (
         <List as="a" href="/">
           메이트 찾기
         </List>
+        {/* <List as="a" href="/">
+          전시회 정보 등록하기
+        </List>
+        <List as="a" href="/">
+          마이 페이지
+        </List> */}
       </ul>
     </MenuWrapper>
   </MenuContainer>
