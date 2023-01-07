@@ -3,20 +3,19 @@ import styled from "styled-components";
 import likeIcon from "../../assets/icons/like.svg";
 import shareIcon from "../../assets/icons/share.svg";
 
-// 나중에 수정 필요
-interface MainCardType {
-  title: string;
-  date: string;
-  place: string;
-  time: string;
-  charge: string;
-}
+type MainCardType = {
+  [key in "title" | "date" | "place" | "time" | "charge"]: string;
+};
 
 const MainCard = ({ title, date, place, time, charge }: MainCardType) => (
   <CardContainer>
     <Card>
       <ImageContainer />
       <InfoContainer>
+        <EditButtons>
+          <Button>수정</Button>
+          <Button>삭제</Button>
+        </EditButtons>
         <Title>{title}</Title>
         <div style={{ padding: "30px 0" }}>
           <InfoDetail>
@@ -78,6 +77,25 @@ const InfoContainer = styled.div`
   width: 922px;
   height: 358px;
   padding: 30px;
+`;
+
+const EditButtons = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  height: 30px;
+  margin-bottom: 10px;
+`;
+
+const Button = styled.button`
+  padding: 0;
+  color: ${(props) => props.theme.colors.hover};
+  font-size: 14px;
+  cursor: pointer;
+  &:hover {
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.txt};
+  }
 `;
 
 const Title = styled.h1`
