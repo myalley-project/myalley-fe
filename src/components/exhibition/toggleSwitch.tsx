@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import styled, { ThemeConsumer } from "styled-components";
+import styled from "styled-components";
 
 const ToggleSwitch = () => {
   const [isInfoOrReview, setIsInfoOrReview] = useState("info");
   const onChangeMode = (type: string) => {
     setIsInfoOrReview(type);
-
-    // if (type === "info") {
-    //   setIsInfoOrReview("info");
-    // } else if (type === "review") {
-    //   setIsInfoOrReview("review");
-    // }
   };
 
   return (
