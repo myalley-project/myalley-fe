@@ -3,6 +3,13 @@ import React from "react";
 import styled from "styled-components";
 import { Infos, Valids } from "../../types/signUp";
 
+interface CommonOnlyType {
+  infos: Infos;
+  setInfos: React.Dispatch<React.SetStateAction<Infos>>;
+  valids: Valids;
+  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 const CommonOnly = (props: CommonOnlyType) => {
   const { infos, setInfos, valids, handleInput } = props;
 
@@ -149,13 +156,6 @@ const BirthDropDownContainer = styled.div`
     }
   }
 `;
-
-interface CommonOnlyType {
-  infos: Infos;
-  setInfos: React.Dispatch<React.SetStateAction<Infos>>;
-  valids: Valids;
-  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
 
 const yearArr = () => {
   const years: number[] = [];
