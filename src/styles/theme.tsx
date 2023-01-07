@@ -12,7 +12,11 @@ const colors = {
   txt: "#333333",
   pressed: "#666666",
   hover: "#9C9C9C",
-  alarm: "#54C60E",
+  alarmGreen: "#54C60E",
+  bg: "#FBFBFB",
+  hidden: "#F2F2F2",
+  error: "#FF4545",
+  white100: "#FFFFFF",
 };
 
 export type Responsive = typeof responsive;
