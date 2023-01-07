@@ -1,25 +1,32 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const HamburgerMenu = () => (
   <MenuContainer>
     <MenuWrapper>
-      <h2>계정</h2>
-      <div className="mypage-area">
+      <Subtitle>계정</Subtitle>
+      <MypageArea href="/">
         <div className="profile-img" />
         <div>
-          <p className="nickname">Nickname</p>
-          <p className="email">email11@email.com</p>
+          <Nickname>Nickname</Nickname>
+          <Email className="email">email11@email.com</Email>
         </div>
-      </div>
-      <button type="button">로그아웃</button>
+      </MypageArea>
+      <LogoutButton type="button">로그아웃</LogoutButton>
     </MenuWrapper>
     <MenuWrapper>
-      <h2>메뉴</h2>
+      <Subtitle>메뉴</Subtitle>
       <ul>
-        <a href="/">전시회</a>
-        <a href="/">전시회 리뷰</a>
-        <a href="/">메이트 찾기</a>
+        <List as="a" href="/">
+          전시회
+        </List>
+        <List as="a" href="/">
+          전시회 리뷰
+        </List>
+        <List as="a" href="/">
+          메이트 찾기
+        </List>
       </ul>
     </MenuWrapper>
   </MenuContainer>
@@ -41,53 +48,61 @@ const MenuContainer = styled.div`
 
 const MenuWrapper = styled.div`
   padding-bottom: 10px;
-  h2 {
-    padding-bottom: 5px;
-    color: ${(props) => props.theme.colors.pressed};
-    font-weight: 400;
-    font-size: 12px;
-    letter-spacing: -0.5px;
-  }
   .profile-img {
     width: 40px;
     height: 40px;
     background-color: #d9d9d9;
     border-radius: 50%;
   }
-  .mypage-area {
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    cursor: pointer;
+`;
+
+const Subtitle = styled.h2`
+  padding-bottom: 5px;
+  color: ${(props) => props.theme.colors.pressed};
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: -0.5px;
+`;
+
+const MypageArea = styled.a`
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  text-decoration: none;
+  cursor: pointer;
+`;
+
+const Nickname = styled.p`
+  color: ${(props) => props.theme.colors.txt};
+  font-weight: 500;
+  font-size: 14px;
+  padding-bottom: 4px;
+`;
+
+const Email = styled.p`
+  color: ${(props) => props.theme.colors.hover};
+  font-weight: 400;
+  font-size: 12px;
+`;
+
+const LogoutButton = styled.button`
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 10px;
+  color: ${(props) => props.theme.colors.txt};
+  font-weight: 500;
+  font-size: 14px;
+  text-align: left;
+  //global-style에 설정 추가하기
+  cursor: pointer;
+  &:hover {
+    background-color: #f2f2f2;
+    border-radius: 10px;
   }
-  .nickname {
-    color: ${(props) => props.theme.colors.txt};
-    font-weight: 500;
-    font-size: 14px;
-    padding-bottom: 4px;
-  }
-  .email {
-    color: ${(props) => props.theme.colors.hover};
-    font-weight: 400;
-    font-size: 12px;
-  }
-  button,
-  a {
-    display: inline-block;
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    padding-left: 10px;
-    color: ${(props) => props.theme.colors.txt};
-    font-weight: 500;
-    font-size: 14px;
-    text-align: left;
-    //global-style에 설정 추가하기
-    text-decoration: none;
-    cursor: pointer;
-    &:hover {
-      background-color: #f2f2f2;
-      border-radius: 10px;
-    }
-  }
+`;
+
+const List = styled(LogoutButton)`
+  text-decoration: none;
 `;
