@@ -29,7 +29,7 @@ export default HamburgerMenu;
 
 const MenuContainer = styled.div`
   position: absolute;
-  left: 1465px;
+  left: 77%;
   top: 57px;
   width: 215px;
   height: 292px;
