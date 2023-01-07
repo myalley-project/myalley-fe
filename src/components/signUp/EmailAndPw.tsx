@@ -1,20 +1,28 @@
 import React, { useState } from "react";
 import { Infos, Valids, IsOnly } from "../../types/signUp";
 
+interface EmailAndPwType {
+  infos: Infos;
+  valids: Valids;
+  setValids: React.Dispatch<React.SetStateAction<Valids>>;
+  isOnly: IsOnly | undefined;
+  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 const EmailAndPw = (props: EmailAndPwType) => {
   const { infos, valids, setValids, isOnly, handleInput } = props;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
-  // 이메일 유효성 상태관리_박예선_22.12.27
+  // 이메일 유효성 상태관리_박예선_23.01.08
   const handleEmailValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    // const emailTest = /^$/; // 정규식 추가예정
+    const emailTest = /^[a-zA-Z0-9+.]+@[a-z]+\.[a-z]{2,3}$/;
+    // 영어 대소문자/숫자 + ’@’ + 영어 소문자 + ‘.’ + 영어 소문자(2~3자)
     if (timer) {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      // if (emailTest.test(value)) {
-      if (value.length >= 8) {
+      if (emailTest.test(value)) {
         setValids({
           ...valids,
           [name]: true,
@@ -137,13 +145,5 @@ const EmailAndPw = (props: EmailAndPwType) => {
     </>
   );
 };
-
-interface EmailAndPwType {
-  infos: Infos;
-  valids: Valids;
-  setValids: React.Dispatch<React.SetStateAction<Valids>>;
-  isOnly: IsOnly | undefined;
-  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
 
 export default EmailAndPw;

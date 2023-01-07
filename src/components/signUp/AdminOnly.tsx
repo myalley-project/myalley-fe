@@ -1,6 +1,13 @@
 import React from "react";
 import { Infos, IsOnly, Valids } from "../../types/signUp";
 
+interface AdminOnlyType {
+  infos: Infos;
+  valids: Valids;
+  isOnly: IsOnly | undefined;
+  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 const AdminOnly = (props: AdminOnlyType) => {
   const { infos, valids, isOnly, handleInput } = props;
   return (
@@ -28,12 +35,5 @@ const AdminOnly = (props: AdminOnlyType) => {
     </>
   );
 };
-
-interface AdminOnlyType {
-  infos: Infos;
-  valids: Valids;
-  isOnly: IsOnly | undefined;
-  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
 
 export default AdminOnly;
