@@ -22,22 +22,16 @@ const EmailAndPw = (props: EmailAndPwType) => {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      if (emailTest.test(value)) {
-        setValids({
-          ...valids,
-          [name]: true,
-        });
-      } else {
-        setValids({
-          ...valids,
-          [name]: false,
-        });
-      }
+      const isEmailValid = emailTest.test(value);
+      setValids({
+        ...valids,
+        [name]: isEmailValid,
+      });
     }, 800);
     setTimer(newTimer);
   };
 
-  // 비밀번호 유효성 상태관리_박예선_22.12.27
+  // 비밀번호 유효성 상태관리_박예선_23.01.08
   const handlePwValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const pwTest =
@@ -47,32 +41,24 @@ const EmailAndPw = (props: EmailAndPwType) => {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      if (pwTest.test(value)) {
-        setValids({
-          ...valids,
-          [name]: true,
-        });
-      } else {
-        setValids({
-          ...valids,
-          [name]: false,
-        });
-      }
+      const isPwValid = pwTest.test(value);
+      setValids({
+        ...valids,
+        [name]: isPwValid,
+      });
     }, 800);
     setTimer(newTimer);
   };
 
-  // 비밀번호 확인 상태관리_박예선_22.12.27
+  // 비밀번호 확인 상태관리_박예선_23.01.08
   const handlePwCheckValid = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
     if (timer) {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      if (infos.pw === e.target.value) {
-        setValids({ ...valids, pwCheck: true });
-      } else {
-        setValids({ ...valids, pwCheck: false });
-      }
+      const isPwCheckValid = infos.pw === value;
+      setValids({ ...valids, pwCheck: isPwCheckValid });
     }, 800);
     setTimer(newTimer);
   };
@@ -97,8 +83,6 @@ const EmailAndPw = (props: EmailAndPwType) => {
           {valids.email
             ? "올바른 이메일 형식입니다"
             : "이메일 형식을 확인해주세요"}
-          {/* 이 부분은 가입하기를 누르고 서버에 검사 요청을 한 후 나타나는 부분이기 때문에 처음 이메일을 입력할 때는 
-          비밀번호 입력창처럼 이메일 형식을 확인해주세요 이런 식으로 에러메세지를 보여줘야 될 것 같음 */}
         </div>
       )}
       {isOnly && (
