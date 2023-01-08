@@ -26,6 +26,7 @@ const SignUp = () => {
     pwCheck: false,
     nickName: false,
     adminNumber: true,
+    name: false,
   });
   const [isOnly, setIsOnly] = useState<IsOnly | undefined>(undefined);
 
@@ -57,6 +58,8 @@ const SignUp = () => {
             infos={infos}
             setInfos={setInfos}
             valids={valids}
+            setValids={setValids}
+            isOnly={isOnly}
             handleInput={handleInput}
           />
         )}
@@ -65,6 +68,7 @@ const SignUp = () => {
           <AdminOnly
             infos={infos}
             valids={valids}
+            setValids={setValids}
             isOnly={isOnly}
             handleInput={handleInput}
           />

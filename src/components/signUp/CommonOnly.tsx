@@ -1,17 +1,20 @@
 /* eslint-disable no-plusplus */
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Infos, Valids } from "../../types/signUp";
+import { Infos, IsOnly, Valids } from "../../types/signUp";
 
 interface CommonOnlyType {
   infos: Infos;
   setInfos: React.Dispatch<React.SetStateAction<Infos>>;
   valids: Valids;
+  setValids: React.Dispatch<React.SetStateAction<Valids>>;
+  isOnly: IsOnly | undefined;
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-
+// 회원용 회원가입 UI 컴포넌트_박예선_23.01.08
 const CommonOnly = (props: CommonOnlyType) => {
-  const { infos, setInfos, valids, handleInput } = props;
+  const { infos, setInfos, valids, setValids, isOnly, handleInput } = props;
+  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
   // select 옵션값 상태관리_박예선_23.01.01
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -28,26 +31,51 @@ const CommonOnly = (props: CommonOnlyType) => {
       });
     }
   };
+  // 닉네임 유효성검사_박예선_23.01.08
+  const handleNicknameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const NICKNAME_REG = /^[가-힣|a-z|A-Z|0-9|]{2,10}$/;
+    // 한글, 영어 대소문자, 숫자 2~10자리
+    if (timer) {
+      clearTimeout(timer);
+    }
+    const newTimer = setTimeout(() => {
+      const isNicknameValid = NICKNAME_REG.test(value);
+      setValids({
+        ...valids,
+        nickName: isNicknameValid,
+      });
+    }, 800);
+    setTimer(newTimer);
+  };
 
   return (
     <CommonOnlyContainer>
-      <label htmlFor="nickName" className="title">
+      <label className="title">
         별명
         <input
           type="text"
           name="nickName"
           placeholder="Nickname"
           value={infos.nickName}
-          onChange={handleInput}
+          onChange={(e) => {
+            handleInput(e);
+            handleNicknameValid(e);
+          }}
         />
       </label>
-      <div className={`notice ${valids.nickName ? "pass" : "err"}`}>
-        {valids.nickName
-          ? "사용 가능한 별명입니다"
-          : "이미 사용 중인 별명입니다"}
-      </div>
-      {/* 이 부분은 가입하기를 누르고 서버에 검사 요청을 한 후 나타나는 부분이기 때문에 처음 별명을 입력할 때는 
-          한글 2~6자리를 입력해주세요 이런 식으로 에러메세지를 보여줘야 될 것 같음 */}
+      {!valids.nickName && (
+        <div className="notice err">
+          한글, 영어 대소문자, 숫자 2~10자를 입력하세요
+        </div>
+      )}
+      {isOnly && (
+        <div className={`notice ${isOnly.nickName ? "pass" : "err"}`}>
+          {isOnly.nickName
+            ? "사용 가능한 별명입니다"
+            : "이미 사용 중인 별명입니다"}
+        </div>
+      )}
       <div>
         <span className="title">생년월일</span>
         <BirthDropDownContainer>
