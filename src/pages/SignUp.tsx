@@ -73,7 +73,7 @@ const SignUp = () => {
             handleInput={handleInput}
           />
         )}
-        <button className="btn" type="submit" onClick={clickSignUpBtn}>
+        <button className="btn" type="button" onClick={clickSignUpBtn}>
           가입하기
         </button>
       </SignUpContainer>
