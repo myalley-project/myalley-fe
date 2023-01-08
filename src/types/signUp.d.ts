@@ -1,23 +1,23 @@
 export interface Infos {
   email: string;
-  pw: string;
+  password: string;
   pwCheck: string;
   gender: string;
   birth: { year: string; month: string; day: string };
-  nickName: string;
-  adminNumber: number;
+  nickname: string;
+  adminNo: number;
   name: string;
 }
 export interface Valids {
   email: boolean;
-  pw: boolean;
+  password: boolean;
   pwCheck: boolean;
-  nickName: boolean;
-  adminNumber: boolean;
+  nickname: boolean;
+  adminNo: boolean;
   name: boolean;
 }
 export interface IsOnly {
   email: boolean;
-  nickName: boolean;
-  adminNumber: boolean;
+  nickname: boolean;
+  adminNo: boolean;
 }
