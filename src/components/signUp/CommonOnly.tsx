@@ -187,7 +187,7 @@ const BirthDropDownContainer = styled.div`
 
 const yearArr = () => {
   const years: number[] = [];
-  for (let i = 1950; i < new Date().getFullYear() + 1; i++) {
+  for (let i = new Date().getFullYear(); i > 1950 - 1; i--) {
     years.push(i);
   }
   return years;
