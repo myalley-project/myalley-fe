@@ -9,23 +9,24 @@ interface EmailAndPwType {
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+// 회원/관리자 회원가입 공통 컴포넌트_박예선_23.01.08
 const EmailAndPw = (props: EmailAndPwType) => {
   const { infos, valids, setValids, isOnly, handleInput } = props;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
   // 이메일 유효성 상태관리_박예선_23.01.08
   const handleEmailValid = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const emailTest = /^[a-zA-Z0-9+.]+@[a-z]+\.[a-z]{2,3}$/;
+    const { value } = e.target;
+    const EMAIL_REG = /^[a-zA-Z0-9+.]+@[a-z]+\.[a-z]{2,3}$/;
     // 영어 대소문자/숫자 + ’@’ + 영어 소문자 + ‘.’ + 영어 소문자(2~3자)
     if (timer) {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      const isEmailValid = emailTest.test(value);
+      const isEmailValid = EMAIL_REG.test(value);
       setValids({
         ...valids,
-        [name]: isEmailValid,
+        email: isEmailValid,
       });
     }, 800);
     setTimer(newTimer);
@@ -33,18 +34,18 @@ const EmailAndPw = (props: EmailAndPwType) => {
 
   // 비밀번호 유효성 상태관리_박예선_23.01.08
   const handlePwValid = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const pwTest =
+    const { value } = e.target;
+    const PW_REG =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*])[A-Za-z\d~!@#$%^&*]{8,16}$/;
     // 영어 대소문자, 숫자, 특수문자(~!@#$%^&*)를 포함한 8~16자
     if (timer) {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      const isPwValid = pwTest.test(value);
+      const isPwValid = PW_REG.test(value);
       setValids({
         ...valids,
-        [name]: isPwValid,
+        pw: isPwValid,
       });
     }, 800);
     setTimer(newTimer);
@@ -65,7 +66,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
 
   return (
     <>
-      <label htmlFor="email" className="title">
+      <label className="title">
         이메일
         <input
           type="email"

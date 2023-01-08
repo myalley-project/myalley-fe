@@ -14,6 +14,7 @@ export interface Valids {
   pwCheck: boolean;
   nickName: boolean;
   adminNumber: boolean;
+  name: boolean;
 }
 export interface IsOnly {
   email: boolean;
