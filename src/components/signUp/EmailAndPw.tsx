@@ -43,9 +43,11 @@ const EmailAndPw = (props: EmailAndPwType) => {
     }
     const newTimer = setTimeout(() => {
       const isPwValid = PW_REG.test(value);
+      const isPwCheckValid = infos.pwCheck === value;
       setValids({
         ...valids,
         password: isPwValid,
+        pwCheck: isPwCheckValid,
       });
     }, 800);
     setTimer(newTimer);
