@@ -45,7 +45,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
       const isPwValid = PW_REG.test(value);
       setValids({
         ...valids,
-        pw: isPwValid,
+        password: isPwValid,
       });
     }, 800);
     setTimer(newTimer);
@@ -58,7 +58,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      const isPwCheckValid = infos.pw === value;
+      const isPwCheckValid = infos.password === value;
       setValids({ ...valids, pwCheck: isPwCheckValid });
     }, 800);
     setTimer(newTimer);
@@ -95,17 +95,17 @@ const EmailAndPw = (props: EmailAndPwType) => {
         비밀번호
         <input
           type="password"
-          name="pw"
+          name="password"
           placeholder="Password"
-          value={infos.pw}
+          value={infos.password}
           onChange={(e) => {
             handleInput(e);
             handlePwValid(e);
           }}
         />
       </label>
-      <div className={`notice ${valids.pw ? "pass" : "err"}`}>
-        {valids.pw
+      <div className={`notice ${valids.password ? "pass" : "err"}`}>
+        {valids.password
           ? "안전한 비밀번호입니다"
           : "  영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요"}
       </div>

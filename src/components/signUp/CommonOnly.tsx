@@ -43,7 +43,7 @@ const CommonOnly = (props: CommonOnlyType) => {
       const isNicknameValid = NICKNAME_REG.test(value);
       setValids({
         ...valids,
-        nickName: isNicknameValid,
+        nickname: isNicknameValid,
       });
     }, 800);
     setTimer(newTimer);
@@ -55,23 +55,23 @@ const CommonOnly = (props: CommonOnlyType) => {
         별명
         <input
           type="text"
-          name="nickName"
+          name="nickname"
           placeholder="Nickname"
-          value={infos.nickName}
+          value={infos.nickname}
           onChange={(e) => {
             handleInput(e);
             handleNicknameValid(e);
           }}
         />
       </label>
-      {!valids.nickName && (
+      {!valids.nickname && (
         <div className="notice err">
           한글, 영어 대소문자, 숫자 2~10자를 입력하세요
         </div>
       )}
       {isOnly && (
-        <div className={`notice ${isOnly.nickName ? "pass" : "err"}`}>
-          {isOnly.nickName
+        <div className={`notice ${isOnly.nickname ? "pass" : "err"}`}>
+          {isOnly.nickname
             ? "사용 가능한 별명입니다"
             : "이미 사용 중인 별명입니다"}
         </div>

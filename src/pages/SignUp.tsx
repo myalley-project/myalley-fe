@@ -12,20 +12,20 @@ const SignUp = () => {
   const location = useLocation();
   const [infos, setInfos] = useState({
     email: "",
-    pw: "",
+    password: "",
     pwCheck: "",
     gender: "",
     birth: { year: "", month: "", day: "" },
-    nickName: "",
-    adminNumber: 0,
+    nickname: "",
+    adminNo: 0,
     name: "",
   });
   const [valids, setValids] = useState({
     email: false,
-    pw: false,
+    password: false,
     pwCheck: false,
-    nickName: false,
-    adminNumber: true,
+    nickname: false,
+    adminNo: true,
     name: false,
   });
   const [isOnly, setIsOnly] = useState<IsOnly | undefined>(undefined);

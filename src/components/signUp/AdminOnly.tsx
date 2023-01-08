@@ -26,7 +26,7 @@ const AdminOnly = (props: AdminOnlyType) => {
       const isAdminNoValid = ADMINNO_REG.test(value);
       setValids({
         ...valids,
-        adminNumber: isAdminNoValid,
+        adminNo: isAdminNoValid,
       });
     }, 800);
     setTimer(newTimer);
@@ -56,9 +56,9 @@ const AdminOnly = (props: AdminOnlyType) => {
         관리자 고유번호
         <input
           type="number"
-          name="adminNumber"
+          name="adminNo"
           placeholder="회사에서 제공한 개인 고유 번호를 입력해주세요"
-          value={infos.adminNumber === 0 ? "" : infos.adminNumber}
+          value={infos.adminNo === 0 ? "" : infos.adminNo}
           onChange={(e) => {
             handleInput(e);
             handleAdiminNoValid(e);
@@ -66,8 +66,8 @@ const AdminOnly = (props: AdminOnlyType) => {
         />
       </label>
       <div className="notice err">
-        {!isOnly && !valids.adminNumber && "숫자만 입력가능합니다"}
-        {isOnly && !isOnly.adminNumber && "확인할 수 없는 고유번호입니다"}
+        {!isOnly && !valids.adminNo && "숫자만 입력가능합니다"}
+        {isOnly && !isOnly.adminNo && "확인할 수 없는 고유번호입니다"}
       </div>
       <label className="title">
         이름
