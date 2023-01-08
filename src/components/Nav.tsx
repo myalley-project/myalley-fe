@@ -6,6 +6,7 @@ import HamburgerMenu from "./HamburgerMenu";
 
 const Nav = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);
+  const [toggleMenuIcon, setToggleMenuIcon] = useState(UserMenu);
   const userMenuHover = UserMenuHover;
   const userMenu = UserMenu;
   const menuImg = document.getElementById(
@@ -19,20 +20,19 @@ const Nav = () => {
   useEffect(() => {
     if (menuImg !== null) {
       if (isShowMenu) {
-        menuImg.setAttribute("src", userMenuHover);
+        setToggleMenuIcon(userMenuHover);
       } else {
-        menuImg.setAttribute("src", userMenu);
+        setToggleMenuIcon(userMenu);
       }
     }
   }, [isShowMenu, menuImg, userMenu, userMenuHover]);
 
   const changeToHoverIcon = () => {
-    if (menuImg !== null && !isShowMenu)
-      menuImg.setAttribute("src", userMenuHover);
+    if (menuImg !== null && !isShowMenu) setToggleMenuIcon(userMenuHover);
   };
 
   const changeToNormalIcon = () => {
-    if (menuImg !== null && !isShowMenu) menuImg.setAttribute("src", userMenu);
+    if (menuImg !== null && !isShowMenu) setToggleMenuIcon(userMenu);
   };
 
   return (
@@ -44,7 +44,7 @@ const Nav = () => {
         onMouseOver={changeToHoverIcon}
         onMouseLeave={changeToNormalIcon}
       >
-        <img src={UserMenu} alt="menu-icon" id="user-menu" />
+        <img src={toggleMenuIcon} alt="menu-icon" id="user-menu" />
       </MenuButton>
       {isShowMenu && <HamburgerMenu />}
     </Navbar>
