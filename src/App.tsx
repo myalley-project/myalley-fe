@@ -21,7 +21,7 @@ const App = () => (
       <Route
         path="/write-exhibition"
         element={<AdminWriteExhibition />}
-      ></Route>
+       />
     </Routes>
     <Footer />
   </BrowserRouter>
