@@ -14,16 +14,16 @@ const EmailAndPw = (props: EmailAndPwType) => {
   const { infos, valids, setValids, isOnly, handleInput } = props;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
-  // 이메일 유효성 상태관리_박예선_23.01.08
+  // 이메일 유효성 상태관리_박예선_23.01.09
   const handleEmailValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const EMAIL_REG = /^[a-zA-Z0-9+.]+@[a-z]+\.[a-z]{2,3}$/;
+    const rEmail = /^[a-zA-Z0-9+.]+@[a-z]+\.[a-z]{2,3}$/;
     // 영어 대소문자/숫자 + ’@’ + 영어 소문자 + ‘.’ + 영어 소문자(2~3자)
     if (timer) {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      const isEmailValid = EMAIL_REG.test(value);
+      const isEmailValid = rEmail.test(value);
       setValids({
         ...valids,
         email: isEmailValid,
@@ -32,17 +32,17 @@ const EmailAndPw = (props: EmailAndPwType) => {
     setTimer(newTimer);
   };
 
-  // 비밀번호 유효성 상태관리_박예선_23.01.08
+  // 비밀번호 유효성 상태관리_박예선_23.01.09
   const handlePwValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const PW_REG =
+    const rPassword =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*])[A-Za-z\d~!@#$%^&*]{8,16}$/;
     // 영어 대소문자, 숫자, 특수문자(~!@#$%^&*)를 포함한 8~16자
     if (timer) {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      const isPwValid = PW_REG.test(value);
+      const isPwValid = rPassword.test(value);
       const isPwCheckValid = infos.pwCheck === value;
       setValids({
         ...valids,
