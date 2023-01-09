@@ -14,16 +14,16 @@ const AdminOnly = (props: AdminOnlyType) => {
   const { infos, valids, setValids, isOnly, handleInput } = props;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
-  // 관리자번호 유효성검사_박예선_23.01.08
+  // 관리자번호 유효성검사_박예선_23.01.09
   const handleAdiminNoValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const ADMINNO_REG = /^[0-9]+$/;
+    const rAdminNo = /^[0-9]+$/;
     // 숫자 1개이상
     if (timer) {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      const isAdminNoValid = ADMINNO_REG.test(value);
+      const isAdminNoValid = rAdminNo.test(value);
       setValids({
         ...valids,
         adminNo: isAdminNoValid,
@@ -32,16 +32,16 @@ const AdminOnly = (props: AdminOnlyType) => {
     setTimer(newTimer);
   };
 
-  // 관리자본명 유효성검사_박예선_23.01.08
+  // 관리자본명 유효성검사_박예선_23.01.09
   const handleNameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const NAME_REG = /^[가-힣]{2,10}$/;
+    const rName = /^[가-힣]{2,10}$/;
     // 한글 2~10자리
     if (timer) {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      const isNameValid = NAME_REG.test(value);
+      const isNameValid = rName.test(value);
       setValids({
         ...valids,
         name: isNameValid,

@@ -31,16 +31,16 @@ const CommonOnly = (props: CommonOnlyType) => {
       });
     }
   };
-  // 닉네임 유효성검사_박예선_23.01.08
+  // 닉네임 유효성검사_박예선_23.01.09
   const handleNicknameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const NICKNAME_REG = /^[가-힣|a-z|A-Z|0-9|]{2,10}$/;
+    const rNickname = /^[가-힣|a-z|A-Z|0-9|]{2,10}$/;
     // 한글, 영어 대소문자, 숫자 2~10자리
     if (timer) {
       clearTimeout(timer);
     }
     const newTimer = setTimeout(() => {
-      const isNicknameValid = NICKNAME_REG.test(value);
+      const isNicknameValid = rNickname.test(value);
       setValids({
         ...valids,
         nickname: isNicknameValid,
