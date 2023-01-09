@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const ToggleSwitch = () => {
-  const [isInfoOrReview, setIsInfoOrReview] = useState("info");
+  const [isInfoOrReviewOrMate, setIsInfoOrReviewOrMate] = useState("info");
   const onChangeMode = (type: string) => {
-    setIsInfoOrReview(type);
+    setIsInfoOrReviewOrMate(type);
     const circle = document.getElementById("circle") as HTMLInputElement | null;
     if (circle === null) return;
     switch (type) {
@@ -24,25 +24,25 @@ const ToggleSwitch = () => {
   };
 
   return (
-    <Switch value={isInfoOrReview}>
+    <Switch value={isInfoOrReviewOrMate}>
       <span id="circle" />
       <InfoBtn
         type="button"
-        value={isInfoOrReview}
+        value={isInfoOrReviewOrMate}
         onClick={() => onChangeMode("info")}
       >
         상세정보
       </InfoBtn>
       <ReviewBtn
         type="button"
-        value={isInfoOrReview}
+        value={isInfoOrReviewOrMate}
         onClick={() => onChangeMode("review")}
       >
         전시 리뷰
       </ReviewBtn>
       <FindMateBtn
         type="button"
-        value={isInfoOrReview}
+        value={isInfoOrReviewOrMate}
         onClick={() => onChangeMode("findMate")}
       >
         메이트 찾기
