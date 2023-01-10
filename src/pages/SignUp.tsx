@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import LoginSignUp from "../components/LoginSignUp.style";
 import EmailAndPw from "../components/signUp/EmailAndPw";
 import CommonOnly from "../components/signUp/CommonOnly";
 import AdminOnly from "../components/signUp/AdminOnly";
 import { IsOnly } from "../types/signUp";
+import apiInstance from "../utils/apiInstance";
 
-// 회원용/관리자용 회원가입 컴포넌트_박예선_22.12.28
+// 회원용/관리자용 회원가입 컴포넌트_박예선_2023.01.09
 const SignUp = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [infos, setInfos] = useState({
     email: "",
     password: "",
@@ -28,7 +31,11 @@ const SignUp = () => {
     adminNo: true,
     name: false,
   });
-  const [isOnly, setIsOnly] = useState<IsOnly | undefined>(undefined);
+  const [isOnly, setIsOnly] = useState<IsOnly>({
+    email: null,
+    nickname: null,
+    adminNo: null,
+  });
 
   // 전체 input 입력값 상태관리 함수_박예선_22.12.27
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +46,51 @@ const SignUp = () => {
     });
   };
 
-  const clickSignUpBtn = () => {};
+  // 회원가입 api_박예선_2023.01.10
+  const clickSignUpBtn = async () => {
+    const { email, password, gender, birth, nickname, name, adminNo } = infos;
+    const month = `00${birth.month}`.slice(-2);
+    const day = `00${birth.day}`.slice(-2);
+    const isAdmin = location.search === "?admin";
+    const body = {
+      email,
+      password,
+      gender: isAdmin ? null : gender,
+      birth: isAdmin ? null : `${birth.year}-${month}-${day}`,
+      nickname: isAdmin ? name : nickname,
+      adminNo: isAdmin ? adminNo : null,
+    };
+    interface Response {
+      resultCode: number;
+      errType?: string;
+      errData?: string;
+    }
+    try {
+      const res: AxiosResponse<Response> = await apiInstance.post(
+        "/signup",
+        body
+      );
+      // await axios.get("/data/signUp.json"); // 테스트용 목데이터
+      const { resultCode, errType, errData } = res.data;
+      if (resultCode === 200) {
+        alert("회원가입 완료");
+        navigate("/login");
+        return;
+      }
+      if (errType === "invalid" && errData) {
+        setValids({ ...valids, [errData]: false });
+        return;
+      }
+      if (errType === "exist" && errData) {
+        setIsOnly({ ...isOnly, [errData]: false });
+        return;
+      }
+    } catch (err) {
+      alert(
+        "죄송합니다.\n통신에 오류가 있어 회원가입에 실패하였습니다. 다시 시도해주십시오."
+      );
+    }
+  };
 
   return (
     <LoginSignUp category="회원가입">
@@ -70,6 +121,7 @@ const SignUp = () => {
             valids={valids}
             setValids={setValids}
             isOnly={isOnly}
+            setIsOnly={setIsOnly}
             handleInput={handleInput}
           />
         )}
