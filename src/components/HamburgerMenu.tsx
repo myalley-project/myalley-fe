@@ -101,7 +101,6 @@ const LogoutButton = styled.button`
   font-weight: 500;
   font-size: 14px;
   text-align: left;
-  //global-style에 설정 추가하기
   cursor: pointer;
   &:hover {
     background-color: #f2f2f2;
