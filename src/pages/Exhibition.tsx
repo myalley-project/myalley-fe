@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import MainCard from "../components/exhibition/main";
+import MainCard from "../components/exhibition/MainCard";
 import ContentCard from "../components/exhibition/ContentCard";
 import ToggleSwitch from "../components/exhibition/ToggleSwitch";
 
