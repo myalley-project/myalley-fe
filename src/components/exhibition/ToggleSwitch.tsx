@@ -100,4 +100,3 @@ const FindMateBtn = styled(button)`
   ${({ value }) =>
     value === "findMate" ? "transition:color 1s ease; color: #9C9C9C;" : null}
 `;
-

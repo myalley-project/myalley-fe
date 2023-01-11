@@ -7,13 +7,13 @@ interface ContentCardtype {
 }
 
 const ContentCard = ({ title, content }: ContentCardtype) => (
-    <CardContainer>
-      <Card>
-        <h1>{title}</h1>
-        <p>{content}</p>
-      </Card>
-    </CardContainer>
-  )
+  <CardContainer>
+    <Card>
+      <h1>{title}</h1>
+      <p>{content}</p>
+    </Card>
+  </CardContainer>
+);
 
 export default ContentCard;
 
@@ -38,8 +38,8 @@ const Card = styled.div`
     letter-spacing: -0.5px;
     padding-bottom: 10px;
   }
-  p{
-    font-weightL 400;
+  p {
+    font-weight: 400;
     font-size: 14px;
     line-height: 26px;
     letter-spacing: -0.5px;
