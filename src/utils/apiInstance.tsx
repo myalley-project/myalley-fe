@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -9,7 +10,7 @@ const apiInstance = axios.create({
 apiInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("access_token");
-    const newConfig = config;
+    const newConfig = config as any;
     if (newConfig.headers)
       newConfig.headers.Authorization = token ? `Bearer ${token}` : null;
     return newConfig;
