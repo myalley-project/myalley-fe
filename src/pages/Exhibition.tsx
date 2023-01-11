@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import MainCard from "../components/exhibition/MainCard";
 import ContentCard from "../components/exhibition/ContentCard";
@@ -38,3 +38,4 @@ const button = styled.button<{ value: string }>`
   cursor: pointer;
   z-index: 2;
 `;
+
