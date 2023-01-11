@@ -1,0 +1,32 @@
+{
+  "exhibitions": [
+    {
+      "id": 363,
+      "title": "강남 전시",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "startDate": "2022-01-01",
+      "endDate": "2022-12-12",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "space": "ddp",
+      "viewCount": 15
+    },
+    {
+      "id": 123124,
+      "title": "서울 미술관",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "startDate": "2022-01-01",
+      "endDate": "2022-12-12",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "space": "ddp",
+      "viewCount": 15
+    }
+  ],
+  "pageInfo": {
+    "page": 1,
+    "size": 8,
+    "totalElement": 3,
+    "totalPage": 27
+  }
+}
