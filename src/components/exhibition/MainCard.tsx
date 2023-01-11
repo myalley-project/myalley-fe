@@ -98,7 +98,6 @@ const EditButtons = styled.div`
   justify-content: flex-end;
   height: 30px;
   margin-bottom: 30px;
-  visible: none;
 `;
 
 const Button = styled.button`
