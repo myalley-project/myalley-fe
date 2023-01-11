@@ -1,46 +1,63 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Like from "../../assets/icons/like.svg";
-import Share from "../../assets/icons/share.svg";
+import likeIcon from "../../assets/icons/like.svg";
+import shareIcon from "../../assets/icons/share.svg";
 
 type MainCardType = {
   [key in "title" | "date" | "place" | "time" | "charge"]: string;
 };
 
-const MainCard = ({ title, date, place, time, charge }: MainCardType) => (
-  <CardContainer>
-    <Card>
-      <ImageContainer />
-      <InfoContainer>
-        <Title>{title}</Title>
-        <div style={{ padding: "30px 0" }}>
-          <InfoDetail>
-            <dt>시간</dt>
-            <dd>{date}</dd>
-          </InfoDetail>
-          <InfoDetail>
-            <dt>장소</dt>
-            <dd>{place}</dd>
-          </InfoDetail>
-          <InfoDetail>
-            <dt>시간</dt>
-            <dd>{time}</dd>
-          </InfoDetail>
-          <InfoDetail style={{ marginBottom: "0px" }}>
-            <dt>관람비용</dt>
-            <dd>{charge}</dd>
-          </InfoDetail>
-        </div>
-        <Footer>
-          {/* 나중에 링크로 수정 */}
-          <p>사이트 방문</p>
-          <img src={Like} alt="like icon" />
-          <img src={Share} alt="share icon" />
-        </Footer>
-      </InfoContainer>
-    </Card>
-  </CardContainer>
-);
+const MainCard = ({ title, date, place, time, charge }: MainCardType) => {
+  const [cardHeight, setCardHeight] = useState("358px");
+  const [auth, setAuth] = useState("user");
+
+  useEffect(() => {
+    if (auth === "admin") {
+      setCardHeight("412px");
+    } else setCardHeight("358px");
+  }, [auth, cardHeight]);
+
+  return (
+    <CardContainer>
+      <Card height={cardHeight}>
+        <ImageContainer />
+        <InfoContainer height={cardHeight}>
+          {auth === "admin" && (
+            <EditButtons>
+              <Button>수정</Button>
+              <Button>삭제</Button>
+            </EditButtons>
+          )}
+          <Title>{title}</Title>
+          <div style={{ padding: "30px 0" }}>
+            <InfoDetail>
+              <dt>시간</dt>
+              <dd>{date}</dd>
+            </InfoDetail>
+            <InfoDetail>
+              <dt>장소</dt>
+              <dd>{place}</dd>
+            </InfoDetail>
+            <InfoDetail>
+              <dt>시간</dt>
+              <dd>{time}</dd>
+            </InfoDetail>
+            <InfoDetail style={{ marginBottom: "0px" }}>
+              <dt>관람비용</dt>
+              <dd>{charge}</dd>
+            </InfoDetail>
+          </div>
+          <Footer>
+            {/* 나중에 링크로 수정 */}
+            <p>사이트 방문</p>
+            <img src={likeIcon} alt="like icon" />
+            <img src={shareIcon} alt="share icon" />
+          </Footer>
+        </InfoContainer>
+      </Card>
+    </CardContainer>
+  );
+};
 
 export default MainCard;
 
@@ -81,7 +98,6 @@ const EditButtons = styled.div`
   justify-content: flex-end;
   height: 30px;
   margin-bottom: 30px;
-  visible: none;
 `;
 
 const Button = styled.button`
