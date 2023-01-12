@@ -57,7 +57,7 @@ const AdminWriteExhibition = () => {
         </OptionWrapper>
         <OptionWrapper>
           <label htmlFor="exhibition-poster">전시 포스터 등록</label>
-          <input value={fileName} id="file-name" disabled></input>
+          <input value={fileName} id="file-name" disabled />
           <label htmlFor="exhibition-posterUrl" id="file-label">
             불러오기
           </label>
@@ -76,11 +76,11 @@ const AdminWriteExhibition = () => {
         </OptionWrapper>
         <OptionWrapper>
           <label htmlFor="exhibition-content">전시내용</label>
-          <TextArea placeholder="내용을 입력해주세요."></TextArea>
+          <TextArea placeholder="내용을 입력해주세요." />
         </OptionWrapper>
         <OptionWrapper>
           <label htmlFor="exhibition-author">작가 정보</label>
-          <TextArea placeholder="내용을 입력해주세요."></TextArea>
+          <TextArea placeholder="내용을 입력해주세요." />
         </OptionWrapper>
         <OptionWrapper>
           <label htmlFor="exhibition-posterUrl">전시회 웹페이지 주소</label>
