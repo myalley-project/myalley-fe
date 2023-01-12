@@ -46,7 +46,7 @@ const SignUp = () => {
     });
   };
 
-  // 회원가입 api_박예선_2023.01.10
+  // 회원가입 api_박예선_2023.01.12
   const clickSignUpBtn = async () => {
     const { email, password, gender, birth, nickname, name, adminNo } = infos;
     const month = `00${birth.month}`.slice(-2);

@@ -1,5 +1,4 @@
 {
-  "resultCode": 400,
-  "errType": "exist",
-  "errData": "adminNo"
+  "errorCode": "exist",
+  "errorMsg": "adminNo"
 }
