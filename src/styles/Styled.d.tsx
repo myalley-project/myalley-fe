@@ -1,5 +1,5 @@
 import "styled-components";
-import { Colors, Responsive } from "./theme";
+import { Colors, Responsive } from "./Theme";
 
 declare module "styled-components" {
   export interface DefaultTheme {
