@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { Axios, AxiosHeaders } from "axios";
 
 axios.defaults.withCredentials = true;
 
@@ -11,7 +11,10 @@ apiInstance.interceptors.request.use(
     const token = localStorage.getItem("access_token");
     const newConfig = config;
     if (newConfig.headers)
-      newConfig.headers.Authorization = token ? `Bearer ${token}` : null;
+      (newConfig.headers as unknown as AxiosHeaders).set(
+        "Authorization",
+        token ? `Bearer ${token}` : null
+      );
     return newConfig;
   },
   (err) => Promise.reject(err)
