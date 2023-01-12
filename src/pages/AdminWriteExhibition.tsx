@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { theme } from "../styles/theme";
+// import { theme } from "../styles/theme";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../styles/datePickerStyle.css";
+import { ko } from "date-fns/esm/locale";
 
 const AdminWriteExhibition = () => {
   const [title, setTitle] = useState("");
   const [fileName, setFileName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
+
   const getTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -52,8 +59,24 @@ const AdminWriteExhibition = () => {
         </OptionWrapper>
         <OptionWrapper>
           <label htmlFor="exhibition-date">전시 일정</label>
-          <span>시작일</span> <InputDate type="date" />
-          <span>종료일</span> <InputDate type="date" />
+          <span>시작일</span>
+          <DatePicker
+            locale={ko}
+            className="input-date"
+            dateFormat="yy - MM - dd"
+            selected={startDate}
+            onChange={(date: Date) => setStartDate(date)}
+          />
+          {/* <InputDate type="date" /> */}
+          <span>종료일</span>
+          <DatePicker
+            locale={ko}
+            className="input-date"
+            dateFormat="yy - MM - dd"
+            selected={endDate}
+            onChange={(date: Date) => setStartDate(date)}
+          />
+          {/* <InputDate type="date" /> */}
         </OptionWrapper>
         <OptionWrapper>
           <label htmlFor="exhibition-poster">전시 포스터 등록</label>
@@ -72,7 +95,8 @@ const AdminWriteExhibition = () => {
         <OptionWrapper>
           <label htmlFor="exhibition-adultPrice">관람료</label>
           <span>성인</span> <InputText />
-          <input type="checkbox" /> <span>무료관람</span>
+          <InputCheckbox type="checkbox"></InputCheckbox>
+          <span>무료관람</span>
         </OptionWrapper>
         <OptionWrapper>
           <label htmlFor="exhibition-content">전시내용</label>
@@ -91,6 +115,10 @@ const AdminWriteExhibition = () => {
           />
         </OptionWrapper>
       </WriteExhibitionWrapper>
+      <ButtonWrapper>
+        <SubmitBtn>취소</SubmitBtn>
+        <SubmitBtn>등록하기</SubmitBtn>
+      </ButtonWrapper>
     </WriteExhibitionContainer>
   );
 };
@@ -101,13 +129,13 @@ const WriteExhibitionContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1860px;
+  flex-direction: column;
 `;
 
 const WriteExhibitionWrapper = styled.div`
   width: 1200px;
-  height: 1720px;
   padding: 30px;
+  margin: 50px 0 30px 0;
   background-color: #ffffff;
   border: 1px solid #e0e0e0;
 `;
@@ -142,10 +170,15 @@ const OptionWrapper = styled.div`
     padding: 8px 10px 8px 20px;
     background-color: #fbfbfb;
     border: 1px solid #e0e0e0;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.2998 1.69995L6.6998 6.29995C6.5998 6.39995 6.49147 6.47062 6.3748 6.51195C6.25814 6.55395 6.13314 6.57495 5.9998 6.57495C5.86647 6.57495 5.74147 6.55395 5.6248 6.51195C5.50814 6.47062 5.3998 6.39995 5.2998 6.29995L0.699804 1.69995C0.516471 1.51662 0.424804 1.28328 0.424804 0.999951C0.424804 0.716618 0.516471 0.483285 0.699804 0.299952C0.883137 0.116618 1.11647 0.024951 1.3998 0.0249509C1.68314 0.0249509 1.91647 0.116618 2.0998 0.299951L5.9998 4.19995L9.8998 0.299951C10.0831 0.116618 10.3165 0.0249505 10.5998 0.0249505C10.8831 0.0249505 11.1165 0.116618 11.2998 0.299951C11.4831 0.483284 11.5748 0.716618 11.5748 0.999951C11.5748 1.28328 11.4831 1.51662 11.2998 1.69995Z' fill='%239C9C9C'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position-x: 218px;
+    background-position-y: 13px;
     border-radius: 10000px;
     font-weight: 400;
     font-size: 14px;
     color: #9c9c9c;
+    appearance: none;
     cursor: pointer;
     &:focus-visible {
       outline: none;
@@ -199,11 +232,6 @@ const InputDate = styled.input`
 `;
 
 const InputFile = styled.input`
-  /* width: 851px;
-  height: 36px;
-  font-weight: 400;
-  font-size: 14px;
-  color: #9c9c9c; */
   position: absolute;
   width: 0;
   height: 0;
@@ -224,6 +252,16 @@ const InputText = styled.input`
   color: #9c9c9c;
 `;
 
+const InputCheckbox = styled.input`
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%239C9C9C' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='%239C9C9C' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+  &:checked {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23333333'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='white' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+  }
+`;
+
 const TextArea = styled.textarea`
   width: 1140px;
   height: 300px;
@@ -235,4 +273,21 @@ const TextArea = styled.textarea`
   :focus-visible {
     outline: none;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 30px;
+  margin-bottom: 50px;
+`;
+
+const SubmitBtn = styled.button`
+  width: 175px;
+  height: 48px;
+  background-color: #9c9c9c;
+  border-radius: 10000px;
+  font-weight: 500;
+  font-size: 20px;
+  color: #ffffff;
+  cursor: pointer;
 `;
