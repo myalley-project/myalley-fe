@@ -61,9 +61,9 @@ const SignUp = () => {
       adminNo: isAdmin ? adminNo : null,
     };
     interface Response {
-      resultCode: number;
-      errType?: string;
-      errData?: string;
+      resultCode?: number;
+      errorCode?: number;
+      errorMsg?: string;
     }
     try {
       const res: AxiosResponse<Response> = await apiInstance.post(
@@ -71,18 +71,38 @@ const SignUp = () => {
         body
       );
       // await axios.get("/data/signUp.json"); // 테스트용 목데이터
-      const { resultCode, errType, errData } = res.data;
+      const { resultCode, errorMsg } = res.data;
       if (resultCode === 200) {
         alert("회원가입 완료");
         navigate("/login");
         return;
       }
-      if (errType === "invalid" && errData) {
-        setValids({ ...valids, [errData]: false });
+      if (errorMsg === "이메일 중복") {
+        setIsOnly({ ...isOnly, email: false });
         return;
       }
-      if (errType === "exist" && errData) {
-        setIsOnly({ ...isOnly, [errData]: false });
+      if (errorMsg === "관리자번호 확인 불가") {
+        setIsOnly({ ...isOnly, adminNo: false });
+        return;
+      }
+      if (errorMsg === "닉네임 중복") {
+        setIsOnly({ ...isOnly, nickname: false });
+        return;
+      }
+      if (errorMsg === "이메일 형식 오류") {
+        setValids({ ...valids, email: false });
+        return;
+      }
+      if (errorMsg === "비밀번호 형식 오류") {
+        setValids({ ...valids, password: false });
+        return;
+      }
+      if (errorMsg === "닉네임 형식 오류") {
+        setValids({ ...valids, nickname: false });
+        return;
+      }
+      if (errorMsg === "이름 형식 오류") {
+        setValids({ ...valids, name: false });
         return;
       }
     } catch (err) {

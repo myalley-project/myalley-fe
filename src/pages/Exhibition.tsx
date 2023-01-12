@@ -27,3 +27,14 @@ const ExhibitionContainer = styled.div`
   text-align: center;
   border-radius: 0px;
 `;
+
+const button = styled.button<{ value: string }>`
+  position: relative;
+  width: 188px;
+  height: 44px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 2;
+`;
