@@ -12,21 +12,40 @@
   color: #9c9c9c;
   cursor: pointer;
 }
+.react-datepicker {
+  padding: 30px;
+  border-radius: 30px;
+  border: none;
+}
 .react-datepicker-wrapper {
   width: fit-content;
   padding: 0 10px;
 }
-.react-datepicker {
-  border-radius: 30px;
-  border: none;
+.react-datepicker__navigation--previous {
+  top: 25px;
+  left: 32px;
+}
+.react-datepicker__navigation--next {
+  top: 26px;
+  right: 32px;
+}
+.react-datepicker__day-names {
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+  border-radius: 0px;
 }
 .react-datepicker__tab-loop {
   display: inline-block;
 }
 .react-datepicker__header {
+  padding: 0;
   background-color: #ffffff;
-  border-bottom: 1px solid #aeaeae;
+  border-bottom: none;
   border-radius: 0px;
+}
+.react-datepicker__current-month {
+  padding-bottom: 15px;
+  line-height: 28px;
 }
 .react-datepicker__day-name {
   color: #9c9c9c;
@@ -34,12 +53,14 @@
 .react-datepicker__day {
   color: #9c9c9c;
 }
-
 .react-datepicker__day:hover,
 .react-datepicker__day--selected,
 .react-datepicker__day--selected:hover,
 .react-datepicker__day--keyboard-selected {
   border-radius: 100px;
   background-color: #9c9c9c;
-  color: #ffffff;
+  color: #ffffff !important;
+}
+.react-datepicker__week > .react-datepicker__day--weekend:first-child {
+  color: red;
 }
