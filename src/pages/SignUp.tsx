@@ -52,7 +52,7 @@ const SignUp = () => {
     const month = `00${birth.month}`.slice(-2);
     const day = `00${birth.day}`.slice(-2);
     const isAdmin = location.search === "?admin";
-    const body = {
+    const reqBody = {
       email,
       password,
       gender: isAdmin ? null : gender,
@@ -68,7 +68,7 @@ const SignUp = () => {
     try {
       const res: AxiosResponse<Response> = await apiInstance.post(
         "/signup",
-        body
+        reqBody
       );
       // await axios.get("/data/signUp.json"); // 테스트용 목데이터
       const { resultCode, errorMsg } = res.data;
