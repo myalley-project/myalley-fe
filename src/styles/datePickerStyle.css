@@ -28,9 +28,13 @@
   border-bottom: 1px solid #aeaeae;
   border-radius: 0px;
 }
+.react-datepicker__day-name {
+  color: #9c9c9c;
+}
 .react-datepicker__day {
   color: #9c9c9c;
 }
+
 .react-datepicker__day:hover,
 .react-datepicker__day--selected,
 .react-datepicker__day--selected:hover,

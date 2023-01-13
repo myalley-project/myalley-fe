@@ -95,7 +95,7 @@ const AdminWriteExhibition = () => {
         <OptionWrapper>
           <label htmlFor="exhibition-adultPrice">관람료</label>
           <span>성인</span> <InputText />
-          <InputCheckbox type="checkbox"></InputCheckbox>
+          <InputCheckbox type="checkbox" />
           <span>무료관람</span>
         </OptionWrapper>
         <OptionWrapper>
