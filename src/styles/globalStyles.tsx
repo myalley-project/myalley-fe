@@ -5,6 +5,7 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
   * {
     box-sizing: border-box;
+    letter-spacing: -0.5px;
   }
   body{
     display: flex;
