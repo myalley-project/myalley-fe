@@ -35,6 +35,7 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "no-var": "error",
+    "no-alert": "off",
     "eqeqeq": "warn",
     "react/jsx-pascal-case": "error",
     "react/self-closing-comp": "warn",
@@ -51,6 +52,7 @@
       {
         "labelAttributes": ["htmlFor"]
       }
-    ]
+    ],
+    "@typescript-eslint/no-misused-promises": "off"
   }
 }

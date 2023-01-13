@@ -8,7 +8,7 @@ interface CommonOnlyType {
   setInfos: React.Dispatch<React.SetStateAction<Infos>>;
   valids: Valids;
   setValids: React.Dispatch<React.SetStateAction<Valids>>;
-  isOnly: IsOnly | undefined;
+  isOnly: IsOnly;
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 // 회원용 회원가입 UI 컴포넌트_박예선_23.01.08
@@ -69,7 +69,7 @@ const CommonOnly = (props: CommonOnlyType) => {
           한글, 영어 대소문자, 숫자 2~10자를 입력하세요
         </div>
       )}
-      {isOnly && (
+      {isOnly.nickname !== null && (
         <div className={`notice ${isOnly.nickname ? "pass" : "err"}`}>
           {isOnly.nickname
             ? "사용 가능한 별명입니다"
@@ -133,8 +133,8 @@ const CommonOnly = (props: CommonOnlyType) => {
         <option value="" disabled>
           선택없음
         </option>
-        <option>남</option>
-        <option>여</option>
+        <option value="M">남</option>
+        <option value="W">여</option>
       </select>
     </CommonOnlyContainer>
   );
