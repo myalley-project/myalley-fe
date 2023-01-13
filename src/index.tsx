@@ -3,8 +3,8 @@ import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
-import { theme } from "./styles/Theme";
-import GlobalStyle from "./styles/GlobalStyles";
+import { theme } from "./styles/theme";
+import GlobalStyle from "./styles/globalStyles";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
