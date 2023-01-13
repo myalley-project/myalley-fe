@@ -136,7 +136,8 @@ const WriteExhibitionContainer = styled.div`
 `;
 
 const WriteExhibitionWrapper = styled.div`
-  width: 1200px;
+  width: 83vw;
+  max-width: 1200px;
   padding: 30px;
   margin: 50px 0 30px 0;
   background-color: #ffffff;
@@ -206,7 +207,8 @@ const Select = styled.select`
 `;
 
 const InputFileName = styled.input`
-  width: 851px;
+  width: 59vw;
+  max-width: 851px;
   height: 36px;
   padding: 8px 20px;
   background: #fbfbfb;
@@ -262,7 +264,8 @@ const InputCheckbox = styled.input`
 `;
 
 const TextArea = styled(Input)`
-  width: 1140px;
+  width: 79vw;
+  max-width: 1140px;
   height: 300px;
   border-radius: 15px;
   padding: 20px;
