@@ -7,7 +7,7 @@ import EmailAndPw from "../components/signUp/EmailAndPw";
 import CommonOnly from "../components/signUp/CommonOnly";
 import AdminOnly from "../components/signUp/AdminOnly";
 import { IsOnly } from "../types/signUp";
-import apiInstance from "../utils/apiInstance";
+import signUpApi, { SignUpRes } from "../apis/signUp";
 
 // 회원용/관리자용 회원가입 컴포넌트_박예선_2023.01.09
 const SignUp = () => {
@@ -46,30 +46,11 @@ const SignUp = () => {
     });
   };
 
-  // 회원가입 api_박예선_2023.01.12
+  // 회원가입 요청, 요청 후 처리 함수_박예선_2023.01.13
   const clickSignUpBtn = async () => {
-    const { email, password, gender, birth, nickname, name, adminNo } = infos;
-    const month = `00${birth.month}`.slice(-2);
-    const day = `00${birth.day}`.slice(-2);
     const isAdmin = location.search === "?admin";
-    const reqBody = {
-      email,
-      password,
-      gender: isAdmin ? null : gender,
-      birth: isAdmin ? null : `${birth.year}-${month}-${day}`,
-      nickname: isAdmin ? name : nickname,
-      adminNo: isAdmin ? adminNo : null,
-    };
-    interface Response {
-      resultCode?: number;
-      errorCode?: number;
-      errorMsg?: string;
-    }
     try {
-      const res: AxiosResponse<Response> = await apiInstance.post(
-        "/signup",
-        reqBody
-      );
+      const res: AxiosResponse<SignUpRes> = await signUpApi(infos, isAdmin);
       // await axios.get("/data/signUp.json"); // 테스트용 목데이터
       const { resultCode, errorMsg } = res.data;
       if (resultCode === 200) {
