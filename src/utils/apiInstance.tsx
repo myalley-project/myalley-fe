@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosHeaders } from "axios";
+import axios, { AxiosHeaders } from "axios";
 
 axios.defaults.withCredentials = true;
 
@@ -15,7 +15,6 @@ apiInstance.interceptors.request.use(
         "Authorization",
         token ? `Bearer ${token}` : null
       );
-
     return newConfig;
   },
   (err) => Promise.reject(err)
