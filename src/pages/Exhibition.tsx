@@ -38,4 +38,3 @@ const button = styled.button<{ value: string }>`
   cursor: pointer;
   z-index: 2;
 `;
-

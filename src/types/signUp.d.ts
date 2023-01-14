@@ -17,7 +17,7 @@ export interface Valids {
   name: boolean;
 }
 export interface IsOnly {
-  email: boolean;
-  nickname: boolean;
-  adminNo: boolean;
+  email: boolean | null;
+  nickname: boolean | null;
+  adminNo: boolean | null;
 }
