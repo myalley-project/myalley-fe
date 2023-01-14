@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import ExhibitionList from "./pages/ExhibitionList";
 import Exhibition from "./pages/Exhibition";
+import Mypage from "./pages/Mypage";
 import Footer from "./components/Footer";
 
 const App = () => (
@@ -17,6 +18,7 @@ const App = () => (
       <Route path="/signup?" element={<SignUp />} />
       <Route path="/exhibition-list" element={<ExhibitionList />} />
       <Route path="/exhibition/:id" element={<Exhibition />} />
+      <Route path="/mypage" element={<Mypage />}></Route>
     </Routes>
     <Footer />
   </BrowserRouter>
