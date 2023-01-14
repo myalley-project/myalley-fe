@@ -13,9 +13,35 @@ const Carousel = () => (
     modules={[Navigation, Scrollbar]}
     className="mySwiper"
   >
-    <SwiperSlide>Slide 1</SwiperSlide>
-    <SwiperSlide>Slide 2</SwiperSlide>
-    <SwiperSlide>Slide 3</SwiperSlide>
+    <SwiperSlide>
+      <Slide>
+        <div>최근 뜨고 있는 전시</div>
+        <div>
+          Beyond The City:
+          <br /> Cultural Monuments
+        </div>
+      </Slide>
+    </SwiperSlide>
+    <SwiperSlide>
+      <Slide>
+        <div>최근 뜨고 있는 전시</div>
+        <div>
+          Beyond The City:
+          <br />
+          Cultural Monuments
+        </div>
+      </Slide>
+    </SwiperSlide>
+    <SwiperSlide>
+      <Slide>
+        <div>최근 뜨고 있는 전시</div>
+        <div>
+          Beyond The City:
+          <br />
+          Cultural Monuments
+        </div>
+      </Slide>
+    </SwiperSlide>
   </StyledSwiper>
 );
 
@@ -26,7 +52,11 @@ const StyledSwiper = styled(Swiper)`
     width: 1440px;
     height: 678px;
   }
-
+  & .swiper-slide {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+  }
   & .swiper-scrollbar {
     display: block !important;
     width: 210px;
@@ -39,9 +69,19 @@ const StyledSwiper = styled(Swiper)`
   & .swiper-scrollbar-drag {
     background-color: #fff;
   }
+  & .swiper-button-prev,
+  & .swiper-button-next {
+    color: #9c9c9c;
+  }
 `;
 
-// const StyledSwiperSlide = styled(SwiperSlide)`
-//   & > .swiper--sli
-
-// `
+const Slide = styled.div`
+  & > div:first-child {
+    font-size: 28px;
+    color: #9c9c9c;
+  }
+  & > div:nth-child(2) {
+    font-size: 68px;
+    color: #333;
+  }
+`;
