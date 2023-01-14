@@ -5,7 +5,7 @@ interface EmailAndPwType {
   infos: Infos;
   valids: Valids;
   setValids: React.Dispatch<React.SetStateAction<Valids>>;
-  isOnly: IsOnly | undefined;
+  isOnly: IsOnly;
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -81,14 +81,14 @@ const EmailAndPw = (props: EmailAndPwType) => {
           }}
         />
       </label>
-      {!isOnly && (
+      {isOnly.email === null && (
         <div className={`notice ${valids.email ? "pass" : "err"}`}>
           {valids.email
             ? "올바른 이메일 형식입니다"
             : "이메일 형식을 확인해주세요"}
         </div>
       )}
-      {isOnly && (
+      {isOnly.email !== null && (
         <div className={`notice ${isOnly.email ? "pass" : "err"}`}>
           {!isOnly.email && "이미 등록된 이메일입니다"}
         </div>
