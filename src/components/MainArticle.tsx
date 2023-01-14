@@ -11,7 +11,9 @@ const MainArticle = () => (
         <p>다양한 전시 정보를 찾아보세요</p>
       </div>
       <div>
-        <button type="button">자세히 보기</button>
+        <button type="button">
+          <Span>자세히 보기</Span>
+        </button>
         <img src={ArrowButton} alt="" />
       </div>
     </Article>
@@ -22,7 +24,9 @@ const MainArticle = () => (
         <p>다양한 전시 리뷰 를 찾아보세요</p>
       </div>
       <div>
-        <button type="button">자세히 보기</button>
+        <button type="button">
+          <Span>자세히 보기</Span>
+        </button>
         <img src={ArrowButton} alt="" />
       </div>
     </Article>
@@ -33,7 +37,9 @@ const MainArticle = () => (
         <p>전시회에 같이 갈 친구를 찾아보세요</p>
       </div>
       <div>
-        <button type="button">자세히 보기</button>
+        <button type="button">
+          <Span>자세히 보기</Span>
+        </button>
         <img src={ArrowButton} alt="" />
       </div>
     </Article>
@@ -44,12 +50,15 @@ export default MainArticle;
 
 const ArticleContainer = styled.section`
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 30px;
 `;
 
 const Article = styled.article`
   padding: 30px;
-  border: 1px solid black;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,11 +72,19 @@ const Article = styled.article`
   }
   & p {
     color: #9c9c9c;
+    font-size: 14px;
   }
 `;
 
 const Icon = styled.div`
-  background-color: aquamarine;
+  background-color: #ffcaca;
   width: 87px;
   height: 87px;
+`;
+
+const Span = styled.span`
+  font-weight: bold;
+  font-size: 14px;
+  color: #9c9c9c;
+  text-align: center;
 `;
