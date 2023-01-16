@@ -7,14 +7,18 @@ import { ko } from "date-fns/esm/locale";
 
 const AdminWriteExhibition = () => {
   const [title, setTitle] = useState("");
-  const [fileName, setFileName] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
+  const [fileName, setFileName] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
+  const [price, setPrice] = useState("");
+  const [priceFree, setPriceFree] = useState(false);
+  const [disablePrice, setDisablePrice] = useState(false);
 
   const getTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
+
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
 
@@ -27,6 +31,26 @@ const AdminWriteExhibition = () => {
       };
       reader.readAsDataURL(e.target.files[0]);
     }
+  };
+
+  const getPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputPrice = e.target.value;
+    const numCheck = /^[0-9,]+$/.test(inputPrice);
+    if (!numCheck && inputPrice) return;
+    if (numCheck) {
+      const numWithCommas = inputPrice.replaceAll(",", "");
+      inputPrice = numWithCommas.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    setPrice(inputPrice);
+  };
+
+  const HandlePriceFree = () => {
+    setPriceFree((prev) => {
+      if (!prev === true) {
+        setPrice("0");
+      }
+      return !prev;
+    });
   };
 
   return (
@@ -96,8 +120,23 @@ const AdminWriteExhibition = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-adultPrice">관람료</Label>
           <div style={{ position: "relative" }}>
-            <span>성인</span> <InputText />
-            <InputCheckbox type="checkbox" />
+            <span>성인</span>
+            <InputTextArea as="div">
+              <InputText
+                type="text"
+                value={price}
+                disabled={disablePrice}
+                onChange={(e) => {
+                  getPrice(e);
+                }}
+              />
+              <p>원</p>
+            </InputTextArea>
+            <InputCheckbox
+              type="checkbox"
+              checked={priceFree}
+              onChange={HandlePriceFree}
+            />
             <span style={{ paddingLeft: "43px" }}>무료관람</span>
           </div>
         </OptionWrapper>
@@ -243,17 +282,33 @@ const InputFile = styled.input`
   border: 0;
 `;
 
-const InputText = styled(Input)`
+const InputTextArea = styled(Input)`
+  display: inline-block;
+  position: relative;
   width: 100px;
+  margin-left: 10px;
   height: 36px;
-  padding: 8px 20px;
+  padding: 8px 34px 8px 20px;
+  > p {
+    position: absolute;
+    left: 73px;
+    top: 10px;
+  }
+`;
+
+const InputText = styled.input`
+  width: 55px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #9c9c9c;
+  text-align: right;
 `;
 
 const InputCheckbox = styled.input`
   appearance: none;
   position: absolute;
-  top: 2px;
-  left: 140px;
+  top: 3px;
+  left: 146px;
   width: 24px;
   height: 24px;
   cursor: pointer;

@@ -15,7 +15,11 @@
 .react-datepicker {
   padding: 30px;
   border-radius: 30px;
-  border: none;
+  border: 1px solid #e0e0e0;
+}
+
+.react-datepicker__triangle {
+  display: none;
 }
 .react-datepicker-wrapper {
   width: fit-content;
@@ -42,6 +46,9 @@
   background-color: #ffffff;
   border-bottom: none;
   border-radius: 0px;
+}
+.react-datepicker__month {
+  margin: 0.4rem 0px 0px 0px;
 }
 .react-datepicker__current-month {
   padding-bottom: 15px;
