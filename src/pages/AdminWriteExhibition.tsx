@@ -6,24 +6,59 @@ import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
 
 const AdminWriteExhibition = () => {
-  const [title, setTitle] = useState("");
+  const [detail, setDetail] = useState({
+    title: "",
+    date: "",
+    fileName: "",
+    adultPrice: 0,
+    content: "",
+    author: "",
+    webLink: "",
+  });
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-  const [fileName, setFileName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const [price, setPrice] = useState("");
+  const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
 
   const getTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setDetail({
+      ...detail,
+      title: e.target.value,
+    });
+  };
+
+  const getStartDate = (date: Date) => {
+    setStartDate(date);
+    const startDateFormat = date.toISOString().split("T")[0];
+    const endDateFormat = endDate.toISOString().split("T")[0];
+    const dateFormat = `${startDateFormat}~${endDateFormat}`;
+    setDetail({
+      ...detail,
+      date: dateFormat,
+    });
+  };
+
+  const getEndDate = (date: Date) => {
+    setEndDate(date);
+    const startDateFormat = startDate.toISOString().split("T")[0];
+    const endDateFormat = date.toISOString().split("T")[0];
+    const dateFormat = `${startDateFormat}~${endDateFormat}`;
+    setDetail({
+      ...detail,
+      date: dateFormat,
+    });
   };
 
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
 
     if (e.target.files !== null) {
-      setFileName(e.target.files[0].name);
+      setDetail({
+        ...detail,
+        fileName: e.target.files[0].name,
+      });
       reader.onload = () => {
         if (e.target.files !== null) {
           setThumbnail(URL.createObjectURL(e.target.files[0]));
@@ -36,21 +71,56 @@ const AdminWriteExhibition = () => {
   const getPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputPrice = e.target.value;
     const numCheck = /^[0-9,]+$/.test(inputPrice);
+    const numWithCommas = inputPrice.replaceAll(",", "");
+
     if (!numCheck && inputPrice) return;
     if (numCheck) {
-      const numWithCommas = inputPrice.replaceAll(",", "");
       inputPrice = numWithCommas.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-    setPrice(inputPrice);
+    setPriceWithCommas(inputPrice);
+    setDetail({
+      ...detail,
+      adultPrice: Number(numWithCommas),
+    });
   };
 
   const HandlePriceFree = () => {
     setPriceFree((prev) => {
       if (!prev === true) {
-        setPrice("0");
-      }
+        setDetail({
+          ...detail,
+          adultPrice: 0,
+        });
+        setPriceWithCommas("0");
+        setDisablePrice(true);
+      } else setDisablePrice(false);
       return !prev;
     });
+  };
+
+  const getContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDetail({
+      ...detail,
+      content: e.target.value,
+    });
+  };
+
+  const getAuthor = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDetail({
+      ...detail,
+      author: e.target.value,
+    });
+  };
+
+  const getWebLink = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDetail({
+      ...detail,
+      webLink: e.target.value,
+    });
+  };
+
+  const clickSubmitBtn = () => {
+    console.log(detail);
   };
 
   return (
@@ -59,7 +129,7 @@ const AdminWriteExhibition = () => {
         <TitleWrapper>
           <InputTitle
             type="text"
-            value={title}
+            value={detail.title}
             onChange={getTitle}
             placeholder="제목을 입력해주세요"
           />
@@ -88,7 +158,7 @@ const AdminWriteExhibition = () => {
             className="input-date"
             dateFormat="yy - MM - dd"
             selected={startDate}
-            onChange={(date: Date) => setStartDate(date)}
+            onChange={(date: Date) => getStartDate(date)}
           />
           <span>종료일</span>
           <DatePicker
@@ -96,12 +166,12 @@ const AdminWriteExhibition = () => {
             className="input-date"
             dateFormat="yy - MM - dd"
             selected={endDate}
-            onChange={(date: Date) => setEndDate(date)}
+            onChange={(date: Date) => getEndDate(date)}
           />
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-poster">전시 포스터 등록</Label>
-          <InputFileName type="text" value={fileName} disabled />
+          <InputFileName type="text" value={detail.fileName} disabled />
           <FileLabel htmlFor="exhibition-posterUrl">불러오기</FileLabel>
           <InputFile
             type="file"
@@ -124,7 +194,7 @@ const AdminWriteExhibition = () => {
             <InputTextArea as="div">
               <InputPrice
                 type="text"
-                value={price}
+                value={priceWithCommas}
                 disabled={disablePrice}
                 onChange={(e) => {
                   getPrice(e);
@@ -142,24 +212,38 @@ const AdminWriteExhibition = () => {
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-content">전시내용</Label>
-          <TextArea as="textarea" placeholder="내용을 입력해주세요." />
+          <TextArea
+            as="textarea"
+            placeholder="내용을 입력해주세요."
+            value={detail.content}
+            onChange={getContent}
+          />
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-author">작가 정보</Label>
-          <TextArea as="textarea" placeholder="내용을 입력해주세요." />
+          <TextArea
+            as="textarea"
+            placeholder="내용을 입력해주세요."
+            value={detail.author}
+            onChange={getAuthor}
+          />
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-posterUrl">전시회 웹페이지 주소</Label>
           <InputLink
             type="text"
             placeholder="내용을 입력해주세요."
+            value={detail.webLink}
+            onChange={getWebLink}
             style={{ width: "100%" }}
           />
         </OptionWrapper>
       </WriteExhibitionWrapper>
       <ButtonWrapper>
         <SubmitBtn>취소</SubmitBtn>
-        <SubmitBtn>등록하기</SubmitBtn>
+        <SubmitBtn type="submit" onClick={clickSubmitBtn}>
+          등록하기
+        </SubmitBtn>
       </ButtonWrapper>
     </WriteExhibitionContainer>
   );
