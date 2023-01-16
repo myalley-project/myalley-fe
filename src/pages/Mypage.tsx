@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Mypage = () => {
-  console.log("~~");
   return (
     <MypageContainer>
       <MypageWrapper>
@@ -93,7 +92,6 @@ const Buttons = styled.div`
 `;
 
 const MenuButton = styled.button`
-  /* width: 121px; */
   height: 36px;
   padding: 8px 20px;
   margin-right: 10px;
