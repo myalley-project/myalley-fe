@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Mypage = () => {
-  return (
+const Mypage = () => (
     <MypageContainer>
       <MypageWrapper>
         <Profile>
@@ -25,7 +24,6 @@ const Mypage = () => {
       </MypageWrapper>
     </MypageContainer>
   );
-};
 
 export default Mypage;
 
