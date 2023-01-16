@@ -113,7 +113,7 @@ const AdminWriteExhibition = () => {
             <img
               src={thumbnail}
               alt="thumbnail"
-              style={{ maxWidth: "500px" }}
+              style={{ maxWidth: "500px", marginTop: "10px" }}
             />
           )}
         </OptionWrapper>
@@ -122,7 +122,7 @@ const AdminWriteExhibition = () => {
           <div style={{ position: "relative" }}>
             <span>성인</span>
             <InputTextArea as="div">
-              <InputText
+              <InputPrice
                 type="text"
                 value={price}
                 disabled={disablePrice}
@@ -150,7 +150,7 @@ const AdminWriteExhibition = () => {
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-posterUrl">전시회 웹페이지 주소</Label>
-          <InputText
+          <InputLink
             type="text"
             placeholder="내용을 입력해주세요."
             style={{ width: "100%" }}
@@ -296,7 +296,7 @@ const InputTextArea = styled(Input)`
   }
 `;
 
-const InputText = styled.input`
+const InputPrice = styled.input`
   width: 55px;
   font-weight: 400;
   font-size: 14px;
@@ -319,7 +319,7 @@ const InputCheckbox = styled.input`
 `;
 
 const TextArea = styled(Input)`
-  width: 79vw;
+  width: -webkit-fill-available;
   max-width: 1140px;
   height: 300px;
   border-radius: 15px;
@@ -340,6 +340,10 @@ const TextArea = styled(Input)`
   :focus-visible {
     outline: none;
   }
+`;
+
+const InputLink = styled(Input)`
+  padding: 8px 20px;
 `;
 
 const ButtonWrapper = styled.div`
