@@ -1,108 +1,115 @@
-import { type } from "@testing-library/user-event/dist/type";
 import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import { theme } from "../styles/theme";
+import returnkeys from "../utils/returnkeys";
 
 const Editor = () => {
-  const [files, setFiles] = useState<FileList | null>(null);
+  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
+  const imageRef = useRef<HTMLInputElement | null>(null);
+
+  const { previewImages } = usePreviewImages(imageFiles as FileList);
+  const previewIds = returnkeys(previewImages.length);
 
   const onChangePic = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFiles(() => event.target?.files);
+    setImageFiles(() => event.target.files);
   };
 
   const onSubmitHandler = () => {};
 
   return (
-    <div>
+    <Container>
+      <PreviewContainer>
+        {previewImages &&
+          previewImages.map((each, index) => (
+            <Preview key={previewIds[index]}>
+              <PreviewImage src={each} alt="프리뷰 이미지" />
+            </Preview>
+          ))}
+      </PreviewContainer>
       <form>
-        <label htmlFor="image-file">사진 올리기</label>
+        <label htmlFor="image-files">사진 올리기</label>
         <input
           onChange={onChangePic}
           type="file"
           accept="image/jpg, image/jpeg, image/png"
           multiple
-          id="image-file"
+          id="image-files"
+          ref={imageRef}
         />
         <button onClick={onSubmitHandler} type="button">
           제출
         </button>
       </form>
-    </div>
+      <SubTitle>본문 내용</SubTitle>
+      <TextArea />
+    </Container>
   );
 };
 
 export default Editor;
 
-// // function useFiles(files: []) {
-// //   const [base64, setBase64] = useState();
+function usePreviewImages(imageFiles: FileList) {
+  const [previewImages, setPreviewImages] = useState<[] | string[]>([]);
+  useEffect(() => {
+    if (imageFiles) {
+      setPreviewImages([]);
+      for (let index = 0; index < imageFiles.length; index += 1) {
+        const reader = new FileReader();
+        reader.readAsDataURL(imageFiles[index]);
+        reader.onload = () => {
+          if (reader.readyState === 2) {
+            setPreviewImages((prev) => [...prev, reader.result as string]);
+          }
+        };
+      }
+    }
+  }, [imageFiles]);
 
-// //   useEffect(() => {
-// //     if (files.length <= 5) {
-// //       for (let i = 0; i < files.length; i++) {
-// //         // console.log(files[i].name);
-// //         if (fileValidation(files[i])) {
-// //           const reader = new FileReader();
-// //           reader.readAsDataURL(files[i]);
-// //           reader.onload = () => {
-// //             if (reader.readyState === 2) {
-// //               setBase64s((prev) => [...prev, reader.result]);
-// //             }
-// //           };
-// //         }
-// //       }
-// //     } else {
-// //       imageRef.current.value = "";
-// //       alert("사진 첨부는 5장까지 가능합니다.");
-// //     }
-// //   }, [files]);
-// // }
+  return { previewImages };
+}
 
-// interface FileObj {
-//   name: string;
-//   size: number;
-//   length: number;
-// }
+const Container = styled.div`
+  max-width: 1200px;
+  padding: 30px;
+  border: 1px solid black;
+  margin-inline: auto;
+`;
 
-// function fileValidationCheck(obj: FileObj) {
-//   const arrowedfileTypes = ["image/jpg", "image/jpeg", "image/png"];
-//   const fileType = getFileType();
+const PreviewContainer = styled.div`
+  display: flex;
+  width: 600px;
+  gap: 10px;
+  margin-bottom: 1rem;
+`;
 
-//   if (obj.size > 5 * 1024 * 1024) return false;
-//   if (obj.length > 3) return false;
-//   if (!arrowedfileTypes.includes(fileType)) return false;
+const Preview = styled.div`
+  display: inline-block;
+  width: 250px;
+  aspect-ratio: 1 /1;
+  margin-inline: 1rem;
+  margin-bottom: 2rem;
+  object-fit: cover;
+`;
 
-//   function getFileType() {
-//     return obj.name.substring(obj.name.lastIndexOf(".") + 1);
-//   }
-//   return true;
+const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+`;
 
-//   // if (obj.name?.length > 100) {
-//   //   alert("파일명이 100자 이상인 파일은 첨부할 수 없습니다.");
-//   //   imageRef.current.value = "";
-//   //   return false;
-//   // }
-//   // if (obj.size > 10 * 1024 * 1024) {
-//   //   alert("용량이 10MB를 초과한 파일은 첨부할 수 없습니다.");
-//   //   imageRef.current.value = "";
-//   //   return false;
-//   // }
-//   // if (obj.name.lastIndexOf(".") === -1) {
-//   //   alert("확장자가 없는 파일은 첨부할 수 없습니다.");
-//   //   imageRef.current.value = "";
-//   //   return false;
-//   // }
-//   // if (!fileTypes.includes(obj.type)) {
-//   //   alert("해당 파일은 첨부할 수 없습니다.");
-//   //   imageRef.current.value = "";
-//   //   return false;
-//   // }
-//   // if (!fileTypesName.includes(objExactType)) {
-//   //   alert("해당 파일은 첨부할 수 없습니다.");
-//   //   imageRef.current.value = "";
-//   //   return false;
-//   // }
-//   // if (imageKeys.length + files.length - deleteImgTray.length > 5) {
-//   //   imageRef.current.value = "";
-//   //   alert("사진은 총 5장까지 게시할 수 있습니다.");
-//   //   return false;
-//   // }
-//   // return true;
-// }
+const SubTitle = styled.h2`
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  aspect-ratio: 1 / 0.7;
+  border-radius: 1rem;
+  padding-top: 1rem;
+  border-color: ${theme.colors.main};
+  outline-color: ${theme.colors.hover};
+  resize: none;
+`;
