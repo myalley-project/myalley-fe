@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import {
   format,
   addMonths,
@@ -7,6 +7,8 @@ import {
   endOfMonth,
   startOfWeek,
   endOfWeek,
+  getYear,
+  getMonth,
 } from "date-fns";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
@@ -15,22 +17,42 @@ import ArrowNext from "../assets/icons/arrowNext.svg";
 
 const Calender = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-  const [selectedDate, setSelectedDate] = useState([]);
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
-  const calendarDays = getCalendarDays({ currentMonth });
+  const calendarDays = getCalendarDays(currentMonth);
 
   useEffect(() => {
-    setSelectedDate([]);
+    setSelectedDate("");
   }, [currentMonth]);
 
   const prevMonth = () => {
-    setCurrentMonth(subMonths(currentMonth, 1));
+    const prevDate = subMonths(currentMonth, 1);
+    setCurrentMonth(prevDate);
   };
   const nextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1));
+    const nextDate = addMonths(currentMonth, 1);
+    setCurrentMonth(nextDate);
   };
 
-  const onDateClick = () => {};
+  const onDateSelect = (e: React.SyntheticEvent<HTMLDivElement>) => {
+    if (!(e.target instanceof HTMLDivElement)) return;
+
+    if (e.target.dataset.valid === "true") {
+      const day = e.target.dataset.value as string;
+      const selectedDay = new Date(
+        getYear(currentMonth),
+        getMonth(currentMonth),
+        parseInt(day, 10)
+      );
+
+      const result = new Intl.DateTimeFormat("kr")
+        .format(selectedDay)
+        .replaceAll(". ", "-")
+        .slice(0, -1);
+
+      setSelectedDate(() => result);
+    }
+  };
 
   return (
     <Container>
@@ -61,11 +83,17 @@ const Calender = () => {
           <div>금</div>
           <div>토</div>
         </DayOfWeek>
-        {/* <div onClick={onDateClick} onKeyDown={onDateClick}>
+        <Week
+          onClick={onDateSelect}
+          onKeyDown={onDateSelect}
+          role="presentation"
+        >
           {calendarDays.map((each) => (
-            <div key={}>{each.day}</div>
+            <Day key={each.id} data-valid={each.isValid} data-value={each.day}>
+              {each.day}
+            </Day>
           ))}
-        </div> */}
+        </Week>
       </CalendarWrapper>
     </Container>
   );
@@ -73,11 +101,9 @@ const Calender = () => {
 
 export default Calender;
 
-type DateProps = {
-  currentMonth: Date;
-};
+type DateProps = Date;
 
-function getCalendarDays({ currentMonth }: DateProps) {
+function getCalendarDays(currentMonth: DateProps) {
   const monthStartDate = startOfMonth(currentMonth);
   const monthEndDate = endOfMonth(monthStartDate);
 
@@ -85,8 +111,8 @@ function getCalendarDays({ currentMonth }: DateProps) {
   const calendarEndDate = endOfWeek(monthEndDate);
 
   const prevMonthDays = getPrevDays();
-  const currentMonthDays = getCurrentDays(prevMonthDays.length);
-  const nextMonthDays = getNextDays(currentMonthDays.length);
+  const currentMonthDays = getCurrentDays();
+  const nextMonthDays = getNextDays();
 
   const calendarDays = prevMonthDays.concat(
     currentMonthDays.concat(nextMonthDays)
@@ -104,6 +130,7 @@ function getCalendarDays({ currentMonth }: DateProps) {
         length: parseInt(prevLastDay, 10) - parseInt(monthFirstDay, 10) + 1,
       },
       (undef, daynumber) => ({
+        id: crypto.randomUUID(),
         day: parseInt(monthFirstDay, 10) + daynumber + 1,
         isValid: false,
       })
@@ -111,13 +138,14 @@ function getCalendarDays({ currentMonth }: DateProps) {
     return prevDays;
   }
 
-  function getCurrentDays(prevLength: number) {
+  function getCurrentDays() {
     const MonthLastDay = format(monthEndDate, "d");
     const currentDays = Array.from(
       {
         length: parseInt(MonthLastDay, 10),
       },
       (undef, dayNumber) => ({
+        id: crypto.randomUUID(),
         day: dayNumber + 1,
         isValid: true,
       })
@@ -125,13 +153,15 @@ function getCalendarDays({ currentMonth }: DateProps) {
     return currentDays;
   }
 
-  function getNextDays(currentLength: number) {
+  function getNextDays() {
     const calendarEndDay = format(calendarEndDate, "d");
+    if (format(monthEndDate, "d") === format(calendarEndDate, "d")) return [];
     const nextDays = Array.from(
       {
         length: parseInt(calendarEndDay, 10),
       },
       (undef, daynumber) => ({
+        id: crypto.randomUUID(),
         day: daynumber + 1,
         isValid: false,
       })
@@ -141,6 +171,7 @@ function getCalendarDays({ currentMonth }: DateProps) {
 }
 
 const Container = styled.div`
+  position: relative;
   width: 318px;
   height: 356px;
   border-radius: 0;
@@ -151,12 +182,12 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 14px;
   margin-bottom: 10px;
-  text-align: center;
+  color: #333;
 `;
 
 const CalendarWrapper = styled.div`
-  height: 326px;
-  border: 1px solid ${theme.colors.hover};
+  height: fit-content;
+  border: 1px solid ${theme.colors.main};
   padding: 30px;
 `;
 
@@ -168,12 +199,49 @@ const Header = styled.div`
 
 const Divider = styled.div`
   border-bottom: 1px solid ${theme.colors.main};
-  margin: 15px 0;
+  margin: 14px 0;
 `;
 
 const DayOfWeek = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  & > * {
+    display: inline-block;
+    width: calc(100% / 7);
+    text-align: center;
+    color: ${theme.colors.main};
+  }
   margin-bottom: 15px;
+`;
+
+const Week = styled.div`
+  display: flexbox;
+  flex-wrap: wrap;
+  position: relative;
+  /* &::after {
+    content: "";
+    display: block;
+    padding: 0.1rem;
+  } */
+`;
+
+const Day = styled.div`
+  width: calc(100% / 7);
+  aspect-ratio: 1 / 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 5px;
+  margin-bottom: 1rem;
+  text-align: center;
+  &:is(:hover, :focus) {
+    background-color: #6750a4;
+    border-radius: 100vmax;
+  }
+  &:nth-child(7n + 1) {
+    color: red;
+  }
+  &[data-valid="false"] {
+    opacity: 0.65;
+  }
 `;
