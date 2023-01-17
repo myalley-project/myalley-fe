@@ -4,13 +4,14 @@ import returnkeys from "../utils/returnkeys";
 
 interface SelectorProps {
   options: string[];
+  width: string;
 }
 
-const Selector = ({ options }: SelectorProps) => {
+const Selector = ({ options, width }: SelectorProps) => {
   const keys = returnkeys(options.length);
 
   return (
-    <SelectContainer>
+    <SelectContainer width={width}>
       <select>
         {options &&
           options.map((each, index) => (
@@ -23,9 +24,9 @@ const Selector = ({ options }: SelectorProps) => {
 
 export default Selector;
 
-const SelectContainer = styled.div`
+const SelectContainer = styled.div<{ width: string }>`
   select {
-    width: 320px;
+    width: ${(props) => props.width};
     height: 40px;
     margin: 10px 0;
     padding: 0 0 0 20px;
