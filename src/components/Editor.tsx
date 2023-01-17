@@ -5,19 +5,25 @@ import returnkeys from "../utils/returnkeys";
 
 const Editor = () => {
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
+  const [contents, setContents] = useState("");
   const imageRef = useRef<HTMLInputElement | null>(null);
 
   const { previewImages } = usePreviewImages(imageFiles as FileList);
   const previewIds = returnkeys(previewImages.length);
 
-  const onChangePic = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const ChangePictureHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setImageFiles(() => event.target.files);
+  };
+
+  const contentsHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContents(() => event.target.value);
   };
 
   const onSubmitHandler = () => {};
 
   return (
     <Container>
+      <SubTitle>오늘의 사진</SubTitle>
       <PreviewContainer>
         {previewImages &&
           previewImages.map((each, index) => (
@@ -26,22 +32,19 @@ const Editor = () => {
             </Preview>
           ))}
       </PreviewContainer>
-      <form>
+      <FormBox>
         <label htmlFor="image-files">사진 올리기</label>
         <input
-          onChange={onChangePic}
+          onChange={ChangePictureHandler}
           type="file"
           accept="image/jpg, image/jpeg, image/png"
           multiple
           id="image-files"
           ref={imageRef}
         />
-        <button onClick={onSubmitHandler} type="button">
-          제출
-        </button>
-      </form>
+      </FormBox>
       <SubTitle>본문 내용</SubTitle>
-      <TextArea />
+      <TextArea onChange={contentsHandler} />
     </Container>
   );
 };
@@ -71,7 +74,6 @@ function usePreviewImages(imageFiles: FileList) {
 const Container = styled.div`
   max-width: 1200px;
   padding: 30px;
-  border: 1px solid black;
   margin-inline: auto;
 `;
 
@@ -79,7 +81,7 @@ const PreviewContainer = styled.div`
   display: flex;
   width: 600px;
   gap: 10px;
-  margin-bottom: 1rem;
+  margin: 15px 0;
 `;
 
 const Preview = styled.div`
@@ -95,6 +97,21 @@ const PreviewImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: fill;
+`;
+
+const FormBox = styled.div`
+  display: inline-block;
+  height: 40px;
+  margin: 10px auto;
+  & > label {
+    padding: 10px 20px;
+    border: 1px solid ${theme.colors.main};
+    border-radius: 30px;
+    color: ${theme.colors.hover};
+  }
+  & > input {
+    display: none;
+  }
 `;
 
 const SubTitle = styled.h2`
