@@ -173,7 +173,6 @@ function getCalendarDays(currentMonth: DateProps) {
 const Container = styled.div`
   position: relative;
   width: 318px;
-  height: 356px;
   border-radius: 0;
   color: ${theme.colors.hover};
 `;
