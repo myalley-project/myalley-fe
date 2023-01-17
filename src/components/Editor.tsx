@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
 import returnkeys from "../utils/returnkeys";
+import SubTitle from "./SubTitle";
 
 const Editor = () => {
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
@@ -23,7 +24,7 @@ const Editor = () => {
 
   return (
     <Container>
-      <SubTitle>오늘의 사진</SubTitle>
+      <SubTitle text="오늘의 사진" />
       <PreviewContainer>
         {previewImages &&
           previewImages.map((each, index) => (
@@ -43,7 +44,7 @@ const Editor = () => {
           ref={imageRef}
         />
       </FormBox>
-      <SubTitle>본문 내용</SubTitle>
+      <SubTitle text="본문 내용" />
       <TextArea onChange={contentsHandler} />
     </Container>
   );
@@ -114,12 +115,12 @@ const FormBox = styled.div`
   }
 `;
 
-const SubTitle = styled.h2`
-  font-weight: bold;
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 10px;
-`;
+// const SubTitle = styled.h2`
+//   font-weight: bold;
+//   font-size: 14px;
+//   color: #333;
+//   margin-bottom: 10px;
+// `;
 
 const TextArea = styled.textarea`
   width: 100%;
