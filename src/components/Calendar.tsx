@@ -97,7 +97,7 @@ const Calender = () => {
 
 export default Calender;
 
-const getCalendarDays = (currentMonth: Date) => {
+function getCalendarDays(currentMonth: Date) {
   const monthStartDate = startOfMonth(currentMonth);
   const monthEndDate = endOfMonth(monthStartDate);
 
@@ -162,7 +162,7 @@ const getCalendarDays = (currentMonth: Date) => {
     );
     return nextDays;
   }
-};
+}
 
 const CalendarWrapper = styled.div`
   width: 318px;
