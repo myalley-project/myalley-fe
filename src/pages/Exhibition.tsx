@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import MainCard from "../components/exhibition/MainCard";
 import ContentCard from "../components/exhibition/ContentCard";
-// import ToggleSwitch from "../components/exhibition/ToggleSwitch";
+import ToggleSwitch from "../components/exhibition/ToggleSwitch";
 
 const Exhibition = () => (
   <ExhibitionContainer>
@@ -13,7 +13,7 @@ const Exhibition = () => (
       time="10:00 ~ 20:00"
       charge="무료"
     />
-    {/* <ToggleSwitch /> */}
+    <ToggleSwitch />
     <ContentCard title="기획 의도" content="lorem" />
     <ContentCard title="전시 내용" content="lorem" />
     <ContentCard title="작가 정보" content="lorem" />
