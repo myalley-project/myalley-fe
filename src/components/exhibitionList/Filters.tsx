@@ -141,6 +141,7 @@ const FiltersContainer = styled.div`
       width: 93px;
       height: inherit;
       color: ${(props) => props.theme.colors.hover};
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       &.selected {
