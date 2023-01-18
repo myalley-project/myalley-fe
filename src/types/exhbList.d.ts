@@ -2,8 +2,7 @@ export interface Exhibition {
   id: number;
   title: string;
   posterUrl: string;
-  startDate: string;
-  endDate: string;
+  duration: string;
   type: string;
   status: string;
   space: string;

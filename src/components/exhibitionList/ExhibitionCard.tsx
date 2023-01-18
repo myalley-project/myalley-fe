@@ -2,7 +2,6 @@ import React from "react";
 import { AxiosResponse } from "axios";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import bookmarkIcon from "../../assets/icons/like.svg";
 import { Exhibition } from "../../types/exhbList";
 import putExhbBookmarkApi from "../../apis/putExhbBookmark";
 
@@ -12,17 +11,7 @@ interface ExhibitionCardType {
 
 const ExhibitionCard = (props: ExhibitionCardType) => {
   const { exhbData } = props;
-  const { id, title, space, startDate, endDate, posterUrl } = exhbData;
-
-  // 전시글 북마크 api_박예선_23.01.16
-  const handleBookmark = async (exhbId: number) => {
-    // 북마크 api, 아이콘 완성 후 추가에정
-    try {
-      const res: AxiosResponse = await putExhbBookmarkApi(exhbId);
-    } catch (err) {
-      alert("죄송합니다.\n 다시 시도해주십시오.");
-    }
-  };
+  const { id, title, space, duration, posterUrl, viewCount } = exhbData;
 
   return (
     <ExhibitionCardContainer className="border">
@@ -35,24 +24,9 @@ const ExhibitionCard = (props: ExhibitionCardType) => {
             <div className="title">{title}</div>
             <div className="space">{space}</div>
           </Link>
-          <div className="content-footer">
-            <div className="exhb-period">
-              {startDate} ~ {endDate}
-            </div>
-            <button
-              type="button"
-              className="bookmark-box flex"
-              onClick={() => {
-                handleBookmark(id);
-              }}
-            >
-              <img
-                className="bookmark-icon"
-                alt="bookmark icon"
-                src={bookmarkIcon}
-              />
-              {/* 북마크 누를 때 아이콘은 추후 추가해주시기로 함 */}
-            </button>
+          <div className="content-footer flex space-between">
+            <div className="exhb-period">{duration}</div>
+            <span className="viewCount">조회수 {viewCount}</span>
           </div>
         </div>
       </div>
@@ -133,6 +107,10 @@ const ExhibitionCardContainer = styled.div`
           .bookmark-icon {
             width: 20.94px;
           }
+        }
+        .viewCount {
+          color: #9c9c9c;
+          font-size: 14px;
         }
       }
     }
