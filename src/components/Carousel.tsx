@@ -17,8 +17,6 @@ const Carousel = () => {
     backgroundPosition: `top center`,
     backgroundSize: `cover`,
     backgroundAttachment: `fixed`,
-    // filter: `blur(5px)`,
-    // webkitFilter: `blur(5px)`,
   };
 
   const secondSlideStyle = {
@@ -83,10 +81,11 @@ const Carousel = () => {
 export default Carousel;
 
 const Container = styled.div`
-  display: flex;
+  width: 90vw;
 `;
 
 const StyledSwiper = styled(Swiper)`
+  background-color: rgba(0 0 0 / 0.7);
   .swiper-wrapper {
     width: 1440px;
     height: 678px;
@@ -106,9 +105,13 @@ const StyledSwiper = styled(Swiper)`
   & .swiper-scrollbar-drag {
     background-color: #fff;
   }
-  & > .swiper-button-prev,
+  & > .swiper-button-prev {
+    color: #9c9c9c;
+    left: 1.125em;
+  }
   & > .swiper-button-next {
     color: #9c9c9c;
+    right: 1.125em;
   }
 `;
 
@@ -116,7 +119,8 @@ const Slide = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
-  backdrop-filter: blur(5px);
+  /* filter: grayscale(100%); */
+  backdrop-filter: blur(8px);
 `;
 
 const Text = styled.div`
