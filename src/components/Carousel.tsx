@@ -77,11 +77,11 @@ const StyledSwiper = styled(Swiper)`
 
 const Slide = styled.div`
   & > div:first-child {
-    font-size: 28px;
     color: #9c9c9c;
+    font-size: 28px;
   }
   & > div:nth-child(2) {
-    font-size: 68px;
     color: #333;
+    font-size: 68px;
   }
 `;
