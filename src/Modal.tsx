@@ -7,9 +7,10 @@ interface ModalProps {
 }
 
 const Modal = ({ open = null, children }: ModalProps) => {
-  if (!open) return null;
   const domElement = document.getElementById("portal");
-  return domElement ? ReactDOM.createPortal(children, domElement) : null;
+  return open
+    ? ReactDOM.createPortal(children, domElement as HTMLElement)
+    : null;
 };
 
 export default Modal;
