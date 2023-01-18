@@ -29,6 +29,12 @@ const LoginSignUpSection = styled.form`
     height: 60px;
     margin: 30px auto;
   }
+  button {
+    cursor: pointer;
+    &:disabled {
+      cursor: auto;
+    }
+  }
 `;
 
 const InputContainer = styled.div`
@@ -36,26 +42,25 @@ const InputContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 380px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${(props) => props.theme.colors.main};
   .category {
     margin: 30px 0px;
-    color: #333333;
+    color: ${(props) => props.theme.colors.txt};
     font-size: 20px;
     font-weight: 700;
   }
   .title {
-    color: #9c9c9c;
+    color: ${(props) => props.theme.colors.hover};
     font-weight: 700;
   }
   .notice {
     margin: -1px 0 13px;
     font-size: 12px;
-    /* display: none; */
     &.err {
-      color: #ff4545;
+      color: ${(props) => props.theme.colors.error};
     }
     &.pass {
-      color: #54c60e;
+      color: ${(props) => props.theme.colors.alarmGreen};
     }
     &.pw-check {
       margin-bottom: 30px;
@@ -70,12 +75,12 @@ const InputContainer = styled.div`
     height: 40px;
     margin: 10px 0;
     padding-left: 20px;
-    border: 1px solid #e0e0e0;
-    background-color: #fbfbfb;
-    color: #333333;
+    border: 1px solid ${(props) => props.theme.colors.main};
+    background-color: ${(props) => props.theme.colors.bg};
+    color: ${(props) => props.theme.colors.txt};
     font-size: 14px;
     &::placeholder {
-      color: #9c9c9c;
+      color: ${(props) => props.theme.colors.hover};
     }
     ::-webkit-outer-spin-button,
     ::-webkit-inner-spin-button {
@@ -83,13 +88,13 @@ const InputContainer = styled.div`
       margin: 0;
     }
   }
-  button {
+  .btn {
     width: 320px;
     height: 48px;
     margin: 30px auto;
     border: none;
-    background-color: #9c9c9c;
-    color: white;
+    background-color: ${(props) => props.theme.colors.hover};
+    color: ${(props) => props.theme.colors.white100};
     font-size: 18px;
     font-weight: 700;
   }
