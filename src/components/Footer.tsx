@@ -2,20 +2,20 @@ import React from "react";
 import styled from "styled-components";
 
 const Footer = () => (
-    <FooterContainer>
-      <Content>
-        <div>logo</div>
-        <Terms>
-          {/* 추후 링크로 수정 */}
-          <span>이용약관</span> | <span>개인정보처리방침</span> |
-          <span> 청소년보호정책</span> | <span>문의하기</span>
-        </Terms>
-        <Copyright className="copyright">
-          Copyright 2022 © mane. All rights reserved.
-        </Copyright>
-      </Content>
-    </FooterContainer>
-  );
+  <FooterContainer>
+    <Content>
+      <div>logo</div>
+      <Terms>
+        {/* 추후 링크로 수정 */}
+        <span>이용약관</span> | <span>개인정보처리방침</span> |
+        <span> 청소년보호정책</span> | <span>문의하기</span>
+      </Terms>
+      <Copyright className="copyright">
+        Copyright 2022 © mane. All rights reserved.
+      </Copyright>
+    </Content>
+  </FooterContainer>
+);
 
 export default Footer;
 
