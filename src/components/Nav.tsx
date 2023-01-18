@@ -68,7 +68,7 @@ const Logo = styled.div`
   width: 210px;
   height: 100%;
   border-radius: 0px;
-  background-color: ${(props) => props.theme.colors.main};
+  background-color: ${(props) => props.theme.colors.greys40};
 `;
 
 const MenuButton = styled.button`
