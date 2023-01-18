@@ -25,142 +25,81 @@ const EXHB_TYPE_ARRAY: FilterType[] = [
   "소장품",
 ];
 
-interface SelectedFilters {
-  sort: string;
-  type: FilterType;
+interface TypeFilters {
+  selected: FilterType;
+  applied: FilterType;
 }
 
-// 전시회 목록 조회 페이지_박예선_23.01.17
+// 전시회 목록 페이지 컴포넌트_박예선_23.01.18
 const ExhibitionList = () => {
   const [exhbList, setExhbList] = useState<ExhbType[]>([]);
   const [totalPage, setTotalPage] = useState<number | undefined>();
   const [selectedStatus, setSelectedStatus] = useState<StatusType>("현재");
-  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
-    sort: "최신순",
-    type: "전체",
+  const [typeFilters, setTypeFilters] = useState<TypeFilters>({
+    selected: "전체",
+    applied: "전체",
   });
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
   });
-  const typeFilterRef = useRef<HTMLSelectElement>(null);
 
-  // 3. 선택페이지 바뀔 경우(상황, 필터 둘다 적용해서 호출)
-
-  // 전시 상황별 리스트 요청 api_박예선_23.01.18
-  const getStatusExhbList = useCallback(
-    async (status: StatusType, type: FilterType) => {
+  // 전시회 목록 요청 api_박예선_23.01.18
+  const getExhbList = useCallback(
+    async (status: StatusType, type: FilterType, page: number) => {
       try {
         const res: AxiosResponse<ExhbListRes> = await exhbListApi(
           status,
           type,
-          pages.selected
-        );
-        const { exhibitions, pageInfo } = res.data;
-        setExhbList(exhibitions);
-        setTotalPage(pageInfo.totalPage);
-        setSelectedFilters({
-          sort: EXHB_SORT_ARRAY[0],
-          type: EXHB_TYPE_ARRAY[0],
-        });
-      } catch (err) {
-        alert(
-          "죄송합니다.\n전시목록을 불러오는데에 실패하였습니다. 다시 시도해주십시오."
-        );
-      }
-    },
-    [pages.selected]
-  );
-
-  // 첫 렌더링 시 전시목록 불러오는 로직_박예선_23.01.18
-  useEffect(() => {
-    getStatusExhbList("현재", "전체");
-  }, [getStatusExhbList]);
-
-  // 전시타입 필터 적용한 리스트 요청 api_박예선_23.01.18
-  const getFilteredExhbList = async () => {
-    try {
-      const res: AxiosResponse<ExhbListRes> = await exhbListApi(
-        selectedStatus,
-        selectedFilters.type,
-        pages.selected
-      );
-      const { exhibitions, pageInfo } = res.data;
-      setExhbList(exhibitions);
-      setTotalPage(pageInfo.totalPage);
-    } catch (err) {
-      alert(
-        "죄송합니다.\n전시목록을 불러오는데에 실패하였습니다. 다시 시도해주십시오."
-      );
-    }
-  };
-
-  // 테스트용
-  useEffect(() => {
-    if (typeFilterRef.current) {
-      const type = typeFilterRef.current.name;
-      console.log("name: ", type);
-    }
-  }, [typeFilterRef.current?.name, selectedFilters.type]);
-
-  // 필터 적용버튼 클릭 함수_박예선_23.01.18
-  const clickFilterApplyBtn = () => {
-    const appliedType = typeFilterRef.current?.name;
-    console.log(
-      EXHB_TYPE_ARRAY.filter((type) => [appliedType].includes(type)).length
-    );
-    for (let i = 0; i < EXHB_TYPE_ARRAY.length; i += 1) {
-      if (appliedType === EXHB_TYPE_ARRAY[i])
-        setSelectedFilters({ ...selectedFilters, type: appliedType });
-    }
-  };
-
-  //  페이지 버튼 변경될 시 전시목록 불러오는 로직_박예선_23.01.18
-  const getPagedExhbList = useCallback(
-    async (page: number) => {
-      try {
-        const res: AxiosResponse<ExhbListRes> = await exhbListApi(
-          selectedStatus,
-          selectedFilters.type,
           page
         );
         const { exhibitions, pageInfo } = res.data;
         setExhbList(exhibitions);
         setTotalPage(pageInfo.totalPage);
+        console.log("요청api에 전달된 정보:", status, type, page);
       } catch (err) {
         alert(
           "죄송합니다.\n전시목록을 불러오는데에 실패하였습니다. 다시 시도해주십시오."
         );
       }
     },
-    [selectedFilters.type, selectedStatus]
+    []
   );
 
-  // 페이지 번호 변경될 시 전시목록 불러오는 로직_박예선_23.01.18
+  // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.01.18
   useEffect(() => {
-    if (pages.selected !== 1) {
-      getPagedExhbList(pages.selected);
-    }
-  }, [getPagedExhbList, pages.selected]);
+    getExhbList(selectedStatus, typeFilters.applied, pages.selected);
+  }, [getExhbList, selectedStatus, typeFilters.applied, pages.selected]);
 
   // 전시상황 버튼 클릭 함수_박예선_23.01.18
   const handleStatusBtn = (status: StatusType) => {
+    if (typeFilters.applied !== typeFilters.selected) {
+      alert("필터 적용버튼을 먼저 클릭하세요");
+      return;
+    }
     setPages({ started: 1, selected: 1 });
     setSelectedStatus(status);
-    getStatusExhbList(status, selectedFilters.type);
   };
 
   // 필터 조건 핸들 함수_박예선_23.01.17
   const handleFilters = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     if (value === "인기순") {
       alert("준비 중인 기능입니다.");
       return;
     }
-    // setSelectedFilters({ ...selectedFilters, [name]: value });
-    if (typeFilterRef.current) {
-      typeFilterRef.current.name = value;
+    for (let i = 0; i < EXHB_TYPE_ARRAY.length; i += 1) {
+      if (value === EXHB_TYPE_ARRAY[i]) {
+        setTypeFilters({ ...typeFilters, selected: value });
+      }
     }
+  };
+
+  // 필터 적용버튼 클릭 함수_박예선_23.01.18
+  const clickFilterApplyBtn = () => {
+    getExhbList(selectedStatus, typeFilters.selected, 1);
+    setTypeFilters({ ...typeFilters, applied: typeFilters.selected });
+    setPages({ started: 1, selected: 1 });
   };
 
   // 전시글 북마크 api_박예선_23.01.16
@@ -234,11 +173,7 @@ const ExhibitionList = () => {
       </div>
       <div className="filter-search-line flex space-between">
         <div>
-          <select
-            className="sort border"
-            value={selectedFilters.sort}
-            onChange={handleFilters}
-          >
+          <select className="sort border" onChange={handleFilters}>
             {EXHB_SORT_ARRAY.map((sort) => (
               <option key={sort} value={sort}>
                 {sort}
@@ -246,7 +181,7 @@ const ExhibitionList = () => {
             ))}
           </select>
           <select
-            ref={typeFilterRef}
+            value={typeFilters.selected}
             className="type border"
             onChange={handleFilters}
           >
@@ -259,13 +194,7 @@ const ExhibitionList = () => {
           <button
             type="button"
             className="apply-btn"
-            // onClick={() =>
-            //   getStatusExhbList(selectedStatus, selectedFilters.type)
-            // }
-            onClick={() => {
-              // getFilteredExhbList();
-              clickFilterApplyBtn();
-            }}
+            onClick={clickFilterApplyBtn}
           >
             적용
           </button>
@@ -310,7 +239,7 @@ const ExhibitionList = () => {
           </ExhibitionCard>
         ))}
       </CardListContainer>
-      <PageNoContanier>
+      <PageNoContanier className={totalPage ? "" : "none"}>
         <button type="button" name="doubleMinus" onClick={handlePageArrow}>
           <img alt="double left icon" src={arrowLeftDoubleIcon} />
         </button>
@@ -416,6 +345,10 @@ const ExhibitionListContainer = styled.div`
       &.type {
         width: 117px;
       }
+      &:focus {
+        border: 1px solid #7f67be;
+        outline: none;
+      }
     }
     .apply-btn {
       width: 66px;
@@ -453,11 +386,15 @@ const ExhibitionListContainer = styled.div`
     border: 1px solid ${(props) => props.theme.colors.main};
     border-radius: 30px;
   }
+  .none {
+    display: none;
+  }
 `;
 
 const CardListContainer = styled.div`
-  width: inherit;
   flex-wrap: wrap;
+  width: inherit;
+  min-height: 60vw;
   margin: 30px 0;
 `;
 
