@@ -1,6 +1,5 @@
 import React from "react";
-import Calender from "../components/Calendar";
 
-const Main = () => <Calender />;
+const Main = () => <div />;
 
 export default Main;
