@@ -80,9 +80,9 @@ const Container = styled.div`
 
 const PreviewContainer = styled.div`
   display: flex;
-  width: 600px;
   gap: 10px;
   margin: 15px 0;
+  flex-flow: row wrap;
 `;
 
 const Preview = styled.div`
@@ -95,9 +95,15 @@ const Preview = styled.div`
 `;
 
 const PreviewImage = styled.img`
-  width: 100%;
-  height: 100%;
+  border: 1px solid ${theme.colors.main};
+  border-radius: 4px;
+  padding: 5px;
+  width: 250px;
+  aspect-ratio: 1 / 1;
   object-fit: fill;
+  &:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+  }
 `;
 
 const FormBox = styled.div`
