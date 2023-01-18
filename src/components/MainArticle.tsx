@@ -56,19 +56,19 @@ const ArticleContainer = styled.section`
 `;
 
 const Article = styled.article`
-  padding: 30px;
-  border: 1px solid #e0e0e0;
-  border-radius: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 30px;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
   gap: 30px;
   text-align: center;
   & h3 {
+    margin-bottom: 1rem;
     font-weight: bold;
     font-size: 28px;
-    margin-bottom: 1rem;
   }
   & p {
     color: #9c9c9c;
@@ -77,14 +77,14 @@ const Article = styled.article`
 `;
 
 const Icon = styled.div`
-  background-color: #ffcaca;
   width: 87px;
   height: 87px;
+  background-color: #ffcaca;
 `;
 
 const Span = styled.span`
-  font-weight: bold;
-  font-size: 14px;
   color: #9c9c9c;
+  font-weight: bold;
+  font-size: 14;
   text-align: center;
 `;
