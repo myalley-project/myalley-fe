@@ -5,7 +5,7 @@ import SubTitle from "../SubTitle";
 import Selector from "../Selector";
 
 const TimeSelect = () => {
-  const timeOptions = [
+  const visitTimeOptions = [
     "00시",
     "01시",
     "02시",
@@ -32,16 +32,16 @@ const TimeSelect = () => {
     "23시",
     "24시",
   ];
+  const exitTimeOptions = visitTimeOptions.slice();
 
-  const timeoptions2 = timeOptions.slice();
   return (
     <div>
       <SubTitle text="관람 시간" />
       <FlexContainer>
         <Description>입장</Description>
-        <Selector options={timeOptions} width="100px" />
+        <Selector options={visitTimeOptions} width="100px" />
         <Description>퇴장</Description>
-        <Selector options={timeoptions2} width="100px" />
+        <Selector options={exitTimeOptions} width="100px" />
       </FlexContainer>
     </div>
   );
