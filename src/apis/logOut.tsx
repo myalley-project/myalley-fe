@@ -4,17 +4,11 @@ import apiInstance from "../utils/apiInstance";
 
 type UseLogOutType = "refresh_token 만료";
 
-// 로그아웃 커스텀훅_박예선_2023.01.16
+// 로그아웃 커스텀훅_박예선_2023.01.19
 // 단순 로그아웃 시 호출: useLogOut();
 // refresh_token 만료 로그아웃 시 호출: useLogOut("refresh_token 만료");
 const useLogOut = (type?: UseLogOutType) => {
   const navigate = useNavigate();
-
-  interface LogOutRes {
-    resultCode?: number;
-    errorCode?: 403;
-    errorMsg?: "Forbidden";
-  }
 
   const logOut = async () => {
     try {
@@ -27,9 +21,9 @@ const useLogOut = (type?: UseLogOutType) => {
       if (resultCode === 200) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        navigate("/");
         if (!type) {
           alert("로그아웃되었습니다.");
+          navigate("/");
           return;
         }
       }
@@ -42,8 +36,13 @@ const useLogOut = (type?: UseLogOutType) => {
       );
     }
   };
-
   return logOut;
 };
 
 export default useLogOut;
+
+interface LogOutRes {
+  resultCode?: number;
+  errorCode?: 403;
+  errorMsg?: "Forbidden";
+}
