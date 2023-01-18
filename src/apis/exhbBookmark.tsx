@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 
-const putExhbBookmarkApi = async (id: number) => {
+const exhbBookmarkApi = async (id: number) => {
   const res: AxiosResponse =
     //         await apiInstance.put(
     //     `/api/exhibitions/bookmarks/${id}`
@@ -11,4 +11,4 @@ const putExhbBookmarkApi = async (id: number) => {
   return res;
 };
 
-export default putExhbBookmarkApi;
+export default exhbBookmarkApi;

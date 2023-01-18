@@ -1,9 +1,7 @@
 import React from "react";
-import { AxiosResponse } from "axios";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Exhibition } from "../../types/exhbList";
-import putExhbBookmarkApi from "../../apis/putExhbBookmark";
 
 interface ExhibitionCardType {
   exhbData: Exhibition;
