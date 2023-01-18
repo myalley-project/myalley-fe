@@ -59,9 +59,6 @@
         ]
       }
     ],
-<<<<<<< HEAD
-    "jsx-a11y/no-static-element-interactions": "off",
-=======
     "jsx-a11y/no-static-element-interactions": [
       "error",
       {
@@ -75,7 +72,6 @@
         ]
       }
     ],
->>>>>>> dev
     "@typescript-eslint/no-misused-promises": "off"
   }
 }

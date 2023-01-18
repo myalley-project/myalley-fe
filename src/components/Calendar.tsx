@@ -104,7 +104,7 @@ const Calender = () => {
 
 export default Calender;
 
-function getCalendarDays(currentMonth: Date) {
+const getCalendarDays = (currentMonth: Date) => {
   const monthStartDate = startOfMonth(currentMonth);
   const monthEndDate = endOfMonth(monthStartDate);
 
@@ -169,7 +169,74 @@ function getCalendarDays(currentMonth: Date) {
     );
     return nextDays;
   }
-}
+};
+
+// function getCalendarDays(currentMonth: Date) {
+//   const monthStartDate = startOfMonth(currentMonth);
+//   const monthEndDate = endOfMonth(monthStartDate);
+
+//   const calendarStartDate = startOfWeek(monthStartDate);
+//   const calendarEndDate = endOfWeek(monthEndDate);
+
+//   const prevMonthDays = getPrevDays();
+//   const currentMonthDays = getCurrentDays();
+//   const nextMonthDays = getNextDays();
+
+//   const calendarDays = prevMonthDays.concat(
+//     currentMonthDays.concat(nextMonthDays)
+//   );
+
+//   return calendarDays;
+
+//   function getPrevDays() {
+//     const prevLastDay = format(endOfMonth(subMonths(currentMonth, 1)), "d");
+//     const monthFirstDay = format(calendarStartDate, "d");
+//     if (format(monthStartDate, "d") === format(calendarStartDate, "d"))
+//       return [];
+//     const prevDays = Array.from(
+//       {
+//         length: parseInt(prevLastDay, 10) - parseInt(monthFirstDay, 10) + 1,
+//       },
+//       (undef, daynumber) => ({
+//         id: crypto.randomUUID(),
+//         day: parseInt(monthFirstDay, 10) + daynumber + 1,
+//         isValid: false,
+//       })
+//     );
+//     return prevDays;
+//   }
+
+//   function getCurrentDays() {
+//     const MonthLastDay = format(monthEndDate, "d");
+//     const currentDays = Array.from(
+//       {
+//         length: parseInt(MonthLastDay, 10),
+//       },
+//       (undef, dayNumber) => ({
+//         id: crypto.randomUUID(),
+//         day: dayNumber + 1,
+//         isValid: true,
+//       })
+//     );
+//     return currentDays;
+//   }
+
+//   function getNextDays() {
+//     const calendarEndDay = format(calendarEndDate, "d");
+//     if (format(monthEndDate, "d") === format(calendarEndDate, "d")) return [];
+//     const nextDays = Array.from(
+//       {
+//         length: parseInt(calendarEndDay, 10),
+//       },
+//       (undef, daynumber) => ({
+//         id: crypto.randomUUID(),
+//         day: daynumber + 1,
+//         isValid: false,
+//       })
+//     );
+//     return nextDays;
+//   }
+// }
 
 const Container = styled.div`
   position: relative;
