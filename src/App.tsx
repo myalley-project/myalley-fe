@@ -7,6 +7,8 @@ import SignUp from "./pages/SignUp";
 import ExhibitionList from "./pages/ExhibitionList";
 import Exhibition from "./pages/Exhibition";
 import Footer from "./components/Footer";
+import MateList from "./pages/MateList";
+import Mate from "./pages/Mate";
 
 const App = () => (
   <BrowserRouter>
@@ -17,6 +19,8 @@ const App = () => (
       <Route path="/signup?" element={<SignUp />} />
       <Route path="/exhibition-list" element={<ExhibitionList />} />
       <Route path="/exhibition/:id" element={<Exhibition />} />
+      <Route path="/mate-list" element={<MateList />} />
+      <Route path="/mate/:id" element={<Mate />} />
     </Routes>
     <Footer />
   </BrowserRouter>

@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
     font-family:'Maven Pro', sans-serif;
     //글씨체 추후 확정되면 수정
   }
-  div, input, button {
+  div, input, button,img {
     background-color: transparent;
     border: none;
     border-radius: 30px;
