@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Exhibition } from "../../types/exhbList";
 
-interface ExhibitionCardType {
-  exhbData: Exhibition;
-}
-
 const ExhibitionCard = (props: ExhibitionCardType) => {
   const { exhbData } = props;
   const { id, title, space, duration, posterUrl, viewCount } = exhbData;
@@ -33,6 +29,10 @@ const ExhibitionCard = (props: ExhibitionCardType) => {
 };
 
 export default ExhibitionCard;
+
+interface ExhibitionCardType {
+  exhbData: Exhibition;
+}
 
 const ExhibitionCardContainer = styled.div`
   position: relative;

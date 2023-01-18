@@ -7,17 +7,6 @@ import {
   StatusType,
 } from "../../types/exhbList";
 
-const EXHB_STATUS_ARRAY: StatusType[] = ["현재", "예정", "지난"];
-const EXHB_SORT_ARRAY = ["최신순", "인기순"];
-export const EXHB_TYPE_ARRAY: FilterType[] = [
-  "전체",
-  "영상",
-  "특별",
-  "기획",
-  "상설",
-  "소장품",
-];
-
 const Filters = (props: FiltersType) => {
   const {
     setPages,
@@ -111,6 +100,17 @@ const Filters = (props: FiltersType) => {
 };
 
 export default Filters;
+
+const EXHB_STATUS_ARRAY: StatusType[] = ["현재", "예정", "지난"];
+const EXHB_SORT_ARRAY = ["최신순", "인기순"];
+export const EXHB_TYPE_ARRAY: FilterType[] = [
+  "전체",
+  "영상",
+  "특별",
+  "기획",
+  "상설",
+  "소장품",
+];
 
 interface FiltersType {
   setPages: React.Dispatch<React.SetStateAction<PagesState>>;
