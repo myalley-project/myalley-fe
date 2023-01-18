@@ -8,9 +8,9 @@ const GlobalStyle = createGlobalStyle`
     letter-spacing: -0.5px;
   }
   body{
-    /* display: flex;
+    display: flex;
     justify-content: center;
-    align-items: center; */
+    align-items: center;
     font-family:'Maven Pro', sans-serif;
     //글씨체 추후 확정되면 수정
   }

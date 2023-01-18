@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from "axios";
-import { ExhbType } from "../types/exhbList";
+import { Exhibition, FilterType, StatusType } from "../types/exhbList";
 import apiInstance from "../utils/apiInstance";
 
 export interface ExhbListRes {
-  exhibitions: ExhbType[];
+  exhibitions: Exhibition[];
   pageInfo: {
     page: number;
     size: number;
@@ -11,8 +11,6 @@ export interface ExhbListRes {
     totalPage: number;
   };
 }
-export type StatusType = "현재" | "예정" | "지난";
-export type FilterType = "전체" | "영상" | "특별" | "기획" | "상설" | "소장품";
 
 const exhbListApi = async (
   status: StatusType,
