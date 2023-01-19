@@ -172,7 +172,7 @@ const AdminWriteExhibition = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-poster">전시 포스터 등록</Label>
           <InputFileName type="text" value={detail.fileName} disabled />
-          <FileLabel htmlFor="exhibition-posterUrl">불러오기</FileLabel>
+          <FileLabel htmlFor="exhibition-posterUrl">올리기</FileLabel>
           <InputFile
             type="file"
             id="exhibition-posterUrl"
@@ -252,7 +252,7 @@ const AdminWriteExhibition = () => {
         </OptionWrapper>
       </WriteExhibitionWrapper>
       <ButtonWrapper>
-        <SubmitBtn>취소</SubmitBtn>
+        <CancelBtn>취소</CancelBtn>
         <SubmitBtn type="submit" onClick={clickSubmitBtn}>
           등록하기
         </SubmitBtn>
@@ -364,15 +364,17 @@ const InputFileName = styled.input`
 const FileLabel = styled.label`
   display: inline-block;
   padding: 8px 20px;
-  width: 96px;
   height: 36px;
   background: ${(props) => props.theme.colors.primry70};
   border-radius: 10000px;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 14px;
   line-height: 20px;
   color: #ffffff;
   cursor: pointer;
+  &:hover {
+    background-color: #381e72;
+  }
 `;
 
 const InputFile = styled.input`
@@ -462,6 +464,18 @@ const SubmitBtn = styled.button`
   border-radius: 10000px;
   font-weight: 500;
   font-size: 20px;
-  color: #ffffff;
+  color: ${(props) => props.theme.colors.white100};
   cursor: pointer;
+  &:hover {
+    background-color: #381e72;
+  }
+`;
+
+const CancelBtn = styled(SubmitBtn)`
+  background-color: ${(props) => props.theme.colors.white100};
+  color: ${(props) => props.theme.colors.greys60};
+  &:hover {
+    background-color: ${(props) => props.theme.colors.greys90};
+    color: ${(props) => props.theme.colors.white100};
+  }
 `;
