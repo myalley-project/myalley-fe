@@ -6,24 +6,19 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
     letter-spacing: -0.5px;
+    font-family: 'Noto Sans KR', sans-serif;
   }
   body{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family:'Maven Pro', sans-serif;
-    //글씨체 추후 확정되면 수정
-    overflow-x: hidden;
+    font-family: 'Noto Sans KR', sans-serif;
   }
-  div, input, button {
+  div, input, button,img {
     background-color: transparent;
     border: none;
     border-radius: 30px;
     outline: none;
-  }
-  h1, h2, h3, h4, h5, h6{
-    font-family:'Maven Pro', sans-serif;
-    //글씨체 추후 확정되면 수정
   }
 `;
 

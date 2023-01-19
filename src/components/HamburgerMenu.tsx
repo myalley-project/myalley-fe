@@ -57,7 +57,7 @@ const MenuWrapper = styled.div`
 
 const Subtitle = styled.h2`
   padding-bottom: 5px;
-  color: ${(props) => props.theme.colors.pressed};
+  color: ${(props) => props.theme.colors.greys80};
   font-weight: 400;
   font-size: 12px;
 `;
@@ -76,14 +76,14 @@ const ProfileWrapper = styled.div`
 `;
 
 const Nickname = styled.p`
-  color: ${(props) => props.theme.colors.txt};
+  color: ${(props) => props.theme.colors.greys90};
   font-weight: 500;
   font-size: 14px;
   padding-bottom: 4px;
 `;
 
 const Email = styled.p`
-  color: ${(props) => props.theme.colors.hover};
+  color: ${(props) => props.theme.colors.greys60};
   font-weight: 400;
   font-size: 12px;
 `;
@@ -94,7 +94,7 @@ const LogoutButton = styled.button`
   height: 40px;
   line-height: 40px;
   padding-left: 10px;
-  color: ${(props) => props.theme.colors.txt};
+  color: ${(props) => props.theme.colors.greys90};
   font-weight: 500;
   font-size: 14px;
   text-align: left;
