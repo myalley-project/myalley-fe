@@ -34,5 +34,5 @@ const TitleInput = styled.input`
 `;
 
 const Divider = styled.div`
-  border-bottom: 1px solid ${theme.colors.greys60};
+  border-bottom: 1px solid ${theme.colors.greys40};
 `;
