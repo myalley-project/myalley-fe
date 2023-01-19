@@ -288,7 +288,7 @@ const InputTitle = styled.input`
   font-weight: 700;
   font-size: 28px;
   line-height: 36px;
-  color: ${(props) => props.theme.colors.txt};
+  color: ${(props) => props.theme.colors.primry70};
 `;
 
 const OptionWrapper = styled.div`
