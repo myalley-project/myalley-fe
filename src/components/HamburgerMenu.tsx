@@ -9,7 +9,7 @@ const HamburgerMenu = () => (
       <Subtitle>계정</Subtitle>
       <MypageArea href="/">
         <ProfileWrapper>
-          <img src={ProfileImg} alt="profile-img"></img>
+          <img src={ProfileImg} alt="profile-img" />
         </ProfileWrapper>
         <div>
           <Nickname>Nickname</Nickname>

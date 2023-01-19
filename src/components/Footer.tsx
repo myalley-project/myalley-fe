@@ -6,7 +6,7 @@ const Footer = () => (
   <FooterContainer>
     <Content>
       <TopArea>
-        <img src={logo} alt="logo"></img>
+        <img src={logo} alt="logo" />
         <Developers>
           <JobGroup>
             <JobTitle>P.O</JobTitle>
