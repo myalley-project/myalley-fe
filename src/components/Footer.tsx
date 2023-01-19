@@ -2,51 +2,49 @@ import React from "react";
 import styled from "styled-components";
 import logo from "../assets/icons/logo.svg";
 
-const Footer = () => (
-  <FooterContainer>
-    <Content>
-      <TopArea>
-        <img src={logo} alt="logo" />
-        <Developers>
-          <JobGroup>
-            <JobTitle>P.O</JobTitle>
-            <People>Hwadam Chae</People>
-            <People>Youngeun Choi</People>
-          </JobGroup>
-          <JobGroup>
-            <JobTitle>UI/UX DESIGN</JobTitle>
-            <People>JinA Kim</People>
-          </JobGroup>
-          <JobGroup>
-            <JobTitle>FRONT_END</JobTitle>
-            <People>Yesun Park</People>
-            <People>Nayoung Yu</People>
-            <People>Dongkyu Kim</People>
-          </JobGroup>
-          <JobGroup>
-            <JobTitle>BACK_END</JobTitle>
-            <People>Hwadam Chae</People>
-            <People>Youngeun Choi</People>
-            <People>Yeongjin Han</People>
-          </JobGroup>
-          <JobGroup>
-            <JobTitle>DEVOPS</JobTitle>
-            <People>Geunsu Ryu</People>
-          </JobGroup>
-        </Developers>
-      </TopArea>
-      <BottomArea>
-        <Copyright className="copyright">
-          Copyright 2022 © mane. All rights reserved.
-        </Copyright>
-        <Terms>
-          <span>이용약관</span> | <span>개인정보처리방침</span> |
-          <span> 청소년보호정책</span> | <span>문의하기</span>
-        </Terms>
-      </BottomArea>
-    </Content>
-  </FooterContainer>
-);
+const Footer = () => {
+  const developers = [
+    { title: "P.O", people: ["Hwadam Chae", "Youngeun Choi"] },
+    { title: "UI/UX DESIGN", people: ["JinA Kim"] },
+    { title: "FRONT-END", people: ["Yesun Park", "Nayoung Yu", "Dongkyu Kim"] },
+    {
+      title: "BACK-END",
+      people: ["Hwadam Chae", "Youngeun Choi", "Yeongjin Han"],
+    },
+    { title: "DEVOPS", people: ["Geunsu Ryu"] },
+  ];
+
+  return (
+    <FooterContainer>
+      <Content>
+        <TopArea>
+          <img src={logo} alt="logo" />
+          <Developers>
+            <>
+              {developers.map((developer) => (
+                <JobGroup key={developer.title}>
+                  <JobTitle>{developer.title}</JobTitle>
+                  {developer.people.map((person) => (
+                    <People key={person}>{person}</People>
+                  ))}
+                </JobGroup>
+              ))}
+            </>
+          </Developers>
+        </TopArea>
+        <BottomArea>
+          <Copyright className="copyright">
+            Copyright 2022 © mane. All rights reserved.
+          </Copyright>
+          <Terms>
+            <span>이용약관</span> | <span>개인정보처리방침</span> |
+            <span> 청소년보호정책</span> | <span>문의하기</span>
+          </Terms>
+        </BottomArea>
+      </Content>
+    </FooterContainer>
+  );
+};
 
 export default Footer;
 
@@ -73,6 +71,7 @@ const TopArea = styled.div`
 
 const Developers = styled.div`
   display: flex;
+  gap: 30px;
 `;
 
 const JobGroup = styled.div`
@@ -108,11 +107,9 @@ const BottomArea = styled.div`
 `;
 
 const Copyright = styled.div`
-  /* width: 288px; */
   font-weight: 500;
 `;
 
 const Terms = styled.div`
-  /* width: 346px; */
   font-weight: 400;
 `;

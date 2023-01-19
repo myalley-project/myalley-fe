@@ -61,7 +61,6 @@ const Subtitle = styled.h2`
   color: ${(props) => props.theme.colors.pressed};
   font-weight: 400;
   font-size: 12px;
-  letter-spacing: -0.5px;
 `;
 
 const MypageArea = styled.a`
@@ -102,7 +101,8 @@ const LogoutButton = styled.button`
   text-align: left;
   cursor: pointer;
   &:hover {
-    background-color: #f2f2f2;
+    color: #6750a4;
+    background-color: #f6f3fe;
     border-radius: 10px;
   }
 `;
