@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const ToggleSwitch = () => {
+interface StateType {
+  setState: (state: string) => void;
+}
+
+const ToggleSwitch = ({ setState }: StateType) => {
   const [isInfoOrReviewOrMate, setIsInfoOrReviewOrMate] = useState("info");
+
   const onChangeMode = (type: string) => {
     setIsInfoOrReviewOrMate(type);
+    setState(type);
     const circle = document.getElementById("circle") as HTMLInputElement | null;
     if (circle === null) return;
     switch (type) {
