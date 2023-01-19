@@ -20,7 +20,7 @@ export default ContentCard;
 const CardContainer = styled.div`
   display: flex;
   justify-content: center;
-  width: 75em;
+  max-width: 1200px;
   margin: 0px auto;
 `;
 
