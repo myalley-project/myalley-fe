@@ -38,16 +38,14 @@ const Nav = () => {
 
   return (
     <Navbar>
-      <Logo>
-        <img src={MyAlleyLogo} alt="logo" />
-      </Logo>
+      <Logo src={MyAlleyLogo} alt="logo" />
       <MenuButton
         type="button"
         onClick={handleToggleMenu}
         onMouseOver={changeToHoverIcon}
         onMouseLeave={changeToNormalIcon}
       >
-        <img src={toggleMenuIcon} alt="menu-icon" id="user-menu" />
+        <UserMenuIcon src={toggleMenuIcon} alt="menu-icon" id="user-menu" />
       </MenuButton>
       {isShowMenu && <HamburgerMenu />}
     </Navbar>
@@ -68,11 +66,18 @@ const Navbar = styled.div`
   background-color: #ffffff;
 `;
 
-const Logo = styled.div``;
+const Logo = styled.img`
+  border-radius: 0px;
+`;
 
 const MenuButton = styled.button`
   width: 36px;
   height: 36px;
   padding: 0px;
   cursor: pointer;
+`;
+
+const UserMenuIcon = styled.img`
+  width: 30px;
+  height: 30px;
 `;
