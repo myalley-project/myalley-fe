@@ -2,6 +2,7 @@ import React from "react";
 import { Navigation, Scrollbar } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
+import { theme } from "../styles/theme";
 import "swiper/css";
 import "swiper/css/scrollbar";
 import "swiper/css/navigation";
@@ -14,7 +15,7 @@ const Carousel = () => {
   const firstSlideStyle = {
     backgroundImage: `url(${firstSlideImage})`,
     backgroundRepeat: `no-repeat`,
-    backgroundPosition: `top center`,
+    backgroundPosition: `center`,
     backgroundSize: `cover`,
     backgroundAttachment: `fixed`,
   };
@@ -22,7 +23,7 @@ const Carousel = () => {
   const secondSlideStyle = {
     backgroundImage: `url(${secondSlideImage})`,
     backgroundRepeat: `no-repeat`,
-    backgroundPosition: `top center`,
+    backgroundPosition: `center`,
     backgroundSize: `cover`,
     backgroundAttachment: `fixed`,
   };
@@ -30,7 +31,7 @@ const Carousel = () => {
   const thirdSlideStyle = {
     backgroundImage: `url(${thirdSlideImage})`,
     backgroundRepeat: `no-repeat`,
-    backgroundPosition: `top center`,
+    backgroundPosition: `center`,
     backgroundSize: `cover`,
     backgroundAttachment: `fixed`,
   };
@@ -103,18 +104,18 @@ const StyledSwiper = styled(Swiper)`
     left: 0;
     right: 0;
     bottom: 2.5rem;
-    background: #9c9c9c;
+    background: ${theme.colors.txt};
   }
   & .swiper-scrollbar-drag {
-    background-color: #fff;
+    background-color: ${theme.colors.white100};
   }
   & > .swiper-button-prev {
-    color: #9c9c9c;
-    left: 1.125em;
+    color: ${theme.colors.hover};
+    left: 1.5em;
   }
   & > .swiper-button-next {
-    color: #9c9c9c;
-    right: 1.125em;
+    color: ${theme.colors.hover};
+    right: 1.5em;
   }
 `;
 
@@ -122,7 +123,10 @@ const Slide = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
-  backdrop-filter: blur(8px) grayscale(50%);
+  backdrop-filter: blur(8px) grayscale(100%);
+  &:is(:hover, :focus) {
+    backdrop-filter: blur(8px) grayscale(10%);
+  }
 `;
 
 const Text = styled.div`
@@ -133,11 +137,11 @@ const Text = styled.div`
   z-index: 2;
   text-align: center;
   & > div:first-child {
-    color: #9c9c9c;
+    color: ${theme.colors.white100};
     font-size: 28px;
   }
   & > div:nth-child(2) {
-    color: #333;
+    color: ${theme.colors.white100};
     font-size: 68px;
   }
 `;
