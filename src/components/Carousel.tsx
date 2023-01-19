@@ -104,17 +104,17 @@ const StyledSwiper = styled(Swiper)`
     left: 0;
     right: 0;
     bottom: 2.5rem;
-    background: ${theme.colors.txt};
+    background: ${theme.colors.greys90};
   }
   & .swiper-scrollbar-drag {
     background-color: ${theme.colors.white100};
   }
   & > .swiper-button-prev {
-    color: ${theme.colors.hover};
+    color: ${theme.colors.greys60};
     left: 1.5em;
   }
   & > .swiper-button-next {
-    color: ${theme.colors.hover};
+    color: ${theme.colors.greys60};
     right: 1.5em;
   }
 `;
