@@ -188,6 +188,16 @@ const AdminWriteExhibition = () => {
           )}
         </OptionWrapper>
         <OptionWrapper>
+          <Label htmlFor="exhibition-space">전시 장소</Label>
+          <InputLink
+            type="text"
+            placeholder="내용을 입력해주세요."
+            value={detail.webLink}
+            onChange={getWebLink}
+            style={{ width: "280px" }}
+          />
+        </OptionWrapper>
+        <OptionWrapper>
           <Label htmlFor="exhibition-adultPrice">관람료</Label>
           <div style={{ position: "relative" }}>
             <span>성인</span>
@@ -303,9 +313,13 @@ const Input = styled.input`
   background: #fbfbfb;
   border: 1px solid #e0e0e0;
   border-radius: 10000px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   color: #9c9c9c;
+
+  &::placeholder {
+    color: #9c9c9c;
+  }
 `;
 
 const Select = styled.select`
@@ -428,6 +442,7 @@ const TextArea = styled(Input)`
 
 const InputLink = styled(Input)`
   padding: 8px 20px;
+  line-height: 20px;
 `;
 
 const ButtonWrapper = styled.div`
