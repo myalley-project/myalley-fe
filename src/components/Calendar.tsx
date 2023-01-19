@@ -167,7 +167,7 @@ function getCalendarDays(currentMonth: Date) {
 const CalendarWrapper = styled.div`
   width: 318px;
   height: fit-content;
-  border: 1px solid ${theme.colors.main};
+  border: 1px solid ${theme.colors.primry70};
   padding: 30px;
 `;
 
@@ -178,7 +178,7 @@ const Header = styled.div`
 `;
 
 const Divider = styled.div`
-  border-bottom: 1px solid ${theme.colors.main};
+  border-bottom: 1px solid ${theme.colors.primry70};
   margin: 14px 0;
 `;
 
@@ -187,7 +187,7 @@ const DayOfWeek = styled.div`
     display: inline-block;
     width: calc(100% / 7);
     text-align: center;
-    color: ${theme.colors.main};
+    color: ${theme.colors.primry70};
   }
   margin-bottom: 15px;
 `;

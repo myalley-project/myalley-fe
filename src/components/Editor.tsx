@@ -94,7 +94,7 @@ const Preview = styled.div`
 `;
 
 const PreviewImage = styled.img`
-  border: 1px solid ${theme.colors.main};
+  border: 1px solid ${theme.colors.primry70};
   border-radius: 4px;
   padding: 5px;
   width: 250px;
@@ -111,9 +111,9 @@ const FormBox = styled.div`
   margin: 10px auto;
   & > label {
     padding: 10px 20px;
-    border: 1px solid ${theme.colors.main};
+    border: 1px solid ${theme.colors.primry70};
     border-radius: 30px;
-    color: ${theme.colors.hover};
+    color: ${theme.colors.primry70};
   }
   & > input {
     display: none;
@@ -132,7 +132,7 @@ const TextArea = styled.textarea`
   aspect-ratio: 1 / 0.7;
   border-radius: 1rem;
   padding-top: 1rem;
-  border-color: ${theme.colors.main};
-  outline-color: ${theme.colors.hover};
+  border-color: ${theme.colors.primry70};
+  outline-color: ${theme.colors.primry70};
   resize: none;
 `;

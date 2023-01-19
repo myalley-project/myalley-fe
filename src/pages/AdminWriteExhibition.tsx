@@ -217,7 +217,9 @@ const AdminWriteExhibition = () => {
               checked={priceFree}
               onChange={HandlePriceFree}
             />
-            <span style={{ paddingLeft: "43px" }}>무료관람</span>
+            <span style={{ paddingLeft: "43px", fontWeight: 700 }}>
+              무료 관람
+            </span>
           </div>
         </OptionWrapper>
         <OptionWrapper>
@@ -285,10 +287,12 @@ const TitleWrapper = styled.div`
 `;
 
 const InputTitle = styled.input`
+  width: 100%;
+  border-radius: 0px;
   font-weight: 700;
   font-size: 28px;
   line-height: 36px;
-  color: ${(props) => props.theme.colors.primry70};
+  color: ${(props) => props.theme.colors.greys90};
 `;
 
 const OptionWrapper = styled.div`
@@ -296,7 +300,7 @@ const OptionWrapper = styled.div`
   span {
     font-weight: 500;
     font-size: 14px;
-    color: #9c9c9c;
+    color: ${(props) => props.theme.colors.greys60};
   }
 `;
 
@@ -306,7 +310,7 @@ const Label = styled.label`
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
-  color: #9c9c9c;
+  color: ${(props) => props.theme.colors.greys60};
 `;
 
 const Input = styled.input`
@@ -315,10 +319,10 @@ const Input = styled.input`
   border-radius: 10000px;
   font-weight: 500;
   font-size: 14px;
-  color: #9c9c9c;
+  color: ${(props) => props.theme.colors.greys60};
 
   &::placeholder {
-    color: #9c9c9c;
+    color: ${(props) => props.theme.colors.greys60};
   }
 `;
 
@@ -335,7 +339,7 @@ const Select = styled.select`
   border-radius: 10000px;
   font-weight: 400;
   font-size: 14px;
-  color: #9c9c9c;
+  color: ${(props) => props.theme.colors.greys60};
   appearance: none;
   cursor: pointer;
   &:focus-visible {
@@ -353,7 +357,7 @@ const InputFileName = styled.input`
   border-radius: 10000px;
   font-weight: 400;
   font-size: 14px;
-  color: #9c9c9c;
+  color: ${(props) => props.theme.colors.greys60};
   margin-right: 10px;
 `;
 
@@ -362,7 +366,7 @@ const FileLabel = styled.label`
   padding: 8px 20px;
   width: 96px;
   height: 36px;
-  background: #9c9c9c;
+  background: ${(props) => props.theme.colors.primry70};
   border-radius: 10000px;
   font-weight: 500;
   font-size: 14px;
@@ -398,7 +402,7 @@ const InputPrice = styled.input`
   width: 55px;
   font-weight: 400;
   font-size: 14px;
-  color: #9c9c9c;
+  color: ${(props) => props.theme.colors.greys60};
   text-align: right;
 `;
 
@@ -454,7 +458,7 @@ const ButtonWrapper = styled.div`
 const SubmitBtn = styled.button`
   width: 175px;
   height: 48px;
-  background-color: #9c9c9c;
+  background-color: ${(props) => props.theme.colors.primry70};
   border-radius: 10000px;
   font-weight: 500;
   font-size: 20px;
