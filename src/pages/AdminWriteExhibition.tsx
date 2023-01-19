@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
+import Selectbox from "../components/Selectbox";
 
 const AdminWriteExhibition = () => {
   const [detail, setDetail] = useState({
@@ -21,6 +22,8 @@ const AdminWriteExhibition = () => {
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
+  const [type, setType] = useState("");
+  const [status, setStatus] = useState("");
 
   const getTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDetail({
@@ -136,19 +139,21 @@ const AdminWriteExhibition = () => {
         </TitleWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-type">전시타입</Label>
-          <Select id="exhibition-type" name="exhibition-type">
-            <option>선택</option>
-            <option>선택</option>
-            <option>선택</option>
-          </Select>
+          <Selectbox
+            placeholder="전체 전시"
+            selectedData={setType}
+            options={typeOptions}
+            width="130px"
+          />
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
-          <Select id="exhibition-status" name="exhibition-status">
-            <option>지난 전시</option>
-            <option>현재 전시</option>
-            <option>예정 전시</option>
-          </Select>
+          <Selectbox
+            placeholder="전체 전시"
+            selectedData={setStatus}
+            options={stateOptions}
+            width="130px"
+          />
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-date">전시 일정</Label>
@@ -263,6 +268,9 @@ const AdminWriteExhibition = () => {
 
 export default AdminWriteExhibition;
 
+const typeOptions = ["그림 전시", "조각 전시", "문학 전시", "기획 전시"];
+const stateOptions = ["지난 전시", "현재 전시", "예정 전시"];
+
 const WriteExhibitionContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -310,11 +318,10 @@ const Label = styled.label`
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${(props) => props.theme.colors.greys90};
 `;
 
 const Input = styled.input`
-  background: #fbfbfb;
   border: 1px solid #e0e0e0;
   border-radius: 10000px;
   font-weight: 500;
@@ -326,33 +333,11 @@ const Input = styled.input`
   }
 `;
 
-const Select = styled.select`
-  width: 250px;
-  height: 36px;
-  padding: 8px 10px 8px 20px;
-  background-color: #fbfbfb;
-  border: 1px solid #e0e0e0;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.2998 1.69995L6.6998 6.29995C6.5998 6.39995 6.49147 6.47062 6.3748 6.51195C6.25814 6.55395 6.13314 6.57495 5.9998 6.57495C5.86647 6.57495 5.74147 6.55395 5.6248 6.51195C5.50814 6.47062 5.3998 6.39995 5.2998 6.29995L0.699804 1.69995C0.516471 1.51662 0.424804 1.28328 0.424804 0.999951C0.424804 0.716618 0.516471 0.483285 0.699804 0.299952C0.883137 0.116618 1.11647 0.024951 1.3998 0.0249509C1.68314 0.0249509 1.91647 0.116618 2.0998 0.299951L5.9998 4.19995L9.8998 0.299951C10.0831 0.116618 10.3165 0.0249505 10.5998 0.0249505C10.8831 0.0249505 11.1165 0.116618 11.2998 0.299951C11.4831 0.483284 11.5748 0.716618 11.5748 0.999951C11.5748 1.28328 11.4831 1.51662 11.2998 1.69995Z' fill='%239C9C9C'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position-x: 218px;
-  background-position-y: 13px;
-  border-radius: 10000px;
-  font-weight: 400;
-  font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
-  appearance: none;
-  cursor: pointer;
-  &:focus-visible {
-    outline: none;
-  }
-`;
-
 const InputFileName = styled.input`
   width: 59vw;
   max-width: 851px;
   height: 36px;
   padding: 8px 20px;
-  background: #fbfbfb;
   border: 1px solid #e0e0e0;
   border-radius: 10000px;
   font-weight: 400;
