@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
     align-items: center;
     font-family:'Maven Pro', sans-serif;
     //글씨체 추후 확정되면 수정
+    overflow-x: hidden;
   }
   div, input, button {
     background-color: transparent;

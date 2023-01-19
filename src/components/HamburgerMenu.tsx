@@ -1,13 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import ProfileImg from "../assets/icons/profileImg.svg";
 
 const HamburgerMenu = () => (
   <MenuContainer>
     <MenuWrapper>
       <Subtitle>계정</Subtitle>
       <MypageArea href="/">
-        <div className="profile-img" />
+        <ProfileWrapper>
+          <img src={ProfileImg} alt="profile-img"></img>
+        </ProfileWrapper>
         <div>
           <Nickname>Nickname</Nickname>
           <Email className="email">email11@email.com</Email>
@@ -29,9 +32,6 @@ const HamburgerMenu = () => (
         </List>
         {/* <List as="a" href="/">
           전시회 정보 등록하기
-        </List>
-        <List as="a" href="/">
-          마이 페이지
         </List> */}
       </ul>
     </MenuWrapper>
@@ -54,12 +54,6 @@ const MenuContainer = styled.div`
 
 const MenuWrapper = styled.div`
   padding-bottom: 10px;
-  .profile-img {
-    width: 40px;
-    height: 40px;
-    background-color: #d9d9d9;
-    border-radius: 50%;
-  }
 `;
 
 const Subtitle = styled.h2`
@@ -76,6 +70,11 @@ const MypageArea = styled.a`
   padding: 10px;
   text-decoration: none;
   cursor: pointer;
+`;
+
+const ProfileWrapper = styled.div`
+  width: 40px;
+  height: 40px;
 `;
 
 const Nickname = styled.p`
