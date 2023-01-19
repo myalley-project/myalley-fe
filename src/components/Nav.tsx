@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import UserMenuHover from "../assets/icons/userMenuHover.svg";
-import UserMenu from "../assets/icons/userMenu.svg";
+import personOn from "../assets/icons/personOn.svg";
+import personOff from "../assets/icons/personOff.svg";
 import HamburgerMenu from "./HamburgerMenu";
 
 const Nav = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);
-  const [toggleMenuIcon, setToggleMenuIcon] = useState(UserMenu);
-  const userMenuHover = UserMenuHover;
-  const userMenu = UserMenu;
+  const [toggleMenuIcon, setToggleMenuIcon] = useState(personOff);
+  const userMenuHover = personOn;
+  const userMenu = personOff;
   const menuImg = document.getElementById(
     "user-menu"
   ) as HTMLInputElement | null;
