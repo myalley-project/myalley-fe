@@ -1,0 +1,90 @@
+{
+  "exhibitions": [
+    {
+      "id": 363,
+      "title": "강남 전시",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "duration": "2022-02-02 ~ 2022-02-02",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "space": "ddp",
+      "viewCount": 15
+    },
+    {
+      "id": 123124,
+      "title": "서울 미술관",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "duration": "2022-02-02 ~ 2022-02-02",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "space": "ddp",
+      "viewCount": 15
+    },
+    {
+      "id": 2342,
+      "title": "동대문 ddp sdlfksjdflksjdflksjdlfksjdlfkjsl",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "duration": "2022-02-02 ~ 2022-02-02",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "viewCount": 15,
+      "space": "ddp"
+    },
+    {
+      "id": 22342234,
+      "title": "동대문 ddp",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "duration": "2022-02-02 ~ 2022-02-02",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "space": "ddp",
+      "viewCount": 15
+    },
+    {
+      "id": 23424234,
+      "title": "동대문 ddp",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "duration": "2022-02-02 ~ 2022-02-02",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "space": "ddp",
+      "viewCount": 15
+    },
+    {
+      "id": 231134,
+      "title": "동대문 ddp",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "duration": "2022-02-02 ~ 2022-02-02",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "space": "ddp",
+      "viewCount": 15
+    },
+    {
+      "id": 121234,
+      "title": "동대문 ddp",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "duration": "2022-02-02 ~ 2022-02-02",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "space": "ddp",
+      "viewCount": 15
+    },
+    {
+      "id": 11334234,
+      "title": "동대문 ddp",
+      "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+      "duration": "2022-02-02 ~ 2022-02-02",
+      "type": "미술전시",
+      "status": "현재 전시",
+      "space": "ddp",
+      "viewCount": 15
+    }
+  ],
+  "pageInfo": {
+    "page": 1,
+    "size": 8,
+    "totalElement": 3,
+    "totalPage": 27
+  }
+}
