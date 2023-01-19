@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import likeIcon from "../../assets/icons/like.svg";
-import shareIcon from "../../assets/icons/share.svg";
+import heartOff from "../../assets/icons/heartOff.svg";
+import shareOff from "../../assets/icons/shareOff.svg";
 
 type MainCardType = {
   [key in "title" | "date" | "place" | "time" | "charge"]: string;
@@ -50,8 +50,8 @@ const MainCard = ({ title, date, place, time, charge }: MainCardType) => {
           <Footer>
             {/* 나중에 링크로 수정 */}
             <p>사이트 방문</p>
-            <img src={likeIcon} alt="like icon" />
-            <img src={shareIcon} alt="share icon" />
+            <img src={heartOff} alt="like icon" />
+            <img src={shareOff} alt="share icon" />
           </Footer>
         </InfoContainer>
       </Card>
