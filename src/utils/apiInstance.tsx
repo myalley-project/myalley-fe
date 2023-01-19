@@ -1,4 +1,3 @@
-/* eslint-disable */
 import axios, { Axios, AxiosHeaders } from "axios";
 
 axios.defaults.withCredentials = true;

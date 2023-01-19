@@ -5,13 +5,14 @@ interface AdminOnlyType {
   infos: Infos;
   valids: Valids;
   setValids: React.Dispatch<React.SetStateAction<Valids>>;
-  isOnly: IsOnly | undefined;
+  isOnly: IsOnly;
+  setIsOnly: React.Dispatch<React.SetStateAction<IsOnly>>;
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 // 관리자용 회원가입 UI 컴포넌트_박예선_23.01.08
 const AdminOnly = (props: AdminOnlyType) => {
-  const { infos, valids, setValids, isOnly, handleInput } = props;
+  const { infos, valids, setValids, isOnly, setIsOnly, handleInput } = props;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
   // 관리자번호 유효성검사_박예선_23.01.09
@@ -30,6 +31,7 @@ const AdminOnly = (props: AdminOnlyType) => {
       });
     }, 800);
     setTimer(newTimer);
+    setIsOnly({ ...isOnly, adminNo: null });
   };
 
   // 관리자본명 유효성검사_박예선_23.01.09
@@ -55,7 +57,7 @@ const AdminOnly = (props: AdminOnlyType) => {
       <label className="title">
         관리자 고유번호
         <input
-          type="number"
+          type="text"
           name="adminNo"
           placeholder="회사에서 제공한 개인 고유 번호를 입력해주세요"
           value={infos.adminNo === 0 ? "" : infos.adminNo}
@@ -66,8 +68,10 @@ const AdminOnly = (props: AdminOnlyType) => {
         />
       </label>
       <div className="notice err">
-        {!isOnly && !valids.adminNo && "숫자만 입력가능합니다"}
-        {isOnly && !isOnly.adminNo && "확인할 수 없는 고유번호입니다"}
+        {isOnly.adminNo === null && !valids.adminNo && "숫자만 입력가능합니다"}
+        {isOnly.adminNo !== null &&
+          !isOnly.adminNo &&
+          "확인할 수 없는 고유번호입니다"}
       </div>
       <label className="title">
         이름

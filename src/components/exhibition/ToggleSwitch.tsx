@@ -58,7 +58,7 @@ const Switch = styled.div<{ value: string }>`
   width: 380px;
   height: 44px;
   margin: 50px auto 30px auto;
-  background-color: ${(props) => props.theme.colors.hover};
+  background-color: ${(props) => props.theme.colors.greys60};
   span {
     position: absolute;
     width: 125.33px;
