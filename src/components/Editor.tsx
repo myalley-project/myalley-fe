@@ -94,7 +94,7 @@ const Preview = styled.div`
 `;
 
 const PreviewImage = styled.img`
-  border: 1px solid ${theme.colors.primry70};
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 4px;
   padding: 5px;
   width: 250px;
@@ -111,9 +111,9 @@ const FormBox = styled.div`
   margin: 10px auto;
   & > label {
     padding: 10px 20px;
-    border: 1px solid ${theme.colors.primry70};
+    border: 1px solid ${theme.colors.greys40};
     border-radius: 30px;
-    color: ${theme.colors.primry70};
+    color: ${theme.colors.greys60};
   }
   & > input {
     display: none;
@@ -132,7 +132,7 @@ const TextArea = styled.textarea`
   aspect-ratio: 1 / 0.7;
   border-radius: 1rem;
   padding-top: 1rem;
-  border-color: ${theme.colors.primry70};
-  outline-color: ${theme.colors.primry70};
+  border-color: ${theme.colors.greys40};
+  outline-color: ${theme.colors.greys60};
   resize: none;
 `;

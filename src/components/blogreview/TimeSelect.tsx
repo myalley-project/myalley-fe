@@ -53,7 +53,7 @@ const Description = styled.div`
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: ${theme.colors.primry70};
+  color: ${theme.colors.greys5};
 `;
 
 const FlexContainer = styled.div`
