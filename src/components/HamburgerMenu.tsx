@@ -107,7 +107,5 @@ const LogoutButton = styled.button`
 `;
 
 const List = styled(LogoutButton)`
-  border: 1px solid #21005d;
-  border-radius: 10px;
   text-decoration: none;
 `;
