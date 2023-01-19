@@ -15,7 +15,6 @@ apiInstance.interceptors.request.use(
         "Authorization",
         token ? `Bearer ${token}` : null
       );
-
     return newConfig;
   },
   (err) => Promise.reject(err)
