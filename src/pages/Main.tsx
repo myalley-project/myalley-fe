@@ -1,6 +1,6 @@
 import React from "react";
-import MainArticle from "../components/MainArticle";
+import Carousel from "../components/Carousel";
 
-const Main = () => <MainArticle />;
+const Main = () => <Carousel />;
 
 export default Main;
