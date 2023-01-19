@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ProfileImg from "../assets/icons/profileImg.svg";
 
@@ -108,5 +107,7 @@ const LogoutButton = styled.button`
 `;
 
 const List = styled(LogoutButton)`
+  border: 1px solid #21005d;
+  border-radius: 10px;
   text-decoration: none;
 `;
