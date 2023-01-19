@@ -1,16 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import {
-  ExhbTypeFilters,
-  Exhibition,
-  FilterType,
-  StatusType,
-} from "../types/exhbList";
+import { ExhbTypeFilters, Exhibition, FilterType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import ExhibitionCard from "../components/exhibitionList/ExhibitionCard";
 import PageNoBar from "../components/exhibitionList/PageNoBar";
-import Filters from "../components/exhibitionList/Filters";
+import Filters, { StatusType } from "../components/exhibitionList/Filters";
 
 // 전시회 목록 페이지 컴포넌트_박예선_23.01.18
 const ExhibitionList = () => {
@@ -93,7 +88,7 @@ const ExhibitionListContainer = styled.div`
     justify-content: space-between;
   }
   .border {
-    border: 1px solid ${(props) => props.theme.colors.main};
+    border: 1px solid ${(props) => props.theme.colors.greys40};
     border-radius: 30px;
   }
   .none {

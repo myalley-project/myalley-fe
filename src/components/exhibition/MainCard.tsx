@@ -102,12 +102,12 @@ const EditButtons = styled.div`
 
 const Button = styled.button`
   padding: 0;
-  color: ${(props) => props.theme.colors.hover};
+  color: ${(props) => props.theme.colors.greys60};
   font-size: 14px;
   cursor: pointer;
   &:hover {
     font-weight: 700;
-    color: ${(props) => props.theme.colors.txt};
+    color: ${(props) => props.theme.colors.greys100};
   }
 `;
 
@@ -118,7 +118,7 @@ const Title = styled.h1`
   font-size: 42px;
   line-height: 52px;
   letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.txt};
+  color: ${(props) => props.theme.colors.greys90};
   text-align: left;
 `;
 
@@ -129,7 +129,7 @@ const InfoDetail = styled.dl`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.pressed};
+  color: ${(props) => props.theme.colors.greys80};
   text-align: left;
   margin-bottom: 10px;
   dt {
@@ -150,7 +150,7 @@ const Footer = styled.div`
   font-weight: 500;
   font-size: 14px;
   letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.hover};
+  color: ${(props) => props.theme.colors.greys60};
   text-align: right;
   p {
     line-height: 24px;

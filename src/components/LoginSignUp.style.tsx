@@ -42,15 +42,15 @@ const InputContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 380px;
-  border: 1px solid ${(props) => props.theme.colors.main};
+  border: 1px solid ${(props) => props.theme.colors.greys40};
   .category {
     margin: 30px 0px;
-    color: ${(props) => props.theme.colors.txt};
+    color: ${(props) => props.theme.colors.greys90};
     font-size: 20px;
     font-weight: 700;
   }
   .title {
-    color: ${(props) => props.theme.colors.hover};
+    color: ${(props) => props.theme.colors.greys60};
     font-weight: 700;
   }
   .notice {
@@ -60,7 +60,7 @@ const InputContainer = styled.div`
       color: ${(props) => props.theme.colors.error};
     }
     &.pass {
-      color: ${(props) => props.theme.colors.alarmGreen};
+      color: ${(props) => props.theme.colors.success};
     }
     &.pw-check {
       margin-bottom: 30px;
@@ -75,12 +75,12 @@ const InputContainer = styled.div`
     height: 40px;
     margin: 10px 0;
     padding-left: 20px;
-    border: 1px solid ${(props) => props.theme.colors.main};
-    background-color: ${(props) => props.theme.colors.bg};
-    color: ${(props) => props.theme.colors.txt};
+    border: 1px solid ${(props) => props.theme.colors.greys40};
+    background-color: ${(props) => props.theme.colors.white100};
+    color: ${(props) => props.theme.colors.greys90};
     font-size: 14px;
     &::placeholder {
-      color: ${(props) => props.theme.colors.hover};
+      color: ${(props) => props.theme.colors.greys60};
     }
     ::-webkit-outer-spin-button,
     ::-webkit-inner-spin-button {
@@ -93,7 +93,7 @@ const InputContainer = styled.div`
     height: 48px;
     margin: 30px auto;
     border: none;
-    background-color: ${(props) => props.theme.colors.hover};
+    background-color: ${(props) => props.theme.colors.greys60};
     color: ${(props) => props.theme.colors.white100};
     font-size: 18px;
     font-weight: 700;

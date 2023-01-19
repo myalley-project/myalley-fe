@@ -9,7 +9,6 @@ export interface Exhibition {
   viewCount: number;
 }
 
-export type StatusType = "현재" | "예정" | "지난";
 export type FilterType = "전체" | "영상" | "특별" | "기획" | "상설" | "소장품";
 
 export interface PagesState {

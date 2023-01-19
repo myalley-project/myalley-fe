@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import { Exhibition, FilterType, StatusType } from "../types/exhbList";
+import { StatusType } from "../components/exhibitionList/Filters";
+import { Exhibition, FilterType } from "../types/exhbList";
 import apiInstance from "../utils/apiInstance";
 
 export interface ExhbListRes {

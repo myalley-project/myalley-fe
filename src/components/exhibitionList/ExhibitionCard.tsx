@@ -64,7 +64,7 @@ const ExhibitionCardContainer = styled.div`
       .content-top {
         height: 30.4%;
         max-height: 28px;
-        color: ${(props) => props.theme.colors.txt};
+        color: ${(props) => props.theme.colors.greys90};
         text-decoration: none;
         cursor: pointer;
         .title {
@@ -79,7 +79,7 @@ const ExhibitionCardContainer = styled.div`
           line-height: 16px;
           margin: 1.3% 0 0;
           font-size: 12px;
-          color: ${(props) => props.theme.colors.hover};
+          color: ${(props) => props.theme.colors.greys60};
         }
       }
       .content-footer {
@@ -88,7 +88,7 @@ const ExhibitionCardContainer = styled.div`
         width: 100%;
         line-height: 24px;
         .exhb-period {
-          color: ${(props) => props.theme.colors.pressed};
+          color: ${(props) => props.theme.colors.greys80};
           font-size: 14px;
         }
         .bookmark-box {
