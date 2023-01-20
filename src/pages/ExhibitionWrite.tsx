@@ -38,7 +38,7 @@ const AdminWriteExhibition = () => {
     });
   };
 
-  const getStartDate = (date: Date) => {
+  const handleStartDate = (date: Date) => {
     setStartDate(date);
     const startDateFormat = date.toISOString().split("T")[0];
     const endDateFormat = endDate.toISOString().split("T")[0];
@@ -49,7 +49,7 @@ const AdminWriteExhibition = () => {
     });
   };
 
-  const getEndDate = (date: Date) => {
+  const handleEndDate = (date: Date) => {
     setEndDate(date);
     const startDateFormat = startDate.toISOString().split("T")[0];
     const endDateFormat = date.toISOString().split("T")[0];
@@ -77,7 +77,7 @@ const AdminWriteExhibition = () => {
     }
   };
 
-  const getPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputPrice = e.target.value;
     const numCheck = /^[0-9,]+$/.test(inputPrice);
     const numWithCommas = inputPrice.replaceAll(",", "");
@@ -149,7 +149,7 @@ const AdminWriteExhibition = () => {
             className="input-date"
             dateFormat="yy - MM - dd"
             selected={startDate}
-            onChange={(date: Date) => getStartDate(date)}
+            onChange={(date: Date) => handleStartDate(date)}
           />
           <span>종료일</span>
           <DatePicker
@@ -157,7 +157,7 @@ const AdminWriteExhibition = () => {
             className="input-date"
             dateFormat="yy - MM - dd"
             selected={endDate}
-            onChange={(date: Date) => getEndDate(date)}
+            onChange={(date: Date) => handleEndDate(date)}
           />
         </OptionWrapper>
         <OptionWrapper>
@@ -200,7 +200,7 @@ const AdminWriteExhibition = () => {
                 value={priceWithCommas}
                 disabled={disablePrice}
                 onChange={(e) => {
-                  getPrice(e);
+                  handlePrice(e);
                 }}
               />
               <p>원</p>
