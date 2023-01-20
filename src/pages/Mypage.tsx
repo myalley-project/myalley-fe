@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import profileImg from "../assets/icons/profileImg.svg";
+import MenuButtons from "../components/mypage/MenuButtons";
+import EditProfile from "../components/mypage/EditProfile";
 
-const Mypage = () => (
+const Mypage = () => {
+  const [mode, setMode] = useState("mypage");
+  return (
     <MypageContainer>
       <MypageWrapper>
         <Profile>
-          <ProfileImg />
+          <ProfileImg src={profileImg} alt="profile-img" />
           <Level>level 1</Level>
           <Nicname>닉네임</Nicname>
           <Privacy>
@@ -15,39 +20,34 @@ const Mypage = () => (
             <p className="partition">|</p>
             <p>meme1223@email.com</p>
           </Privacy>
-          <Buttons>
-            <MenuButton type="button">회원 정보 수정</MenuButton>
-            <MenuButton type="button">작성 글 조회</MenuButton>
-            <MenuButton type="button">위시리스트</MenuButton>
-          </Buttons>
+          <MenuButtons setMode={setMode} />
         </Profile>
       </MypageWrapper>
+      {mode === "mypage" && <EditProfile />}
     </MypageContainer>
   );
+};
 
 export default Mypage;
 
 const MypageContainer = styled.div`
-  display: flex;
-  justify-content: center;
   margin: 50px 0;
 `;
 
 const MypageWrapper = styled.div`
-  width: 1200px;
-  height: 1300px;
+  width: 83vw;
+  max-width: 1200px;
+  margin: 0px auto;
 `;
 
 const Profile = styled.div`
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid ${(props) => props.theme.colors.greys40};
   border-radius: 0px;
 `;
 
-const ProfileImg = styled.div`
+const ProfileImg = styled.img`
   width: 120px;
   height: 120px;
-  border-radius: 50%;
-  background-color: #d9d9d9;
   margin-bottom: 30px;
 `;
 
@@ -56,8 +56,8 @@ const Level = styled.p`
   height: 24px;
   padding: 4px 10px;
   margin-bottom: 10px;
-  background-color: #9c9c9c;
-  color: #ffffff;
+  background-color: ${(props) => props.theme.colors.primry60};
+  color: ${(props) => props.theme.colors.white100};
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
@@ -78,26 +78,9 @@ const Privacy = styled.div`
   p {
     font-weight: 500;
     font-size: 12px;
-    color: #9c9c9c;
+    color: ${(props) => props.theme.colors.greys60};
   }
   .partition {
     padding: 0 10px;
   }
-`;
-
-const Buttons = styled.div`
-  padding-bottom: 15px;
-`;
-
-const MenuButton = styled.button`
-  height: 36px;
-  padding: 8px 20px;
-  margin-right: 10px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10000px;
-  color: #9c9c9c;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  cursor: pointer;
 `;
