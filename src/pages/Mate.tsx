@@ -1,4 +1,5 @@
-import React from "react";
+import axios, { AxiosResponse } from "axios";
+import React, { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Calender from "../components/Calendar";
@@ -8,7 +9,27 @@ import { theme } from "../styles/theme";
 // 메이트 모집글 상세페이지_박예선_23.01.19
 const Mate = () => {
   const navigate = useNavigate();
-  const id = "df";
+  const mateId = 8;
+  interface MateRes {
+    id: number;
+  }
+
+  const getMate = useCallback(async () => {
+    try {
+      const res: AxiosResponse<MateRes> = await axios.get("/data/mate.json"); // 테스트용 목데이터
+      const { id } = res.data;
+      console.log(id);
+    } catch (err) {
+      alert(
+        "죄송합니다.\n전시목록을 불러오는데에 실패하였습니다. 다시 시도해주십시오."
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    getMate();
+  }, [getMate]);
+
   return (
     <MateContainer>
       <div className="top-buttons-container">
@@ -18,12 +39,11 @@ const Mate = () => {
         <BtnTransparent>수정</BtnTransparent>
         <BtnTransparent>삭제</BtnTransparent>
       </div>
-      <ExhbCardContainer>
+      <ExhbCardContainer onClick={() => navigate(`/exhibition/${mateId}`)}>
         <Thumbnail
           className="thumbnail"
           src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
           alt="thumbnail"
-          onClick={() => navigate(`/exhibition/${id}`)}
         />
         <InfoContainer>
           <div className="title bold">
@@ -65,41 +85,39 @@ const Mate = () => {
             <div>20대 초반 ~ 30대 중반</div>
           </div>
         </div>
-
         <div>
           관람예정일
           <Calender />
         </div>
-
         <div>
           메이트 설명글
           <div>니아러닝라ㅓ닝러ㅣㄴ아러ㅣㄴ아러니아러ㅣㄴㅇ러닝런아ㅣ</div>
         </div>
-
-        <div>
-          <img
-            // src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
+        <MemberInfo className="flex">
+          <MemberProfileImg
             alt="member profile img"
+            src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
           />
           <div>
             <span>닉네임</span>
-            <span>여자</span>
+            <div>
+              <span>여자</span>
+              <span>20대 초반</span>
+            </div>
           </div>
-          <div>20대 초반</div>
-        </div>
-
+        </MemberInfo>
         <div>
           연락가능 메신저 <div>니아러니아러ㅣ나ㅓ </div>
         </div>
-
         <button type="button">저장하기 30</button>
       </MateContentContainer>
       <CommentList>
         <div className="comment-count bold">
           댓글 <span>9</span>
         </div>
-        <Comment type="comment" />
+        {/* <Comment type="comment" />
         <Comment type="reply" />
+        댓글기능 추가되면 추가하기 */}
       </CommentList>
     </MateContainer>
   );
@@ -127,7 +145,8 @@ const ExhbCardContainer = styled.div`
   display: flex;
   height: 244px;
   margin: 14px 0 30px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${theme.colors.greys40};
+  cursor: pointer;
 `;
 
 const Thumbnail = styled.img`
@@ -168,16 +187,24 @@ const DetailContainer = styled.div`
 `;
 
 const MateContentContainer = styled.div`
-  border: 1px solid #e0e0e0;
-
   margin: 30px 0;
   padding: 30px;
+  border: 1px solid ${theme.colors.greys40};
   .title {
     margin: 10px 0 20px;
     font-size: 28px;
     font-weight: 700;
     line-height: 36px;
   }
+`;
+
+const MemberInfo = styled.div``;
+
+const MemberProfileImg = styled.img`
+  width: 78px;
+  height: 78px;
+  margin-right: 10px;
+  border-radius: 50px;
 `;
 
 const CommentList = styled.div`
