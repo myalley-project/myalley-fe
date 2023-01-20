@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const ToggleSwitch = () => {
+interface StateType {
+  setState: (state: string) => void;
+}
+
+const ToggleSwitch = ({ setState }: StateType) => {
   const [isInfoOrReviewOrMate, setIsInfoOrReviewOrMate] = useState("info");
+
   const onChangeMode = (type: string) => {
     setIsInfoOrReviewOrMate(type);
+    setState(type);
     const circle = document.getElementById("circle") as HTMLInputElement | null;
     if (circle === null) return;
     switch (type) {
@@ -58,7 +64,7 @@ const Switch = styled.div<{ value: string }>`
   width: 380px;
   height: 44px;
   margin: 50px auto 30px auto;
-  background-color: ${(props) => props.theme.colors.hover};
+  background-color: ${(props) => props.theme.colors.greys60};
   span {
     position: absolute;
     width: 125.33px;

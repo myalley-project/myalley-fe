@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import likeIcon from "../../assets/icons/like.svg";
-import shareIcon from "../../assets/icons/share.svg";
+import heartOff from "../../assets/icons/heartOff.svg";
+import shareOff from "../../assets/icons/shareOff.svg";
 
 type MainCardType = {
-  [key in "title" | "date" | "place" | "time" | "charge"]: string;
+  [key in "title" | "date" | "place" | "charge"]: string;
 };
 
-const MainCard = ({ title, date, place, time, charge }: MainCardType) => {
+const MainCard = ({ title, date, place, charge }: MainCardType) => {
   const [cardHeight, setCardHeight] = useState("358px");
   const [auth, setAuth] = useState("user");
 
   useEffect(() => {
     if (auth === "admin") {
       setCardHeight("412px");
-    } else setCardHeight("358px");
+    } else setCardHeight("332px");
   }, [auth, cardHeight]);
 
   return (
@@ -38,10 +38,6 @@ const MainCard = ({ title, date, place, time, charge }: MainCardType) => {
               <dt>장소</dt>
               <dd>{place}</dd>
             </InfoDetail>
-            <InfoDetail>
-              <dt>시간</dt>
-              <dd>{time}</dd>
-            </InfoDetail>
             <InfoDetail style={{ marginBottom: "0px" }}>
               <dt>관람비용</dt>
               <dd>{charge}</dd>
@@ -50,8 +46,8 @@ const MainCard = ({ title, date, place, time, charge }: MainCardType) => {
           <Footer>
             {/* 나중에 링크로 수정 */}
             <p>사이트 방문</p>
-            <img src={likeIcon} alt="like icon" />
-            <img src={shareIcon} alt="share icon" />
+            <img src={heartOff} alt="like icon" />
+            <img src={shareOff} alt="share icon" />
           </Footer>
         </InfoContainer>
       </Card>
@@ -75,20 +71,19 @@ const Card = styled.div<{ height: string }>`
   display: flex;
   max-width: 1200px;
   width: 83vw;
-  height: ${(props) => props.height};
+  min-height: ${(props) => props.height};
   border: 1px solid #e0e0e0;
   background-color: #ffffff;
 `;
 
 const ImageContainer = styled.div`
   width: 278px;
-  height: 100%;
   background-color: #d9d9d9;
 `;
 
 const InfoContainer = styled.div<{ height: string }>`
   width: 922px;
-  height: ${(props) => props.height};
+  min-height: ${(props) => props.height};
   padding: 30px;
 `;
 
@@ -102,23 +97,22 @@ const EditButtons = styled.div`
 
 const Button = styled.button`
   padding: 0;
-  color: ${(props) => props.theme.colors.hover};
+  color: ${(props) => props.theme.colors.greys60};
   font-size: 14px;
   cursor: pointer;
   &:hover {
     font-weight: 700;
-    color: ${(props) => props.theme.colors.txt};
+    color: ${(props) => props.theme.colors.greys100};
   }
 `;
 
 const Title = styled.h1`
   width: 100%;
-  height: 104px;
   font-weight: 700;
   font-size: 42px;
   line-height: 52px;
   letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.txt};
+  color: ${(props) => props.theme.colors.greys90};
   text-align: left;
 `;
 
@@ -129,7 +123,7 @@ const InfoDetail = styled.dl`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.pressed};
+  color: ${(props) => props.theme.colors.greys80};
   text-align: left;
   margin-bottom: 10px;
   dt {
@@ -150,7 +144,7 @@ const Footer = styled.div`
   font-weight: 500;
   font-size: 14px;
   letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.hover};
+  color: ${(props) => props.theme.colors.greys60};
   text-align: right;
   p {
     line-height: 24px;
