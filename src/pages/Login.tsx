@@ -29,10 +29,12 @@ const Login = () => {
     try {
       const res: AxiosResponse<LoginRes> = await loginApi(loginInfo);
       // = await axios.get("/data/login.json"); // 테스트용 목데이터
-      const { access_token, refresh_token, errorCode, errorMsg } = res.data;
-      if (access_token && refresh_token) {
-        localStorage.setItem("access_token", access_token);
-        localStorage.setItem("refresh_token", refresh_token);
+      const { accessToken, refreshToken, errorCode, errorMsg } = res.data;
+      if (accessToken && refreshToken) {
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        alert("로그인에 성공했습니다.");
+        navigate("/");
         return;
       }
       if (errorMsg === "회원 정보 없음") {
