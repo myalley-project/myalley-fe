@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,15 +7,6 @@ import { ko } from "date-fns/esm/locale";
 import Selectbox from "../components/Selectbox";
 
 const AdminWriteExhibition = () => {
-  const [detail, setDetail] = useState({
-    title: "",
-    date: "",
-    fileName: "",
-    adultPrice: 0,
-    content: "",
-    author: "",
-    webLink: "",
-  });
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [thumbnail, setThumbnail] = useState("");
@@ -24,11 +15,26 @@ const AdminWriteExhibition = () => {
   const [disablePrice, setDisablePrice] = useState(false);
   const [type, setType] = useState("");
   const [status, setStatus] = useState("");
+  const [detail, setDetail] = useState({
+    title: "",
+    date: "",
+    space: "",
+    fileName: "",
+    adultPrice: 0,
+    content: "",
+    author: "",
+    webLink: "",
+  });
 
-  const getTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputAndTextArea = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const { value, name } = e.target;
     setDetail({
       ...detail,
-      title: e.target.value,
+      [name]: value,
     });
   };
 
@@ -101,27 +107,6 @@ const AdminWriteExhibition = () => {
     });
   };
 
-  const getContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDetail({
-      ...detail,
-      content: e.target.value,
-    });
-  };
-
-  const getAuthor = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDetail({
-      ...detail,
-      author: e.target.value,
-    });
-  };
-
-  const getWebLink = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDetail({
-      ...detail,
-      webLink: e.target.value,
-    });
-  };
-
   const clickSubmitBtn = () => {
     console.log(detail);
   };
@@ -132,8 +117,9 @@ const AdminWriteExhibition = () => {
         <TitleWrapper>
           <InputTitle
             type="text"
+            name="title"
             value={detail.title}
-            onChange={getTitle}
+            onChange={(e) => handleInputAndTextArea(e)}
             placeholder="제목을 입력해주세요"
           />
         </TitleWrapper>
@@ -180,6 +166,7 @@ const AdminWriteExhibition = () => {
           <FileLabel htmlFor="exhibition-posterUrl">올리기</FileLabel>
           <InputFile
             type="file"
+            name="fileName"
             id="exhibition-posterUrl"
             onChange={uploadImgFile}
             accept="image/jpeg,image/jpg,image/png"
@@ -196,9 +183,10 @@ const AdminWriteExhibition = () => {
           <Label htmlFor="exhibition-space">전시 장소</Label>
           <InputLink
             type="text"
+            name="space"
             placeholder="내용을 입력해주세요."
-            value={detail.webLink}
-            onChange={getWebLink}
+            value={detail.space}
+            onChange={(e) => handleInputAndTextArea(e)}
             style={{ width: "280px" }}
           />
         </OptionWrapper>
@@ -231,27 +219,30 @@ const AdminWriteExhibition = () => {
           <Label htmlFor="exhibition-content">전시내용</Label>
           <TextArea
             as="textarea"
+            name="content"
             placeholder="내용을 입력해주세요."
             value={detail.content}
-            onChange={getContent}
+            onChange={(e) => handleInputAndTextArea(e)}
           />
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-author">작가 정보</Label>
           <TextArea
             as="textarea"
+            name="author"
             placeholder="내용을 입력해주세요."
             value={detail.author}
-            onChange={getAuthor}
+            onChange={(e) => handleInputAndTextArea(e)}
           />
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-posterUrl">전시회 웹페이지 주소</Label>
           <InputLink
             type="text"
+            name="webLink"
             placeholder="내용을 입력해주세요."
             value={detail.webLink}
-            onChange={getWebLink}
+            onChange={(e) => handleInputAndTextArea(e)}
             style={{ width: "100%" }}
           />
         </OptionWrapper>
