@@ -1,20 +1,29 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Calender from "../components/Calendar";
-import MainCard from "../components/exhibition/MainCard";
 import Comment from "../components/mate/Comment";
+import { theme } from "../styles/theme";
 
 // 메이트 모집글 상세페이지_박예선_23.01.19
 const Mate = () => {
-  const auth = "admin";
+  const navigate = useNavigate();
+  const id = "df";
   return (
     <MateContainer>
-      <div className="top-buttons-container">buttons</div>
+      <div className="top-buttons-container">
+        <BtnTransparent>목록</BtnTransparent>
+        <BtnTransparent>이전 글</BtnTransparent>
+        <BtnTransparent>다음 글</BtnTransparent>
+        <BtnTransparent>수정</BtnTransparent>
+        <BtnTransparent>삭제</BtnTransparent>
+      </div>
       <ExhbCardContainer>
         <Thumbnail
           className="thumbnail"
           src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
           alt="thumbnail"
+          onClick={() => navigate(`/exhibition/${id}`)}
         />
         <InfoContainer>
           <div className="title bold">
@@ -34,8 +43,8 @@ const Mate = () => {
       </ExhbCardContainer>
       <MateContentContainer>
         <div>
-          <span>모집 중</span>
-          <div>모집글 제목</div>
+          <BtnColored>모집 중</BtnColored>
+          <div className="title">모집글 제목</div>
           <span>createdAt</span>
           <div>
             조회수 <span>00</span>
@@ -68,7 +77,10 @@ const Mate = () => {
         </div>
 
         <div>
-          <img src="" alt="member profile img" />
+          <img
+            // src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
+            alt="member profile img"
+          />
           <div>
             <span>닉네임</span>
             <span>여자</span>
@@ -99,7 +111,7 @@ const MateContainer = styled.div`
   width: 83vw;
   max-width: 1200px;
   margin: 50px 0;
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   .top-buttons-container {
     height: 40px;
   }
@@ -142,11 +154,11 @@ const DetailContainer = styled.div`
       font-size: 14px;
       font-weight: 500;
       line-height: 20px;
-      color: ${(props) => props.theme.colors.greys90};
+      color: ${theme.colors.greys90};
       &.detail-name {
         width: 72px;
         margin-right: 30px;
-        color: ${(props) => props.theme.colors.greys60};
+        color: ${theme.colors.greys60};
       }
     }
     &.date {
@@ -159,6 +171,13 @@ const MateContentContainer = styled.div`
   border: 1px solid #e0e0e0;
 
   margin: 30px 0;
+  padding: 30px;
+  .title {
+    margin: 10px 0 20px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 36px;
+  }
 `;
 
 const CommentList = styled.div`
@@ -166,11 +185,25 @@ const CommentList = styled.div`
   padding: 30px;
   .comment-count {
     padding-bottom: 14px;
-    border-bottom: 1px solid ${(props) => props.theme.colors.greys40};
+    border-bottom: 1px solid ${theme.colors.greys40};
     border-radius: 0;
     font-size: 20px;
     span {
-      color: ${(props) => props.theme.colors.primry60};
+      color: ${theme.colors.primry60};
     }
   }
+`;
+
+const BtnColored = styled.button`
+  height: 36px;
+  padding: 0 20px;
+  background-color: ${theme.colors.primry60};
+  color: ${theme.colors.white100};
+  font-size: 14px;
+`;
+
+const BtnTransparent = styled.button`
+  height: 40px;
+  padding: 0 20px;
+  border: 1px solid ${theme.colors.greys40};
 `;
