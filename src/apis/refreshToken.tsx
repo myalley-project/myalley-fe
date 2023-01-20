@@ -7,20 +7,21 @@ import useLogOut from "./logOut";
 const useRefreshTokenApi = () => {
   const navigate = useNavigate();
   const logOut = useLogOut("refresh_token 만료");
-  const token = localStorage.getItem("refresh_token");
+  const token = localStorage.getItem("refreshToken");
 
   const refreshTokenApi = async () => {
     if (token)
       try {
         const res: AxiosResponse<RefreshTokenRes> = await apiInstance.post(
           "/refresh",
-          { refresh_token: `Bearer ${token}` }
+          { refreshToken: `Bearer ${token}` }
         );
-        await axios.get("/data/refreshToken.json"); // 테스트용 목데이터
-        const { access_token, refresh_token, errorMsg } = res.data;
-        if (access_token && refresh_token) {
-          localStorage.setItem("access_token", access_token);
-          localStorage.setItem("refresh_token", refresh_token);
+        // await axios.get("/data/refreshToken.json"); // 테스트용 목데이터
+        console.log(res.data);
+        const { accessToken, refreshToken, errorMsg } = res.data;
+        if (accessToken && refreshToken) {
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
         }
         if (errorMsg === "Forbidden") {
           await logOut();
@@ -39,8 +40,8 @@ const useRefreshTokenApi = () => {
 export default useRefreshTokenApi;
 
 interface RefreshTokenRes {
-  access_token?: string;
-  refresh_token?: string;
+  accessToken?: string;
+  refreshToken?: string;
   errorCode?: 403;
   errorMsg?: "Forbidden";
 }

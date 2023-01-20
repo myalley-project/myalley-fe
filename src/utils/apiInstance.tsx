@@ -1,6 +1,7 @@
 import axios, { AxiosHeaders } from "axios";
 
 axios.defaults.withCredentials = true;
+axios.defaults.validateStatus = () => true;
 
 const apiInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
