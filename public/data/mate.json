@@ -1,0 +1,29 @@
+{
+  "id": 1,
+  "title": "모집글 제목",
+  "status": "모집 중",
+  "mateGender": "여성",
+  "mateAge": "연령 무관",
+  "availableDate": "2023-02-10",
+  "content": "메이트 모집글 내용ㄴㅇㄹㄴㅇㄹㄴㅇㄹ닌아러니ㅏㄹ\nsdlfkjsdlfjsdlf\n",
+  "contact": "오픈채팅방 링크",
+  "viewCount": 1,
+  "createdAt": "2023-01-17",
+  "bookmarkCount": 20,
+  "bookmarked": false,
+  "exhibition": {
+    "exhibitionId": 1,
+    "exhibitionTitle": "제목2",
+    "exhibitionSpace": "국립현대미술관",
+    "posterUrl": "https://my-alley-exhibition.s3.ap-northeast-2.amazonaws.com/poster/b769b21c-c858-416a-905c-d5829e35ef34.jpg",
+    "exhibitionDuration": "2023-02-01 ~ 2023-05-28",
+    "status": "현재 전시"
+  },
+  "member": {
+    "memberId": 1,
+    "memberNickname": "작성자 닉네임",
+    "memberProfileImg": "작성자 프로필 이미지",
+    "memberGender": "W",
+    "memberAge": "1999"
+  }
+}
