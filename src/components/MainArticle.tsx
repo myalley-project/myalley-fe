@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ArrowButton from "../assets/icons/arrowButton.svg";
+import { theme } from "../styles/theme";
 
 const MainArticle = () => (
   <ArticleContainer>
@@ -53,6 +54,10 @@ const ArticleContainer = styled.section`
   align-items: center;
   justify-content: center;
   gap: 30px;
+  margin-bottom: 30px;
+  & > * {
+    flex: 1;
+  }
 `;
 
 const Article = styled.article`
@@ -61,7 +66,7 @@ const Article = styled.article`
   justify-content: center;
   align-items: center;
   padding: 30px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 30px;
   gap: 30px;
   text-align: center;

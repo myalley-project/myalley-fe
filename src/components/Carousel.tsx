@@ -82,7 +82,8 @@ const Carousel = () => {
 export default Carousel;
 
 const Container = styled.div`
-  width: 90vw;
+  width: 1440px;
+  margin-bottom: 30px;
 `;
 
 const StyledSwiper = styled(Swiper)`
