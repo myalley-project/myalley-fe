@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Input, Label } from "../../styles/labelAndInputStyles";
+import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
 import Selectbox from "../Selectbox";
@@ -14,13 +14,12 @@ const EditProfile = () => {
     month: "",
     day: "",
   });
-  const [selectedGender, setSelectedGender] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
-
-  const editBtn = () => {
-    // const res: AxiosResponse<MypageRes> = await mypageApi(infos);
-    console.log(infos);
-  };
+  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
+  const [passwordCheck, setPasswordCheck] = useState(" ");
+  const [valids, setValids] = useState({
+    nickname: false,
+    password: false,
+  });
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -28,6 +27,46 @@ const EditProfile = () => {
       ...infos,
       [name]: value,
     });
+  };
+
+  const editBtn = () => {
+    // const res: AxiosResponse<MypageRes> = await mypageApi(infos);
+    console.log(infos);
+  };
+
+  const handleNicknameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const rNickname = /^[가-힣|a-z|A-Z|0-9|]{2,10}$/;
+    // 한글, 영어 대소문자, 숫자 2~10자리
+    if (timer) {
+      clearTimeout(timer);
+    }
+    const newTimer = setTimeout(() => {
+      const isNicknameValid = rNickname.test(value);
+      setValids({
+        ...valids,
+        nickname: isNicknameValid,
+      });
+    }, 800);
+    setTimer(newTimer);
+  };
+
+  const handlePwValid = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const rPassword =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*])[A-Za-z\d~!@#$%^&*]{8,16}$/;
+    // 영어 대소문자, 숫자, 특수문자(~!@#$%^&*)를 포함한 8~16자
+    if (timer) {
+      clearTimeout(timer);
+    }
+    const newTimer = setTimeout(() => {
+      const isPwValid = rPassword.test(value);
+      setValids({
+        ...valids,
+        password: isPwValid,
+      });
+    }, 800);
+    setTimer(newTimer);
   };
 
   return (
@@ -47,9 +86,16 @@ const EditProfile = () => {
             height="44px"
             name="nickname"
             value={infos.nickname}
-            onChange={(e) => handleInput(e)}
+            onChange={(e) => {
+              handleInput(e);
+              handleNicknameValid(e);
+            }}
           />
-          {/* {true && <div>한글, 영어 대소문자, 숫자 2~10자를 입력하세요</div>} */}
+          {!valids.nickname && (
+            <Notice color="#575757">
+              한글, 영어 대소문자, 숫자 2~10자를 입력하세요
+            </Notice>
+          )}
         </InputWrapper>
         <InputWrapper>
           <Label>생년월일</Label>
@@ -84,14 +130,12 @@ const EditProfile = () => {
           <Label htmlFor="gender">성별</Label>
           <Selectbox
             placeholder="성별"
-            selectedData={setSelectedGender}
             options={gender}
             width="26vw"
             name="gender"
             objectData={infos}
             setObjectData={setInfos}
           />
-          {/* <Input type="text" id="gender" width="26vw" height="44px" /> */}
         </InputWrapper>
         <InputWrapper>
           <Label htmlFor="password">비밀번호 변경</Label>
@@ -101,8 +145,19 @@ const EditProfile = () => {
             placeholder="비밀번호를 입력하세요"
             width="26vw"
             height="44px"
+            onChange={(e) => {
+              handleInput(e);
+              handlePwValid(e);
+            }}
           />
-        </InputWrapper>{" "}
+          {!valids.password ? (
+            <Notice color="red">
+              영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요
+            </Notice>
+          ) : (
+            <Notice color="green">안전한 비밀번호입니다</Notice>
+          )}
+        </InputWrapper>
         <InputWrapper>
           <Label htmlFor="password-check">비밀번호 재확인</Label>
           <PasswordInput
@@ -111,7 +166,15 @@ const EditProfile = () => {
             placeholder="비밀번호를 입력하세요"
             width="26vw"
             height="44px"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setPasswordCheck(e.target.value);
+            }}
           />
+          {passwordCheck !== infos.password ? (
+            <Notice color="red">일치안함</Notice>
+          ) : (
+            <Notice color="green">일치함</Notice>
+          )}
         </InputWrapper>
         <EditBtn type="submit" onClick={editBtn}>
           수정하기

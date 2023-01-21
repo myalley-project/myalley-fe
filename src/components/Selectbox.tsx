@@ -11,7 +11,7 @@ interface SelectBoxType {
   objectData?: StringType;
   name?: string;
 }
-
+// 각자의 코드에 맞게 타입 선언 필요
 export interface StringType {
   password: string;
   nickname: string;
