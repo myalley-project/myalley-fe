@@ -23,17 +23,20 @@ const Pagination = (props: PaginationType) => {
       setPages({ ...pages, selected: 1 });
       return;
     }
-    if (started === selected)
+    if (started === selected) {
       setPages({ started: started - 5, selected: started - 5 });
-    if (started !== selected) setPages({ ...pages, selected: started });
+      return;
+    }
+    setPages({ ...pages, selected: started });
   };
 
   // 이전 화살표 클릭 함수_박예선_23.01.21
   const clickArrowLeft = () => {
     if (started === selected) {
       setPages({ started: started - 5, selected: selected - 1 });
+      return;
     }
-    if (started !== selected) setPages({ ...pages, selected: selected - 1 });
+    setPages({ ...pages, selected: selected - 1 });
   };
 
   // 다다음 화살표 클릭 함수_박예선_23.01.21
@@ -58,6 +61,7 @@ const Pagination = (props: PaginationType) => {
   const clickArrowRight = () => {
     if (selected < started + 4) {
       setPages({ ...pages, selected: selected + 1 });
+      return;
     }
     if (selected === started + 4) {
       setPages({ started: started + 5, selected: started + 5 });
