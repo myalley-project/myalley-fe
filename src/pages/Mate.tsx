@@ -94,19 +94,22 @@ const Mate = () => {
         </InfoContainer>
       </ExhbCardContainer>
       <MateContentContainer>
-        <div>
-          <BtnColored>모집 중</BtnColored>
-          <div className="title">모집글 제목</div>
-          <span>createdAt</span>
-          <div>
-            조회수 <span>00</span>
-          </div>
-          <div>
-            댓글 <span>2 </span>
+        <div className="flex">
+          <div className="title-container">
+            <BtnColored>모집 중</BtnColored>
+            <div className="title">모집글 제목</div>
+            <div className="title-info flex">
+              <div>2023-03-09 18:30</div>
+              <div className="border" />
+              <div>조회수</div>
+              <div className="colored">00</div>
+              <div className="border" />
+              <div>댓글</div>
+              <div className="colored">2</div>
+            </div>
           </div>
         </div>
-
-        <div>
+        <div className="flex">
           원하는 메이트
           <div>
             <div>성별</div>
@@ -122,7 +125,7 @@ const Mate = () => {
           <Calender />
         </div>
         <div>
-          메이트 설명글
+          <span>메이트 설명글</span>
           <div>니아러닝라ㅓ닝러ㅣㄴ아러ㅣㄴ아러니아러ㅣㄴㅇ러닝런아ㅣ</div>
         </div>
         <MemberInfo className="flex">
@@ -161,7 +164,6 @@ const MateContainer = styled.div`
   width: 83vw;
   max-width: 1200px;
   margin: 50px 0;
-  /* border: 1px solid #e0e0e0; */
   .top-buttons-container {
     height: 40px;
   }
@@ -222,11 +224,34 @@ const MateContentContainer = styled.div`
   margin: 30px 0;
   padding: 30px;
   border: 1px solid ${theme.colors.greys40};
-  .title {
-    margin: 10px 0 20px;
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 36px;
+  .title-container {
+    width: 100%;
+    margin-bottom: 50px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid ${theme.colors.greys40};
+    border-radius: 0;
+    .title {
+      margin: 10px 0 20px;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 36px;
+    }
+  }
+  .title-info {
+    align-items: center;
+    font-size: 12px;
+    color: ${theme.colors.greys60};
+    .border {
+      height: 8px;
+      margin-right: 10px;
+      padding-right: 10px;
+      border-right: 1px solid ${theme.colors.greys40};
+      border-radius: 0;
+    }
+    .colored {
+      margin-left: 2px;
+      color: ${theme.colors.primry60};
+    }
   }
 `;
 

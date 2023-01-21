@@ -5,6 +5,7 @@ interface CommentType {
   type: "comment" | "reply";
 }
 
+// 메이트 모집글 댓글 컴포넌트_박예선_23.01.19
 const Comment = ({ type }: CommentType) => {
   const a = 2;
   return (
