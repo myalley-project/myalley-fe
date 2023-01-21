@@ -111,6 +111,10 @@ const ExhibitionWrite = () => {
     console.log(detail);
   };
 
+  useEffect(() => {
+    console.log(type);
+  }, [type]);
+
   return (
     <WriteExhibitionContainer>
       <WriteExhibitionWrapper>

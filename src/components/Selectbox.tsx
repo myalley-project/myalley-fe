@@ -1,20 +1,37 @@
+/* eslint-disable react/require-default-props */
 import React, { useState } from "react";
 import styled from "styled-components";
 
 interface SelectBoxType {
   placeholder: string;
-  selectedData: React.Dispatch<React.SetStateAction<ExhibitionType>>;
+  selectedData?: React.Dispatch<React.SetStateAction<string>>;
+  setInfos?: React.Dispatch<React.SetStateAction<StringType>>;
   options: string[];
   width: string;
+  infos?: StringType;
+  name?: string;
 }
 
-export type ExhibitionType = string;
+export interface StringType {
+  email: string;
+  password: string;
+  pwCheck: string;
+  gender: string;
+  year: string;
+  month: string;
+  day: string;
+  nickname: string;
+  adminNo: number;
+}
 
 const Selectbox = ({
   placeholder,
   selectedData,
+  setInfos,
   options,
   width,
+  infos,
+  name,
 }: SelectBoxType) => {
   const [show, setShow] = useState(false);
   const [selectItem, setSelectItem] = useState(placeholder);
@@ -26,7 +43,14 @@ const Selectbox = ({
   const getSelectItem = (item: string) => {
     setSelectItem(item);
     ToggleSelector();
-    selectedData(item);
+    if (selectedData) {
+      selectedData(item);
+    }
+    if (name && setInfos && infos !== undefined) {
+      if (name === "year") {
+        setInfos({ ...infos, year: item });
+      }
+    }
   };
 
   return (

@@ -1,17 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Input, Label } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
 import Selectbox from "../Selectbox";
-
-// import CommonOnly from "../signUp/CommonOnly";
-
-// export interface IsOnly {
-//   email: boolean | null;
-//   nickname: boolean | null;
-//   adminNo: boolean | null;
-// }
 
 const EditProfile = () => {
   const [infos, setInfos] = useState({
@@ -19,33 +11,16 @@ const EditProfile = () => {
     password: "",
     pwCheck: "",
     gender: "",
-    birth: { year: "", month: "", day: "" },
+    year: "",
+    month: "",
+    day: "",
     nickname: "",
     adminNo: 0,
-    name: "",
   });
-  const [year, setYear] = useState("");
-  // const [valids, setValids] = useState({
-  //   email: false,
-  //   password: false,
-  //   pwCheck: false,
-  //   nickname: false,
-  //   adminNo: true,
-  //   name: false,
-  // });
-  // const [isOnly, setIsOnly] = useState<IsOnly>({
-  //   email: null,
-  //   nickname: null,
-  //   adminNo: null,
-  // });
 
-  // const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value, name } = e.target;
-  //   setInfos({
-  //     ...infos,
-  //     [name]: value,
-  //   });
-  // };
+  const editBtn = () => {
+    console.log(infos);
+  };
 
   return (
     <EditProfileContainer>
@@ -68,15 +43,23 @@ const EditProfile = () => {
         <InputWrapper>
           <Label>생년월일</Label>
           <Selectbox
-            placeholder="년도"
-            selectedData={setYear}
+            placeholder="9999"
+            infos={infos}
+            setInfos={setInfos}
             options={yearArr()}
             width="130px"
-          ></Selectbox>
+            name="year"
+          />
         </InputWrapper>
         <InputWrapper>
           <Label htmlFor="gender">성별</Label>
-          <Input type="text" id="gender" width="26vw" height="44px" />
+          {/* <Selectbox
+            placeholder="성별"
+            selectedData={setYear}
+            options={gender}
+            width="26vw"
+          /> */}
+          {/* <Input type="text" id="gender" width="26vw" height="44px" /> */}
         </InputWrapper>
         <InputWrapper>
           <Label htmlFor="password">비밀번호 변경</Label>
@@ -98,15 +81,9 @@ const EditProfile = () => {
             height="44px"
           />
         </InputWrapper>
-        {/* <CommonOnly
-          infos={infos}
-          setInfos={setInfos}
-          valids={valids}
-          setValids={setValids}
-          isOnly={isOnly}
-          handleInput={handleInput}
-        /> */}
-        <EditBtn type="submit">수정하기</EditBtn>
+        <EditBtn type="submit" onClick={editBtn}>
+          수정하기
+        </EditBtn>
       </EditProtileWrapper>
     </EditProfileContainer>
   );
@@ -137,6 +114,8 @@ const dayArr = () => {
   }
   return days;
 };
+
+const gender = ["여성", "남성"];
 
 const EditProfileContainer = styled.div`
   width: 83vw;
