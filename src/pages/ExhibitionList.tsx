@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { ExhbTypeFilters, Exhibition, FilterType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import ExhibitionCard from "../components/exhibitionList/ExhibitionCard";
-import PageNoBar from "../components/PageNoBar";
+import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 
-// 전시회 목록 페이지 컴포넌트_박예선_23.01.18
+// 전시회 목록 페이지 컴포넌트_박예선_23.01.21
 const ExhibitionList = () => {
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -63,7 +63,7 @@ const ExhibitionList = () => {
           <ExhibitionCard key={exhb.id} exhbData={exhb} />
         ))}
       </CardListContainer>
-      <PageNoBar pages={pages} setPages={setPages} totalPage={totalPage} />
+      <Pagination pages={pages} setPages={setPages} totalPage={totalPage} />
     </ExhibitionListContainer>
   );
 };

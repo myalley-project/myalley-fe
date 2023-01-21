@@ -6,8 +6,10 @@ import arrowRightDouble from "../assets/icons/arrowRightDouble.svg";
 import arrowLeftDouble from "../assets/icons/arrowLeftDouble.svg";
 import { PagesState } from "../types/exhbList";
 
-const PageNoBar = (props: PageNoBarType) => {
+// 페이지네이션 컴포넌트_박예선_23.01.21
+const Pagination = (props: PaginationType) => {
   const { pages, setPages, totalPage } = props;
+  const { started, selected } = pages;
 
   // 페이지 넘버 클릭 함수_박예선_23.01.16
   const clickPageNo = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -19,54 +21,52 @@ const PageNoBar = (props: PageNoBarType) => {
 
   // 좌우 페이지 방향버튼 클릭 함수_박예선_23.01.16
   const handlePageArrow = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { started, selected } = pages;
     const { name } = e.currentTarget;
     if (!totalPage) return;
-    if (name === "doubleMinus") {
+    if (name === "leftDouble") {
       if (started !== 1) {
-        setPages({ started: started - 5, selected: started - 1 });
+        setPages({ ...pages, started: started - 5, selected: started - 1 });
       }
       if (started === 1) {
         setPages({ ...pages, selected: 1 });
       }
     }
-    if (name === "minus") {
+    if (name === "left") {
       if (selected === 1) return;
       if (started === selected) {
-        setPages({ started: started - 5, selected: selected - 1 });
+        setPages({ ...pages, started: started - 5, selected: selected - 1 });
       }
       if (selected - started >= 1)
         setPages({ ...pages, selected: selected - 1 });
     }
-    if (name === "plus") {
+    if (name === "right") {
       if (totalPage === selected) return;
       if (selected - started < 4) {
         setPages({ ...pages, selected: selected + 1 });
       }
       if (started + 4 === selected) {
-        setPages({ started: started + 5, selected: started + 5 });
+        setPages({ ...pages, started: started + 5, selected: started + 5 });
       }
     }
-    if (name === "doublePlus") {
+    if (name === "rightDouble") {
       if (started >= totalPage - 4) {
         setPages({ ...pages, selected: totalPage });
       }
       if (started < totalPage - 4) {
-        setPages({ started: started + 5, selected: started + 5 });
+        setPages({ ...pages, started: started + 5, selected: started + 5 });
       }
     }
   };
 
   return (
     <PageNoContanier className={totalPage ? "" : "none"}>
-      <button type="button" name="doubleMinus" onClick={handlePageArrow}>
+      <button type="button" name="leftDouble" onClick={handlePageArrow}>
         <img alt="double left icon" src={arrowLeftDouble} />
       </button>
-      <button type="button" name="minus" onClick={handlePageArrow}>
+      <button type="button" name="left" onClick={handlePageArrow}>
         <img alt="left icon" src={arrowLeft} />
       </button>
       {getPageNoArr(totalPage).map((pageNo) => {
-        const { selected, started } = pages;
         if (pageNo >= started && pageNo <= started + 4) {
           return (
             <button
@@ -81,19 +81,19 @@ const PageNoBar = (props: PageNoBarType) => {
         }
         return null;
       })}
-      <button type="button" name="plus" onClick={handlePageArrow}>
+      <button type="button" name="right" onClick={handlePageArrow}>
         <img alt="right icon" src={arrowRight} />
       </button>
-      <button type="button" name="doublePlus" onClick={handlePageArrow}>
+      <button type="button" name="rightDouble" onClick={handlePageArrow}>
         <img alt="double right icon" src={arrowRightDouble} />
       </button>
     </PageNoContanier>
   );
 };
 
-export default PageNoBar;
+export default Pagination;
 
-interface PageNoBarType {
+interface PaginationType {
   pages: PagesState;
   setPages: React.Dispatch<React.SetStateAction<PagesState>>;
   totalPage: number;
