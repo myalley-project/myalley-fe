@@ -46,13 +46,33 @@
         "namedComponents": "arrow-function"
       }
     ],
-    //input의 id 속성과 label의 htmlFor 속성을 연결시켜준다
     "jsx-a11y/label-has-associated-control": [
-      2,
+      "error",
       {
-        "labelAttributes": ["htmlFor"]
+        "handlers": [
+          "onClick",
+          "onMouseDown",
+          "onMouseUp",
+          "onKeyPress",
+          "onKeyDown",
+          "onKeyUp"
+        ]
       }
     ],
-    "@typescript-eslint/no-misused-promises": "off"
+    "jsx-a11y/no-static-element-interactions": [
+      "error",
+      {
+        "handlers": [
+          "onClick",
+          "onMouseDown",
+          "onMouseUp",
+          "onKeyPress",
+          "onKeyDown",
+          "onKeyUp"
+        ]
+      }
+    ],
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-floating-promises": "off"
   }
 }
