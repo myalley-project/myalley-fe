@@ -80,10 +80,27 @@ const SelectUl = styled.ul`
   z-index: 1;
   width: 200px;
   height: fit-content;
+  max-height: 300px;
+  overflow-x: hidden;
   padding: 10px;
   border: 1px solid #f6f3fe;
   border-radius: 10px;
   background-color: ${(props) => props.theme.colors.white100};
+  ::-webkit-scrollbar {
+    display: block;
+    width: 14px;
+  }
+  ::-webkit-scrollbar-thumb {
+    display: block;
+    width: 14px;
+    background-color: #d9d9d9;
+    border-radius: 1000px;
+    background-clip: padding-box;
+    border: 5px solid transparent;
+  }
+  :focus-visible {
+    outline: none;
+  }
 `;
 
 const SelectLi = styled.li`

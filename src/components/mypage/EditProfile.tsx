@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Input, Label } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
+import Selectbox from "../Selectbox";
 
 // import CommonOnly from "../signUp/CommonOnly";
 
@@ -23,6 +24,7 @@ const EditProfile = () => {
     adminNo: 0,
     name: "",
   });
+  const [year, setYear] = useState("");
   // const [valids, setValids] = useState({
   //   email: false,
   //   password: false,
@@ -64,12 +66,17 @@ const EditProfile = () => {
           {/* {true && <div>한글, 영어 대소문자, 숫자 2~10자를 입력하세요</div>} */}
         </InputWrapper>
         <InputWrapper>
-          <Label htmlFor="nickname">생년월일</Label>
-          <Input type="text" id="nickname" width="26vw" height="44px" />
+          <Label>생년월일</Label>
+          <Selectbox
+            placeholder="년도"
+            selectedData={setYear}
+            options={yearArr()}
+            width="130px"
+          ></Selectbox>
         </InputWrapper>
         <InputWrapper>
-          <Label htmlFor="nickname">성별</Label>
-          <Input type="text" id="nickname" width="26vw" height="44px" />
+          <Label htmlFor="gender">성별</Label>
+          <Input type="text" id="gender" width="26vw" height="44px" />
         </InputWrapper>
         <InputWrapper>
           <Label htmlFor="password">비밀번호 변경</Label>
@@ -106,6 +113,30 @@ const EditProfile = () => {
 };
 
 export default EditProfile;
+
+const yearArr = () => {
+  const years: string[] = [];
+  for (let i = new Date().getFullYear(); i > 1950 - 1; i -= 1) {
+    years.push(i.toString());
+  }
+  return years;
+};
+
+const monthArr = () => {
+  const months: string[] = [];
+  for (let i = 1; i < 12 + 1; i += 1) {
+    months.push(i.toString());
+  }
+  return months;
+};
+
+const dayArr = () => {
+  const days: string[] = [];
+  for (let i = 1; i < 31 + 1; i += 1) {
+    days.push(i.toString());
+  }
+  return days;
+};
 
 const EditProfileContainer = styled.div`
   width: 83vw;
