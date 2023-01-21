@@ -7,6 +7,7 @@ import SignUp from "./pages/SignUp";
 import ExhibitionList from "./pages/ExhibitionList";
 import Exhibition from "./pages/Exhibition";
 import ExhibitionWrite from "./pages/ExhibitionWrite";
+import Mypage from "./pages/Mypage";
 import Footer from "./components/Footer";
 
 const App = () => (
@@ -19,6 +20,7 @@ const App = () => (
       <Route path="/exhibition-list" element={<ExhibitionList />} />
       <Route path="/exhibition/:id" element={<Exhibition />} />
       <Route path="/exhibition-write" element={<ExhibitionWrite />} />
+      <Route path="/mypage" element={<Mypage />} />
     </Routes>
     <Footer />
   </BrowserRouter>
