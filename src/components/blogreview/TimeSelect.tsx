@@ -53,7 +53,7 @@ const Description = styled.div`
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: ${theme.colors.hover};
+  color: ${theme.colors.greys60};
 `;
 
 const FlexContainer = styled.div`

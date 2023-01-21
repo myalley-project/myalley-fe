@@ -89,6 +89,7 @@ const StyledSwiper = styled(Swiper)`
   .swiper-wrapper {
     width: 1440px;
     height: 678px;
+    background-color: rgba(0, 0, 0, 1);
   }
   & .swiper-slide {
     position: relative;
@@ -123,13 +124,13 @@ const Slide = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
-  backdrop-filter: blur(8px) grayscale(100%);
+  backdrop-filter: blur(3px);
   &:is(:hover, :focus) {
-    backdrop-filter: blur(8px) grayscale(10%);
   }
 `;
 
 const Text = styled.div`
+  display: inline-block;
   position: absolute;
   top: 50%;
   left: 50%;
