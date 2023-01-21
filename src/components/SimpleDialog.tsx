@@ -1,14 +1,30 @@
 import React from "react";
 import styled from "styled-components";
+import { theme } from "../styles/theme";
+import Button from "./atom/Button";
 
-const SimpleDialog = () => (
+interface SimpleDialogProps {
+  message: string;
+  cancelMessage: string;
+  confirmMessage: string;
+}
+
+const SimpleDialog = ({
+  message,
+  cancelMessage,
+  confirmMessage,
+}: SimpleDialogProps) => (
   <Dialog>
+    <Message>
+      <Title>{message}</Title>
+    </Message>
     <Container>
-      <p>작성하신 내용을 정말 삭제하겠습니까?</p>
-    </Container>
-    <Container>
-      <button type="button">취소하기</button>
-      <button type="button">삭제하기</button>
+      <Button primary={false} type="button">
+        {cancelMessage}
+      </Button>
+      <Button primary type="button">
+        {confirmMessage}
+      </Button>
     </Container>
   </Dialog>
 );
@@ -25,7 +41,24 @@ const Dialog = styled.div`
   z-index: 1000;
 `;
 
-const Container = styled.div`
-  margin-inline: auto;
+const Message = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 380px;
+  height: 116px;
   margin-bottom: 30px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+
+const Title = styled.h1`
+  font-size: 20px;
+  color: ${theme.colors.greys90};
+  text-align: center;
 `;
