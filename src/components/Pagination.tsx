@@ -4,7 +4,6 @@ import arrowRight from "../assets/icons/arrowRight.svg";
 import arrowLeft from "../assets/icons/arrowLeft.svg";
 import arrowRightDouble from "../assets/icons/arrowRightDouble.svg";
 import arrowLeftDouble from "../assets/icons/arrowLeftDouble.svg";
-import { PagesState } from "../types/exhbList";
 import { theme } from "../styles/theme";
 
 // 페이지네이션 컴포넌트_박예선_23.01.21
@@ -120,6 +119,11 @@ const Pagination = (props: PaginationType) => {
 };
 
 export default Pagination;
+
+export interface PagesState {
+  started: number;
+  selected: number;
+}
 
 interface PaginationType {
   pages: PagesState;
