@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import arrowRightIcon from "../../assets/icons/arrowRight.svg";
-import arrowLeftIcon from "../../assets/icons/arrowLeft.svg";
-import arrowRightDoubleIcon from "../../assets/icons/arrowRightDouble.svg";
-import arrowLeftDoubleIcon from "../../assets/icons/arrowLeftDouble.svg";
-import { PagesState } from "../../types/exhbList";
+import arrowRight from "../assets/icons/arrowRight.svg";
+import arrowLeft from "../assets/icons/arrowLeft.svg";
+import arrowRightDouble from "../assets/icons/arrowRightDouble.svg";
+import arrowLeftDouble from "../assets/icons/arrowLeftDouble.svg";
+import { PagesState } from "../types/exhbList";
 
 const PageNoBar = (props: PageNoBarType) => {
   const { pages, setPages, totalPage } = props;
@@ -60,10 +60,10 @@ const PageNoBar = (props: PageNoBarType) => {
   return (
     <PageNoContanier className={totalPage ? "" : "none"}>
       <button type="button" name="doubleMinus" onClick={handlePageArrow}>
-        <img alt="double left icon" src={arrowLeftDoubleIcon} />
+        <img alt="double left icon" src={arrowLeftDouble} />
       </button>
       <button type="button" name="minus" onClick={handlePageArrow}>
-        <img alt="left icon" src={arrowLeftIcon} />
+        <img alt="left icon" src={arrowLeft} />
       </button>
       {getPageNoArr(totalPage).map((pageNo) => {
         const { selected, started } = pages;
@@ -82,10 +82,10 @@ const PageNoBar = (props: PageNoBarType) => {
         return null;
       })}
       <button type="button" name="plus" onClick={handlePageArrow}>
-        <img alt="right icon" src={arrowRightIcon} />
+        <img alt="right icon" src={arrowRight} />
       </button>
       <button type="button" name="doublePlus" onClick={handlePageArrow}>
-        <img alt="double right icon" src={arrowRightDoubleIcon} />
+        <img alt="double right icon" src={arrowRightDouble} />
       </button>
     </PageNoContanier>
   );

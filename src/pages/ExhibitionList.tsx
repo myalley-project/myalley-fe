@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { ExhbTypeFilters, Exhibition, FilterType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import ExhibitionCard from "../components/exhibitionList/ExhibitionCard";
-import PageNoBar from "../components/exhibitionList/PageNoBar";
+import PageNoBar from "../components/PageNoBar";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 
 // 전시회 목록 페이지 컴포넌트_박예선_23.01.18
