@@ -5,32 +5,29 @@ import styled from "styled-components";
 interface SelectBoxType {
   placeholder: string;
   selectedData?: React.Dispatch<React.SetStateAction<string>>;
-  setInfos?: React.Dispatch<React.SetStateAction<StringType>>;
   options: string[];
   width: string;
-  infos?: StringType;
+  setObjectData?: React.Dispatch<React.SetStateAction<StringType>>;
+  objectData?: StringType;
   name?: string;
 }
 
 export interface StringType {
-  email: string;
   password: string;
-  pwCheck: string;
+  nickname: string;
   gender: string;
   year: string;
   month: string;
   day: string;
-  nickname: string;
-  adminNo: number;
 }
 
 const Selectbox = ({
   placeholder,
   selectedData,
-  setInfos,
   options,
   width,
-  infos,
+  setObjectData,
+  objectData,
   name,
 }: SelectBoxType) => {
   const [show, setShow] = useState(false);
@@ -46,10 +43,11 @@ const Selectbox = ({
     if (selectedData) {
       selectedData(item);
     }
-    if (name && setInfos && infos !== undefined) {
-      if (name === "year") {
-        setInfos({ ...infos, year: item });
-      }
+    if (setObjectData && objectData !== undefined && name) {
+      setObjectData({
+        ...objectData,
+        [name]: item,
+      });
     }
   };
 

@@ -7,19 +7,27 @@ import Selectbox from "../Selectbox";
 
 const EditProfile = () => {
   const [infos, setInfos] = useState({
-    email: "",
     password: "",
-    pwCheck: "",
+    nickname: "",
     gender: "",
     year: "",
     month: "",
     day: "",
-    nickname: "",
-    adminNo: 0,
   });
+  const [selectedGender, setSelectedGender] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
 
   const editBtn = () => {
+    // const res: AxiosResponse<MypageRes> = await mypageApi(infos);
     console.log(infos);
+  };
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setInfos({
+      ...infos,
+      [name]: value,
+    });
   };
 
   return (
@@ -37,28 +45,52 @@ const EditProfile = () => {
             placeholder="Nickname"
             width="26vw"
             height="44px"
+            name="nickname"
+            value={infos.nickname}
+            onChange={(e) => handleInput(e)}
           />
           {/* {true && <div>한글, 영어 대소문자, 숫자 2~10자를 입력하세요</div>} */}
         </InputWrapper>
         <InputWrapper>
           <Label>생년월일</Label>
-          <Selectbox
-            placeholder="9999"
-            infos={infos}
-            setInfos={setInfos}
-            options={yearArr()}
-            width="130px"
-            name="year"
-          />
+          <div style={{ display: "flex", gap: "1.7vw" }}>
+            <Selectbox
+              placeholder="9999"
+              options={yearArr()}
+              width="9vw"
+              name="year"
+              objectData={infos}
+              setObjectData={setInfos}
+            />
+            <Selectbox
+              placeholder="12"
+              options={monthArr()}
+              width="7vw"
+              name="month"
+              objectData={infos}
+              setObjectData={setInfos}
+            />
+            <Selectbox
+              placeholder="31"
+              options={dayArr()}
+              width="7vw"
+              name="day"
+              objectData={infos}
+              setObjectData={setInfos}
+            />
+          </div>
         </InputWrapper>
         <InputWrapper>
           <Label htmlFor="gender">성별</Label>
-          {/* <Selectbox
+          <Selectbox
             placeholder="성별"
-            selectedData={setYear}
+            selectedData={setSelectedGender}
             options={gender}
             width="26vw"
-          /> */}
+            name="gender"
+            objectData={infos}
+            setObjectData={setInfos}
+          />
           {/* <Input type="text" id="gender" width="26vw" height="44px" /> */}
         </InputWrapper>
         <InputWrapper>
