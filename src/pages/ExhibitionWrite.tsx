@@ -6,7 +6,7 @@ import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
 import Selectbox from "../components/Selectbox";
 
-const AdminWriteExhibition = () => {
+const ExhibitionWrite = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [thumbnail, setThumbnail] = useState("");
@@ -93,7 +93,7 @@ const AdminWriteExhibition = () => {
     });
   };
 
-  const HandlePriceFree = () => {
+  const handlePriceFree = () => {
     setPriceFree((prev) => {
       if (!prev === true) {
         setDetail({
@@ -208,7 +208,7 @@ const AdminWriteExhibition = () => {
             <InputCheckbox
               type="checkbox"
               checked={priceFree}
-              onChange={HandlePriceFree}
+              onChange={handlePriceFree}
             />
             <span style={{ paddingLeft: "43px", fontWeight: 700 }}>
               무료 관람
@@ -257,7 +257,7 @@ const AdminWriteExhibition = () => {
   );
 };
 
-export default AdminWriteExhibition;
+export default ExhibitionWrite;
 
 const typeOptions = ["그림 전시", "조각 전시", "문학 전시", "기획 전시"];
 const stateOptions = ["지난 전시", "현재 전시", "예정 전시"];
