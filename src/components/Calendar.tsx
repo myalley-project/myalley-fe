@@ -12,8 +12,8 @@ import {
 } from "date-fns";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
-import ArrowPrev from "../assets/icons/arrowPrev.svg";
-import ArrowNext from "../assets/icons/arrowNext.svg";
+import ArrowPrev from "../assets/icons/arrowLeft.svg";
+import ArrowNext from "../assets/icons/arrowRight.svg";
 
 const Calender = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());

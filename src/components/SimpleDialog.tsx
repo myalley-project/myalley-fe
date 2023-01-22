@@ -19,10 +19,10 @@ const SimpleDialog = ({
       <Title>{message}</Title>
     </Message>
     <Container>
-      <Button primary={false} type="button">
+      <Button variant="text" size="large" type="button">
         {cancelMessage}
       </Button>
-      <Button primary type="button">
+      <Button variant="primary" size="large" type="button">
         {confirmMessage}
       </Button>
     </Container>
