@@ -18,14 +18,7 @@ const SimpleDialog = ({
     <Message>
       <Title>{message}</Title>
     </Message>
-    <Container>
-      <Button primary={false} type="button">
-        {cancelMessage}
-      </Button>
-      <Button primary type="button">
-        {confirmMessage}
-      </Button>
-    </Container>
+    <Container />
   </Dialog>
 );
 
