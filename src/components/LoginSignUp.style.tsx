@@ -1,16 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import logo from "../assets/icons/logo.svg";
+import { theme } from "../styles/theme";
 
 type LoginSignUpType = { category: string; children: React.ReactNode };
 
 // 로그인, 회원가입에 공통적으로 사용되는 전체적인 레이아웃 컴포넌트_박예선_22.12.21
 const LoginSignUp = ({ category, children }: LoginSignUpType) => (
   <LoginSignUpSection>
-    <img
-      alt="logo"
-      className="logo"
-      src="https://cdn.pixabay.com/photo/2021/12/17/09/34/christmas-drink-6876097_1280.jpg"
-    />
+    <Logo alt="logo" className="logo" src={logo} />
     {/* 임시로 로고 삽입함. src 추후 수정예정 */}
     <InputContainer>
       <span className="category">{category}</span>
@@ -24,11 +22,6 @@ const LoginSignUpSection = styled.form`
   flex-direction: column;
   align-items: center;
   margin-bottom: 94px;
-  .logo {
-    width: 175px;
-    height: 60px;
-    margin: 30px auto;
-  }
   button {
     cursor: pointer;
     &:disabled {
@@ -37,30 +30,38 @@ const LoginSignUpSection = styled.form`
   }
 `;
 
+const Logo = styled.img`
+  width: 175px;
+  height: 60px;
+  margin: 30px auto;
+  border-radius: 0;
+`;
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 380px;
-  border: 1px solid ${(props) => props.theme.colors.greys40};
+  border: 1px solid ${theme.colors.secondary30};
+  box-shadow: 0px 4px 30px #4f378b0d;
   .category {
     margin: 30px 0px;
-    color: ${(props) => props.theme.colors.greys90};
+    color: ${theme.colors.greys90};
     font-size: 20px;
     font-weight: 700;
   }
   .title {
-    color: ${(props) => props.theme.colors.greys60};
+    color: ${theme.colors.greys60};
     font-weight: 700;
   }
   .notice {
     margin: -1px 0 13px;
     font-size: 12px;
     &.err {
-      color: ${(props) => props.theme.colors.error};
+      color: ${theme.colors.error};
     }
     &.pass {
-      color: ${(props) => props.theme.colors.success};
+      color: ${theme.colors.success};
     }
     &.pw-check {
       margin-bottom: 30px;
@@ -75,28 +76,18 @@ const InputContainer = styled.div`
     height: 40px;
     margin: 10px 0;
     padding-left: 20px;
-    border: 1px solid ${(props) => props.theme.colors.greys40};
-    background-color: ${(props) => props.theme.colors.white100};
-    color: ${(props) => props.theme.colors.greys90};
+    border: 1px solid ${theme.colors.greys40};
+    background-color: ${theme.colors.white100};
+    color: ${theme.colors.greys90};
     font-size: 14px;
     &::placeholder {
-      color: ${(props) => props.theme.colors.greys60};
+      color: ${theme.colors.greys60};
     }
     ::-webkit-outer-spin-button,
     ::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
-  }
-  .btn {
-    width: 320px;
-    height: 48px;
-    margin: 30px auto;
-    border: none;
-    background-color: ${(props) => props.theme.colors.greys60};
-    color: ${(props) => props.theme.colors.white100};
-    font-size: 18px;
-    font-weight: 700;
   }
 `;
 
