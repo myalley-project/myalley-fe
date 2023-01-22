@@ -1,34 +1,22 @@
-/* eslint-disable react/require-default-props */
+/* eslint-disable no-unused-expressions */
 import React, { useState } from "react";
 import styled from "styled-components";
 
 interface SelectBoxType {
   placeholder: string;
-  selectedData?: React.Dispatch<React.SetStateAction<string>>;
+  // selectedData: React.Dispatch<React.SetStateAction<string>>;
   options: string[];
   width: string;
-  setObjectData?: React.Dispatch<React.SetStateAction<StringType>>;
-  objectData?: StringType;
-  name?: string;
-}
-// 각자의 코드에 맞게 타입 선언 필요
-export interface StringType {
-  password: string;
-  nickname: string;
-  gender: string;
-  year: string;
-  month: string;
-  day: string;
+  name: string;
+  onClick: (e: React.MouseEvent<HTMLLIElement>, name: string) => void;
 }
 
 const Selectbox = ({
   placeholder,
-  selectedData,
   options,
   width,
-  setObjectData,
-  objectData,
   name,
+  onClick,
 }: SelectBoxType) => {
   const [show, setShow] = useState(false);
   const [selectItem, setSelectItem] = useState(placeholder);
@@ -37,18 +25,13 @@ const Selectbox = ({
     setShow((prev) => !prev);
   };
 
-  const getSelectItem = (item: string) => {
+  const handleSelectData = (
+    e: React.MouseEvent<HTMLLIElement>,
+    item: string
+  ) => {
     setSelectItem(item);
     ToggleSelector();
-    if (selectedData) {
-      selectedData(item);
-    }
-    if (setObjectData && objectData !== undefined && name) {
-      setObjectData({
-        ...objectData,
-        [name]: item,
-      });
-    }
+    onClick(e, name);
   };
 
   return (
@@ -61,7 +44,12 @@ const Selectbox = ({
           <SubTitle>종류</SubTitle>
           {options &&
             options.map((item) => (
-              <SelectLi key={item} onClick={() => getSelectItem(item)}>
+              <SelectLi
+                key={item}
+                onClick={(e) => {
+                  handleSelectData(e, item);
+                }}
+              >
                 {item}
               </SelectLi>
             ))}
@@ -74,8 +62,8 @@ const Selectbox = ({
 export default Selectbox;
 
 const SelectBtn = styled.button<{ width: string }>`
-  min-width: ${(props) => props.width};
-  width: fit-content;
+  width: ${(props) => props.width};
+  /* width: fit-content; */
   height: 40px;
   margin: 10px 0;
   padding-left: 20px;

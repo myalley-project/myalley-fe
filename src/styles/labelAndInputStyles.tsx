@@ -26,4 +26,5 @@ export const Input = styled.input<{ width: string; height: string }>`
 export const Notice = styled.span<{ color: string }>`
   font-size: 12px;
   color: ${(props) => props.color};
+  margin-top: 4px;
 `;

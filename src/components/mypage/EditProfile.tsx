@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
@@ -6,6 +6,12 @@ import cameraCircle from "../../assets/icons/cameraCircle.svg";
 import Selectbox from "../Selectbox";
 
 const EditProfile = () => {
+  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [valids, setValids] = useState({
+    nickname: false,
+    password: false,
+  });
   const [infos, setInfos] = useState({
     password: "",
     nickname: "",
@@ -14,12 +20,6 @@ const EditProfile = () => {
     month: "",
     day: "",
   });
-  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
-  const [passwordCheck, setPasswordCheck] = useState(" ");
-  const [valids, setValids] = useState({
-    nickname: false,
-    password: false,
-  });
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -27,6 +27,22 @@ const EditProfile = () => {
       ...infos,
       [name]: value,
     });
+  };
+
+  const handleSetInfos = (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    name: string
+  ) => {
+    if (e !== undefined) {
+      console.log(e.currentTarget.textContent, name);
+      const { textContent } = e.currentTarget;
+      if (textContent !== null) {
+        setInfos({
+          ...infos,
+          [name]: textContent,
+        });
+      }
+    }
   };
 
   const editBtn = () => {
@@ -92,49 +108,45 @@ const EditProfile = () => {
             }}
           />
           {!valids.nickname && (
-            <Notice color="#575757">
+            <Notice color="#9C9C9C">
               한글, 영어 대소문자, 숫자 2~10자를 입력하세요
             </Notice>
           )}
         </InputWrapper>
         <InputWrapper>
           <Label>생년월일</Label>
-          <div style={{ display: "flex", gap: "1.7vw" }}>
+          <BirthWrapper>
             <Selectbox
               placeholder="9999"
               options={yearArr()}
               width="9vw"
               name="year"
-              objectData={infos}
-              setObjectData={setInfos}
+              onClick={handleSetInfos}
             />
             <Selectbox
               placeholder="12"
               options={monthArr()}
-              width="7vw"
+              width="6.9vw"
               name="month"
-              objectData={infos}
-              setObjectData={setInfos}
+              onClick={handleSetInfos}
             />
             <Selectbox
               placeholder="31"
               options={dayArr()}
-              width="7vw"
+              width="6.9vw"
               name="day"
-              objectData={infos}
-              setObjectData={setInfos}
+              onClick={handleSetInfos}
             />
-          </div>
+          </BirthWrapper>
         </InputWrapper>
-        <InputWrapper>
+        <InputWrapper style={{ marginBottom: "50px" }}>
           <Label htmlFor="gender">성별</Label>
           <Selectbox
             placeholder="성별"
             options={gender}
             width="26vw"
             name="gender"
-            objectData={infos}
-            setObjectData={setInfos}
+            onClick={handleSetInfos}
           />
         </InputWrapper>
         <InputWrapper>
@@ -142,6 +154,7 @@ const EditProfile = () => {
           <PasswordInput
             type="password"
             id="password"
+            name="password"
             placeholder="비밀번호를 입력하세요"
             width="26vw"
             height="44px"
@@ -151,11 +164,11 @@ const EditProfile = () => {
             }}
           />
           {!valids.password ? (
-            <Notice color="red">
+            <Notice color="#9C9C9C">
               영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요
             </Notice>
           ) : (
-            <Notice color="green">안전한 비밀번호입니다</Notice>
+            <Notice color="#54C60E">안전한 비밀번호입니다</Notice>
           )}
         </InputWrapper>
         <InputWrapper>
@@ -166,14 +179,14 @@ const EditProfile = () => {
             placeholder="비밀번호를 입력하세요"
             width="26vw"
             height="44px"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            onChange={(e) => {
               setPasswordCheck(e.target.value);
             }}
           />
-          {passwordCheck !== infos.password ? (
-            <Notice color="red">일치안함</Notice>
+          {passwordCheck !== "" && passwordCheck === infos.password ? (
+            <Notice color="#54C60E">동일한 비밀번호입니다</Notice>
           ) : (
-            <Notice color="green">일치함</Notice>
+            <Notice color="#FD3D51">비밀번호가 일치하지 않습니다</Notice>
           )}
         </InputWrapper>
         <EditBtn type="submit" onClick={editBtn}>
@@ -185,6 +198,8 @@ const EditProfile = () => {
 };
 
 export default EditProfile;
+
+const gender = ["여성", "남성"];
 
 const yearArr = () => {
   const years: string[] = [];
@@ -209,8 +224,6 @@ const dayArr = () => {
   }
   return days;
 };
-
-const gender = ["여성", "남성"];
 
 const EditProfileContainer = styled.div`
   width: 83vw;
@@ -238,18 +251,35 @@ const UploadImg = styled.img`
 `;
 
 const InputWrapper = styled.div`
-  width: fit-content;
   margin-bottom: 10px;
+  > * {
+    max-width: 380px !important;
+  }
+  button {
+    max-width: 380px;
+  }
+`;
+
+const BirthWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  button {
+    max-width: 100px;
+  }
+  > div:first-child > button {
+    max-width: 130px;
+  }
 `;
 
 const PasswordInput = styled(Input)`
-  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9.5 10.3411C9.18408 10.8163 9 11.3867 9 12C9 13.6569 10.3431 15 12 15C13.0015 15 13.8884 14.5093 14.4333 13.7552M12.594 9.05884C13.3872 9.21816 14.0673 9.69033 14.5 10.3411' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6 7.80245C4.8335 8.55932 3.79192 9.55472 2.95402 10.789L2 12.1942L2.28897 12.6807C5.6219 18.2914 12.9828 19.4408 18 16.2368M9 6.44352C13.4719 5.16815 18.6587 6.64425 21.4704 10.86L22 11.6539L21.6186 12.3529C21.2186 13.0858 20.7498 13.7478 20.2256 14.3386' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M2 5L22 19' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  /* background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='3' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M2.95402 10.789L2 12.1942L2.28897 12.6807C6.58859 19.9188 17.5916 19.7322 21.6186 12.3529L22 11.6539L21.4704 10.86C17.169 4.41087 7.30969 4.37306 2.95402 10.789Z' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); */
   background-position: right 19px center;
   background-repeat: no-repeat;
 `;
 
 const EditBtn = styled.button`
   width: 26vw;
+  max-width: 380px;
   height: 48px;
   margin-top: 40px;
   padding: 10px 40px;
