@@ -2,12 +2,10 @@ import axios, { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import apiInstance from "../utils/apiInstance";
 
-type UseLogOutType = "refresh_token 만료";
-
 // 로그아웃 커스텀훅_박예선_2023.01.19
 // 단순 로그아웃 시 호출: useLogOut();
 // refresh_token 만료 로그아웃 시 호출: useLogOut("refresh_token 만료");
-const useLogOut = (type?: UseLogOutType) => {
+const useLogOut = (type?: "refreshToken 만료") => {
   const navigate = useNavigate();
 
   const logOut = async () => {
@@ -19,8 +17,8 @@ const useLogOut = (type?: UseLogOutType) => {
         await axios.get("/data/logOut.json"); // 테스트용 목데이터
       const { resultCode, errorMsg } = res.data;
       if (resultCode === 200) {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         if (!type) {
           alert("로그아웃되었습니다.");
           navigate("/");

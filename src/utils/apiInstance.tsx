@@ -1,17 +1,9 @@
 import axios, { AxiosHeaders } from "axios";
 
 axios.defaults.withCredentials = true;
-axios.defaults.validateStatus = (status) =>
-  status === 200 ||
-  status === 400 ||
-  status === 401 ||
-  status === 403 ||
-  status === 404 ||
-  status === 409;
-// axios.defaults.validateStatus = () => true; // 모든 status 코드
 
 const apiInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: process.env.REACT_APP_TEST_URL,
 });
 
 apiInstance.interceptors.request.use(

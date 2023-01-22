@@ -25,10 +25,10 @@ const Login = () => {
 
   // 로그인 요청, 요청 후 처리 함수_박예선_2023.01.13
   const clickLoginBtn = async () => {
-    const res: AxiosResponse<LoginRes> =
-      // await loginApi(loginInfo);
-      await axios.get("/data/login.json"); // 테스트용 목데이터
     try {
+      const res: AxiosResponse<LoginRes> =
+        // await loginApi(loginInfo);
+        await axios.get("/data/login.json"); // 테스트용 목데이터
       const { accessToken, refreshToken, errorCode, errorMsg } = res.data;
       if (accessToken && refreshToken) {
         localStorage.setItem("accessToken", accessToken);
