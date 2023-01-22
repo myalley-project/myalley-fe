@@ -22,7 +22,7 @@
   "member": {
     "memberId": 1,
     "memberNickname": "작성자 닉네임",
-    "memberProfileImg": "작성자 프로필 이미지",
+    "memberProfileImg": "https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg",
     "memberGender": "W",
     "memberAge": "1999"
   }
