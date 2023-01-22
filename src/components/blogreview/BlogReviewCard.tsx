@@ -21,6 +21,7 @@ export default BlogReviewCard;
 const Container = styled.div`
   width: 380px;
   height: fit-content;
+  border: 1px solid ${theme.colors.greys60};
 `;
 
 const Image = styled.div`
@@ -30,18 +31,30 @@ const Image = styled.div`
 
 const Review = styled.div`
   padding: 30px;
-  & h2 {
+  & > h2 {
     font-weight: bold;
     font-size: 20px;
     color: ${theme.colors.greys90};
+    margin-bottom: 4px;
   }
-  & span {
-    color: ${theme.colors.greys80};
+  & > p {
+    font-weight: 500;
+    font-size: 14px;
+    color: ${theme.colors.greys60};
     margin-bottom: 20px;
   }
-  & div {
+  & > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 500;
+    & > :first-child {
+      color: ${theme.colors.greys80};
+    }
+    & > :last-child {
+      color: ${theme.colors.greys60};
+    }
   }
 `;
