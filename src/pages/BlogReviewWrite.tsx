@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { ChangeEvent, useReducer } from "react";
 import styled from "styled-components";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
@@ -95,37 +95,44 @@ const reducer = (
     case ReducerActionType.Exhibition:
       return {
         ...state,
-        // ...state,
-        // blogInfo: {
-        //   ...state.blogInfo,
-        //   exhibition: parseInt(action.payload, 10),
-        // },
+        blogInfo: {
+          ...state.blogInfo,
+          exhibition: Number(action.payload),
+        },
       };
     default:
       return state;
   }
 };
 
-const BlogReviewWrite = () => (
-  <Container>
-    <ReviewTitle />
-    <ExhibitionPicker>
-      <ExhibitionSelect />
-      <Calender />
-    </ExhibitionPicker>
-    <SelectorConatiner>
-      <SubTitle text="관람 시간" />
-      <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
-      <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
-    </SelectorConatiner>
-    <SelectorConatiner>
-      <SubTitle text="관람 시간" />
-      <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
-      <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
-    </SelectorConatiner>
-    <Editor />
-  </Container>
-);
+const BlogReviewWrite = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleTitleInput = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: ReducerActionType.Title, payload: event.target.value });
+  };
+
+  return (
+    <Container>
+      <ReviewTitle handleTitleInput={handleTitleInput} />
+      <ExhibitionPicker>
+        <ExhibitionSelect />
+        <Calender />
+      </ExhibitionPicker>
+      <SelectorConatiner>
+        <SubTitle text="관람 시간" />
+        <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
+        <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
+      </SelectorConatiner>
+      <SelectorConatiner>
+        <SubTitle text="관람 시간" />
+        <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
+        <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
+      </SelectorConatiner>
+      <Editor />
+    </Container>
+  );
+};
 
 export default BlogReviewWrite;
 
