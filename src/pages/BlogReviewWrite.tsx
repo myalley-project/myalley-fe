@@ -1,5 +1,11 @@
 import React, { useReducer } from "react";
 import styled from "styled-components";
+import ReviewTitle from "../components/blogreview/ReviewTitle";
+import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
+import Calender from "../components/Calendar";
+import SubTitle from "../components/SubTitle";
+import Selector from "../components/Selector";
+import Editor from "../components/Editor";
 
 interface BlogReviewPost {
   blogInfo: {
@@ -100,11 +106,43 @@ const reducer = (
   }
 };
 
-const BlogReviewWrite = () => <div>BlogReviewWrite</div>;
+const BlogReviewWrite = () => (
+  <Container>
+    <ReviewTitle />
+    <ExhibitionPicker>
+      <ExhibitionSelect />
+      <Calender />
+    </ExhibitionPicker>
+    <SelectorConatiner>
+      <SubTitle text="관람 시간" />
+      <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
+      <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
+    </SelectorConatiner>
+    <SelectorConatiner>
+      <SubTitle text="관람 시간" />
+      <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
+      <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
+    </SelectorConatiner>
+    <Editor />
+  </Container>
+);
 
 export default BlogReviewWrite;
 
 const Container = styled.div`
   width: 1200px;
   padding: 30px;
+  margin: 50px auto;
+`;
+
+const ExhibitionPicker = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 0px;
+  margin-bottom: 30px;
+`;
+
+const SelectorConatiner = styled.div`
+  margin-bottom: 30px;
 `;

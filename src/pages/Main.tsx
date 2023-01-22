@@ -1,5 +1,6 @@
 import React from "react";
+import BlogReviewWrite from "./BlogReviewWrite";
 
-const Main = () => <div />;
+const Main = () => <BlogReviewWrite />;
 
 export default Main;
