@@ -19,10 +19,10 @@ const SimpleDialog = ({
       <Title>{message}</Title>
     </Message>
     <Container>
-      <Button primary={false} type="button">
+      <Button variant="text" size="large" type="button">
         {cancelMessage}
       </Button>
-      <Button primary type="button">
+      <Button variant="primary" size="large" type="button">
         {confirmMessage}
       </Button>
     </Container>
@@ -47,18 +47,22 @@ const Message = styled.div`
   align-items: center;
   width: 380px;
   height: 116px;
+  padding: 0px;
   margin-bottom: 30px;
 `;
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 0px;
   margin-bottom: 30px;
 `;
 
 const Title = styled.h1`
-  font-size: 20px;
   color: ${theme.colors.greys90};
+  font-weight: 400;
+  font-size: 20px;
   text-align: center;
 `;
