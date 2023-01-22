@@ -8,6 +8,7 @@ import Selectbox from "../Selectbox";
 const EditProfile = () => {
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [profileImage, setProfileImage] = useState(profileImg);
   const [valids, setValids] = useState({
     nickname: false,
     password: false,
@@ -19,6 +20,7 @@ const EditProfile = () => {
     year: "",
     month: "",
     day: "",
+    imageFile: "",
   });
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,12 +87,40 @@ const EditProfile = () => {
     setTimer(newTimer);
   };
 
+  const [thumbnail, setThumbnail] = useState("");
+
+  const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    if (e.target.files !== null) {
+      setInfos({
+        ...infos,
+        imageFile: e.target.files[0].name,
+      });
+      reader.onload = () => {
+        if (e.target.files !== null) {
+          setThumbnail(URL.createObjectURL(e.target.files[0]));
+          setProfileImage(URL.createObjectURL(e.target.files[0]));
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
   return (
     <EditProfileContainer>
       <EditProtileWrapper>
         <ImgWrapper>
-          <img src={profileImg} alt="base-img" />
-          <UploadImg src={cameraCircle} alt="upload-btn" />
+          <ProfileImg src={profileImage} alt="base-img" />
+          <label htmlFor="exhibition-posterUrl">
+            <UploadImg src={cameraCircle} alt="upload-btn" />
+          </label>
+          <InputFile
+            type="file"
+            name="fileName"
+            id="exhibition-posterUrl"
+            onChange={uploadImgFile}
+            accept="image/jpeg,image/jpg,image/png"
+          />
         </ImgWrapper>
         <InputWrapper>
           <Label htmlFor="nickname">별명</Label>
@@ -243,11 +273,26 @@ const ImgWrapper = styled.div`
   margin: 0px auto 50px auto;
 `;
 
+const ProfileImg = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 1000px;
+`;
+
 const UploadImg = styled.img`
   position: absolute;
   left: 0;
   bottom: 0;
   cursor: pointer;
+`;
+
+const InputFile = styled.input`
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 `;
 
 const InputWrapper = styled.div`

@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-expressions */
 import React, { useState } from "react";
 import styled from "styled-components";
 
 interface SelectBoxType {
   placeholder: string;
-  // selectedData: React.Dispatch<React.SetStateAction<string>>;
   options: string[];
   width: string;
   name: string;
@@ -63,7 +61,6 @@ export default Selectbox;
 
 const SelectBtn = styled.button<{ width: string }>`
   width: ${(props) => props.width};
-  /* width: fit-content; */
   height: 40px;
   margin: 10px 0;
   padding-left: 20px;
@@ -119,6 +116,7 @@ const SelectLi = styled.li`
   padding: 10px;
   border-radius: 10px;
   font-weight: 50px;
+  font-size: 14px;
   color: #333333;
   cursor: pointer;
   &:hover {
