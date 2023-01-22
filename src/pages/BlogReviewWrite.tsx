@@ -104,4 +104,7 @@ const BlogReviewWrite = () => <div>BlogReviewWrite</div>;
 
 export default BlogReviewWrite;
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 1200px;
+  padding: 30px;
+`;
