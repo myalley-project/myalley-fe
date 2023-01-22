@@ -8,6 +8,7 @@ import checkOff from "../assets/icons/checkOff.svg";
 import checkOn from "../assets/icons/checkOn.svg";
 import loginApi, { LoginRes } from "../apis/login";
 import { MyInfoRes, useMyInfoApi } from "../apis/member";
+import Button from "../components/atom/Button";
 
 // 로그인 컴포넌트_박예선_2023.01.01
 const Login = () => {
@@ -101,23 +102,31 @@ const Login = () => {
         </button>
       </InputContainer>
       <BtnContainer>
-        <button type="button" className="btn" onClick={clickLoginBtn}>
+        <Button
+          variant="primary"
+          size="large"
+          type="button"
+          className="btn"
+          onClick={clickLoginBtn}
+        >
           로그인
-        </button>
+        </Button>
         <div className="or-sign-up">
           <div className="line" />
           <div className="text">또는</div>
           <div className="line" />
         </div>
-        <button
+        <Button
+          variant="secondary"
+          size="large"
           type="button"
-          className="btn sign-up-btn"
+          className="btn"
           onClick={() => {
             navigate("/signup");
           }}
         >
           회원가입
-        </button>
+        </Button>
         <div className="find-account">
           <Link to="/">비밀번호 찾기</Link>
           <div className="line" />
@@ -156,13 +165,14 @@ const BtnContainer = styled.div`
   display: flex;
   flex-direction: column;
   .btn {
+    width: 320px;
     margin: 0;
   }
   .or-sign-up {
     display: flex;
     justify-content: space-between;
     height: 16px;
-    margin: 14px 0;
+    margin: 8px 0;
     color: #e0e0e0;
     align-items: center;
     .line {
@@ -173,9 +183,6 @@ const BtnContainer = styled.div`
     .text {
       font-size: 12px;
     }
-  }
-  .sign-up-btn {
-    background-color: #e0e0e0;
   }
   .find-account {
     display: flex;
