@@ -35,7 +35,9 @@ const BlogReviewList = () => (
 export default BlogReviewList;
 
 const Container = styled.div`
-  width: 1200px;
+  --max-width: 1200px;
+  --padding: 100rem;
+  width: min(--max-width, 100% - (var(--padding) * 2));
   margin-inline: auto;
 `;
 
