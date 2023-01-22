@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { ExhbTypeFilters, FilterType, PagesState } from "../../types/exhbList";
+import { ExhbTypeFilters, FilterType } from "../../types/exhbList";
+import { PagesState } from "../Pagination";
 
 const Filters = (props: FiltersType) => {
   const {
