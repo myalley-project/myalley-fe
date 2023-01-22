@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
@@ -6,10 +7,12 @@ import LoginSignUp from "../components/LoginSignUp.style";
 import checkOff from "../assets/icons/checkOff.svg";
 import checkOn from "../assets/icons/checkOn.svg";
 import loginApi, { LoginRes } from "../apis/login";
+import { MyInfoRes, useMyInfoApi } from "../apis/member";
 
 // 로그인 컴포넌트_박예선_2023.01.01
 const Login = () => {
   const navigate = useNavigate();
+  const myInfoApi = useMyInfoApi("get");
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
   const [stayLog, setStayLog] = useState(false);
 
@@ -26,15 +29,28 @@ const Login = () => {
   // 로그인 요청, 요청 후 처리 함수_박예선_2023.01.13
   const clickLoginBtn = async () => {
     try {
-      const res: AxiosResponse<LoginRes> =
-        // await loginApi(loginInfo);
-        await axios.get("/data/login.json"); // 테스트용 목데이터
+      const res: AxiosResponse<LoginRes> = await loginApi(loginInfo);
+      // = await axios.get("/data/login.json"); // 테스트용 목데이터
       const { accessToken, refreshToken, errorCode, errorMsg } = res.data;
       if (accessToken && refreshToken) {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-        alert("로그인에 성공했습니다.");
-        navigate("/");
+        try {
+          const userRes: AxiosResponse<MyInfoRes> = await myInfoApi();
+          const { userId, email, nickname, userImage, authority } =
+            userRes.data;
+          localStorage.setItem("userId", String(userId));
+          localStorage.setItem("email", email);
+          localStorage.setItem("nickname", nickname);
+          localStorage.setItem("userImage", userImage);
+          localStorage.setItem("authority", authority);
+        } catch (err) {
+          alert(
+            "죄송합니다.\n회원정보를 불러오는데에 실패하였습니다. 다시 시도해주십시오."
+          );
+        }
+        // alert("로그인되었습니다.");
+        // navigate("/");
         return;
       }
       if (errorMsg === "회원 정보 없음") {
