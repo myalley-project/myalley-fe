@@ -73,7 +73,7 @@ const InputContainer = styled.div`
   }
   input {
     width: 320px;
-    height: 40px;
+    height: 44px;
     margin: 10px 0;
     padding-left: 20px;
     border: 1px solid ${theme.colors.greys40};
