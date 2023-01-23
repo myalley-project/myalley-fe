@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ReactQueryDevtools } from "react-query/devtools";
 import Nav from "./components/Nav";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
@@ -22,6 +23,7 @@ const App = () => (
       <Route path="/exhibition-write" element={<ExhibitionWrite />} />
       <Route path="/mypage" element={<Mypage />} />
     </Routes>
+    <ReactQueryDevtools />
     <Footer />
   </BrowserRouter>
 );
