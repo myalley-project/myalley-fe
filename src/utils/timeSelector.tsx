@@ -1,4 +1,4 @@
-const selectboxTimeOptions = () => {
+const getTimeArray = () => {
   const visitTimeOptions = [
     "00시",
     "01시",
@@ -29,4 +29,4 @@ const selectboxTimeOptions = () => {
   return visitTimeOptions;
 };
 
-export default selectboxTimeOptions;
+export default getTimeArray;
