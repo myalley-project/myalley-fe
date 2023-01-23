@@ -85,6 +85,7 @@ const Login = () => {
           placeholder="이메일"
           value={loginInfo.email}
           onChange={handleInput}
+          spellCheck="false"
         />
         <div className="pw-container">
           <input
@@ -94,10 +95,11 @@ const Login = () => {
             className="pw-input"
             value={loginInfo.password}
             onChange={handleInput}
+            spellCheck="false"
           />
           <button type="button" onClick={clickEyeIcon}>
-            {!isPwInputShow && <EyeOn className="eye-icon" />}
-            {isPwInputShow && <EyeOff className="eye-icon" />}
+            {!isPwInputShow && <EyeOff className="eye-icon" />}
+            {isPwInputShow && <EyeOn className="eye-icon" />}
           </button>
         </div>
         <CheckLabel label="로그인 상태 유지" onClick={handleStayLogBtn} />
@@ -109,6 +111,7 @@ const Login = () => {
           type="button"
           className="btn"
           onClick={clickLoginBtn}
+          disabled={loginInfo.email === "" && loginInfo.password === "" && true}
         >
           로그인
         </Button>
