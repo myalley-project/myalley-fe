@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+// import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
 import Selectbox from "../Selectbox";
+// import mypageApi, { MypageRes } from "../../apis/mypage";
 
 const EditProfile = () => {
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
-  const [passwordCheck, setPasswordCheck] = useState("");
   const [profileImage, setProfileImage] = useState(profileImg);
+  const [passwordCheck, setPasswordCheck] = useState("");
   const [valids, setValids] = useState({
     nickname: false,
     password: false,
@@ -36,7 +38,6 @@ const EditProfile = () => {
     name: string
   ) => {
     if (e !== undefined) {
-      console.log(e.currentTarget.textContent, name);
       const { textContent } = e.currentTarget;
       if (textContent !== null) {
         setInfos({
@@ -45,11 +46,6 @@ const EditProfile = () => {
         });
       }
     }
-  };
-
-  const editBtn = () => {
-    // const res: AxiosResponse<MypageRes> = await mypageApi(infos);
-    console.log(infos);
   };
 
   const handleNicknameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,8 +83,6 @@ const EditProfile = () => {
     setTimer(newTimer);
   };
 
-  const [thumbnail, setThumbnail] = useState("");
-
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     if (e.target.files !== null) {
@@ -98,12 +92,21 @@ const EditProfile = () => {
       });
       reader.onload = () => {
         if (e.target.files !== null) {
-          setThumbnail(URL.createObjectURL(e.target.files[0]));
           setProfileImage(URL.createObjectURL(e.target.files[0]));
         }
       };
       reader.readAsDataURL(e.target.files[0]);
     }
+  };
+
+  const editBtn = async () => {
+    // get mypage api test
+    // try {
+    //   const res: AxiosResponse<MypageRes> = await mypageApi();
+    //   console.log(res);
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   return (
@@ -115,9 +118,9 @@ const EditProfile = () => {
             <UploadImg src={cameraCircle} alt="upload-btn" />
           </label>
           <InputFile
+            id="exhibition-posterUrl"
             type="file"
             name="fileName"
-            id="exhibition-posterUrl"
             onChange={uploadImgFile}
             accept="image/jpeg,image/jpg,image/png"
           />
@@ -125,8 +128,8 @@ const EditProfile = () => {
         <InputWrapper>
           <Label htmlFor="nickname">별명</Label>
           <Input
-            type="text"
             id="nickname"
+            type="text"
             placeholder="Nickname"
             width="26vw"
             height="44px"
@@ -182,8 +185,8 @@ const EditProfile = () => {
         <InputWrapper>
           <Label htmlFor="password">비밀번호 변경</Label>
           <PasswordInput
-            type="password"
             id="password"
+            type="password"
             name="password"
             placeholder="비밀번호를 입력하세요"
             width="26vw"
@@ -204,8 +207,8 @@ const EditProfile = () => {
         <InputWrapper>
           <Label htmlFor="password-check">비밀번호 재확인</Label>
           <PasswordInput
-            type="password"
             id="password-check"
+            type="password"
             placeholder="비밀번호를 입력하세요"
             width="26vw"
             height="44px"
@@ -231,29 +234,29 @@ export default EditProfile;
 
 const gender = ["여성", "남성"];
 
-const yearArr = () => {
+function yearArr() {
   const years: string[] = [];
   for (let i = new Date().getFullYear(); i > 1950 - 1; i -= 1) {
     years.push(i.toString());
   }
   return years;
-};
+}
 
-const monthArr = () => {
+function monthArr() {
   const months: string[] = [];
   for (let i = 1; i < 12 + 1; i += 1) {
     months.push(i.toString());
   }
   return months;
-};
+}
 
-const dayArr = () => {
+function dayArr() {
   const days: string[] = [];
   for (let i = 1; i < 31 + 1; i += 1) {
     days.push(i.toString());
   }
   return days;
-};
+}
 
 const EditProfileContainer = styled.div`
   width: 83vw;
