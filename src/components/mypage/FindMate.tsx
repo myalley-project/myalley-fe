@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import MateList from "../mate/MateList";
+import Pagination from "../Pagination";
 
 const FindMate = () => {
   const [testArr, setTestArr] = useState({
@@ -85,6 +86,15 @@ const FindMate = () => {
       totalPage: 1,
     },
   });
+  const [pages, setPages] = useState({
+    started: 1,
+    selected: 1,
+  });
+
+  // const getFindMateList = useCallback({
+  //   async ()
+  // })
+
   return (
     <FindMateContainer>
       {testArr &&
@@ -95,6 +105,7 @@ const FindMate = () => {
             pageInfo={testArr.pageInfo}
           />
         ))}
+      <Pagination pages={pages} setPages={setPages} totalPage={8} />
     </FindMateContainer>
   );
 };

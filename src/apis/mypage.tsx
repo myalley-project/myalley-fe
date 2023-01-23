@@ -12,9 +12,13 @@ export interface MypageRes {
   authority: string;
 }
 
-const mypageApi = async () => {
+export const mypageApi = async () => {
   const res: AxiosResponse<MypageRes> = await apiInstance.get("/api/me");
   return res;
 };
 
-export default mypageApi;
+// export default mypageApi;
+
+// export const mypageFindMateApi = async () => {
+//   const res:AxiosResponse<
+// }

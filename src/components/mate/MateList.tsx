@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import partition from "../../assets/icons/partition.svg";
 import firstSlideImage from "../../assets/images/firstSlideImage.jpg";
@@ -25,56 +25,60 @@ interface MateListType {
 }
 
 const MateList = ({ mates, pageInfo }: MateListType) => {
-  console.log(mates);
+  console.log(" ");
   return (
-    <Card>
-      <Thumbnail src={mates.exhibition.posterUrl} alt="exhibition-img" />
-      <FindMateDetail>
-        <TitleAndEdit>
-          <Title>{mates.title}</Title>
-          <BtnContainer>
-            <EditBtn type="button">수정</EditBtn>
+    <div>
+      <Card>
+        <Thumbnail src={mates.exhibition.posterUrl} alt="exhibition-img" />
+        <FindMateDetail>
+          <TitleAndEdit>
+            <Title>{mates.title}</Title>
+            <BtnContainer>
+              <EditBtn type="button">수정</EditBtn>
+              <div>
+                <img src={partition} alt="bar" style={{ paddingTop: "6px" }} />
+              </div>
+              <EditBtn type="button">삭제</EditBtn>
+            </BtnContainer>
+          </TitleAndEdit>
+          <Subscript>
+            <SubscriptWrapper>
+              등록일 <span>{mates.createdAt}</span>
+            </SubscriptWrapper>
             <div>
-              <img src={partition} alt="bar" style={{ paddingTop: "6px" }} />
+              <img
+                src={partition}
+                alt="bar"
+                style={{
+                  margin: "0 10px",
+                  height: "13px",
+                  paddingBottom: "3px",
+                }}
+              />
             </div>
-            <EditBtn type="button">삭제</EditBtn>
-          </BtnContainer>
-        </TitleAndEdit>
-        <Subscript>
-          <SubscriptWrapper>
-            등록일 <span>{mates.createdAt}</span>
-          </SubscriptWrapper>
-          <div>
-            <img
-              src={partition}
-              alt="bar"
-              style={{
-                margin: "0 10px",
-                height: "13px",
-                paddingBottom: "3px",
-              }}
-            />
-          </div>
-          <SubscriptWrapper>
-            조회수 <span>{mates.viewCount}</span>
-          </SubscriptWrapper>
-        </Subscript>
-        <ExhibitionDetail className="exhibition-detail">
-          <ExhibitionTitle>{mates.exhibition.exhibitionTitle}</ExhibitionTitle>
-          <ExSubscript>
-            <ExSubscriptWrapper>
-              관람 예정일 <span>{mates.availableDate}</span>
-            </ExSubscriptWrapper>
-            <ExSubscriptWrapper>
-              메이트 성별 <span>{mates.mateGender}</span>
-            </ExSubscriptWrapper>
-            <ExSubscriptWrapper>
-              메이트 나이 <span>{mates.mateAge}</span>
-            </ExSubscriptWrapper>
-          </ExSubscript>
-        </ExhibitionDetail>
-      </FindMateDetail>
-    </Card>
+            <SubscriptWrapper>
+              조회수 <span>{mates.viewCount}</span>
+            </SubscriptWrapper>
+          </Subscript>
+          <ExhibitionDetail className="exhibition-detail">
+            <ExhibitionTitle>
+              {mates.exhibition.exhibitionTitle}
+            </ExhibitionTitle>
+            <ExSubscript>
+              <ExSubscriptWrapper>
+                관람 예정일 <span>{mates.availableDate}</span>
+              </ExSubscriptWrapper>
+              <ExSubscriptWrapper>
+                메이트 성별 <span>{mates.mateGender}</span>
+              </ExSubscriptWrapper>
+              <ExSubscriptWrapper>
+                메이트 나이 <span>{mates.mateAge}</span>
+              </ExSubscriptWrapper>
+            </ExSubscript>
+          </ExhibitionDetail>
+        </FindMateDetail>
+      </Card>
+    </div>
   );
 };
 
