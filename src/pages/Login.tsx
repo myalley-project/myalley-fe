@@ -112,7 +112,7 @@ const Login = () => {
           type="button"
           className="btn"
           onClick={clickLoginBtn}
-          disabled={loginInfo.email === "" && loginInfo.password === "" && true}
+          disabled={loginInfo.email === "" || loginInfo.password === ""}
         >
           로그인
         </Button>
