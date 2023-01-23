@@ -108,7 +108,7 @@ const ExhibitionWrite = () => {
   };
 
   const handleSetDetail = (
-    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    e: React.MouseEvent<HTMLLIElement>,
     name: string
   ) => {
     if (e != undefined) {

@@ -33,10 +33,7 @@ const EditProfile = () => {
     });
   };
 
-  const handleSetInfos = (
-    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    name: string
-  ) => {
+  const handleSetInfos = (e: React.MouseEvent<HTMLLIElement>, name: string) => {
     if (e !== undefined) {
       const { textContent } = e.currentTarget;
       if (textContent !== null) {
@@ -99,7 +96,8 @@ const EditProfile = () => {
     }
   };
 
-  const editBtn = async () => {
+  const editBtn = () => {
+    console.log(infos);
     // get mypage api test
     // try {
     //   const res: AxiosResponse<MypageRes> = await mypageApi();
