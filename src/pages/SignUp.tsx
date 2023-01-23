@@ -58,7 +58,7 @@ const SignUp = () => {
       }
     } catch (err) {
       const errorRes = isApiError(err);
-      if (!errorRes) return;
+      if (typeof errorRes !== "object") return;
       const { errorMsg } = errorRes;
       if (errorMsg === "이메일 중복") {
         setIsOnly({ ...isOnly, email: false });
