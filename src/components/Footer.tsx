@@ -16,7 +16,7 @@ const Footer = () => {
 
   return (
     <FooterContainer>
-      <Content>
+      <FooterWrapper>
         <TopArea>
           <img src={logo} alt="logo" />
           <Developers>
@@ -41,7 +41,7 @@ const Footer = () => {
             <span> 청소년보호정책</span> | <span>문의하기</span>
           </Terms>
         </BottomArea>
-      </Content>
+      </FooterWrapper>
     </FooterContainer>
   );
 };
@@ -52,13 +52,13 @@ const FooterContainer = styled.div`
   display: flex;
   justify-content: start;
   width: 100vw;
-  height: 466px;
+  height: fit-content;
+  min-height: 466px;
   border-radius: 0px;
   background-color: rgba(149, 141, 165, 0.05);
 `;
 
-const Content = styled.div`
-  width: 100vw;
+const FooterWrapper = styled.div`
   max-width: 1440px;
   margin: 120px auto 0px auto;
 `;
@@ -71,6 +71,7 @@ const TopArea = styled.div`
 
 const Developers = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 30px;
 `;
 
