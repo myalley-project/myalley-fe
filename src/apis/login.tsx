@@ -17,7 +17,7 @@ const loginApi = async (loginInfo: { email: string; password: string }) => {
     // "/login",
     // reqBody
     // )
-    await axios.get("/data/login.json");
+    await axios.get("/data/login.json"); // 테스트용 목데이터
 
   return res;
 };
