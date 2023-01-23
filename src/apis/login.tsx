@@ -2,8 +2,8 @@ import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 
 export interface LoginRes {
-  access_token?: string;
-  refresh_token?: string;
+  accessToken?: string;
+  refreshToken?: string;
   errorCode?: number;
   errorMsg?: string;
 }
