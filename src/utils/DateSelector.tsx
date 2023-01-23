@@ -1,6 +1,6 @@
 export const yearArr = () => {
   const currentYear = new Date().getFullYear();
-  const startYear = currentYear - 73;
+  const startYear = 1950;
   const years = Array.from(
     { length: currentYear - startYear + 1 },
     (undef, indexNumber) => String(startYear + indexNumber)
