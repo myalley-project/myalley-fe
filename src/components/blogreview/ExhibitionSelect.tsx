@@ -14,14 +14,11 @@ const ExhibitionSelect = () => (
 export default ExhibitionSelect;
 
 const Container = styled.div`
-  width: 318px;
-  height: 100%;
+  width: 280px;
 `;
 
 const ExhibitionButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 386px;
   border: 1px solid black;
   background-color: #f9f9f9;
 `;

@@ -117,7 +117,10 @@ const BlogReviewWrite = () => {
       <ReviewTitle handleTitleInput={handleTitleInput} />
       <ExhibitionPicker>
         <ExhibitionSelect />
-        <Calender />
+        <div>
+          <SubTitle text="관람일" />
+          <Calender />
+        </div>
       </ExhibitionPicker>
       <SelectorConatiner>
         <SubTitle text="관람 시간" />
@@ -137,14 +140,15 @@ const BlogReviewWrite = () => {
 export default BlogReviewWrite;
 
 const Container = styled.div`
-  width: 1200px;
+  width: 75vw;
   padding: 30px;
   margin: 50px auto;
 `;
 
 const ExhibitionPicker = styled.div`
   display: flex;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: stretch;
   gap: 30px;
   padding: 0px;
   margin-bottom: 30px;
