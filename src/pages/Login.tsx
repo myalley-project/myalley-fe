@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import LoginSignUp from "../components/LoginSignUp.style";
-import checkOff from "../assets/icons/checkOff.svg";
-import checkOn from "../assets/icons/checkOn.svg";
 import loginApi, { LoginRes } from "../apis/login";
 import { MyInfoRes, useMyInfoApi } from "../apis/member";
 import Button from "../components/atom/Button";
+import CheckLabel from "../components/atom/CheckLabel";
 
-// 로그인 컴포넌트_박예선_2023.01.01
+// 로그인 컴포넌트_박예선_2023.01.23
 const Login = () => {
   const navigate = useNavigate();
   const myInfoApi = useMyInfoApi("get");
@@ -90,16 +88,7 @@ const Login = () => {
           value={loginInfo.password}
           onChange={handleInput}
         />
-        <button
-          type="button"
-          className="checkbox-container"
-          onClick={handleStayLogBtn}
-        >
-          <img alt="checkbox-off" src={stayLog ? checkOn : checkOff} />
-          <span className={`text ${stayLog ? "checked" : ""}`}>
-            로그인 상태 유지
-          </span>
-        </button>
+        <CheckLabel label="로그인 상태 유지" onClick={handleStayLogBtn} />
       </InputContainer>
       <BtnContainer>
         <Button
