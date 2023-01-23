@@ -1,4 +1,4 @@
-export const yearArr = () => {
+export const getYearArray = () => {
   const currentYear = new Date().getFullYear();
   const startYear = 1950;
   const years = Array.from(
@@ -8,7 +8,7 @@ export const yearArr = () => {
   return years;
 };
 
-export const monthArr = () => {
+export const getMonthArray = () => {
   const months = [
     "1",
     "2",
@@ -26,7 +26,7 @@ export const monthArr = () => {
   return months;
 };
 
-export const dayArr = () => {
+export const getDayArray = () => {
   const currentDays = Array.from({ length: 31 }, (undef, indexNumber) =>
     String(indexNumber + 1)
   );
