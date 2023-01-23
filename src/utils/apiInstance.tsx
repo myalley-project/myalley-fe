@@ -1,9 +1,9 @@
-import axios, { Axios, AxiosHeaders } from "axios";
+import axios, { AxiosHeaders } from "axios";
 
 axios.defaults.withCredentials = true;
 
 const apiInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: process.env.REACT_APP_TEST_URL,
 });
 
 apiInstance.interceptors.request.use(
@@ -15,7 +15,6 @@ apiInstance.interceptors.request.use(
         "Authorization",
         token ? `Bearer ${token}` : null
       );
-
     return newConfig;
   },
   (err) => Promise.reject(err)
