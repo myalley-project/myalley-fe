@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
 import Selectbox from "../Selectbox";
-import { yearArr, monthArr, dayArr } from "../../utils/DateSelector";
-import selectboxTimeOptions from "../../utils/selectboxTimeOption";
+import { getYearArray, getMonthArray, getDayArray } from "../../utils/dateSelector";
+import getTimeArray from "../../utils/timeSelector";
 import SimpleInput from "../atom/SimpleInput";
 
 interface DayArrProps {
@@ -29,19 +29,19 @@ const OnelineWrite = () => {
           <SelectboxContainer>
             <Selectbox
               placeholder="1990"
-              options={yearArr()}
+              options={getYearArray()}
               selectedData={setSelectedYear}
               width="130px"
             />
             <Selectbox
               placeholder="12"
-              options={monthArr()}
+              options={getMonthArray()}
               selectedData={setSelectedMonth}
               width="100px"
             />
             <Selectbox
               placeholder="31"
-              options={dayArr()}
+              options={getDayArray()}
               selectedData={setSelectedDay}
               width="100px"
             />
@@ -53,14 +53,14 @@ const OnelineWrite = () => {
             <span>입장</span>
             <Selectbox
               placeholder="00시"
-              options={selectboxTimeOptions()}
+              options={getTimeArray()}
               selectedData={setEntransTime}
               width="133px"
             />
             <span>퇴장</span>
             <Selectbox
               placeholder="00시"
-              options={selectboxTimeOptions()}
+              options={getTimeArray()}
               selectedData={setExitTime}
               width="133px"
             />
