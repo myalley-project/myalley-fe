@@ -82,21 +82,20 @@ const Carousel = () => {
 export default Carousel;
 
 const Container = styled.div`
-  width: 1440px;
+  width: 75vw;
+  margin-inline: auto;
   margin-bottom: 30px;
 `;
 
 const StyledSwiper = styled(Swiper)`
   .swiper-wrapper {
-    width: 1440px;
     height: 678px;
-    background-color: rgba(0, 0, 0, 1);
   }
   & .swiper-slide {
     position: relative;
     &:is(:hover, :focus) {
       transform: scale(1.2);
-      transition: 0.5s;
+      transition: all 600ms ease-in-out;
     }
   }
   & .swiper-scrollbar {
@@ -125,19 +124,20 @@ const Slide = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px) brightness(40%);
   &:is(:hover, :focus) {
+    backdrop-filter: blur(4px) brightness(70%);
+    transition: backdrop-filter 600ms ease-in-out;
   }
 `;
 
-const Text = styled.div`
-  display: inline-block;
+const Text = styled.span`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  text-align: center;
+  pointer-events: none;
   & > div:first-child {
     color: ${theme.colors.white100};
     font-size: 28px;
