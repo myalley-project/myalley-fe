@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
 import Selectbox from "../Selectbox";
-import { getYearArray, getMonthArray, getDayArray } from "../../utils/dateSelector";
+import {
+  getYearArray,
+  getMonthArray,
+  getDayArray,
+} from "../../utils/dateSelector";
 import getTimeArray from "../../utils/timeSelector";
 import SimpleInput from "../atom/SimpleInput";
 
@@ -27,7 +31,7 @@ const OnelineWrite = () => {
         <SelectForm>
           <p>생년 월일</p>
           <SelectboxContainer>
-            <Selectbox
+            {/* <Selectbox
               placeholder="1990"
               options={getYearArray()}
               selectedData={setSelectedYear}
@@ -44,14 +48,14 @@ const OnelineWrite = () => {
               options={getDayArray()}
               selectedData={setSelectedDay}
               width="100px"
-            />
+            /> */}
           </SelectboxContainer>
         </SelectForm>
         <SelectForm>
           <p>방문 시간</p>
           <SelectboxContainer>
             <span>입장</span>
-            <Selectbox
+            {/* <Selectbox
               placeholder="00시"
               options={getTimeArray()}
               selectedData={setEntransTime}
@@ -63,26 +67,26 @@ const OnelineWrite = () => {
               options={getTimeArray()}
               selectedData={setExitTime}
               width="133px"
-            />
+            /> */}
           </SelectboxContainer>
         </SelectForm>
         <SelectForm>
           <p>모집 상태</p>
-          <Selectbox
+          {/* <Selectbox
             placeholder="모집 중"
             options={["모집 중", "모집 마감"]}
             selectedData={setRecruitment}
             width="350px"
-          />
+          /> */}
         </SelectForm>
         <SelectForm>
           <p>혼잡도</p>
-          <Selectbox
+          {/* <Selectbox
             placeholder="매우 혼잡"
             options={["매우 혼잡", "혼잡", "보통", "한산"]}
             selectedData={setCongestion}
             width="350px"
-          />
+          /> */}
         </SelectForm>
         <SelectForm>
           <p>전시회 웹페이지 주소</p>
