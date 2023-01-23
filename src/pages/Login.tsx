@@ -3,29 +3,34 @@ import { Link, useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import LoginSignUp from "../components/LoginSignUp.style";
-import loginApi, { LoginRes } from "../apis/login";
-import { MyInfoRes, useMyInfoApi } from "../apis/member";
 import Button from "../components/atom/Button";
 import CheckLabel from "../components/atom/CheckLabel";
+import { ReactComponent as EyeOff } from "../assets/icons/eyeOff.svg";
+import { ReactComponent as EyeOn } from "../assets/icons/eyeOn.svg";
+import loginApi, { LoginRes } from "../apis/login";
+import { MyInfoRes, useMyInfoApi } from "../apis/member";
 
-// 로그인 컴포넌트_박예선_2023.01.23
+// 로그인 컴포넌트_박예선_23.01.23
 const Login = () => {
   const navigate = useNavigate();
   const myInfoApi = useMyInfoApi("get");
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
+  const [isPwInputShow, setIsPwInputShow] = useState(false);
   const [stayLog, setStayLog] = useState(false);
 
-  // input 상태관리 함수_박예선_2023.01.01
+  // input 상태관리 함수_박예선_23.01.01
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginInfo({ ...loginInfo, [name]: value });
   };
 
-  // stayLog 상태관리 함수_박예선_2023.01.01
-  const handleStayLogBtn = () =>
-    stayLog ? setStayLog(false) : setStayLog(true);
+  // 비밀번호표시 아이콘 클릭 함수_박예선_23.01.23
+  const clickEyeIcon = () => setIsPwInputShow(!isPwInputShow);
 
-  // 로그인 요청, 요청 후 처리 함수_박예선_2023.01.13
+  // stayLog 상태관리 함수_박예선_23.01.01
+  const handleStayLogBtn = () => setStayLog(!stayLog);
+
+  // 로그인 요청, 요청 후 처리 함수_박예선_23.01.13
   const clickLoginBtn = async () => {
     try {
       const res: AxiosResponse<LoginRes> = await loginApi(loginInfo);
@@ -81,13 +86,20 @@ const Login = () => {
           value={loginInfo.email}
           onChange={handleInput}
         />
-        <input
-          type="password"
-          name="password"
-          placeholder="비밀번호"
-          value={loginInfo.password}
-          onChange={handleInput}
-        />
+        <div className="pw-container">
+          <input
+            type={isPwInputShow ? "text" : "password"}
+            name="password"
+            placeholder="비밀번호"
+            className="pw-input"
+            value={loginInfo.password}
+            onChange={handleInput}
+          />
+          <button type="button" onClick={clickEyeIcon}>
+            {!isPwInputShow && <EyeOn className="eye-icon" />}
+            {isPwInputShow && <EyeOff className="eye-icon" />}
+          </button>
+        </div>
         <CheckLabel label="로그인 상태 유지" onClick={handleStayLogBtn} />
       </InputContainer>
       <BtnContainer>
@@ -131,21 +143,23 @@ const InputContainer = styled.div`
   flex-direction: column;
   margin-bottom: 30px;
   input {
-    margin: 0 0 10px;
+    margin: 0 0 8px;
   }
-  .checkbox-container {
-    display: flex;
-    align-items: center;
-    width: 140px;
-    padding: 0;
-    color: #9c9c9c;
-    .text {
-      margin-left: 10px;
-      font-size: 14px;
-      line-height: inherit;
+  .pw-container {
+    position: relative;
+    width: 320px;
+    height: 44px;
+    margin-bottom: 14px;
+    .eye-icon {
+      position: absolute;
+      right: 20px;
+      bottom: 50%;
+      cursor: pointer;
+      transform: translate(0, 50%);
     }
-    .checked {
-      color: #333333;
+    .pw-input {
+      position: absolute;
+      background-position: right 10px center;
     }
   }
 `;
