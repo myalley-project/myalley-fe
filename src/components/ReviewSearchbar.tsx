@@ -5,9 +5,14 @@ import Button from "./atom/Button";
 
 const ReviewSearchbar = () => (
   <div>
+    <ReviewSelector>
+      <button type="button">한 줄 리뷰</button>
+      <Spliter />
+      <button type="button">블로그 리뷰</button>
+    </ReviewSelector>
     <SearchbarContainer>
       <p>
-        <span>999</span> 개의 리뷰를 확인해보세요!
+        <span>999</span>개의 리뷰를 확인해보세요!
       </p>
       <Searchbar>
         <div>여기 써치바!</div>
@@ -26,6 +31,23 @@ const ReviewSearchbar = () => (
 );
 
 export default ReviewSearchbar;
+
+const ReviewSelector = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 10px;
+  & > button {
+    color: ${theme.colors.greys60};
+    font-weight: 700;
+    font-size: 14px;
+    border: 0;
+    &:is(:hover, :focus) {
+      color: ${theme.colors.greys100};
+    }
+  }
+`;
 
 const SearchbarContainer = styled.div`
   display: flex;
