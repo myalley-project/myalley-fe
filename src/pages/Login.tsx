@@ -8,12 +8,11 @@ import CheckLabel from "../components/atom/CheckLabel";
 import { ReactComponent as EyeOff } from "../assets/icons/eyeOff.svg";
 import { ReactComponent as EyeOn } from "../assets/icons/eyeOn.svg";
 import loginApi, { LoginRes } from "../apis/login";
-import { MyInfoRes, useMyInfoApi } from "../apis/member";
+import { myInfoApi, MyInfoRes } from "../apis/member";
 
 // 로그인 컴포넌트_박예선_23.01.23
 const Login = () => {
   const navigate = useNavigate();
-  const myInfoApi = useMyInfoApi("get");
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
   const [isPwInputShow, setIsPwInputShow] = useState(false);
   const [stayLog, setStayLog] = useState(false);
@@ -34,13 +33,15 @@ const Login = () => {
   const clickLoginBtn = async () => {
     try {
       const res: AxiosResponse<LoginRes> = await loginApi(loginInfo);
-      // = await axios.get("/data/login.json"); // 테스트용 목데이터
       const { accessToken, refreshToken, errorCode, errorMsg } = res.data;
       if (accessToken && refreshToken) {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
         try {
-          const userRes: AxiosResponse<MyInfoRes> = await myInfoApi();
+          const userRes: AxiosResponse<MyInfoRes> | void = await myInfoApi(
+            "get"
+          );
+          if (!userRes) return;
           const { userId, email, nickname, userImage, authority } =
             userRes.data;
           localStorage.setItem("userId", String(userId));
