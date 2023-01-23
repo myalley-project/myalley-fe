@@ -91,10 +91,6 @@ const FindMate = () => {
     selected: 1,
   });
 
-  // const getFindMateList = useCallback({
-  //   async ()
-  // })
-
   return (
     <FindMateContainer>
       {testArr &&
