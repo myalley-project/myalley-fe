@@ -1,46 +1,34 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import profileImg from "../assets/icons/profileImg.svg";
-import MenuButtons from "../components/mypage/MenuButtons";
-import EditProfile from "../components/mypage/EditProfile";
-import FindMate from "../components/mypage/FindMate";
+import profileImg from "../../assets/icons/profileImg.svg";
+import MenuButtons from "./MenuButtons";
+import EditProfile from "./EditProfile";
+import FindMate from "./FindMate";
 
 const Mypage = () => {
   const [mode, setMode] = useState("mypage");
   return (
-    <MypageContainer>
-      <MypageWrapper>
-        <Profile>
-          <ProfileImg src={profileImg} alt="profile-img" />
-          <Level>level 1</Level>
-          <Nicname>닉네임</Nicname>
-          <Privacy>
-            <p>여성</p>
-            <p className="partition">|</p>
-            <p>23세</p>
-            <p className="partition">|</p>
-            <p>meme1223@email.com</p>
-          </Privacy>
-          <MenuButtons setMode={setMode} />
-        </Profile>
-      </MypageWrapper>
-      {mode === "mypage" && <EditProfile />}
-      {mode === "review" && <FindMate />}
-    </MypageContainer>
+    <>
+      <Profile>
+        <ProfileImg src={profileImg} alt="profile-img" />
+        <Level>level 1</Level>
+        <Nickname>닉네임</Nickname>
+        <Privacy>
+          <p>여성</p>
+          <p className="partition">|</p>
+          <p>23세</p>
+          <p className="partition">|</p>
+          <p>meme1223@email.com</p>
+        </Privacy>
+        <MenuButtons setMode={setMode} />
+      </Profile>
+      {/* {mode === "mypage" && <EditProfile />}
+      {mode === "review" && <FindMate />} */}
+    </>
   );
 };
 
 export default Mypage;
-
-const MypageContainer = styled.div`
-  margin: 50px 0;
-`;
-
-const MypageWrapper = styled.div`
-  width: 83vw;
-  max-width: 1200px;
-  margin: 0px auto;
-`;
 
 const Profile = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.colors.greys40};
@@ -67,7 +55,7 @@ const Level = styled.p`
   border-radius: 10000px;
 `;
 
-const Nicname = styled.p`
+const Nickname = styled.p`
   font-weight: 700;
   font-size: 20px;
   line-height: 28px;

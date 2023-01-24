@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 interface ModeType {
@@ -15,41 +16,51 @@ const MenuButtons = ({ setMode }: ModeType) => {
     setMode(selected);
     setIsMypageOrReviewOrWish(selected);
   };
+
+  const location = useLocation();
+  const { pathname } = location;
+  const rPathname = /^\/mypage\/write/;
   return (
     <Buttons>
-      <MenuButton
-        type="button"
-        style={
-          isMypageOrReviewOrWish === "mypage"
-            ? { backgroundColor: "#6750A4", color: "#ffffff" }
-            : { backgroundColor: "#ffffff", color: "#9C9C9C" }
-        }
-        onClick={() => onChangeMode("mypage")}
-      >
-        회원 정보 수정
-      </MenuButton>
-      <MenuButton
-        type="button"
-        style={
-          isMypageOrReviewOrWish === "review"
-            ? { backgroundColor: "#6750A4", color: "#ffffff" }
-            : { backgroundColor: "#ffffff", color: "#9C9C9C" }
-        }
-        onClick={() => onChangeMode("review")}
-      >
-        작성 글 조회
-      </MenuButton>
-      <MenuButton
-        type="button"
-        style={
-          isMypageOrReviewOrWish === "wish"
-            ? { backgroundColor: "#6750A4", color: "#ffffff" }
-            : { backgroundColor: "#ffffff", color: "#9C9C9C" }
-        }
-        onClick={() => onChangeMode("wish")}
-      >
-        위시리스트
-      </MenuButton>
+      <Link to="/mypage">
+        <MenuButton
+          type="button"
+          style={
+            /^\/mypage/.test(pathname)
+              ? { backgroundColor: "#6750A4", color: "#ffffff" }
+              : { backgroundColor: "#ffffff", color: "#9C9C9C" }
+          }
+          onClick={() => onChangeMode("mypage")}
+        >
+          회원 정보 수정
+        </MenuButton>
+      </Link>
+      <Link to="write">
+        <MenuButton
+          type="button"
+          style={
+            /^\/mypage\/write/.test(pathname)
+              ? { backgroundColor: "#6750A4", color: "#ffffff" }
+              : { backgroundColor: "#ffffff", color: "#9C9C9C" }
+          }
+          onClick={() => onChangeMode("review")}
+        >
+          작성 글 조회
+        </MenuButton>
+      </Link>
+      <Link to="wish">
+        <MenuButton
+          type="button"
+          style={
+            isMypageOrReviewOrWish === "wish"
+              ? { backgroundColor: "#6750A4", color: "#ffffff" }
+              : { backgroundColor: "#ffffff", color: "#9C9C9C" }
+          }
+          onClick={() => onChangeMode("wish")}
+        >
+          위시리스트
+        </MenuButton>
+      </Link>
     </Buttons>
   );
 };
