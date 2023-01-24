@@ -36,7 +36,6 @@ interface ButtonProps {
 }
 
 const Button = styled.button<ButtonProps>`
-  width: 175px;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-inline: ${(props) => buttonsize[props.size]};
