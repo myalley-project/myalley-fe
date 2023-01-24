@@ -44,12 +44,12 @@ const Login = () => {
             "get"
           );
           if (!userRes) return;
-          const { userId, email, nickname, userImage, authority } =
+          const { memberId, email, nickname, memberImage, authority } =
             userRes.data;
-          localStorage.setItem("userId", String(userId));
+          localStorage.setItem("userId", String(memberId));
           localStorage.setItem("email", email);
           localStorage.setItem("nickname", nickname);
-          localStorage.setItem("userImage", userImage);
+          localStorage.setItem("userImage", memberImage);
           localStorage.setItem("authority", authority);
         } catch (err) {
           alert(

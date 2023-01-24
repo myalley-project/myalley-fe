@@ -29,9 +29,10 @@ const FindMate = () => {
       setMatesList(mates);
       setPageInfoList(pageInfo);
     } catch (err) {
-      // const errorRes = isApiError(err);
+      const errorRes = isApiError(err);
       // if (errorRes === "accessToken 만료") useRefreshTokenApi;
-      // if (typeof errorRes !== "object") return;
+      if (typeof errorRes !== "object") return;
+      const { errorCode, errorMsg } = errorRes;
     }
   }, []);
   useEffect(() => {

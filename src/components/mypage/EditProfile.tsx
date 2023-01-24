@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-// import { AxiosResponse } from "axios";
+import React, { useState, useCallback, useEffect } from "react";
+import { AxiosResponse } from "axios";
 import styled from "styled-components";
+import { MyInfoRes, myInfoApi } from "../../apis/member";
 import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
@@ -11,7 +12,6 @@ import {
   getDayArray,
 } from "../../utils/dateSelector";
 import { theme } from "../../styles/theme";
-// import mypageApi, { MypageRes } from "../../apis/mypage";
 
 const EditProfile = () => {
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
@@ -102,15 +102,15 @@ const EditProfile = () => {
     }
   };
 
-  const editBtn = () => {
+  // 회원정보 수정 api
+  const editBtn = async () => {
     console.log(infos);
-    // get mypage api test
-    // try {
-    //   const res: AxiosResponse<MypageRes> = await mypageApi();
-    //   console.log(res);
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    try {
+      const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("put");
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

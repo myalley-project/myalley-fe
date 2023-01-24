@@ -21,13 +21,13 @@ export const myInfoApi = async (type: "get" | "put") => {
 };
 
 export interface MyInfoRes {
-  userId: number;
+  memberId: number;
   email: string;
   nickname: string;
   gender: "W" | "M";
   birth: string; // YYYY-MM-DD
   level: "level1" | "level2" | "level3" | "level4";
-  userImage: string | "";
+  memberImage: string | "";
   authority: "ROLE_USER" | "ROLE_ADMIN";
 }
 

@@ -17,7 +17,7 @@ const MenuButtons = () => {
       <MenuButton
         type="button"
         style={
-          /^\/mypage$/.test(pathname)
+          /^\/mypage\/edit/.test(pathname)
             ? {
                 backgroundColor: `${theme.colors.primry70}`,
                 color: `${theme.colors.white100}`,
@@ -27,7 +27,7 @@ const MenuButtons = () => {
                 color: `${theme.colors.greys60}`,
               }
         }
-        onClick={() => Navigate("/mypage")}
+        onClick={() => Navigate("/mypage/edit")}
       >
         회원 정보 수정
       </MenuButton>
