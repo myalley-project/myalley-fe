@@ -3,18 +3,18 @@ import styled from "styled-components";
 
 interface SelectBoxType {
   placeholder: string;
-  selectedData: React.Dispatch<React.SetStateAction<ExhibitionType>>;
   options: string[];
   width: string;
+  name: string;
+  onClick: (e: React.MouseEvent<HTMLLIElement>, name: string) => void;
 }
-
-export type ExhibitionType = string;
 
 const Selectbox = ({
   placeholder,
-  selectedData,
   options,
   width,
+  name,
+  onClick,
 }: SelectBoxType) => {
   const [show, setShow] = useState(false);
   const [selectItem, setSelectItem] = useState(placeholder);
@@ -23,10 +23,13 @@ const Selectbox = ({
     setShow((prev) => !prev);
   };
 
-  const getSelectItem = (item: string) => {
+  const handleSelectData = (
+    e: React.MouseEvent<HTMLLIElement>,
+    item: string
+  ) => {
     setSelectItem(item);
     ToggleSelector();
-    selectedData(item);
+    onClick(e, name);
   };
 
   return (
@@ -39,7 +42,12 @@ const Selectbox = ({
           <SubTitle>종류</SubTitle>
           {options &&
             options.map((item) => (
-              <SelectLi key={item} onClick={() => getSelectItem(item)}>
+              <SelectLi
+                key={item}
+                onClick={(e) => {
+                  handleSelectData(e, item);
+                }}
+              >
                 {item}
               </SelectLi>
             ))}
@@ -52,8 +60,7 @@ const Selectbox = ({
 export default Selectbox;
 
 const SelectBtn = styled.button<{ width: string }>`
-  min-width: ${(props) => props.width};
-  width: fit-content;
+  width: ${(props) => props.width};
   height: 40px;
   margin: 10px 0;
   padding-left: 20px;
@@ -80,10 +87,27 @@ const SelectUl = styled.ul`
   z-index: 1;
   width: 200px;
   height: fit-content;
+  max-height: 300px;
+  overflow-x: hidden;
   padding: 10px;
   border: 1px solid #f6f3fe;
   border-radius: 10px;
   background-color: ${(props) => props.theme.colors.white100};
+  ::-webkit-scrollbar {
+    display: block;
+    width: 14px;
+  }
+  ::-webkit-scrollbar-thumb {
+    display: block;
+    width: 14px;
+    background-color: #d9d9d9;
+    border-radius: 1000px;
+    background-clip: padding-box;
+    border: 5px solid transparent;
+  }
+  :focus-visible {
+    outline: none;
+  }
 `;
 
 const SelectLi = styled.li`
@@ -92,6 +116,7 @@ const SelectLi = styled.li`
   padding: 10px;
   border-radius: 10px;
   font-weight: 50px;
+  font-size: 14px;
   color: #333333;
   cursor: pointer;
   &:hover {
