@@ -1,11 +1,12 @@
 import React from "react";
-import OnelineWrite from "../components/onelineReview/OnelineWrite";
-import Modal from "../Modal";
+import Carousel from "../components/Carousel";
+import MainArticle from "../components/MainArticle";
 
 const Main = () => (
-  <Modal open setIsOpen={() => {}}>
-    <OnelineWrite />
-  </Modal>
+  <div>
+    <Carousel />
+    <MainArticle />
+  </div>
 );
 
 export default Main;

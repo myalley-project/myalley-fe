@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 
 export interface LoginRes {
@@ -8,14 +8,17 @@ export interface LoginRes {
   errorMsg?: string;
 }
 
-// 로그인 api_박예선_23.01.13
+// 로그인 api_박예선_23.01.20
 const loginApi = async (loginInfo: { email: string; password: string }) => {
   const { email, password } = loginInfo;
   const reqBody = { email, password };
-  const res: AxiosResponse<LoginRes> = await apiInstance.post(
-    "/login",
-    reqBody
-  );
+  const res: AxiosResponse<LoginRes> =
+    // await apiInstance.post(
+    // "/login",
+    // reqBody
+    // )
+    await axios.get("/data/login.json"); // 테스트용 목데이터
+
   return res;
 };
 

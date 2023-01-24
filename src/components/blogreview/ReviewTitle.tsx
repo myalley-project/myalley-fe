@@ -1,10 +1,18 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
-const ReviewTitle = () => (
+type ReviewTitleProps = {
+  handleTitleInput: (event: ChangeEvent<HTMLInputElement>) => void;
+};
+
+const ReviewTitle = ({ handleTitleInput }: ReviewTitleProps) => (
   <TitleContainer>
-    <TitleInput type="text" placeholder="제목을 입력해주세요" />
+    <TitleInput
+      onChange={handleTitleInput}
+      type="text"
+      placeholder="제목을 입력해주세요"
+    />
     <Divider />
   </TitleContainer>
 );
@@ -35,4 +43,5 @@ const TitleInput = styled.input`
 
 const Divider = styled.div`
   border-bottom: 1px solid ${theme.colors.greys40};
+  margin-bottom: 30px;
 `;
