@@ -82,6 +82,10 @@ const OnelineWrite = () => {
         <SelectForm>
           <p>혼잡도</p>
           {/* <Selectbox
+        </SelectForm>
+        <SelectForm>
+          <p>혼잡도</p>
+          <Selectbox
             placeholder="매우 혼잡"
             options={["매우 혼잡", "혼잡", "보통", "한산"]}
             selectedData={setCongestion}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import MyAlleyLogo from "../assets/icons/logo.svg";
 import personOn from "../assets/icons/personOn.svg";
 import personOff from "../assets/icons/personOff.svg";
@@ -37,28 +38,35 @@ const Nav = () => {
   };
 
   return (
-    <Navbar>
-      <Logo src={MyAlleyLogo} alt="logo" />
-      <MenuButton
-        type="button"
-        onClick={handleToggleMenu}
-        onMouseOver={changeToHoverIcon}
-        onMouseLeave={changeToNormalIcon}
-      >
-        <UserMenuIcon src={toggleMenuIcon} alt="menu-icon" id="user-menu" />
-      </MenuButton>
-      {isShowMenu && <HamburgerMenu />}
-    </Navbar>
+    <NavbarContaniner>
+      <NavbarWrapper>
+        <Link to="/">
+          <Logo src={MyAlleyLogo} alt="logo" />
+        </Link>
+        <MenuButton
+          type="button"
+          onClick={handleToggleMenu}
+          onMouseOver={changeToHoverIcon}
+          onMouseLeave={changeToNormalIcon}
+        >
+          <UserMenuIcon src={toggleMenuIcon} alt="menu-icon" id="user-menu" />
+        </MenuButton>
+        {isShowMenu && <HamburgerMenu />}
+      </NavbarWrapper>
+    </NavbarContaniner>
   );
 };
 
 export default Nav;
 
-const Navbar = styled.div`
+const NavbarContaniner = styled.div`
+  width: 100vw;
+`;
+
+const NavbarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100vw;
   max-width: 1440px;
   height: 70px;
   margin: 0 auto;
