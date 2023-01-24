@@ -35,8 +35,6 @@ const Login = () => {
       const res: AxiosResponse<LoginRes> = await loginApi(loginInfo);
       const { accessToken, refreshToken, errorCode, errorMsg } = res.data;
       if (accessToken && refreshToken) {
-        console.log(accessToken);
-        console.log(refreshToken);
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
         try {
