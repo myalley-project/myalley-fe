@@ -19,8 +19,6 @@ const BlogReviewCard = () => (
 export default BlogReviewCard;
 
 const Container = styled.div`
-  width: 380px;
-  height: fit-content;
   border: 1px solid ${theme.colors.greys60};
 `;
 

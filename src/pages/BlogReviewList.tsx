@@ -1,21 +1,32 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
-import Selector from "../components/Selector";
+import Selectbox from "../components/Selectbox";
 import BlogReviewCard from "../components/blogreview/BlogReviewCard";
+import Button from "../components/atom/Button";
 
 const BlogReviewList = () => (
   <Container>
     <Title>전시 리뷰</Title>
     <Divider />
     <SelectContainer>
-      <div>
-        <Selector options={["최신순", "오래된순"]} width="130px" />
-        <button type="button">여기 확인</button>
+      <div style={{ columnCount: "2" }}>
+        <Selectbox
+          placeholder="최신 순"
+          options={["최신 순", "인기 순"]}
+          width="130px"
+          name="정렬 필터"
+          onClick={(e: React.MouseEvent<HTMLElement>, name = "sjei") => {}}
+        />
+        <Button size="small" variant="primary">
+          적용
+        </Button>
       </div>
       <div>
-        <Selector options={["최신순", "오래된순"]} width="130px" />
-        <button type="button">여기 확인</button>
+        <span>여기 서치바</span>
+        <Button size="large" variant="primary">
+          리뷰 등록
+        </Button>
       </div>
     </SelectContainer>
     <ListContainer>
@@ -35,9 +46,7 @@ const BlogReviewList = () => (
 export default BlogReviewList;
 
 const Container = styled.div`
-  --max-width: 1200px;
-  --padding: 100rem;
-  width: min(--max-width, 100% - (var(--padding) * 2));
+  width: 62.5vw;
   margin-inline: auto;
 `;
 
@@ -63,9 +72,19 @@ const SelectContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const ListContainer = styled.div`
+const Filter = styled.div`
   display: flex;
-  flex-flow: row wrap;
+  gap: 10px;
+`;
+
+const ListContainer = styled.div`
+  display: grid;
+  /* grid-template-columns: repeat(auto-fill, minmax(250px, 380px)); */
+  grid-template-columns: repeat(auto-fit, 380px);
+
+  grid-template-rows: auto;
+  /* align-content:; */
+  /* flex-flow: row wrap; */
   gap: 30px;
   margin-bottom: 120px;
 `;
