@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 // import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import MateList from "../mate/MateList";
+import MateCard from "../mate/MateCard";
 import Pagination from "../Pagination";
 // import { mypageFindMateApi, MateRes } from "../../apis/mypage";
 import { Mate } from "../../types/mateList";
@@ -42,7 +42,7 @@ const FindMate = () => {
       {matesList.length == 0
         ? "아직 작성한 글이 없어요!"
         : matesList.map((mates) => (
-            <MateList key={mates.mateId} mates={mates} />
+            <MateCard key={mates.mateId} mates={mates} />
           ))}
       {pageInfoList.totalPage > 0 ? (
         <Pagination
