@@ -1,35 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Mate, PageInfo } from "../../apis/mypage";
+import { Mate } from "../../types/mateList";
 import partition from "../../assets/icons/partition.svg";
 
 interface MateListType {
   mates: Mate;
-  pageInfo: PageInfo;
 }
 
-const MateList = ({ mates, pageInfo }: MateListType) => (
+const MateList = ({ mates }: MateListType) => (
   <Link to="/" style={{ textDecoration: "none" }}>
     <Card>
       <Thumbnail src={mates.exhibition.posterUrl} alt="exhibition-img" />
       <FindMateDetail>
         <TitleAndEdit>
           <Title className="title">{mates.title}</Title>
-          {/* 본인이 쓴 글일 경우 */}
-          {1 + 1 == 2 && (
-            <BtnContainer>
-              <Link to="/">
-                <EditBtn type="button">수정</EditBtn>
-              </Link>
-              <div>
-                <img src={partition} alt="bar" style={{ paddingTop: "6px" }} />
-              </div>
-              <Link to="/">
-                <EditBtn type="button">삭제</EditBtn>
-              </Link>
-            </BtnContainer>
-          )}
         </TitleAndEdit>
         <Subscript>
           {mates.memberNickname && (
@@ -171,28 +156,6 @@ const Title = styled.p`
   font-size: 28px;
   line-height: 36px;
   color: ${(props) => props.theme.colors.greys100};
-`;
-
-const BtnContainer = styled.div`
-  display: flex;
-  height: 28px;
-`;
-
-const EditBtn = styled.button`
-  padding: 4px 10px;
-  font-weight: 500;
-  font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
-  cursor: pointer;
-  &:hover {
-    background-color: ${(props) => props.theme.colors.greys10};
-    border-radius: 10px;
-    color: ${(props) => props.theme.colors.greys100};
-  }
-  &:focus-visible {
-    border: 1px solid ${(props) => props.theme.colors.greys100};
-    color: ${(props) => props.theme.colors.greys100};
-  }
 `;
 
 const Subscript = styled.div`
