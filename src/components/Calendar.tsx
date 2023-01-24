@@ -62,7 +62,7 @@ const Calender = () => {
       <Header>
         <div>
           <button type="button" onClick={prevMonth}>
-            <img src={ArrowPrev} alt="이전 화살표" />
+            <img src={ArrowLeft} alt="이전 화살표" />
           </button>
         </div>
         <div>
@@ -70,7 +70,7 @@ const Calender = () => {
         </div>
         <div>
           <button type="button" onClick={nextMonth}>
-            <img src={ArrowNext} alt="다음 화살표" />
+            <img src={ArrowRight} alt="다음 화살표" />
           </button>
         </div>
       </Header>
