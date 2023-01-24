@@ -1,32 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import profileImg from "../../assets/icons/profileImg.svg";
 import MenuButtons from "./MenuButtons";
-import EditProfile from "./EditProfile";
-import FindMate from "./FindMate";
 
-const Mypage = () => {
-  const [mode, setMode] = useState("mypage");
-  return (
-    <>
-      <Profile>
-        <ProfileImg src={profileImg} alt="profile-img" />
-        <Level>level 1</Level>
-        <Nickname>닉네임</Nickname>
-        <Privacy>
-          <p>여성</p>
-          <p className="partition">|</p>
-          <p>23세</p>
-          <p className="partition">|</p>
-          <p>meme1223@email.com</p>
-        </Privacy>
-        <MenuButtons setMode={setMode} />
-      </Profile>
-      {/* {mode === "mypage" && <EditProfile />}
-      {mode === "review" && <FindMate />} */}
-    </>
-  );
-};
+const Mypage = () => (
+  <Profile>
+    <ProfileImg src={profileImg} alt="profile-img" />
+    <Level>level 1</Level>
+    <Nickname>닉네임</Nickname>
+    <Privacy>
+      <p>여성</p>
+      <p className="partition">|</p>
+      <p>23세</p>
+      <p className="partition">|</p>
+      <p>meme1223@email.com</p>
+    </Privacy>
+    <MenuButtons />
+  </Profile>
+);
 
 export default Mypage;
 

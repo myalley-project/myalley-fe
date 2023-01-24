@@ -1,66 +1,70 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { theme } from "../../styles/theme";
 
-interface ModeType {
-  setMode: React.Dispatch<React.SetStateAction<Mode>>;
-}
-
-export type Mode = string;
-
-const MenuButtons = ({ setMode }: ModeType) => {
-  const [isMypageOrReviewOrWish, setIsMypageOrReviewOrWish] =
-    useState("mypage");
-
-  const onChangeMode = (selected: string) => {
-    setMode(selected);
-    setIsMypageOrReviewOrWish(selected);
-  };
-
+const MenuButtons = () => {
+  const navigete = useNavigate();
   const location = useLocation();
   const { pathname } = location;
-  const rPathname = /^\/mypage\/write/;
+
+  const Navigate = (link: string) => {
+    navigete(link);
+  };
+
   return (
     <Buttons>
-      <Link to="/mypage">
-        <MenuButton
-          type="button"
-          style={
-            /^\/mypage/.test(pathname)
-              ? { backgroundColor: "#6750A4", color: "#ffffff" }
-              : { backgroundColor: "#ffffff", color: "#9C9C9C" }
-          }
-          onClick={() => onChangeMode("mypage")}
-        >
-          회원 정보 수정
-        </MenuButton>
-      </Link>
-      <Link to="write">
-        <MenuButton
-          type="button"
-          style={
-            /^\/mypage\/write/.test(pathname)
-              ? { backgroundColor: "#6750A4", color: "#ffffff" }
-              : { backgroundColor: "#ffffff", color: "#9C9C9C" }
-          }
-          onClick={() => onChangeMode("review")}
-        >
-          작성 글 조회
-        </MenuButton>
-      </Link>
-      <Link to="wish">
-        <MenuButton
-          type="button"
-          style={
-            isMypageOrReviewOrWish === "wish"
-              ? { backgroundColor: "#6750A4", color: "#ffffff" }
-              : { backgroundColor: "#ffffff", color: "#9C9C9C" }
-          }
-          onClick={() => onChangeMode("wish")}
-        >
-          위시리스트
-        </MenuButton>
-      </Link>
+      <MenuButton
+        type="button"
+        style={
+          /^\/mypage$/.test(pathname)
+            ? {
+                backgroundColor: `${theme.colors.primry70}`,
+                color: `${theme.colors.white100}`,
+              }
+            : {
+                backgroundColor: `${theme.colors.white100}`,
+                color: `${theme.colors.greys60}`,
+              }
+        }
+        onClick={() => Navigate("/mypage")}
+      >
+        회원 정보 수정
+      </MenuButton>
+      <MenuButton
+        type="button"
+        style={
+          /^\/mypage\/write/.test(pathname)
+            ? {
+                backgroundColor: `${theme.colors.primry70}`,
+                color: `${theme.colors.white100}`,
+              }
+            : {
+                backgroundColor: `${theme.colors.white100}`,
+                color: `${theme.colors.greys60}`,
+              }
+        }
+        onClick={() => Navigate("/mypage/write")}
+      >
+        작성 글 조회
+      </MenuButton>
+      <MenuButton
+        type="button"
+        style={
+          /^\/myapge\/bookmark/.test(pathname)
+            ? {
+                backgroundColor: `${theme.colors.primry70}`,
+                color: `${theme.colors.white100}`,
+              }
+            : {
+                backgroundColor: `${theme.colors.white100}`,
+                color: `${theme.colors.greys60}`,
+              }
+        }
+        onClick={() => Navigate("/mypage/bookmark")}
+      >
+        북마크
+      </MenuButton>
     </Buttons>
   );
 };
@@ -74,11 +78,17 @@ const Buttons = styled.div`
 const MenuButton = styled.button`
   padding: 8px 20px;
   margin-right: 10px;
-  border: 1px solid ${(props) => props.theme.colors.greys40};
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 10000px;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${theme.colors.greys60};
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
   cursor: pointer;
+  &:hover {
+    background-color: ${theme.colors.greys40} !important;
+  }
+  &:focus-visible {
+    border-radius: 1px solid ${theme.colors.primry80};
+  }
 `;

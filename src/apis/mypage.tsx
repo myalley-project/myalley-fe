@@ -15,30 +15,30 @@ export interface MypageRes {
   authority: string;
 }
 
-export interface MateRes {
-  mates: Mate[] | [];
-  pageInfo: PageInfo;
-}
+// export interface MateRes {
+//   mates: Mate[] | [];
+//   pageInfo: PageInfo;
+// }
 
-export interface Mate {
-  mateId: number;
-  title: string;
-  availableDate: string;
-  status: string;
-  mateGender: string;
-  mateAge: string;
-  createdAt: string;
-  viewCount: number;
-  memberId?: number;
-  memberNickname?: string;
-  exhibition: {
-    exhibitionId: number;
-    exhibitionTitle: string;
-    exhibitionSpace: string;
-    posterUrl: string;
-    exhibitionStatus: string;
-  };
-}
+// export interface Mate {
+//   mateId: number;
+//   title: string;
+//   availableDate: string;
+//   status: string;
+//   mateGender: string;
+//   mateAge: string;
+//   createdAt: string;
+//   viewCount: number;
+//   memberId?: number;
+//   memberNickname?: string;
+//   exhibition: {
+//     exhibitionId: number;
+//     exhibitionTitle: string;
+//     exhibitionSpace: string;
+//     posterUrl: string;
+//     exhibitionStatus: string;
+//   };
+// }
 
 export interface PageInfo {
   page: number;
@@ -52,11 +52,11 @@ export const mypageApi = async () => {
   return res;
 };
 
-export const mypageFindMateApi = async () => {
-  const res: AxiosResponse<MateRes> = await apiInstance.get("api/mates/me", {
-    params: {
-      page: 1,
-    },
-  });
-  return res;
-};
+// export const mypageFindMateApi = async (pageNo: number) => {
+//   const res: AxiosResponse<MateRes> = await apiInstance.get("api/mates/me", {
+//     params: {
+//       page: pageNo,
+//     },
+//   });
+//   return res;
+// };
