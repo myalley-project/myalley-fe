@@ -3,7 +3,7 @@ import axios, { AxiosHeaders } from "axios";
 axios.defaults.withCredentials = true;
 
 const apiInstance = axios.create({
-  baseURL: process.env.REACT_APP_TEST_URL,
+  baseURL: process.env.REACT_APP_BASE_URL,
 });
 
 apiInstance.interceptors.request.use(
