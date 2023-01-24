@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface SelectBoxType {
   placeholder: string;
   options: string[];
-  width: string;
+  width: string; // ex. 300px
   name: string;
   onClick: (e: React.MouseEvent<HTMLLIElement>, name: string) => void;
 }

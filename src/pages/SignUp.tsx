@@ -8,6 +8,7 @@ import AdminOnly from "../components/signUp/AdminOnly";
 import { IsOnly } from "../types/signUp";
 import signUpApi from "../apis/signUp";
 import isApiError from "../utils/isApiError";
+import Button from "../components/atom/Button";
 
 // 회원용/관리자용 회원가입 컴포넌트_박예선_2023.01.09
 const SignUp = () => {
@@ -131,9 +132,14 @@ const SignUp = () => {
             handleInput={handleInput}
           />
         )}
-        <button className="btn" type="button" onClick={clickSignUpBtn}>
+        <Button
+          variant="primary"
+          size="large"
+          className="btn"
+          onClick={clickSignUpBtn}
+        >
           가입하기
-        </button>
+        </Button>
       </SignUpContainer>
     </LoginSignUp>
   );
@@ -143,6 +149,10 @@ const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  .btn {
+    width: 320px;
+    margin-top: 23px;
+  }
 `;
 
 export default SignUp;

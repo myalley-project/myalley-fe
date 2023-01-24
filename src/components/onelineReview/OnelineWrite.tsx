@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
-import Selectbox from "../Selectbox";
+import Selectbox from "../atom/Selectbox";
 import {
   getYearArray,
   getMonthArray,
@@ -31,7 +31,6 @@ const OnelineWrite = () => {
         <SelectForm>
           <p>생년 월일</p>
           <SelectboxContainer>
-
             {/* <Selectbox
               placeholder="1990"
               options={getYearArray()}
