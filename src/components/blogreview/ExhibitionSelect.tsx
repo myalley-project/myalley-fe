@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import styled from "styled-components";
 import SubTitle from "../SubTitle";
 import { theme } from "../../styles/theme";
@@ -29,5 +29,4 @@ const ExhibitionButton = styled.div`
   max-height: 435px;
   border: 1px solid ${theme.colors.greys5};
   background-color: #f9f9f9;
-  pointer-events: none;
 `;
