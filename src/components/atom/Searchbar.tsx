@@ -15,7 +15,7 @@ const SearchBar = styled.input<SearchbarProps>`
     no-repeat;
   background-position: right 10px center;
   &::placeholder {
-    color: ${(props) => props.theme.colors.greys60};
+    color: ${theme.colors.greys60};
   }
   &:hover {
     cursor: text;
