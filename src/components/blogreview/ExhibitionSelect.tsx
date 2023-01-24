@@ -2,13 +2,13 @@ import React, { MouseEvent } from "react";
 import styled from "styled-components";
 import SubTitle from "../SubTitle";
 import { theme } from "../../styles/theme";
-import PlusIcon from "../../assets/icons/plusLarge.svg";
+import PlusLarge from "../../assets/icons/plusLarge.svg";
 
 const ExhibitionSelect = () => (
   <Container>
     <SubTitle text="전시회" />
     <ExhibitionButton>
-      <img src={PlusIcon} alt="전시회 선택 버튼" />
+      <img src={PlusLarge} alt="전시회 선택 버튼" />
     </ExhibitionButton>
   </Container>
 );
