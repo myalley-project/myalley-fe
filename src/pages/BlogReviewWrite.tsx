@@ -149,6 +149,7 @@ const ExhibitionPicker = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
+
   gap: 30px;
   padding: 0px;
   margin-bottom: 30px;
