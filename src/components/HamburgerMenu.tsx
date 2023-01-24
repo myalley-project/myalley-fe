@@ -8,7 +8,7 @@ const HamburgerMenu = () => (
       <Subtitle>계정</Subtitle>
       <MypageArea href="/">
         <ProfileWrapper>
-          <img src={ProfileImg} alt="profile-img" />
+          <img src={ProfileImg} alt="profile-img" style={{ width: "40px" }} />
         </ProfileWrapper>
         <div>
           <Nickname>Nickname</Nickname>

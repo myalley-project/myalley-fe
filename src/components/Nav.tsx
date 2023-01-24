@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MyAlleyLogo from "../assets/icons/logo.svg";
-
 import personOn from "../assets/icons/personOn.svg";
 import personOff from "../assets/icons/personOff.svg";
 import HamburgerMenu from "./HamburgerMenu";
