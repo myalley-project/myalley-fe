@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import LoginSignUp from "../components/LoginSignUp.style";
@@ -36,6 +36,14 @@ const SignUp = () => {
     nickname: null,
     adminNo: null,
   });
+
+  // 로그인 된 상태로 접속 시 리다이렉트_박예선_23.01.24
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      alert("이미 로그인되어있습니다.");
+      navigate("/");
+    }
+  }, [navigate]);
 
   // 전체 input 입력값 상태관리 함수_박예선_22.12.27
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
