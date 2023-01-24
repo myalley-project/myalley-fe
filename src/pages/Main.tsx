@@ -1,6 +1,13 @@
 import React from "react";
-import BlogReviewList from "./BlogReviewList";
+import Carousel from "../components/Carousel";
+import MainArticle from "../components/MainArticle";
 
-const Main = () => <BlogReviewList />;
+const Main = () => (
+  <div>
+    <Carousel />
+    <MainArticle />
+  </div>
+);
+
 
 export default Main;
