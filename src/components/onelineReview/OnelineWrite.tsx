@@ -31,6 +31,7 @@ const OnelineWrite = () => {
         <SelectForm>
           <p>생년 월일</p>
           <SelectboxContainer>
+
             {/* <Selectbox
               placeholder="1990"
               options={getYearArray()}
@@ -55,6 +56,7 @@ const OnelineWrite = () => {
           <p>방문 시간</p>
           <SelectboxContainer>
             <span>입장</span>
+
             {/* <Selectbox
               placeholder="00시"
               options={getTimeArray()}
@@ -82,6 +84,10 @@ const OnelineWrite = () => {
         <SelectForm>
           <p>혼잡도</p>
           {/* <Selectbox
+        </SelectForm>
+        <SelectForm>
+          <p>혼잡도</p>
+          <Selectbox
             placeholder="매우 혼잡"
             options={["매우 혼잡", "혼잡", "보통", "한산"]}
             selectedData={setCongestion}
