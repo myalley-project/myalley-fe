@@ -29,7 +29,7 @@ const SignUp = () => {
     password: false,
     pwCheck: false,
     nickname: false,
-    adminNo: true,
+    adminNo: false,
     name: false,
   });
   const [isOnly, setIsOnly] = useState<IsOnly>({
@@ -37,6 +37,7 @@ const SignUp = () => {
     nickname: null,
     adminNo: null,
   });
+  const [isSignUpBtnDisabled, setIsSignUpBtnDisabled] = useState(false);
 
   // 로그인 된 상태로 접속 시 리다이렉트_박예선_23.01.24
   useEffect(() => {
@@ -45,6 +46,29 @@ const SignUp = () => {
       navigate("/");
     }
   }, [navigate]);
+
+  // 가입하기 버튼 비활성화 여부_박예선_23.01.24
+  useEffect(() => {
+    const { email, password, pwCheck, adminNo, name, nickname } = valids;
+    const { gender, birth } = infos;
+    if (email && password && pwCheck && isOnly.email !== false)
+      setIsSignUpBtnDisabled(false);
+    if (location.search !== "?admin") {
+      if (
+        nickname &&
+        gender !== "" &&
+        birth.year &&
+        birth.month &&
+        birth.day &&
+        isOnly.nickname !== false
+      )
+        return setIsSignUpBtnDisabled(false);
+    }
+    if (location.search === "?admin") {
+      if (adminNo && name) return setIsSignUpBtnDisabled(false);
+    }
+    return setIsSignUpBtnDisabled(true);
+  }, [valids, infos, isOnly.email, isOnly.nickname, location.search]);
 
   // 전체 input 입력값 상태관리 함수_박예선_22.12.27
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,10 +157,12 @@ const SignUp = () => {
           />
         )}
         <Button
+          type="button"
           variant="primary"
           size="large"
           className="btn"
           onClick={clickSignUpBtn}
+          disabled={isSignUpBtnDisabled}
         >
           가입하기
         </Button>
