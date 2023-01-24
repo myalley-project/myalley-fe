@@ -16,17 +16,18 @@ const ExhibitionSelect = () => (
 export default ExhibitionSelect;
 
 const Container = styled.div`
-  width: 270px;
+  width: 280px;
   height: 100%;
 `;
 
 const ExhibitionButton = styled.div`
-  /* height: clamp(415px, 420px, 435px); */
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 415px;
   max-height: 435px;
+  /* margin-bottom: 1rem; */
   border: 1px solid ${theme.colors.greys5};
+  border: 1px solid ${theme.colors.greys100};
   background-color: #f9f9f9;
 `;

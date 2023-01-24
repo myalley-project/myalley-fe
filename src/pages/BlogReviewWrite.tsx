@@ -4,8 +4,11 @@ import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
 import SubTitle from "../components/SubTitle";
-import Selector from "../components/Selector";
 import Editor from "../components/Editor";
+import Selectbox from "../components/Selectbox";
+import { theme } from "../styles/theme";
+import getTimeOptions from "../utils/timeSelector";
+import Button from "../components/atom/Button";
 
 interface BlogReviewPost {
   blogInfo: {
@@ -114,25 +117,110 @@ const BlogReviewWrite = () => {
 
   return (
     <Container>
-      <ReviewTitle handleTitleInput={handleTitleInput} />
-      <ExhibitionPicker>
-        <ExhibitionSelect />
-        <div>
-          <SubTitle text="관람일" />
-          <Calender />
-        </div>
-      </ExhibitionPicker>
-      <SelectorConatiner>
-        <SubTitle text="관람 시간" />
-        <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
-        <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
-      </SelectorConatiner>
-      <SelectorConatiner>
-        <SubTitle text="관람 시간" />
-        <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
-        <Selector options={["1", "2", "3", "4", "5"]} width="123px" />
-      </SelectorConatiner>
-      <Editor />
+      <div style={{ marginBottom: "30px" }}>
+        <ReviewTitle handleTitleInput={handleTitleInput} />
+        <ExhibitionPicker>
+          <ExhibitionSelect />
+          <div>
+            <SubTitle text="관람일" />
+            <Calender />
+          </div>
+        </ExhibitionPicker>
+        <SelectorConatiner>
+          <SubTitle text="관람 시간" />
+          <SelectContainer>
+            <TimeSelector>
+              <p>입장</p>
+              <Selectbox
+                onClick={(
+                  e: React.MouseEvent<HTMLElement>,
+                  name = "입장시간"
+                ) => {}}
+                options={getTimeOptions()}
+                placeholder="00시"
+                name="입장시간"
+                width="130px"
+              />
+            </TimeSelector>
+            <TimeSelector>
+              <p>퇴장</p>
+              <Selectbox
+                onClick={(
+                  e: React.MouseEvent<HTMLElement>,
+                  name = "퇴장시간"
+                ) => {}}
+                options={getTimeOptions()}
+                placeholder="24시"
+                name="퇴장시간"
+                width="130px"
+              />
+            </TimeSelector>
+          </SelectContainer>
+        </SelectorConatiner>
+
+        <ConvinenceSelector>
+          <SelectorConatiner>
+            <SubTitle text="혼잡도" />
+            <SelectContainer>
+              <TimeSelector>
+                <Selectbox
+                  onClick={(
+                    e: React.MouseEvent<HTMLElement>,
+                    name = "sjei"
+                  ) => {}}
+                  options={["상관 없음", "남자", "여자"]}
+                  placeholder="상관 없음"
+                  name="원하는 메이트 성별"
+                  width="130px"
+                />
+              </TimeSelector>
+            </SelectContainer>
+          </SelectorConatiner>
+          <SelectorConatiner>
+            <SubTitle text="교통 수단" />
+            <SelectContainer>
+              <TimeSelector>
+                <Selectbox
+                  onClick={(
+                    e: React.MouseEvent<HTMLElement>,
+                    name = "sjei"
+                  ) => {}}
+                  options={["상관 없음", "남자", "여자"]}
+                  placeholder="상관 없음"
+                  name="원하는 메이트 성별"
+                  width="130px"
+                />
+              </TimeSelector>
+            </SelectContainer>
+          </SelectorConatiner>
+          <SelectorConatiner>
+            <SubTitle text="재방문 의향" />
+            <SelectContainer>
+              <TimeSelector>
+                <Selectbox
+                  onClick={(
+                    e: React.MouseEvent<HTMLElement>,
+                    name = "sjei"
+                  ) => {}}
+                  options={["상관 없음", "남자", "여자"]}
+                  placeholder="상관 없음"
+                  name="원하는 메이트 성별"
+                  width="130px"
+                />
+              </TimeSelector>
+            </SelectContainer>
+          </SelectorConatiner>
+        </ConvinenceSelector>
+        <Editor />
+      </div>
+      <ButtonContainer>
+        <Button variant="text" size="large">
+          취소하기
+        </Button>
+        <Button variant="primary" size="large">
+          등록하기
+        </Button>
+      </ButtonContainer>
     </Container>
   );
 };
@@ -146,15 +234,45 @@ const Container = styled.div`
 `;
 
 const ExhibitionPicker = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: stretch;
-
-  gap: 30px;
+  display: grid;
+  /* justify-content: flex-start;
+  align-items: stretch; */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+  align-content: start;
+  /* gap: 30px; */
   padding: 0px;
   margin-bottom: 30px;
 `;
 
+const SelectContainer = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
+const TimeSelector = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  & > p {
+    color: ${theme.colors.greys60};
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+`;
+
+const ConvinenceSelector = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
 const SelectorConatiner = styled.div`
   margin-bottom: 30px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
