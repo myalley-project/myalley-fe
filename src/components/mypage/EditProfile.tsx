@@ -5,6 +5,12 @@ import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
 import Selectbox from "../Selectbox";
+import {
+  getYearArray,
+  getMonthArray,
+  getDayArray,
+} from "../../utils/dateSelector";
+import { theme } from "../../styles/theme";
 // import mypageApi, { MypageRes } from "../../apis/mypage";
 
 const EditProfile = () => {
@@ -139,7 +145,7 @@ const EditProfile = () => {
             }}
           />
           {!valids.nickname && (
-            <Notice color="#9C9C9C">
+            <Notice color={colors.default}>
               한글, 영어 대소문자, 숫자 2~10자를 입력하세요
             </Notice>
           )}
@@ -149,21 +155,21 @@ const EditProfile = () => {
           <BirthWrapper>
             <Selectbox
               placeholder="9999"
-              options={yearArr()}
+              options={getYearArray()}
               width="9vw"
               name="year"
               onClick={handleSetInfos}
             />
             <Selectbox
               placeholder="12"
-              options={monthArr()}
+              options={getMonthArray()}
               width="6.9vw"
               name="month"
               onClick={handleSetInfos}
             />
             <Selectbox
               placeholder="31"
-              options={dayArr()}
+              options={getDayArray()}
               width="6.9vw"
               name="day"
               onClick={handleSetInfos}
@@ -195,11 +201,11 @@ const EditProfile = () => {
             }}
           />
           {!valids.password ? (
-            <Notice color="#9C9C9C">
+            <Notice color={colors.default}>
               영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요
             </Notice>
           ) : (
-            <Notice color="#54C60E">안전한 비밀번호입니다</Notice>
+            <Notice color={colors.success}>안전한 비밀번호입니다</Notice>
           )}
         </InputWrapper>
         <InputWrapper>
@@ -215,9 +221,9 @@ const EditProfile = () => {
             }}
           />
           {passwordCheck !== "" && passwordCheck === infos.password ? (
-            <Notice color="#54C60E">동일한 비밀번호입니다</Notice>
+            <Notice color={colors.success}>동일한 비밀번호입니다</Notice>
           ) : (
-            <Notice color="#FD3D51">비밀번호가 일치하지 않습니다</Notice>
+            <Notice color={colors.error}>비밀번호가 일치하지 않습니다</Notice>
           )}
         </InputWrapper>
         <EditBtn type="submit" onClick={editBtn}>
@@ -232,29 +238,11 @@ export default EditProfile;
 
 const gender = ["여성", "남성"];
 
-function yearArr() {
-  const years: string[] = [];
-  for (let i = new Date().getFullYear(); i > 1950 - 1; i -= 1) {
-    years.push(i.toString());
-  }
-  return years;
-}
-
-function monthArr() {
-  const months: string[] = [];
-  for (let i = 1; i < 12 + 1; i += 1) {
-    months.push(i.toString());
-  }
-  return months;
-}
-
-function dayArr() {
-  const days: string[] = [];
-  for (let i = 1; i < 31 + 1; i += 1) {
-    days.push(i.toString());
-  }
-  return days;
-}
+const colors = {
+  default: `${theme.colors.greys60}`,
+  success: `${theme.colors.success}`,
+  error: `${theme.colors.error}`,
+};
 
 const EditProfileContainer = styled.div`
   width: 83vw;
