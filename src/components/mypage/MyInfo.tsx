@@ -3,23 +3,39 @@ import styled from "styled-components";
 import profileImg from "../../assets/icons/profileImg.svg";
 import MenuButtons from "./MenuButtons";
 
-const Mypage = () => (
-  <Profile>
-    <ProfileImg src={profileImg} alt="profile-img" />
-    <Level>level 1</Level>
-    <Nickname>닉네임</Nickname>
-    <Privacy>
-      <p>여성</p>
-      <p className="partition">|</p>
-      <p>23세</p>
-      <p className="partition">|</p>
-      <p>meme1223@email.com</p>
-    </Privacy>
-    <MenuButtons />
-  </Profile>
-);
+interface MyInfoType {
+  infos: Infos;
+}
 
-export default Mypage;
+interface Infos {
+  imageFile: string;
+  level: string;
+  nickname: string;
+  gender: string;
+  email: string;
+}
+
+const MyInfo = (props: MyInfoType) => {
+  const { infos } = props;
+  const { imageFile, level, nickname, gender, email } = infos;
+  return (
+    <Profile>
+      <ProfileImg src={profileImg} alt="profile-img" />
+      <Level>{level}</Level>
+      <Nickname>{nickname}</Nickname>
+      <Privacy>
+        <p>{gender}</p>
+        <p className="partition">|</p>
+        <p>23세</p>
+        <p className="partition">|</p>
+        <p>{email}</p>
+      </Privacy>
+      <MenuButtons />
+    </Profile>
+  );
+};
+
+export default MyInfo;
 
 const Profile = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.colors.greys40};
