@@ -23,7 +23,7 @@ const ReviewSearchbar = () => (
     </SearchbarContainer>
     <Divider />
     <ButtonItems>
-      <button type="button">최신순</button>
+      <button type="button">최근순</button>
       <Spliter />
       <button type="button">별점순</button>
     </ButtonItems>
