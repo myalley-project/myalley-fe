@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
 import Selectbox from "../components/atom/Selectbox";
-import { exhbUploadImgApi, exhbUploadImgRes } from "../apis/exhbAdmin";
+import { exhbUploadImgApi, ExhbUploadImgRes } from "../apis/exhbAdmin";
 
 const ExhibitionWrite = () => {
   const formData = new FormData();
@@ -82,7 +82,7 @@ const ExhibitionWrite = () => {
       // postUploadImg(e.target.files[0]);
       formData.append("file", e.target.files[0]);
       try {
-        const res: AxiosResponse<exhbUploadImgRes> = await exhbUploadImgApi();
+        const res: AxiosResponse<ExhbUploadImgRes> = await exhbUploadImgApi();
         console.log(res);
       } catch (err) {
         console.log(err);
