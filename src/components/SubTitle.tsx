@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { theme } from "../styles/theme";
 
 interface SubTitleProps {
   text: string;
@@ -12,6 +13,6 @@ export default SubTitle;
 const Title = styled.h2`
   font-weight: bold;
   font-size: 14px;
-  color: #333;
+  color: ${theme.colors.greys90};
   margin-bottom: 10px;
 `;
