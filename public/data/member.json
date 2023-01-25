@@ -1,0 +1,10 @@
+{
+  "userId": 1,
+  "email": "hgd123@naver.com",
+  "nickname": "hong길동12",
+  "gender": "W",
+  "birth": "2000-01-01",
+  "level": "level1",
+  "userImage": "",
+  "authority": "ROLE_USER"
+}

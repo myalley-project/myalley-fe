@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import likeIcon from "../../assets/icons/like.svg";
-import shareIcon from "../../assets/icons/share.svg";
+import heartOff from "../../assets/icons/heartOff.svg";
+import shareOff from "../../assets/icons/shareOff.svg";
 
 type MainCardType = {
   [key in "title" | "date" | "place" | "charge"]: string;
@@ -46,8 +46,8 @@ const MainCard = ({ title, date, place, charge }: MainCardType) => {
           <Footer>
             {/* 나중에 링크로 수정 */}
             <p>사이트 방문</p>
-            <img src={likeIcon} alt="like icon" />
-            <img src={shareIcon} alt="share icon" />
+            <img src={heartOff} alt="like icon" />
+            <img src={shareOff} alt="share icon" />
           </Footer>
         </InfoContainer>
       </Card>
@@ -97,12 +97,12 @@ const EditButtons = styled.div`
 
 const Button = styled.button`
   padding: 0;
-  color: ${(props) => props.theme.colors.hover};
+  color: ${(props) => props.theme.colors.greys60};
   font-size: 14px;
   cursor: pointer;
   &:hover {
     font-weight: 700;
-    color: ${(props) => props.theme.colors.txt};
+    color: ${(props) => props.theme.colors.greys100};
   }
 `;
 
@@ -112,7 +112,7 @@ const Title = styled.h1`
   font-size: 42px;
   line-height: 52px;
   letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.txt};
+  color: ${(props) => props.theme.colors.greys90};
   text-align: left;
 `;
 
@@ -123,7 +123,7 @@ const InfoDetail = styled.dl`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.pressed};
+  color: ${(props) => props.theme.colors.greys80};
   text-align: left;
   margin-bottom: 10px;
   dt {
@@ -144,7 +144,7 @@ const Footer = styled.div`
   font-weight: 500;
   font-size: 14px;
   letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.hover};
+  color: ${(props) => props.theme.colors.greys60};
   text-align: right;
   p {
     line-height: 24px;

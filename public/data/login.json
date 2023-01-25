@@ -1,1 +1,4 @@
-{ "errorCode": 404, "errorMsg": "회원 정보 없음" }
+{
+  "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjY0MzYyODk1LCJpYXQiOjE2NjQzNjEwOTUsImF1dGhvcml0aWVzIjoiVU5DRVJUSUZJRUQifQ.kzzvbvWmBarOJCRaF10HXq3kctiE3WE8EUNdGLBrZJik62ph4YjAOD3BciLB_esCPQAB7CnqONbdomyNBWJf3A",
+  "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MzYxMDk1LCJleHAiOjE2NjQzNjQ2OTV9.gzPpNkU9ri5UQWtyw-_lhvtfccpzxT0PHc67TuUo4jgr3x3tOfR4lJRhWBwn4Lghjf5RJwiKSbozwWtCX1TLEQ"
+}
