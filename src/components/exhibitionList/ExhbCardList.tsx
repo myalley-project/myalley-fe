@@ -16,7 +16,7 @@ const ExhbCardList = ({ exhbList, type }: ExhbCardListType) => (
       return (
         <ExhibitionCard key={exhb.id} type={type}>
           <Link to={`/exhibition/${id}`}>
-            <img alt="thumbnail" className="thumbnail" src={posterUrl} />
+            <Thumbnail alt="thumbnail" src={posterUrl} />
           </Link>
           <Link className="content-box flex" to={`/exhibition/${id}`}>
             <Content>
@@ -52,8 +52,12 @@ const ExhibitionCard = styled.div<{
   margin-right: ${(props) => (props.type === "exhbList" ? "2.093%" : "2.5%")};
   margin-bottom: ${(props) => (props.type === "exhbList" ? "2.093%" : "2.5%")};
   padding-bottom: 42.99%;
-  border: 1px solid ${theme.colors.greys40};
-  border-radius: 30px;
+  border: 2px solid ${theme.colors.greys40};
+  border-radius: 33px;
+  :hover {
+    border: 2px solid ${theme.colors.primry60};
+    box-shadow: 0px 0px 20px #381e7218;
+  }
   .space-between {
     justify-content: space-between;
   }
@@ -62,13 +66,6 @@ const ExhibitionCard = styled.div<{
   }
   :nth-child(3n) {
     margin-right: ${(props) => props.type === "myPage" && 0};
-  }
-  .thumbnail {
-    position: absolute;
-    width: 100%;
-    height: 75.5%;
-    object-fit: cover;
-    cursor: pointer;
   }
   .content-box {
     position: absolute;
@@ -81,6 +78,14 @@ const ExhibitionCard = styled.div<{
     text-decoration: none;
     cursor: pointer;
   }
+`;
+
+const Thumbnail = styled.img`
+  position: absolute;
+  width: 100%;
+  height: 75.5%;
+  object-fit: cover;
+  cursor: pointer;
 `;
 
 const Content = styled.div`
