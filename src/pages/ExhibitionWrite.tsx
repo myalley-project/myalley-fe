@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { AxiosResponse } from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
+import { useNavigate } from "react-router-dom";
 import Selectbox from "../components/atom/Selectbox";
 import {
   exhbCreateApi,
   ExhbCreateRes,
-  ExhbCreateType,
   exhbUploadImgApi,
   ExhbUploadImgRes,
 } from "../apis/exhbAdmin";
 import isApiError from "../utils/isApiError";
+import Button from "../components/atom/Button";
+import CheckLabel from "../components/atom/CheckLabel";
 
 const ExhibitionWrite = () => {
   const formData = new FormData();
+  const navigate = useNavigate();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [thumbnail, setThumbnail] = useState("");
@@ -31,7 +34,7 @@ const ExhibitionWrite = () => {
     space: "",
     fileName: "",
     posterUrl: "",
-    adultPrice: 0,
+    adultPrice: 1,
     content: "",
     author: "",
     webLink: "",
@@ -154,13 +157,33 @@ const ExhibitionWrite = () => {
   // 등록 api 요청
   const clickSubmitBtn = async () => {
     console.log(detail);
-    try {
-      const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
-      console.log(res.data);
-      alert("전시글 등록이 완료되었습니다.");
-    } catch (err) {
-      isApiError(err);
-    }
+    if (detail.title === "") {
+      alert("제목을 입력해주세요.");
+    } else if (detail.type === "") {
+      alert("전시 타입을 선택해주세요.");
+    } else if (detail.status === "") {
+      alert("전시 관람여부를 선택해주세요.");
+    } else if (detail.date === "") {
+      alert("전시 일정을 선택해주세요.");
+    } else if (thumbnail === "") {
+      alert("전시 포스터를 등록해주세요.");
+    } else if (detail.space === "") {
+      alert("전시 장소를 입력해주세요.");
+    } else if (detail.content === "") {
+      alert("전시 내용을 작성해주세요.");
+    } else if (detail.author === "") {
+      alert("작가정보를 작성해주세요.");
+    } else if (detail.webLink === "") {
+      alert("전시회 웹페이지 주소를 작성해주세요.");
+    } else
+      try {
+        const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
+        console.log(res.data);
+
+        alert("전시글 등록이 완료되었습니다.");
+      } catch (err) {
+        isApiError(err);
+      }
   };
 
   return (
@@ -259,14 +282,12 @@ const ExhibitionWrite = () => {
               />
               <p>원</p>
             </InputTextArea>
-            <InputCheckbox
-              type="checkbox"
-              checked={priceFree}
-              onChange={handlePriceFree}
-            />
-            <span style={{ paddingLeft: "43px", fontWeight: 700 }}>
-              무료 관람
-            </span>
+            <CheckLabelArea>
+              <CheckLabel
+                label="무료 관람"
+                onClick={handlePriceFree}
+              ></CheckLabel>
+            </CheckLabelArea>
           </div>
         </OptionWrapper>
         <OptionWrapper>
@@ -302,8 +323,20 @@ const ExhibitionWrite = () => {
         </OptionWrapper>
       </WriteExhibitionWrapper>
       <ButtonWrapper>
-        <CancelBtn>취소</CancelBtn>
-        <SubmitBtn type="submit" onClick={clickSubmitBtn}>
+        <SubmitBtn
+          variant="primary"
+          size="large"
+          type="button"
+          onClick={() => navigate("/")}
+        >
+          취소
+        </SubmitBtn>
+        <SubmitBtn
+          variant="primary"
+          size="large"
+          type="button"
+          onClick={clickSubmitBtn}
+        >
           등록하기
         </SubmitBtn>
       </ButtonWrapper>
@@ -313,7 +346,31 @@ const ExhibitionWrite = () => {
 
 export default ExhibitionWrite;
 
-const typeOptions = ["그림 전시", "조각 전시", "문학 전시", "기획 전시"];
+const typeOptions = [
+  "그림전시",
+  "조각전시",
+  "문학전시",
+  "기획전시",
+  "건축전시",
+  "영화전시",
+  "음악전시",
+  "공연예술전시",
+  "영상전시",
+  "소장품전시",
+  "초점전시",
+  "임시전시",
+  "조망전시",
+  "전문전시",
+  "역사전시",
+  "정기전시",
+  "장소특정적전시",
+  "자유출품전시",
+  "커미션전시",
+  "아트페어",
+  "특별전시",
+  "사진전시",
+  "기타",
+];
 
 const WriteExhibitionContainer = styled.div`
   display: flex;
@@ -438,18 +495,25 @@ const InputPrice = styled.input`
   text-align: right;
 `;
 
-const InputCheckbox = styled.input`
-  appearance: none;
+// const InputCheckbox = styled.input`
+//   appearance: none;
+//   position: absolute;
+//   top: 3px;
+//   left: 146px;
+//   width: 24px;
+//   height: 24px;
+//   cursor: pointer;
+//   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+//   &:checked {
+//     background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' fill='%239C9C9C'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+//   }
+// `;
+
+const CheckLabelArea = styled.div`
+  display: inline-block;
   position: absolute;
-  top: 3px;
-  left: 146px;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
-  &:checked {
-    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' fill='%239C9C9C'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
-  }
+  top: 5px;
+  margin-left: 20px;
 `;
 
 const TextArea = styled(Input)`
@@ -487,25 +551,6 @@ const ButtonWrapper = styled.div`
   margin-bottom: 50px;
 `;
 
-const SubmitBtn = styled.button`
-  width: 175px;
-  height: 48px;
-  background-color: ${(props) => props.theme.colors.primry70};
-  border-radius: 10000px;
-  font-weight: 500;
-  font-size: 20px;
-  color: ${(props) => props.theme.colors.white100};
-  cursor: pointer;
-  &:hover {
-    background-color: #381e72;
-  }
-`;
-
-const CancelBtn = styled(SubmitBtn)`
-  background-color: ${(props) => props.theme.colors.white100};
-  color: ${(props) => props.theme.colors.greys60};
-  &:hover {
-    background-color: ${(props) => props.theme.colors.greys90};
-    color: ${(props) => props.theme.colors.white100};
-  }
+const SubmitBtn = styled(Button)`
+  width: 153px;
 `;
