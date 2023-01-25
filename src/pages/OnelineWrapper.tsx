@@ -1,4 +1,7 @@
 import React, { useEffect, useReducer } from "react";
+import { useMutation } from "react-query";
+import { useParams } from "react-router-dom";
+import onelineReviewApis from "../apis/onelineReviewapis";
 import OnelineWrite from "../components/onelineReview/OnelineWrite";
 
 interface OnelineReviewPost {
@@ -100,12 +103,23 @@ const reducer = (
   }
 };
 
+type Payload = {
+  exhibitionId: number;
+  date: string;
+  time: string;
+  congestion: string;
+  rate: number;
+  content: string;
+};
+
 const OnelineWrapper = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { params } = useParams();
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
+  const mutationFunction = onelineReviewApis.createReview;
+  const newReviewMutation = useMutation({
+    mutationFn: (payload: Payload) => mutationFunction(payload),
+  });
 
   const yearHandler = (e: React.MouseEvent) => {
     if (e !== undefined) {
@@ -212,3 +226,17 @@ const OnelineWrapper = () => {
 };
 
 export default OnelineWrapper;
+
+function getPayload(state: OnelineReviewPost): Payload {
+  const BIRTHDAY = `${state.date.year}-${state.date.month}-${state.date.day}`;
+  const TIME = `${state.time.enterence}-${state.time.exit}`;
+
+  return {
+    exhibitionId: state.exhibitionId,
+    date: BIRTHDAY,
+    time: TIME,
+    congestion: state.congestion,
+    rate: state.rate,
+    content: state.content,
+  };
+}
