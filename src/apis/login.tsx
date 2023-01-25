@@ -8,7 +8,7 @@ export interface LoginRes {
   errorMsg?: string;
 }
 
-// 로그인 api_박예선_23.01.13
+// 로그인 api_박예선_23.01.20
 const loginApi = async (loginInfo: { email: string; password: string }) => {
   const { email, password } = loginInfo;
   const reqBody = { email, password };

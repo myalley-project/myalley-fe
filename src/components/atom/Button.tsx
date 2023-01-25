@@ -13,6 +13,12 @@ const hoverBackgroundColor = {
   text: `${theme.colors.greys10}`,
 };
 
+const disabledBackgroundColor = {
+  primary: `${theme.colors.greys40}`,
+  secondary: `${theme.colors.greys40}`,
+  text: `${theme.colors.white100}`,
+};
+
 const fontColor = {
   primary: `${theme.colors.white100}`,
   secondary: `${theme.colors.white100}`,
@@ -23,6 +29,12 @@ const hoverFontColor = {
   primary: `${theme.colors.white100}`,
   secondary: `${theme.colors.white100}`,
   text: `${theme.colors.greys100}`,
+};
+
+const disabledFontColor = {
+  primary: `${theme.colors.white100}`,
+  secondary: `${theme.colors.white100}`,
+  text: `${theme.colors.greys40}`,
 };
 
 const buttonsize = {
@@ -36,7 +48,6 @@ interface ButtonProps {
 }
 
 const Button = styled.button<ButtonProps>`
-  width: 175px;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-inline: ${(props) => buttonsize[props.size]};
@@ -49,6 +60,10 @@ const Button = styled.button<ButtonProps>`
   &:is(:hover, :focus) {
     color: ${(props) => hoverFontColor[props.variant]};
     background-color: ${(props) => hoverBackgroundColor[props.variant]};
+  }
+  :disabled {
+    background-color: ${(props) => disabledBackgroundColor[props.variant]};
+    color: ${(props) => disabledFontColor[props.variant]};
   }
 `;
 

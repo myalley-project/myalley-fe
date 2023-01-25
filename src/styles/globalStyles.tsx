@@ -13,6 +13,9 @@ const GlobalStyle = createGlobalStyle`
     justify-content: center;
     align-items: center;
     font-family: 'Noto Sans KR', sans-serif;
+    &::-webkit-scrollbar {
+    display: none;
+    }
   }
   div, input, button,img {
     background-color: transparent;
