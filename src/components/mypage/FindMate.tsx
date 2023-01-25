@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MateList from "../mate/MateList";
 import Pagination from "../Pagination";
@@ -11,6 +11,7 @@ import useRefreshTokenApi from "../../apis/useRefreshToken";
 
 const FindMate = () => {
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
+  const navigate = useNavigate();
   const [pageInfoList, setPageInfoList] = useState({
     page: 0,
     size: 0,
@@ -23,23 +24,29 @@ const FindMate = () => {
   });
 
   // 내가 쓴 메이트 목록 요청 api 호출
-  // const getFindMateList = useCallback(async (pageNo: number) => {
-  //   try {
-  //     const res: AxiosResponse<MateRes> = await myMatesApi(pageNo);
-  //     const { mates, pageInfo } = res.data;
-  //     setMatesList(mates);
-  //     setPageInfoList(pageInfo);
-  //   } catch (err) {
-  //     // const errorRes = isApiError(err);
-  //     // if (errorRes === "accessToken 만료") useRefreshTokenApi;
-  //     // if (typeof errorRes !== "object") return;
-  //     // const { errorCode, errorMsg } = errorRes;
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   getFindMateList(pages.selected);
-  // }, [getFindMateList, pages.selected]);
-  const pageno = 5;
+  const getFindMateList = useCallback(
+    async (pageNo: number) => {
+      try {
+        const res: AxiosResponse<MateRes> = await myMatesApi(pageNo);
+        const { mates, pageInfo } = res.data;
+        setMatesList(mates);
+        setPageInfoList(pageInfo);
+      } catch (err) {
+        isApiError(err);
+        // const errorRes = isApiError(err);
+        // if (errorRes === "accessToken 만료") useRefreshTokenApi;
+        // if (typeof errorRes !== "object") return;
+        // const { errorCode, errorMsg } = errorRes;
+      }
+      navigate(`?type=mate&pageno=${pageNo}`);
+    },
+    [navigate]
+  );
+
+  useEffect(() => {
+    getFindMateList(pages.selected);
+  }, [getFindMateList, pages.selected]);
+
   return (
     <FindMateContainer>
       {matesList.length == 0

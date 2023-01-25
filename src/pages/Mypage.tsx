@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { AxiosResponse } from "axios";
 import { useLocation } from "react-router-dom";
 import { myInfoApi, MyInfoRes } from "../apis/member";
-import MyInfo from "../components/mypage/MyInfo";
+import MyInfoCard from "../components/mypage/MyInfoCard";
 import MyProfileEdit from "../components/mypage/MyProfileEdit";
 import MyWrite from "../components/mypage/MyWrite";
 
 const Mypage = () => {
   const location = useLocation();
   const { pathname } = location;
-  const [infos, setInfos] = useState({
+  const [infoData, setInfoData] = useState({
     memberId: 0,
     email: "",
     nickname: "",
@@ -27,8 +27,7 @@ const Mypage = () => {
       const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
       if (!res) return;
       const { data } = res;
-      console.log(res);
-      setInfos(data);
+      setInfoData(data);
     } catch (err) {
       console.log(err);
     }
@@ -40,10 +39,12 @@ const Mypage = () => {
 
   return (
     <MypageContainer>
-      <MyInfo infos={infos} />
-      {pathname === "/mypage/edit" ? <MyProfileEdit /> : null}
+      <MyInfoCard infoData={infoData} />
+      {pathname === "/mypage/edit" ? (
+        <MyProfileEdit infoData={infoData} />
+      ) : null}
       {pathname === "/mypage/write" ? <MyWrite /> : null}
-      {pathname === "/mypage/bookmark" ? <MyProfileEdit /> : null}
+      {/* {pathname === "/mypage/bookmark" ? <MyProfileEdit /> : null} */}
     </MypageContainer>
   );
 };

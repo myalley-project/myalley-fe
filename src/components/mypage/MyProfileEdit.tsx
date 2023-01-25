@@ -13,7 +13,23 @@ import {
 } from "../../utils/dateSelector";
 import { theme } from "../../styles/theme";
 
-const MyProfileEdit = () => {
+interface MyInfoType {
+  infoData: {
+    memberId: number;
+    email: string;
+    nickname: string;
+    gender: string;
+    birth: string;
+    level: string;
+    memberImage: string;
+    authority: string;
+  };
+}
+
+const MyProfileEdit = (props: MyInfoType) => {
+  const { infoData } = props;
+  const { birth, nickname, gender } = infoData;
+
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [profileImage, setProfileImage] = useState(profileImg);
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -22,7 +38,7 @@ const MyProfileEdit = () => {
     password: false,
   });
   const [infos, setInfos] = useState({
-    password: "",
+    password: null,
     nickname: "",
     gender: "",
     year: "",
@@ -103,14 +119,14 @@ const MyProfileEdit = () => {
   };
 
   // 회원정보 수정 api
-  const editBtn = async () => {
+  const editBtn = () => {
     console.log(infos);
-    try {
-      const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("put");
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("put");
+    //   console.log(res);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   return (

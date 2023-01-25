@@ -1,5 +1,5 @@
 import React from "react";
 
-const MyBookmark = () => <div></div>;
+const MyBookmark = () => <div />;
 
 export default MyBookmark;

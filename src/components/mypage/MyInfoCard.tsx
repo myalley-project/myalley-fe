@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import profileImg from "../../assets/icons/profileImg.svg";
-import MenuButtons from "./MenuButtons";
+import MenuBtns from "./MenuBtns";
 
 interface MyInfoType {
-  infos: {
+  infoData: {
     memberId: number;
     email: string;
     nickname: string;
@@ -17,21 +17,21 @@ interface MyInfoType {
 }
 
 const MyInfo = (props: MyInfoType) => {
-  const { infos } = props;
-  const { memberImage, level, nickname, gender, email } = infos;
+  const { infoData } = props;
+  const { memberImage, level, nickname, gender, email } = infoData;
   return (
     <Profile>
       <ProfileImg src={profileImg} alt="profile-img" />
       <Level>{level}</Level>
       <Nickname>{nickname}</Nickname>
       <Privacy>
-        <p>{gender}</p>
+        <p>{gender === "W" ? "여성" : "남성"}</p>
         <p className="partition">|</p>
         <p>23세</p>
         <p className="partition">|</p>
         <p>{email}</p>
       </Privacy>
-      <MenuButtons />
+      <MenuBtns />
     </Profile>
   );
 };

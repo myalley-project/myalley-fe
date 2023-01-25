@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
@@ -44,10 +44,11 @@ const MenuButtons = () => {
                 color: `${theme.colors.greys60}`,
               }
         }
-        onClick={() => Navigate("/mypage/write")}
+        onClick={() => Navigate("/mypage/write?type=oneline&pageno=1")}
       >
-        작성 글 조회
+        작성글 조회
       </MenuButton>
+
       <MenuButton
         type="button"
         style={
