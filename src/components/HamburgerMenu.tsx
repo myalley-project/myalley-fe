@@ -1,54 +1,89 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ProfileImg from "../assets/icons/profileImg.svg";
+import { theme } from "../styles/theme";
 
-const HamburgerMenu = () => (
-  <MenuContainer>
-    <MenuWrapper>
-      <Subtitle>계정</Subtitle>
-      <MypageArea href="/">
-        <ProfileWrapper>
-          <img src={ProfileImg} alt="profile-img" style={{ width: "40px" }} />
-        </ProfileWrapper>
-        <div>
-          <Nickname>Nickname</Nickname>
-          <Email className="email">email11@email.com</Email>
-        </div>
-      </MypageArea>
-      <LogoutButton type="button">로그아웃</LogoutButton>
-    </MenuWrapper>
-    <MenuWrapper>
-      <Subtitle>메뉴</Subtitle>
-      <ul>
-        <List as="a" href="/">
-          전시회
-        </List>
-        <List as="a" href="/">
-          전시회 리뷰
-        </List>
-        <List as="a" href="/">
-          메이트 찾기
-        </List>
-        {/* <List as="a" href="/">
-          전시회 정보 등록하기
-        </List> */}
-      </ul>
-    </MenuWrapper>
-  </MenuContainer>
-);
+const HamburgerMenu = () => {
+  const [info, setInfo] = useState({
+    nickname: localStorage.getItem("nickname")!,
+    memberImage: localStorage.getItem("userImage")!,
+    email: localStorage.getItem("email")!,
+    authority: localStorage.getItem("authority")!,
+  });
+
+  return (
+    <MenuContainer>
+      {localStorage.getItem("accessToken") ? (
+        <MenuWrapper>
+          <Subtitle>계정</Subtitle>
+          <MypageArea href="/mypage/edit">
+            <ProfileWrapper>
+              <img
+                src={ProfileImg}
+                alt="profile-img"
+                style={{ width: "40px" }}
+              />
+            </ProfileWrapper>
+            <div>
+              <Nickname>{info.nickname}</Nickname>
+              <Email className="email">{info.email}</Email>
+            </div>
+          </MypageArea>
+          <LogoutButton type="button">로그아웃</LogoutButton>
+        </MenuWrapper>
+      ) : (
+        <MenuWrapper>
+          <Subtitle>계정</Subtitle>
+          <List as="a" href="/login">
+            로그인
+          </List>
+          <List as="a" href="/signup">
+            회원가입
+          </List>
+        </MenuWrapper>
+      )}
+
+      <MenuWrapper>
+        <Subtitle>메뉴</Subtitle>
+        <ul>
+          {info.authority !== "ROLE_ADMIN" && (
+            <List as="a" href="/exhibition-list">
+              전시회
+            </List>
+          )}
+          {info.authority !== "ROLE_ADMIN" && (
+            <List as="a" href="/">
+              전시회 리뷰
+            </List>
+          )}
+          {info.authority !== "ROLE_ADMIN" && (
+            <List as="a" href="/">
+              메이트 찾기
+            </List>
+          )}
+          {info.authority === "ROLE_ADMIN" && (
+            <List as="a" href="/exhibition-write">
+              전시회 정보 등록하기
+            </List>
+          )}
+        </ul>
+      </MenuWrapper>
+    </MenuContainer>
+  );
+};
 
 export default HamburgerMenu;
 
 const MenuContainer = styled.div`
   position: absolute;
+  z-index: 100; // 항상 최상단에 위치
   left: 77%;
   top: 57px;
   width: 215px;
-  height: 292px;
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: ${theme.colors.white100};
 `;
 
 const MenuWrapper = styled.div`
@@ -57,7 +92,7 @@ const MenuWrapper = styled.div`
 
 const Subtitle = styled.h2`
   padding-bottom: 5px;
-  color: ${(props) => props.theme.colors.greys80};
+  color: ${theme.colors.greys80};
   font-weight: 400;
   font-size: 12px;
 `;
@@ -76,14 +111,14 @@ const ProfileWrapper = styled.div`
 `;
 
 const Nickname = styled.p`
-  color: ${(props) => props.theme.colors.greys90};
+  color: ${theme.colors.greys90};
   font-weight: 500;
   font-size: 14px;
   padding-bottom: 4px;
 `;
 
 const Email = styled.p`
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${theme.colors.greys60};
   font-weight: 400;
   font-size: 12px;
 `;
@@ -94,7 +129,7 @@ const LogoutButton = styled.button`
   height: 40px;
   line-height: 40px;
   padding-left: 10px;
-  color: ${(props) => props.theme.colors.greys90};
+  color: ${theme.colors.greys90};
   font-weight: 500;
   font-size: 14px;
   text-align: left;
@@ -102,6 +137,10 @@ const LogoutButton = styled.button`
   &:hover {
     color: #6750a4;
     background-color: #f6f3fe;
+    border-radius: 10px;
+  }
+  &:focus-visible {
+    outline: 1px solid ${theme.colors.primry80};
     border-radius: 10px;
   }
 `;
