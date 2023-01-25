@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
-import Selectbox from "../components/Selectbox";
+import Selectbox from "../components/atom/Selectbox";
 
 const ExhibitionWrite = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());

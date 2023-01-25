@@ -3,6 +3,7 @@ import styled from "styled-components";
 import profileImg from "../assets/icons/profileImg.svg";
 import MenuButtons from "../components/mypage/MenuButtons";
 import EditProfile from "../components/mypage/EditProfile";
+import FindMate from "../components/mypage/FindMate";
 
 const Mypage = () => {
   const [mode, setMode] = useState("mypage");
@@ -24,6 +25,7 @@ const Mypage = () => {
         </Profile>
       </MypageWrapper>
       {mode === "mypage" && <EditProfile />}
+      {mode === "review" && <FindMate />}
     </MypageContainer>
   );
 };

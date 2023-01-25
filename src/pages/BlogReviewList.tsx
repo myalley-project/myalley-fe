@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
-import Selectbox from "../components/Selectbox";
+import Selectbox from "../components/atom/Selectbox";
 import BlogReviewCard from "../components/blogreview/BlogReviewCard";
 import Button from "../components/atom/Button";
 

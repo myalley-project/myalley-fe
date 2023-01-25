@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
-import Selectbox from "../Selectbox";
+import Selectbox from "../atom/Selectbox";
 import {
   getYearArray,
   getMonthArray,
