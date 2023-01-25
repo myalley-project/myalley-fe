@@ -179,7 +179,6 @@ const ExhibitionWrite = () => {
       try {
         const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
         console.log(res.data);
-
         alert("전시글 등록이 완료되었습니다.");
       } catch (err) {
         isApiError(err);
@@ -286,7 +285,7 @@ const ExhibitionWrite = () => {
               <CheckLabel
                 label="무료 관람"
                 onClick={handlePriceFree}
-              ></CheckLabel>
+               />
             </CheckLabelArea>
           </div>
         </OptionWrapper>
@@ -494,20 +493,6 @@ const InputPrice = styled.input`
   color: ${(props) => props.theme.colors.greys60};
   text-align: right;
 `;
-
-// const InputCheckbox = styled.input`
-//   appearance: none;
-//   position: absolute;
-//   top: 3px;
-//   left: 146px;
-//   width: 24px;
-//   height: 24px;
-//   cursor: pointer;
-//   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
-//   &:checked {
-//     background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' fill='%239C9C9C'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
-//   }
-// `;
 
 const CheckLabelArea = styled.div`
   display: inline-block;
