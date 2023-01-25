@@ -31,67 +31,69 @@ const OnelineWrite = () => {
         <SelectForm>
           <p>생년 월일</p>
           <SelectboxContainer>
-            {/* <Selectbox
+            <Selectbox
               placeholder="1990"
               options={getYearArray()}
-              selectedData={setSelectedYear}
+              onClick={(e, name = "") => {}}
+              name="년도"
               width="130px"
             />
             <Selectbox
               placeholder="12"
               options={getMonthArray()}
-              selectedData={setSelectedMonth}
+              onClick={(e, name = "") => {}}
+              name="월"
               width="100px"
             />
             <Selectbox
               placeholder="31"
               options={getDayArray()}
-              selectedData={setSelectedDay}
+              onClick={(e, name = "") => {}}
+              name="일"
               width="100px"
-            /> */}
+            />
           </SelectboxContainer>
         </SelectForm>
         <SelectForm>
           <p>방문 시간</p>
           <SelectboxContainer>
             <span>입장</span>
-
-            {/* <Selectbox
+            <Selectbox
               placeholder="00시"
               options={getTimeArray()}
-              selectedData={setEntransTime}
+              onClick={() => {}}
+              name="입장 시간"
               width="133px"
             />
             <span>퇴장</span>
             <Selectbox
               placeholder="00시"
               options={getTimeArray()}
-              selectedData={setExitTime}
+              onClick={() => {}}
+              name="퇴장 시간"
               width="133px"
-            /> */}
+            />
           </SelectboxContainer>
         </SelectForm>
         <SelectForm>
           <p>모집 상태</p>
-          {/* <Selectbox
+          <Selectbox
             placeholder="모집 중"
             options={["모집 중", "모집 마감"]}
-            selectedData={setRecruitment}
+            onClick={() => {}}
+            name="모집 상태"
             width="350px"
-          /> */}
-        </SelectForm>
-        <SelectForm>
-          <p>혼잡도</p>
-          {/* <Selectbox
+          />
         </SelectForm>
         <SelectForm>
           <p>혼잡도</p>
           <Selectbox
             placeholder="매우 혼잡"
             options={["매우 혼잡", "혼잡", "보통", "한산"]}
-            selectedData={setCongestion}
+            onClick={() => {}}
+            name="혼잡도"
             width="350px"
-          /> */}
+          />
         </SelectForm>
         <SelectForm>
           <p>전시회 웹페이지 주소</p>
