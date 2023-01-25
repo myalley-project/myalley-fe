@@ -12,8 +12,8 @@ import {
 } from "date-fns";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
-import ArrowLeft from "../assets/icons/arrowLeft.svg";
-import ArrowRight from "../assets/icons/arrowRight.svg";
+import ArrowPrev from "../assets/icons/arrowPrev.svg";
+import ArrowNext from "../assets/icons/arrowNext.svg";
 
 const Calender = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
@@ -62,7 +62,7 @@ const Calender = () => {
       <Header>
         <div>
           <button type="button" onClick={prevMonth}>
-            <img src={ArrowLeft} alt="이전 화살표" />
+            <img src={ArrowPrev} alt="이전 화살표" />
           </button>
         </div>
         <div>
@@ -70,7 +70,7 @@ const Calender = () => {
         </div>
         <div>
           <button type="button" onClick={nextMonth}>
-            <img src={ArrowRight} alt="다음 화살표" />
+            <img src={ArrowNext} alt="다음 화살표" />
           </button>
         </div>
       </Header>
