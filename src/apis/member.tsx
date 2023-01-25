@@ -20,6 +20,21 @@ export const myInfoApi = async (type: "get" | "put") => {
   return errorAlert();
 };
 
+export const editMyInfoApi = async () => {
+  const reqBody = {
+    data: {
+      password: null,
+      nickname: "hong길동12",
+      gender: "W",
+      birth: "2000-01-01",
+    },
+  };
+  const putRes: AxiosResponse<MyInfoRes> = await apiInstance.put("/api/me", {
+    reqBody,
+  });
+  return putRes;
+};
+
 export interface MyInfoRes {
   memberId: number;
   email: string;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
+import { MyInfoRes, myInfoApi, editMyInfoApi } from "../../apis/member";
 import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
@@ -121,14 +122,14 @@ const MyProfileEdit = (props: MyInfoType) => {
   };
 
   // 회원정보 수정 api 현재는 주석처리
-  const editBtn = () => {
+  const editBtn = async () => {
     console.log(infos);
-    // try {
-    //   const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("put");
-    //   console.log(res);
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      const res: AxiosResponse<MyInfoRes> | void = await editMyInfoApi();
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
