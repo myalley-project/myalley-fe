@@ -1,26 +1,24 @@
 import React, { useEffect, useReducer } from "react";
-import { useMutation } from "react-query";
-import { useParams } from "react-router-dom";
-import onelineReviewApis from "../apis/onelineReviewapis";
 import OnelineWrite from "../components/onelineReview/OnelineWrite";
+import { OnelineReviewPostType } from "../types/OnelineReview";
 
-interface OnelineReviewPost {
-  exhibitionId: number;
-  date: {
-    year: string;
-    month: string;
-    day: string;
-  };
-  time: {
-    enterence: string;
-    exit: string;
-  };
-  congestion: string;
-  rate: number;
-  content: string;
-}
+// interface OnelineReviewPost {
+//   exhibitionId: number;
+//   date: {
+//     year: string;
+//     month: string;
+//     day: string;
+//   };
+//   time: {
+//     enterence: string;
+//     exit: string;
+//   };
+//   congestion: string;
+//   rate: number;
+//   content: string;
+// }
 
-const initialState: OnelineReviewPost = {
+const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
   date: {
     year: "",
@@ -103,23 +101,8 @@ const reducer = (
   }
 };
 
-type Payload = {
-  exhibitionId: number;
-  date: string;
-  time: string;
-  congestion: string;
-  rate: number;
-  content: string;
-};
-
 const OnelineWrapper = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { params } = useParams();
-
-  const mutationFunction = onelineReviewApis.createReview;
-  const newReviewMutation = useMutation({
-    mutationFn: (payload: Payload) => mutationFunction(payload),
-  });
 
   const yearHandler = (e: React.MouseEvent) => {
     if (e !== undefined) {
@@ -213,6 +196,7 @@ const OnelineWrapper = () => {
 
   return (
     <OnelineWrite
+      state={state}
       yearHandler={yearHandler}
       monthHandler={monthHandler}
       dayHandler={dayHandler}
@@ -226,17 +210,3 @@ const OnelineWrapper = () => {
 };
 
 export default OnelineWrapper;
-
-function getPayload(state: OnelineReviewPost): Payload {
-  const BIRTHDAY = `${state.date.year}-${state.date.month}-${state.date.day}`;
-  const TIME = `${state.time.enterence}-${state.time.exit}`;
-
-  return {
-    exhibitionId: state.exhibitionId,
-    date: BIRTHDAY,
-    time: TIME,
-    congestion: state.congestion,
-    rate: state.rate,
-    content: state.content,
-  };
-}
