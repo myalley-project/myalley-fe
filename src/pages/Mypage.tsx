@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import { AxiosResponse } from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { myInfoApi, MyInfoRes } from "../apis/member";
 import MyInfoCard from "../components/mypage/MyInfoCard";
 import MyProfileEdit from "../components/mypage/MyProfileEdit";
@@ -10,6 +10,7 @@ import MyBookmark from "../components/mypage/MyBookmark";
 
 const Mypage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { pathname } = location;
   const [infoData, setInfoData] = useState({
     memberId: 0,
@@ -36,7 +37,11 @@ const Mypage = () => {
 
   useEffect(() => {
     getMyInfo();
-  }, [getMyInfo]);
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인 후 이용해주세요.");
+      navigate("/");
+    }
+  }, [getMyInfo, navigate]);
 
   return (
     <MypageContainer>
