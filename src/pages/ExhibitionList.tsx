@@ -3,9 +3,9 @@ import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import { ExhbTypeFilters, Exhibition, FilterType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
-import ExhibitionCard from "../components/exhibitionList/ExhibitionCard";
 import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
+import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
 // 전시회 목록 페이지 컴포넌트_박예선_23.01.21
 const ExhibitionList = () => {
@@ -58,11 +58,7 @@ const ExhibitionList = () => {
         setExhbTypeFilters={setExhbTypeFilters}
         getExhbList={getExhbList}
       />
-      <CardListContainer className="flex">
-        {exhbList.map((exhb) => (
-          <ExhibitionCard key={exhb.id} exhbData={exhb} type="exhbList" />
-        ))}
-      </CardListContainer>
+      <ExhbCardList exhbList={exhbList} type="exhbList" />
       <Pagination pages={pages} setPages={setPages} totalPage={totalPage} />
     </ExhibitionListContainer>
   );
