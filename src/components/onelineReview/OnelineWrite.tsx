@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useMutation } from "react-query";
 import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
 import Selectbox from "../atom/Selectbox";
@@ -10,20 +11,49 @@ import {
 } from "../../utils/dateSelector";
 import getTimeArray from "../../utils/timeSelector";
 import SimpleInput from "../atom/SimpleInput";
+import { OnelineReviewPostType } from "../../types/OnelineReview";
+import onelineReviewApis from "../../apis/onelineReviewapis";
 
-interface DayArrProps {
-  Year: string;
-  Month: string;
+interface HandlerProps {
+  state: OnelineReviewPostType;
+  yearHandler: (e: React.MouseEvent) => void;
+  monthHandler: (e: React.MouseEvent) => void;
+  dayHandler: (e: React.MouseEvent) => void;
+  enteranceHandler: (e: React.MouseEvent) => void;
+  exitHandler: (e: React.MouseEvent) => void;
+  congestionHandler: (e: React.MouseEvent) => void;
+  rateHandler: (e: React.MouseEvent) => void;
+  contentHandler: (e: React.MouseEvent) => void;
 }
 
-const OnelineWrite = () => {
-  const [seletedYear, setSelectedYear] = useState<string>("");
-  const [selectedMonth, setSelectedMonth] = useState("");
-  const [selectedDay, setSelectedDay] = useState("");
-  const [extransTime, setEntransTime] = useState("");
-  const [exitTime, setExitTime] = useState("");
-  const [recruitment, setRecruitment] = useState("");
-  const [congestion, setCongestion] = useState("");
+type Payload = {
+  exhibitionId: number;
+  date: string;
+  time: string;
+  congestion: string;
+  rate: number;
+  content: string;
+};
+
+const OnelineWrite = ({
+  state,
+  yearHandler,
+  monthHandler,
+  dayHandler,
+  enteranceHandler,
+  exitHandler,
+  congestionHandler,
+  rateHandler,
+  contentHandler,
+}: HandlerProps) => {
+  const mutationFunction = onelineReviewApis.createReview;
+  const newReviewMutation = useMutation({
+    mutationFn: (payload: Payload) => mutationFunction(payload),
+  });
+  const SubmitHandler = () => {
+    const body = getPayload(state);
+    return newReviewMutation.mutate(body);
+  };
 
   return (
     <Container>
@@ -34,21 +64,21 @@ const OnelineWrite = () => {
             <Selectbox
               placeholder="1990"
               options={getYearArray()}
-              onClick={(e, name = "") => {}}
+              onClick={yearHandler}
               name="년도"
               width="130px"
             />
             <Selectbox
               placeholder="12"
               options={getMonthArray()}
-              onClick={(e, name = "") => {}}
+              onClick={monthHandler}
               name="월"
               width="100px"
             />
             <Selectbox
               placeholder="31"
               options={getDayArray()}
-              onClick={(e, name = "") => {}}
+              onClick={dayHandler}
               name="일"
               width="100px"
             />
@@ -61,7 +91,7 @@ const OnelineWrite = () => {
             <Selectbox
               placeholder="00시"
               options={getTimeArray()}
-              onClick={() => {}}
+              onClick={enteranceHandler}
               name="입장 시간"
               width="133px"
             />
@@ -69,7 +99,7 @@ const OnelineWrite = () => {
             <Selectbox
               placeholder="00시"
               options={getTimeArray()}
-              onClick={() => {}}
+              onClick={exitHandler}
               name="퇴장 시간"
               width="133px"
             />
@@ -90,7 +120,7 @@ const OnelineWrite = () => {
           <Selectbox
             placeholder="매우 혼잡"
             options={["매우 혼잡", "혼잡", "보통", "한산"]}
-            onClick={() => {}}
+            onClick={congestionHandler}
             name="혼잡도"
             width="350px"
           />
@@ -104,7 +134,7 @@ const OnelineWrite = () => {
         <Button variant="text" size="large">
           취소하기
         </Button>
-        <Button variant="primary" size="large">
+        <Button onClick={SubmitHandler} variant="primary" size="large">
           등록하기
         </Button>
       </ButtonContainer>
@@ -113,6 +143,20 @@ const OnelineWrite = () => {
 };
 
 export default OnelineWrite;
+
+function getPayload(state: OnelineReviewPostType): Payload {
+  const BIRTHDAY = `${state.date.year}-${state.date.month}-${state.date.day}`;
+  const TIME = `${state.time.enterence}-${state.time.exit}`;
+
+  return {
+    exhibitionId: state.exhibitionId,
+    date: BIRTHDAY,
+    time: TIME,
+    congestion: state.congestion,
+    rate: state.rate,
+    content: state.content,
+  };
+}
 
 const Container = styled.div`
   position: fixed;
