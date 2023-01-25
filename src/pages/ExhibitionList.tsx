@@ -60,7 +60,7 @@ const ExhibitionList = () => {
       />
       <CardListContainer className="flex">
         {exhbList.map((exhb) => (
-          <ExhibitionCard key={exhb.id} exhbData={exhb} />
+          <ExhibitionCard key={exhb.id} exhbData={exhb} type="exhbList" />
         ))}
       </CardListContainer>
       <Pagination pages={pages} setPages={setPages} totalPage={totalPage} />
@@ -73,7 +73,7 @@ export default ExhibitionList;
 const ExhibitionListContainer = styled.div`
   flex-direction: column;
   align-items: center;
-  width: 99vw;
+  width: 100vw;
   font-size: 14px;
   h1 {
     margin: 50px 0;
@@ -99,6 +99,4 @@ const ExhibitionListContainer = styled.div`
 const CardListContainer = styled.div`
   flex-wrap: wrap;
   width: inherit;
-  min-height: 60vw;
-  margin: 30px 0;
 `;

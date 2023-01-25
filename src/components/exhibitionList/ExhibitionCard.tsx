@@ -1,46 +1,57 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { theme } from "../../styles/theme";
 import { Exhibition } from "../../types/exhbList";
 
-const ExhibitionCard = (props: ExhibitionCardType) => {
-  const { exhbData } = props;
-  const { id, title, space, duration, posterUrl, viewCount } = exhbData;
+interface ExhibitionCardType {
+  exhbData: Exhibition; // 전시회 1개 정보
+  type: "myPage" | "exhbList";
+}
 
+const ExhibitionCard = ({ exhbData, type }: ExhibitionCardType) => {
+  const { id, title, space, duration, posterUrl, viewCount } = exhbData;
   return (
-    <ExhibitionCardContainer className="border">
+    <ExhibitionCardContainer type={type}>
       <Link to={`/exhibition/${id}`}>
-        <img alt="thumbnail" className="thumbnail border" src={posterUrl} />
+        <img alt="thumbnail" className="thumbnail" src={posterUrl} />
       </Link>
-      <div className="content-box flex">
+      <Link className="content-box flex" to={`/exhibition/${id}`}>
         <div className="content">
-          <Link className="content-top" to={`/exhibition/${id}`}>
+          <div className="content-top">
             <div className="title">{title}</div>
             <div className="space">{space}</div>
-          </Link>
+          </div>
           <div className="content-footer flex space-between">
             <div className="exhb-period">{duration}</div>
             <span className="viewCount">조회수 {viewCount}</span>
           </div>
         </div>
-      </div>
+      </Link>
     </ExhibitionCardContainer>
   );
 };
 
 export default ExhibitionCard;
 
-interface ExhibitionCardType {
-  exhbData: Exhibition;
-}
-
-const ExhibitionCardContainer = styled.div`
+const ExhibitionCardContainer = styled.div<{
+  type: "exhbList" | "myPage";
+}>`
   position: relative;
-  width: 23.43%;
-  margin: 0 2.093% 2.093% 0;
+  width: ${(props) => (props.type === "exhbList" ? "23.43%" : "31.66%")};
+  margin-right: ${(props) => (props.type === "exhbList" ? "2.093%" : "2.5%")};
+  margin-bottom: ${(props) => (props.type === "exhbList" ? "2.093%" : "2.5%")};
   padding-bottom: 42.99%;
+  border: 1px solid ${theme.colors.greys40};
+  border-radius: 30px;
+  .space-between {
+    justify-content: space-between;
+  }
   :nth-child(4n) {
-    margin: 0 0 2.093% 0;
+    margin-right: ${(props) => props.type === "exhbList" && 0};
+  }
+  :nth-child(3n) {
+    margin-right: ${(props) => props.type === "myPage" && 0};
   }
   .thumbnail {
     position: absolute;
@@ -57,6 +68,8 @@ const ExhibitionCardContainer = styled.div`
     align-items: center;
     width: 82.24%;
     height: 24.5%;
+    text-decoration: none;
+    cursor: pointer;
     .content {
       position: relative;
       width: 100%;
@@ -64,9 +77,7 @@ const ExhibitionCardContainer = styled.div`
       .content-top {
         height: 30.4%;
         max-height: 28px;
-        color: ${(props) => props.theme.colors.greys90};
-        text-decoration: none;
-        cursor: pointer;
+        color: ${theme.colors.greys90};
         .title {
           position: relative;
           border-radius: 0;
@@ -79,7 +90,7 @@ const ExhibitionCardContainer = styled.div`
           line-height: 16px;
           margin: 1.3% 0 0;
           font-size: 12px;
-          color: ${(props) => props.theme.colors.greys60};
+          color: ${theme.colors.greys60};
         }
       }
       .content-footer {
@@ -87,28 +98,12 @@ const ExhibitionCardContainer = styled.div`
         bottom: 0;
         width: 100%;
         line-height: 24px;
+        font-size: 14px;
         .exhb-period {
-          color: ${(props) => props.theme.colors.greys80};
-          font-size: 14px;
-        }
-        .bookmark-box {
-          position: absolute;
-          right: 0;
-          bottom: 50%;
-          transform: translate(25%, 50%);
-          align-items: center;
-          justify-content: center;
-          height: 40px;
-          width: 40px;
-          padding: 0;
-          cursor: pointer;
-          .bookmark-icon {
-            width: 20.94px;
-          }
+          color: ${theme.colors.greys80};
         }
         .viewCount {
-          color: #9c9c9c;
-          font-size: 14px;
+          color: ${theme.colors.greys60};
         }
       }
     }
