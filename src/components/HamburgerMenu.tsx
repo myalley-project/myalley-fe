@@ -1,41 +1,47 @@
 import React from "react";
 import styled from "styled-components";
+import useLogOut from "../apis/logOut";
 import ProfileImg from "../assets/icons/profileImg.svg";
 
-const HamburgerMenu = () => (
-  <MenuContainer>
-    <MenuWrapper>
-      <Subtitle>계정</Subtitle>
-      <MypageArea href="/">
-        <ProfileWrapper>
-          <img src={ProfileImg} alt="profile-img" style={{ width: "40px" }} />
-        </ProfileWrapper>
-        <div>
-          <Nickname>Nickname</Nickname>
-          <Email className="email">email11@email.com</Email>
-        </div>
-      </MypageArea>
-      <LogoutButton type="button">로그아웃</LogoutButton>
-    </MenuWrapper>
-    <MenuWrapper>
-      <Subtitle>메뉴</Subtitle>
-      <ul>
-        <List as="a" href="/">
-          전시회
-        </List>
-        <List as="a" href="/">
-          전시회 리뷰
-        </List>
-        <List as="a" href="/">
-          메이트 찾기
-        </List>
-        {/* <List as="a" href="/">
+const HamburgerMenu = () => {
+  const logOut = useLogOut();
+  return (
+    <MenuContainer>
+      <MenuWrapper>
+        <Subtitle>계정</Subtitle>
+        <MypageArea href="/">
+          <ProfileWrapper>
+            <img src={ProfileImg} alt="profile-img" style={{ width: "40px" }} />
+          </ProfileWrapper>
+          <div>
+            <Nickname>Nickname</Nickname>
+            <Email className="email">email11@email.com</Email>
+          </div>
+        </MypageArea>
+        <LogoutButton type="button" onClick={logOut}>
+          로그아웃
+        </LogoutButton>
+      </MenuWrapper>
+      <MenuWrapper>
+        <Subtitle>메뉴</Subtitle>
+        <ul>
+          <List as="a" href="/">
+            전시회
+          </List>
+          <List as="a" href="/">
+            전시회 리뷰
+          </List>
+          <List as="a" href="/">
+            메이트 찾기
+          </List>
+          {/* <List as="a" href="/">
           전시회 정보 등록하기
         </List> */}
-      </ul>
-    </MenuWrapper>
-  </MenuContainer>
-);
+        </ul>
+      </MenuWrapper>
+    </MenuContainer>
+  );
+};
 
 export default HamburgerMenu;
 
