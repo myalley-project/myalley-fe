@@ -11,106 +11,111 @@ import {
 import getTimeArray from "../../utils/timeSelector";
 import SimpleInput from "../atom/SimpleInput";
 
-interface DayArrProps {
-  Year: string;
-  Month: string;
+interface HandlerProps {
+  yearHandler: (e: React.MouseEvent) => void;
+  monthHandler: (e: React.MouseEvent) => void;
+  dayHandler: (e: React.MouseEvent) => void;
+  enteranceHandler: (e: React.MouseEvent) => void;
+  exitHandler: (e: React.MouseEvent) => void;
+  congestionHandler: (e: React.MouseEvent) => void;
+  rateHandler: (e: React.MouseEvent) => void;
+  contentHandler: (e: React.MouseEvent) => void;
 }
 
-const OnelineWrite = () => {
-  const [seletedYear, setSelectedYear] = useState<string>("");
-  const [selectedMonth, setSelectedMonth] = useState("");
-  const [selectedDay, setSelectedDay] = useState("");
-  const [extransTime, setEntransTime] = useState("");
-  const [exitTime, setExitTime] = useState("");
-  const [recruitment, setRecruitment] = useState("");
-  const [congestion, setCongestion] = useState("");
-
-  return (
-    <Container>
-      <SelectContainer>
-        <SelectForm>
-          <p>생년 월일</p>
-          <SelectboxContainer>
-            <Selectbox
-              placeholder="1990"
-              options={getYearArray()}
-              onClick={(e, name = "") => {}}
-              name="년도"
-              width="130px"
-            />
-            <Selectbox
-              placeholder="12"
-              options={getMonthArray()}
-              onClick={(e, name = "") => {}}
-              name="월"
-              width="100px"
-            />
-            <Selectbox
-              placeholder="31"
-              options={getDayArray()}
-              onClick={(e, name = "") => {}}
-              name="일"
-              width="100px"
-            />
-          </SelectboxContainer>
-        </SelectForm>
-        <SelectForm>
-          <p>방문 시간</p>
-          <SelectboxContainer>
-            <span>입장</span>
-            <Selectbox
-              placeholder="00시"
-              options={getTimeArray()}
-              onClick={() => {}}
-              name="입장 시간"
-              width="133px"
-            />
-            <span>퇴장</span>
-            <Selectbox
-              placeholder="00시"
-              options={getTimeArray()}
-              onClick={() => {}}
-              name="퇴장 시간"
-              width="133px"
-            />
-          </SelectboxContainer>
-        </SelectForm>
-        <SelectForm>
-          <p>모집 상태</p>
+const OnelineWrite = ({
+  yearHandler,
+  monthHandler,
+  dayHandler,
+  enteranceHandler,
+  exitHandler,
+  congestionHandler,
+  rateHandler,
+  contentHandler,
+}: HandlerProps) => (
+  <Container>
+    <SelectContainer>
+      <SelectForm>
+        <p>생년 월일</p>
+        <SelectboxContainer>
           <Selectbox
-            placeholder="모집 중"
-            options={["모집 중", "모집 마감"]}
-            onClick={() => {}}
-            name="모집 상태"
-            width="350px"
+            placeholder="1990"
+            options={getYearArray()}
+            onClick={yearHandler}
+            name="년도"
+            width="130px"
           />
-        </SelectForm>
-        <SelectForm>
-          <p>혼잡도</p>
           <Selectbox
-            placeholder="매우 혼잡"
-            options={["매우 혼잡", "혼잡", "보통", "한산"]}
-            onClick={() => {}}
-            name="혼잡도"
-            width="350px"
+            placeholder="12"
+            options={getMonthArray()}
+            onClick={monthHandler}
+            name="월"
+            width="100px"
           />
-        </SelectForm>
-        <SelectForm>
-          <p>전시회 웹페이지 주소</p>
-          <SimpleInput />
-        </SelectForm>
-      </SelectContainer>
-      <ButtonContainer>
-        <Button variant="text" size="large">
-          취소하기
-        </Button>
-        <Button variant="primary" size="large">
-          등록하기
-        </Button>
-      </ButtonContainer>
-    </Container>
-  );
-};
+          <Selectbox
+            placeholder="31"
+            options={getDayArray()}
+            onClick={dayHandler}
+            name="일"
+            width="100px"
+          />
+        </SelectboxContainer>
+      </SelectForm>
+      <SelectForm>
+        <p>방문 시간</p>
+        <SelectboxContainer>
+          <span>입장</span>
+          <Selectbox
+            placeholder="00시"
+            options={getTimeArray()}
+            onClick={enteranceHandler}
+            name="입장 시간"
+            width="133px"
+          />
+          <span>퇴장</span>
+          <Selectbox
+            placeholder="00시"
+            options={getTimeArray()}
+            onClick={exitHandler}
+            name="퇴장 시간"
+            width="133px"
+          />
+        </SelectboxContainer>
+      </SelectForm>
+      <SelectForm>
+        <p>모집 상태</p>
+        <Selectbox
+          placeholder="모집 중"
+          options={["모집 중", "모집 마감"]}
+          onClick={() => {}}
+          name="모집 상태"
+          width="350px"
+        />
+      </SelectForm>
+      <SelectForm>
+        <p>혼잡도</p>
+        <Selectbox
+          placeholder="매우 혼잡"
+          options={["매우 혼잡", "혼잡", "보통", "한산"]}
+          onClick={congestionHandler}
+          name="혼잡도"
+          width="350px"
+        />
+      </SelectForm>
+      <SelectForm>
+        <p>전시회 웹페이지 주소</p>
+        <SimpleInput />
+      </SelectForm>
+    </SelectContainer>
+    <ButtonContainer>
+      <Button variant="text" size="large">
+        취소하기
+      </Button>
+      <Button variant="primary" size="large">
+        등록하기
+      </Button>
+    </ButtonContainer>
+  </Container>
+);
 
 export default OnelineWrite;
 
