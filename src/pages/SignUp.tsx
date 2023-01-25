@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import LoginSignUp from "../components/LoginSignUp.style";
 import EmailAndPw from "../components/signUp/EmailAndPw";
 import CommonOnly from "../components/signUp/CommonOnly";
 import AdminOnly from "../components/signUp/AdminOnly";
 import { IsOnly } from "../types/signUp";
-import signUpApi, { SignUpRes } from "../apis/signUp";
+import signUpApi from "../apis/signUp";
+import isApiError from "../utils/isApiError";
+import Button from "../components/atom/Button";
 
 // 회원용/관리자용 회원가입 컴포넌트_박예선_2023.01.09
 const SignUp = () => {
@@ -28,7 +29,7 @@ const SignUp = () => {
     password: false,
     pwCheck: false,
     nickname: false,
-    adminNo: true,
+    adminNo: false,
     name: false,
   });
   const [isOnly, setIsOnly] = useState<IsOnly>({
@@ -36,6 +37,38 @@ const SignUp = () => {
     nickname: null,
     adminNo: null,
   });
+  const [isSignUpBtnDisabled, setIsSignUpBtnDisabled] = useState(false);
+
+  // 로그인 된 상태로 접속 시 리다이렉트_박예선_23.01.24
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      alert("이미 로그인되어있습니다.");
+      navigate("/");
+    }
+  }, [navigate]);
+
+  // 가입하기 버튼 비활성화 여부_박예선_23.01.24
+  useEffect(() => {
+    const { email, password, pwCheck, adminNo, name, nickname } = valids;
+    const { gender, birth } = infos;
+    if (email && password && pwCheck && isOnly.email !== false)
+      setIsSignUpBtnDisabled(false);
+    if (location.search !== "?admin") {
+      if (
+        nickname &&
+        gender !== "" &&
+        birth.year &&
+        birth.month &&
+        birth.day &&
+        isOnly.nickname !== false
+      )
+        return setIsSignUpBtnDisabled(false);
+    }
+    if (location.search === "?admin") {
+      if (adminNo && name) return setIsSignUpBtnDisabled(false);
+    }
+    return setIsSignUpBtnDisabled(true);
+  }, [valids, infos, isOnly.email, isOnly.nickname, location.search]);
 
   // 전체 input 입력값 상태관리 함수_박예선_22.12.27
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,18 +79,20 @@ const SignUp = () => {
     });
   };
 
-  // 회원가입 요청, 요청 후 처리 함수_박예선_2023.01.13
+  // 회원가입 요청, 요청 후 처리 함수_박예선_2023.01.21
   const clickSignUpBtn = async () => {
     const isAdmin = location.search === "?admin";
     try {
-      const res: AxiosResponse<SignUpRes> = await signUpApi(infos, isAdmin);
-      // await axios.get("/data/signUp.json"); // 테스트용 목데이터
-      const { resultCode, errorMsg } = res.data;
+      const res = await signUpApi(infos, isAdmin);
+      const { resultCode } = res.data;
       if (resultCode === 200) {
         alert("회원가입 완료");
         navigate("/login");
-        return;
       }
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (typeof errorRes !== "object") return;
+      const { errorMsg } = errorRes;
       if (errorMsg === "이메일 중복") {
         setIsOnly({ ...isOnly, email: false });
         return;
@@ -84,12 +119,7 @@ const SignUp = () => {
       }
       if (errorMsg === "이름 형식 오류") {
         setValids({ ...valids, name: false });
-        return;
       }
-    } catch (err) {
-      alert(
-        "죄송합니다.\n통신에 오류가 있어 회원가입에 실패하였습니다. 다시 시도해주십시오."
-      );
     }
   };
 
@@ -126,9 +156,16 @@ const SignUp = () => {
             handleInput={handleInput}
           />
         )}
-        <button className="btn" type="button" onClick={clickSignUpBtn}>
+        <Button
+          type="button"
+          variant="primary"
+          size="large"
+          className="btn"
+          onClick={clickSignUpBtn}
+          disabled={isSignUpBtnDisabled}
+        >
           가입하기
-        </button>
+        </Button>
       </SignUpContainer>
     </LoginSignUp>
   );
@@ -138,6 +175,10 @@ const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  .btn {
+    width: 320px;
+    margin-top: 23px;
+  }
 `;
 
 export default SignUp;

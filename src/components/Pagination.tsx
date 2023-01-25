@@ -6,7 +6,7 @@ import arrowRightDouble from "../assets/icons/arrowRightDouble.svg";
 import arrowLeftDouble from "../assets/icons/arrowLeftDouble.svg";
 import { theme } from "../styles/theme";
 
-// 페이지네이션 컴포넌트_박예선_23.01.21
+// 페이지네이션 컴포넌트_박예선_23.01.25
 const Pagination = (props: PaginationType) => {
   const { pages, setPages, totalPage } = props;
   const { started, selected } = pages;
@@ -69,7 +69,7 @@ const Pagination = (props: PaginationType) => {
   };
 
   return (
-    <PaginationContainer className={`flex ${totalPage ? "" : "none"}`}>
+    <PaginationContainer className={`${totalPage ? "" : "none"}`}>
       <div className="flex">
         <ArrowBtn
           type="button"
@@ -145,10 +145,11 @@ function getPageNoArr(totalPage: number) {
 }
 
 const PaginationContainer = styled.div`
+  display: flex;
   justify-content: space-between;
   width: 326px;
   height: 30px;
-  margin-bottom: 50px;
+  margin: 30px 0 50px;
   button {
     width: 30px;
     height: 30px;
@@ -163,6 +164,9 @@ const PaginationContainer = styled.div`
       border: 1px solid ${theme.colors.primry80};
       border-radius: 0;
     }
+  }
+  .flex {
+    display: flex;
   }
 `;
 
