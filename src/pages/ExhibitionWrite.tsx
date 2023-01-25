@@ -6,7 +6,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
 import Selectbox from "../components/atom/Selectbox";
-import { exhbUploadImgApi, ExhbUploadImgRes } from "../apis/exhbAdmin";
+import {
+  exhbCreateApi,
+  ExhbCreateRes,
+  ExhbCreateType,
+  exhbUploadImgApi,
+  ExhbUploadImgRes,
+} from "../apis/exhbAdmin";
+import isApiError from "../utils/isApiError";
 
 const ExhibitionWrite = () => {
   const formData = new FormData();
@@ -19,10 +26,11 @@ const ExhibitionWrite = () => {
   const [detail, setDetail] = useState({
     title: "",
     type: "",
-    state: "",
+    status: "",
     date: "",
     space: "",
     fileName: "",
+    posterUrl: "",
     adultPrice: 0,
     content: "",
     author: "",
@@ -45,7 +53,7 @@ const ExhibitionWrite = () => {
     setStartDate(date);
     const startDateFormat = date.toISOString().split("T")[0];
     const endDateFormat = endDate.toISOString().split("T")[0];
-    const dateFormat = `${startDateFormat}~${endDateFormat}`;
+    const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
       ...detail,
       date: dateFormat,
@@ -56,14 +64,14 @@ const ExhibitionWrite = () => {
     setEndDate(date);
     const startDateFormat = startDate.toISOString().split("T")[0];
     const endDateFormat = date.toISOString().split("T")[0];
-    const dateFormat = `${startDateFormat}~${endDateFormat}`;
+    const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
       ...detail,
       date: dateFormat,
     });
   };
 
-  const uploadImgFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
 
     if (e.target.files !== null) {
@@ -77,21 +85,28 @@ const ExhibitionWrite = () => {
         }
       };
       reader.readAsDataURL(e.target.files[0]);
-
-      // api 호출
-      // postUploadImg(e.target.files[0]);
       formData.append("file", e.target.files[0]);
-      try {
-        const res: AxiosResponse<ExhbUploadImgRes> = await exhbUploadImgApi();
-        console.log(res);
-      } catch (err) {
-        console.log(err);
-      }
+      // api 호출
+      postUploadImg(formData);
     }
   };
 
   // 이미지 업로드 api 호출
-  // const postUploadImg = async () => {}
+  const postUploadImg = async (imgfile: FormData) => {
+    try {
+      const res: AxiosResponse<ExhbUploadImgRes> = await exhbUploadImgApi(
+        imgfile
+      );
+      const { data } = res;
+      setDetail({
+        ...detail,
+        fileName: data.filename,
+        posterUrl: data.s3Url,
+      });
+    } catch (err) {
+      isApiError(err);
+    }
+  };
 
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputPrice = e.target.value;
@@ -136,8 +151,16 @@ const ExhibitionWrite = () => {
     }
   };
 
-  const clickSubmitBtn = () => {
+  // 등록 api 요청
+  const clickSubmitBtn = async () => {
     console.log(detail);
+    try {
+      const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
+      console.log(res.data);
+      alert("전시글 등록이 완료되었습니다.");
+    } catch (err) {
+      isApiError(err);
+    }
   };
 
   return (
@@ -155,7 +178,7 @@ const ExhibitionWrite = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-type">전시타입</Label>
           <Selectbox
-            placeholder="전체 전시"
+            placeholder="전체전시"
             options={typeOptions}
             width="130px"
             name="type"
@@ -165,10 +188,10 @@ const ExhibitionWrite = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
-            placeholder="전체 전시"
-            options={stateOptions}
+            placeholder="전체전시"
+            options={["지난전시", "현재전시", "예정전시"]}
             width="130px"
-            name="state"
+            name="status"
             onClick={handleSetDetail}
           />
         </OptionWrapper>
@@ -291,7 +314,6 @@ const ExhibitionWrite = () => {
 export default ExhibitionWrite;
 
 const typeOptions = ["그림 전시", "조각 전시", "문학 전시", "기획 전시"];
-const stateOptions = ["지난 전시", "현재 전시", "예정 전시"];
 
 const WriteExhibitionContainer = styled.div`
   display: flex;
@@ -409,6 +431,7 @@ const InputTextArea = styled(Input)`
 
 const InputPrice = styled.input`
   width: 55px;
+  height: 17px;
   font-weight: 400;
   font-size: 14px;
   color: ${(props) => props.theme.colors.greys60};
