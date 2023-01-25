@@ -4,20 +4,21 @@ import profileImg from "../../assets/icons/profileImg.svg";
 import MenuButtons from "./MenuButtons";
 
 interface MyInfoType {
-  infos: Infos;
-}
-
-interface Infos {
-  imageFile: string;
-  level: string;
-  nickname: string;
-  gender: string;
-  email: string;
+  infos: {
+    memberId: number;
+    email: string;
+    nickname: string;
+    gender: string;
+    birth: string;
+    level: string;
+    memberImage: string;
+    authority: string;
+  };
 }
 
 const MyInfo = (props: MyInfoType) => {
   const { infos } = props;
-  const { imageFile, level, nickname, gender, email } = infos;
+  const { memberImage, level, nickname, gender, email } = infos;
   return (
     <Profile>
       <ProfileImg src={profileImg} alt="profile-img" />

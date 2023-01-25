@@ -4,18 +4,21 @@ import { AxiosResponse } from "axios";
 import { useLocation } from "react-router-dom";
 import { myInfoApi, MyInfoRes } from "../apis/member";
 import MyInfo from "../components/mypage/MyInfo";
-import EditProfile from "../components/mypage/EditProfile";
-import FindMate from "../components/mypage/FindMate";
+import MyProfileEdit from "../components/mypage/MyProfileEdit";
+import MyWrite from "../components/mypage/MyWrite";
 
 const Mypage = () => {
   const location = useLocation();
   const { pathname } = location;
   const [infos, setInfos] = useState({
-    imageFile: "",
-    level: "",
-    nickname: "",
-    gender: "",
+    memberId: 0,
     email: "",
+    nickname: "",
+    gender: "W",
+    birth: "",
+    level: "",
+    memberImage: "",
+    authority: "ROLE_USER",
   });
 
   // 회원정보 요청 api
@@ -24,28 +27,23 @@ const Mypage = () => {
       const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
       if (!res) return;
       const { data } = res;
-      setInfos({
-        ...infos,
-        imageFile: data.memberImage,
-        level: data.level,
-        nickname: data.nickname,
-        gender: data.gender === "W" ? "여성" : "남성",
-        email: data.email,
-      });
+      console.log(res);
+      setInfos(data);
     } catch (err) {
       console.log(err);
     }
-  }, [infos]);
+  }, []);
 
   useEffect(() => {
     getMyInfo();
   }, [getMyInfo]);
+
   return (
     <MypageContainer>
       <MyInfo infos={infos} />
-      {pathname === "/mypage/edit" ? <EditProfile /> : null}
-      {pathname === "/mypage/write" ? <FindMate /> : null}
-      {pathname === "/mypage/bookmark" ? <EditProfile /> : null}
+      {pathname === "/mypage/edit" ? <MyProfileEdit /> : null}
+      {pathname === "/mypage/write" ? <MyWrite /> : null}
+      {pathname === "/mypage/bookmark" ? <MyProfileEdit /> : null}
     </MypageContainer>
   );
 };

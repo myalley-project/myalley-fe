@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import MateList from "../mate/MateList";
 import Pagination from "../Pagination";
@@ -22,23 +23,23 @@ const FindMate = () => {
   });
 
   // 내가 쓴 메이트 목록 요청 api 호출
-  const getFindMateList = useCallback(async (pageNo: number) => {
-    try {
-      const res: AxiosResponse<MateRes> = await myMatesApi(pageNo);
-      const { mates, pageInfo } = res.data;
-      setMatesList(mates);
-      setPageInfoList(pageInfo);
-    } catch (err) {
-      const errorRes = isApiError(err);
-      // if (errorRes === "accessToken 만료") useRefreshTokenApi;
-      if (typeof errorRes !== "object") return;
-      const { errorCode, errorMsg } = errorRes;
-    }
-  }, []);
-  useEffect(() => {
-    getFindMateList(pages.selected);
-  }, [getFindMateList, pages.selected]);
-
+  // const getFindMateList = useCallback(async (pageNo: number) => {
+  //   try {
+  //     const res: AxiosResponse<MateRes> = await myMatesApi(pageNo);
+  //     const { mates, pageInfo } = res.data;
+  //     setMatesList(mates);
+  //     setPageInfoList(pageInfo);
+  //   } catch (err) {
+  //     // const errorRes = isApiError(err);
+  //     // if (errorRes === "accessToken 만료") useRefreshTokenApi;
+  //     // if (typeof errorRes !== "object") return;
+  //     // const { errorCode, errorMsg } = errorRes;
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   getFindMateList(pages.selected);
+  // }, [getFindMateList, pages.selected]);
+  const pageno = 5;
   return (
     <FindMateContainer>
       {matesList.length == 0

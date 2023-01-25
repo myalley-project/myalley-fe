@@ -13,7 +13,7 @@ import {
 } from "../../utils/dateSelector";
 import { theme } from "../../styles/theme";
 
-const EditProfile = () => {
+const MyProfileEdit = () => {
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [profileImage, setProfileImage] = useState(profileImg);
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -180,7 +180,7 @@ const EditProfile = () => {
           <Label htmlFor="gender">성별</Label>
           <Selectbox
             placeholder="성별"
-            options={gender}
+            options={["여성", "남성"]}
             width="26vw"
             name="gender"
             onClick={handleSetInfos}
@@ -234,9 +234,7 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
-
-const gender = ["여성", "남성"];
+export default MyProfileEdit;
 
 const colors = {
   default: `${theme.colors.greys60}`,
