@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
@@ -8,8 +8,8 @@ const MenuButtons = () => {
   const location = useLocation();
   const { pathname } = location;
 
-  const Navigate = (link: string) => {
-    navigete(link);
+  const Navigate = (query: string) => {
+    navigete(query);
   };
 
   return (

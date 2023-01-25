@@ -6,6 +6,7 @@ import { myInfoApi, MyInfoRes } from "../apis/member";
 import MyInfoCard from "../components/mypage/MyInfoCard";
 import MyProfileEdit from "../components/mypage/MyProfileEdit";
 import MyWrite from "../components/mypage/MyWrite";
+import MyBookmark from "../components/mypage/MyBookmark";
 
 const Mypage = () => {
   const location = useLocation();
@@ -14,11 +15,11 @@ const Mypage = () => {
     memberId: 0,
     email: "",
     nickname: "",
-    gender: "W",
+    gender: "",
     birth: "",
     level: "",
     memberImage: "",
-    authority: "ROLE_USER",
+    authority: "",
   });
 
   // 회원정보 요청 api
@@ -44,7 +45,7 @@ const Mypage = () => {
         <MyProfileEdit infoData={infoData} />
       ) : null}
       {pathname === "/mypage/write" ? <MyWrite /> : null}
-      {/* {pathname === "/mypage/bookmark" ? <MyProfileEdit /> : null} */}
+      {pathname === "/mypage/bookmark" ? <MyBookmark /> : null}
     </MypageContainer>
   );
 };

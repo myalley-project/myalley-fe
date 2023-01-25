@@ -1,11 +1,12 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
 const MenuButtons = () => {
   const location = useLocation();
   const { search } = location;
+
   return (
     <Buttons>
       <Link
@@ -18,7 +19,6 @@ const MenuButtons = () => {
       >
         한줄리뷰
       </Link>
-
       <Link
         style={
           /\?type=blog/.test(search)
@@ -50,7 +50,6 @@ const Buttons = styled.div`
   display: flex;
   padding-top: 10px;
   padding-bottom: 30px;
-
   > a {
     display: block;
     padding: 8px 20px;

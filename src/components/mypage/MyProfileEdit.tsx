@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import { MyInfoRes, myInfoApi } from "../../apis/member";
 import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
@@ -29,7 +28,6 @@ interface MyInfoType {
 const MyProfileEdit = (props: MyInfoType) => {
   const { infoData } = props;
   const { birth, nickname, gender } = infoData;
-
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [profileImage, setProfileImage] = useState(profileImg);
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -47,6 +45,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     imageFile: "",
   });
 
+  // input 핸들러 함수
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setInfos({
@@ -55,6 +54,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     });
   };
 
+  // selectbox 핸들러 함수
   const handleSetInfos = (e: React.MouseEvent<HTMLLIElement>, name: string) => {
     if (e !== undefined) {
       const { textContent } = e.currentTarget;
@@ -67,6 +67,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     }
   };
 
+  // 닉네임 유효성 검사
   const handleNicknameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const rNickname = /^[가-힣|a-z|A-Z|0-9|]{2,10}$/;
@@ -84,6 +85,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     setTimer(newTimer);
   };
 
+  // 비밀번호 유효성 검사
   const handlePwValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const rPassword =
@@ -118,7 +120,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     }
   };
 
-  // 회원정보 수정 api
+  // 회원정보 수정 api 현재는 주석처리
   const editBtn = () => {
     console.log(infos);
     // try {
@@ -320,7 +322,6 @@ const BirthWrapper = styled.div`
 `;
 
 const PasswordInput = styled(Input)`
-  /* background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='3' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M2.95402 10.789L2 12.1942L2.28897 12.6807C6.58859 19.9188 17.5916 19.7322 21.6186 12.3529L22 11.6539L21.4704 10.86C17.169 4.41087 7.30969 4.37306 2.95402 10.789Z' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); */
   background-position: right 19px center;
   background-repeat: no-repeat;
 `;
