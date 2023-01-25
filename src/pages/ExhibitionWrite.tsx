@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { AxiosResponse } from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
 import Selectbox from "../components/atom/Selectbox";
+import { exhbUploadImgApi, exhbUploadImgRes } from "../apis/exhbAdmin";
 
 const ExhibitionWrite = () => {
+  const formData = new FormData();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [thumbnail, setThumbnail] = useState("");
@@ -60,7 +63,7 @@ const ExhibitionWrite = () => {
     });
   };
 
-  const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadImgFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
 
     if (e.target.files !== null) {
@@ -74,8 +77,21 @@ const ExhibitionWrite = () => {
         }
       };
       reader.readAsDataURL(e.target.files[0]);
+
+      // api 호출
+      // postUploadImg(e.target.files[0]);
+      formData.append("file", e.target.files[0]);
+      try {
+        const res: AxiosResponse<exhbUploadImgRes> = await exhbUploadImgApi();
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
+
+  // 이미지 업로드 api 호출
+  // const postUploadImg = async () => {}
 
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputPrice = e.target.value;
