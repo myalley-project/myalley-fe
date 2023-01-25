@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
-import Selectbox from "../Selectbox";
+import Selectbox from "../atom/Selectbox";
 import {
   getYearArray,
   getMonthArray,

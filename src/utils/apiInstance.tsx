@@ -3,7 +3,7 @@ import axios, { AxiosHeaders } from "axios";
 axios.defaults.withCredentials = true;
 
 const apiInstance = axios.create({
-  baseURL: "http://alb-my-alley-578784833.ap-northeast-2.elb.amazonaws.com/",
+  baseURL: process.env.REACT_APP_BASE_URL,
 });
 
 apiInstance.interceptors.request.use(
