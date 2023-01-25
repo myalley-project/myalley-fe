@@ -1,50 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ProfileImg from "../assets/icons/profileImg.svg";
+import { theme } from "../styles/theme";
 
-const HamburgerMenu = () => (
-  <MenuContainer>
-    <MenuWrapper>
-      <Subtitle>계정</Subtitle>
-      <MypageArea href="/">
-        <ProfileWrapper>
-          <img src={ProfileImg} alt="profile-img" style={{ width: "40px" }} />
-        </ProfileWrapper>
-        <div>
-          <Nickname>Nickname</Nickname>
-          <Email className="email">email11@email.com</Email>
-        </div>
-      </MypageArea>
-      <LogoutButton type="button">로그아웃</LogoutButton>
-    </MenuWrapper>
-    <MenuWrapper>
-      <Subtitle>메뉴</Subtitle>
-      <ul>
-        <List as="a" href="/">
-          전시회
-        </List>
-        <List as="a" href="/">
-          전시회 리뷰
-        </List>
-        <List as="a" href="/">
-          메이트 찾기
-        </List>
-        {/* <List as="a" href="/">
-          전시회 정보 등록하기
-        </List> */}
-      </ul>
-    </MenuWrapper>
-  </MenuContainer>
-);
+const HamburgerMenu = () => {
+  const [info, setInfo] = useState({
+    nickname: localStorage.getItem("nickname")!,
+    memberImage: localStorage.getItem("userImage")!,
+    email: localStorage.getItem("email")!,
+    authority: localStorage.getItem("authority")!,
+  });
+
+  return (
+    <MenuContainer>
+      <MenuWrapper>
+        <Subtitle>계정</Subtitle>
+        <MypageArea href="/">
+          <ProfileWrapper>
+            <img src={ProfileImg} alt="profile-img" style={{ width: "40px" }} />
+          </ProfileWrapper>
+          <div>
+            <Nickname>{info.nickname}</Nickname>
+            <Email className="email">{info.email}</Email>
+          </div>
+        </MypageArea>
+        <LogoutButton type="button">로그아웃</LogoutButton>
+      </MenuWrapper>
+      <MenuWrapper>
+        <Subtitle>메뉴</Subtitle>
+        <ul>
+          {info.authority === "ROLE_USER" && (
+            <List as="a" href="/exhibition-list">
+              전시회
+            </List>
+          )}
+          {info.authority === "ROLE_USER" && (
+            <List as="a" href="/">
+              전시회 리뷰
+            </List>
+          )}
+          {info.authority === "ROLE_USER" && (
+            <List as="a" href="/">
+              메이트 찾기
+            </List>
+          )}
+          {info.authority === "ROLE_ADMIN" && (
+            <List as="a" href="/exhibition-write">
+              전시회 정보 등록하기
+            </List>
+          )}
+        </ul>
+      </MenuWrapper>
+    </MenuContainer>
+  );
+};
 
 export default HamburgerMenu;
 
 const MenuContainer = styled.div`
   position: absolute;
+  z-index: 100; // 항상 최상단에 위치
   left: 77%;
   top: 57px;
   width: 215px;
-  height: 292px;
   padding: 10px;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
@@ -102,6 +120,10 @@ const LogoutButton = styled.button`
   &:hover {
     color: #6750a4;
     background-color: #f6f3fe;
+    border-radius: 10px;
+  }
+  &:focus-visible {
+    outline: 1px solid ${theme.colors.primry80};
     border-radius: 10px;
   }
 `;
