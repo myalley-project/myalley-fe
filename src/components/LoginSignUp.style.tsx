@@ -20,7 +20,7 @@ const LoginSignUpSection = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 94px;
+  margin-bottom: 55px;
   button {
     cursor: pointer;
     &:disabled {
@@ -41,10 +41,11 @@ const InputContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 380px;
+  padding: 30px;
   border: 1px solid ${theme.colors.secondary30};
   box-shadow: 0px 4px 30px #4f378b0d;
   .category {
-    margin: 30px 0px;
+    margin-bottom: 30px;
     color: ${theme.colors.greys90};
     font-size: 20px;
     font-weight: 700;

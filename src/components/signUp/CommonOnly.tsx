@@ -1,7 +1,12 @@
-/* eslint-disable no-plusplus */
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Infos, IsOnly, Valids } from "../../types/signUp";
+import {
+  getDayArray,
+  getMonthArray,
+  getYearArray,
+} from "../../utils/dateSelector";
+import Selectbox from "../atom/Selectbox";
 
 interface CommonOnlyType {
   infos: Infos;
@@ -11,18 +16,21 @@ interface CommonOnlyType {
   isOnly: IsOnly;
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-// 회원용 회원가입 UI 컴포넌트_박예선_23.01.08
+// 회원용 회원가입 UI 컴포넌트_박예선_23.01.24
 const CommonOnly = (props: CommonOnlyType) => {
   const { infos, setInfos, valids, setValids, isOnly, handleInput } = props;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
-  // select 옵션값 상태관리_박예선_23.01.01
-  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value, name } = e.target;
+  // 생년월일, 성별 select 선택값 상태관리_박예선_23.01.24
+  const handleSelect = (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    name: string
+  ) => {
+    const value = e.currentTarget.textContent;
     if (name === "gender") {
       setInfos({
         ...infos,
-        [name]: value,
+        [name]: value === "남" ? "M" : "W",
       });
     } else {
       setInfos({
@@ -31,6 +39,7 @@ const CommonOnly = (props: CommonOnlyType) => {
       });
     }
   };
+
   // 닉네임 유효성검사_박예선_23.01.09
   const handleNicknameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -79,63 +88,45 @@ const CommonOnly = (props: CommonOnlyType) => {
       <div>
         <span className="title">생년월일</span>
         <BirthDropDownContainer>
-          <select
-            required
-            className="birth-year birth"
+          <Selectbox
+            placeholder="년도"
+            options={getYearArray()}
+            width="100px"
             name="year"
-            value={infos.birth.year}
-            onChange={handleSelect}
-          >
-            <option value="" disabled>
-              년도
-            </option>
-            {yearArr().map((year) => (
-              <option key={year}>{year}</option>
-            ))}
-          </select>
-          <select
-            required
-            className="birth"
+            onClick={(e, name) => {
+              handleSelect(e, name);
+            }}
+          />
+          <Selectbox
+            placeholder="월"
+            options={getMonthArray()}
+            width="100px"
             name="month"
-            value={infos.birth.month}
-            onChange={handleSelect}
-          >
-            <option value="" disabled>
-              월
-            </option>
-            {monthArr().map((month) => (
-              <option key={month}>{month}</option>
-            ))}
-          </select>
-          <select
-            required
-            className="birth"
+            onClick={(e, name) => {
+              handleSelect(e, name);
+            }}
+          />
+          <Selectbox
+            placeholder="일"
+            options={getDayArray()}
+            width="100px"
             name="day"
-            value={infos.birth.day}
-            onChange={handleSelect}
-          >
-            <option value="" disabled>
-              일
-            </option>
-            {dayArr().map((day) => (
-              <option key={day}>{day}</option>
-            ))}
-          </select>
+            onClick={(e, name) => {
+              handleSelect(e, name);
+            }}
+          />
         </BirthDropDownContainer>
       </div>
       <div className="title">성별</div>
-      <select
-        required
+      <Selectbox
+        placeholder="선택없음"
+        options={["남", "여"]}
+        width="320px"
         name="gender"
-        value={infos.gender}
-        onChange={handleSelect}
-      >
-        <option value="" disabled>
-          선택없음
-        </option>
-        <option value="M">남</option>
-        <option value="W">여</option>
-      </select>
+        onClick={(e, name) => {
+          handleSelect(e, name);
+        }}
+      />
     </CommonOnlyContainer>
   );
 };
@@ -184,29 +175,5 @@ const BirthDropDownContainer = styled.div`
     }
   }
 `;
-
-const yearArr = () => {
-  const years: number[] = [];
-  for (let i = new Date().getFullYear(); i > 1950 - 1; i--) {
-    years.push(i);
-  }
-  return years;
-};
-
-const monthArr = () => {
-  const months: number[] = [];
-  for (let i = 1; i < 12 + 1; i++) {
-    months.push(i);
-  }
-  return months;
-};
-
-const dayArr = () => {
-  const days: number[] = [];
-  for (let i = 1; i < 31 + 1; i++) {
-    days.push(i);
-  }
-  return days;
-};
 
 export default CommonOnly;

@@ -5,7 +5,7 @@ import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
 import SubTitle from "../components/SubTitle";
 import Editor from "../components/Editor";
-import Selectbox from "../components/Selectbox";
+import Selectbox from "../components/atom/Selectbox";
 import { theme } from "../styles/theme";
 import getTimeOptions from "../utils/timeSelector";
 import Button from "../components/atom/Button";

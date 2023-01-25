@@ -145,7 +145,6 @@ const Login = () => {
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
   input {
     margin: 0 0 8px;
   }
@@ -171,6 +170,7 @@ const InputContainer = styled.div`
 const BtnContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 30px;
   .btn {
     width: 320px;
     margin: 0;
@@ -194,7 +194,7 @@ const BtnContainer = styled.div`
   .find-account {
     display: flex;
     justify-content: center;
-    margin: 10px 0 30px;
+    margin-top: 10px;
     a {
       font-size: 12px;
       color: #e0e0e0;
