@@ -41,11 +41,9 @@ const Mypage = () => {
   return (
     <MypageContainer>
       <MyInfoCard infoData={infoData} />
-      {pathname === "/mypage/edit" ? (
-        <MyProfileEdit infoData={infoData} />
-      ) : null}
-      {pathname === "/mypage/write" ? <MyWrite /> : null}
-      {pathname === "/mypage/bookmark" ? <MyBookmark /> : null}
+      {pathname === "/mypage/edit" && <MyProfileEdit infoData={infoData} />}
+      {pathname === "/mypage/write" && <MyWrite />}
+      {pathname === "/mypage/bookmark" && <MyBookmark />}
     </MypageContainer>
   );
 };
