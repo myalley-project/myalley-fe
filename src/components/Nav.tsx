@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import MyAlleyLogo from "../assets/icons/logo.svg";
 import personOn from "../assets/icons/personOn.svg";
 import personOff from "../assets/icons/personOff.svg";
 import HamburgerMenu from "./HamburgerMenu";
@@ -28,7 +30,7 @@ const Nav = () => {
   }, [isShowMenu, menuImg, userMenu, userMenuHover]);
 
   const changeToHoverIcon = () => {
-    if (menuImg !== null && !isShowMenu) setToggleMenuIcon(userMenuHover);
+    if (!isShowMenu) setToggleMenuIcon(userMenuHover);
   };
 
   const changeToNormalIcon = () => {
@@ -36,43 +38,54 @@ const Nav = () => {
   };
 
   return (
-    <Navbar>
-      <Logo />
-      <MenuButton
-        type="button"
-        onClick={handleToggleMenu}
-        onMouseOver={changeToHoverIcon}
-        onMouseLeave={changeToNormalIcon}
-      >
-        <img src={toggleMenuIcon} alt="menu-icon" id="user-menu" />
-      </MenuButton>
-      {isShowMenu && <HamburgerMenu />}
-    </Navbar>
+    <NavbarContaniner>
+      <NavbarWrapper>
+        <Link to="/">
+          <Logo src={MyAlleyLogo} alt="logo" />
+        </Link>
+        <MenuButton
+          type="button"
+          onClick={handleToggleMenu}
+          onMouseOver={changeToHoverIcon}
+          onMouseLeave={changeToNormalIcon}
+        >
+          <UserMenuIcon src={toggleMenuIcon} alt="menu-icon" id="user-menu" />
+        </MenuButton>
+        {isShowMenu && <HamburgerMenu />}
+      </NavbarWrapper>
+    </NavbarContaniner>
   );
 };
 
 export default Nav;
 
-const Navbar = styled.div`
+const NavbarContaniner = styled.div`
+  width: 100vw;
+`;
+
+const NavbarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 75vw;
+  max-width: 1440px;
   height: 70px;
   margin: 0 auto;
   border-radius: 0px;
   background-color: #ffffff;
 `;
 
-const Logo = styled.div`
-  width: 210px;
-  height: 100%;
+const Logo = styled.img`
   border-radius: 0px;
-  background-color: ${(props) => props.theme.colors.greys40};
 `;
 
 const MenuButton = styled.button`
   width: 36px;
   height: 36px;
+  padding: 0px;
   cursor: pointer;
+`;
+
+const UserMenuIcon = styled.img`
+  width: 30px;
+  height: 30px;
 `;

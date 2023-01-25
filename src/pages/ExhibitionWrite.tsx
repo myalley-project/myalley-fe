@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
-import Selectbox from "../components/Selectbox";
+import Selectbox from "../components/atom/Selectbox";
 
 const ExhibitionWrite = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());
@@ -13,10 +13,10 @@ const ExhibitionWrite = () => {
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
-  const [type, setType] = useState("");
-  const [status, setStatus] = useState("");
   const [detail, setDetail] = useState({
     title: "",
+    type: "",
+    state: "",
     date: "",
     space: "",
     fileName: "",
@@ -107,6 +107,19 @@ const ExhibitionWrite = () => {
     });
   };
 
+  const handleSetDetail = (
+    e: React.MouseEvent<HTMLLIElement>,
+    name: string
+  ) => {
+    if (e != undefined) {
+      const { textContent } = e.currentTarget;
+      setDetail({
+        ...detail,
+        [name]: textContent,
+      });
+    }
+  };
+
   const clickSubmitBtn = () => {
     console.log(detail);
   };
@@ -127,18 +140,20 @@ const ExhibitionWrite = () => {
           <Label htmlFor="exhibition-type">전시타입</Label>
           <Selectbox
             placeholder="전체 전시"
-            selectedData={setType}
             options={typeOptions}
             width="130px"
+            name="type"
+            onClick={handleSetDetail}
           />
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
             placeholder="전체 전시"
-            selectedData={setStatus}
             options={stateOptions}
             width="130px"
+            name="state"
+            onClick={handleSetDetail}
           />
         </OptionWrapper>
         <OptionWrapper>
