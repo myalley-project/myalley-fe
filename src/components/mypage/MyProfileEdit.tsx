@@ -33,8 +33,19 @@ interface MyInfoType {
   };
 }
 
+interface InfosType {
+  password: string | null;
+  nickname: string;
+  gender: string;
+  year: string;
+  month: string;
+  day: string;
+  imageFile: File | null;
+}
+
 const MyProfileEdit = (props: MyInfoType) => {
   const refreshTokenApi = useRefreshTokenApi();
+  const formData = new FormData();
   const { infoData } = props;
   const { birth, nickname, gender } = infoData;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
@@ -44,14 +55,14 @@ const MyProfileEdit = (props: MyInfoType) => {
     nickname: false,
     password: false,
   });
-  const [infos, setInfos] = useState({
+  const [infos, setInfos] = useState<InfosType>({
     password: null,
     nickname: "",
     gender: "",
     year: "",
     month: "",
     day: "",
-    imageFile: "",
+    imageFile: null,
   });
 
   // input 핸들러 함수
@@ -123,7 +134,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     if (e.target.files !== null) {
       setInfos({
         ...infos,
-        imageFile: e.target.files[0].name,
+        imageFile: e.target.files[0],
       });
       reader.onload = () => {
         if (e.target.files !== null) {
@@ -136,36 +147,28 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   // 회원정보 수정 api
   const editBtn = async () => {
-    console.log(infos);
-    let editMyInfo: EditMyInfoType;
+    const editMyInfo: EditMyInfoType = {
+      password: infos.password,
+      nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
+      gender: `${infos.gender === "" ? gender : infos.gender}`,
+      birth: `${infos.year === "" ? `${birth.substring(0, 4)}` : infos.year}-${
+        infos.month === "" ? `${birth.substring(5, 7)}` : infos.month
+      }-${infos.day === "" ? `${birth.substring(8)}` : infos.day}`,
+    };
 
-    if (!infos.imageFile) {
-      editMyInfo = {
-        password: infos.password,
-        nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
-        gender: `${infos.gender === "" ? gender : infos.gender}`,
-        birth: `${
-          infos.year === "" ? `${birth.substring(0, 4)}` : infos.year
-        }-${infos.month === "" ? `${birth.substring(5, 7)}` : infos.month}-${
-          infos.day === "" ? `${birth.substring(8)}` : infos.day
-        }`,
-      };
-    } else
-      editMyInfo = {
-        imageFile: infos.imageFile,
-        password: infos.password,
-        nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
-        gender: `${infos.gender === "" ? gender : infos.gender}`,
-        birth: `${
-          infos.year === "" ? `${birth.substring(0, 4)}` : infos.year
-        }-${infos.month === "" ? `${birth.substring(5, 7)}` : infos.month}-${
-          infos.day === "" ? `${birth.substring(8)}` : infos.day
-        }`,
-      };
-    console.log(editMyInfo);
+    if (infos.imageFile !== null) {
+      formData.append("imageFile", infos.imageFile);
+    }
+    formData.append(
+      "data",
+      // JSON.stringify(editMyInfo)
+      new Blob([JSON.stringify(editMyInfo)], { type: "application/json" })
+    );
+
+    console.log(Array.from(formData));
     try {
       const res: AxiosResponse<MyInfoRes> | void = await editMyInfoApi(
-        editMyInfo
+        formData
       );
       console.log(res);
     } catch (err) {

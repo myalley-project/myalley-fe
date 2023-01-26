@@ -20,12 +20,9 @@ export const myInfoApi = async (type: "get" | "put") => {
   return errorAlert();
 };
 
-export const editMyInfoApi = async (reqBody: EditMyInfoType) => {
+export const editMyInfoApi = async (reqBody: FormData) => {
   const putRes: AxiosResponse<MyInfoRes> = await apiImgInstance.put("/api/me", {
     reqBody,
-    headers: {
-      "Content-Type": "Form-Data",
-    },
   });
   return putRes;
 };
@@ -65,5 +62,4 @@ export interface EditMyInfoType {
   nickname: string;
   gender: string;
   birth: string;
-  imageFile?: string;
 }
