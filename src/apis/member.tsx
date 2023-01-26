@@ -3,6 +3,7 @@ import apiInstance from "../utils/apiInstance";
 import { errorAlert } from "../utils/isApiError";
 import { Mate } from "../types/mateList";
 import { PageInfo } from "../types/pageInfo";
+import apiImgInstance from "../utils/apiImgInstance";
 
 // 내정보 조회/수정(회원, 관리자 공통) api_박예선_23.01.25
 export const myInfoApi = async (type: "get" | "put") => {
@@ -19,31 +20,15 @@ export const myInfoApi = async (type: "get" | "put") => {
   return errorAlert();
 };
 
-export const editMyInfoApi = async () => {
-  const reqBody = {
-    data: {
-      password: null,
-      nickname: "hong길동12",
-      gender: "W",
-      birth: "2000-01-01",
-    },
-  };
-  const putRes: AxiosResponse<MyInfoRes> = await apiInstance.put("/api/me", {
+export const editMyInfoApi = async (reqBody: EditMyInfoType) => {
+  const putRes: AxiosResponse<MyInfoRes> = await apiImgInstance.put("/api/me", {
     reqBody,
+    headers: {
+      "Content-Type": "Form-Data",
+    },
   });
   return putRes;
 };
-
-export interface MyInfoRes {
-  memberId: number;
-  email: string;
-  nickname: string;
-  gender: "W" | "M";
-  birth: string; // YYYY-MM-DD
-  level: "level1" | "level2" | "level3" | "level4";
-  memberImage: string | "";
-  authority: "ROLE_USER" | "ROLE_ADMIN";
-}
 
 export const myBookmarkedApi = async () => {};
 
@@ -61,4 +46,24 @@ export const myMatesApi = async (pageNo: number) => {
 export interface MateRes {
   mates: Mate[] | [];
   pageInfo: PageInfo;
+}
+
+export interface MyInfoRes {
+  memberId: number;
+  email: string;
+  nickname: string;
+  gender: "W" | "M";
+  age: number;
+  birth: string; // YYYY-MM-DD
+  level: "level1" | "level2" | "level3" | "level4";
+  memberImage: string | "";
+  authority: "ROLE_USER" | "ROLE_ADMIN";
+}
+
+export interface EditMyInfoType {
+  password: string | null;
+  nickname: string;
+  gender: string;
+  birth: string;
+  imageFile?: string;
 }

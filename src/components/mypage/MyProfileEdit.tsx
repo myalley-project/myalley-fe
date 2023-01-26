@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import { MyInfoRes, myInfoApi, editMyInfoApi } from "../../apis/member";
+import {
+  MyInfoRes,
+  myInfoApi,
+  editMyInfoApi,
+  EditMyInfoType,
+} from "../../apis/member";
 import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
@@ -12,6 +17,8 @@ import {
   getDayArray,
 } from "../../utils/dateSelector";
 import { theme } from "../../styles/theme";
+import useRefreshTokenApi from "../../apis/useRefreshToken";
+import isApiError from "../../utils/isApiError";
 
 interface MyInfoType {
   infoData: {
@@ -27,6 +34,7 @@ interface MyInfoType {
 }
 
 const MyProfileEdit = (props: MyInfoType) => {
+  const refreshTokenApi = useRefreshTokenApi();
   const { infoData } = props;
   const { birth, nickname, gender } = infoData;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
@@ -59,7 +67,12 @@ const MyProfileEdit = (props: MyInfoType) => {
   const handleSetInfos = (e: React.MouseEvent<HTMLLIElement>, name: string) => {
     if (e !== undefined) {
       const { textContent } = e.currentTarget;
-      if (textContent !== null) {
+      if (name === "gender") {
+        setInfos({
+          ...infos,
+          gender: gender === "여성" ? "W" : "M",
+        });
+      } else if (textContent !== null) {
         setInfos({
           ...infos,
           [name]: textContent,
@@ -124,11 +137,40 @@ const MyProfileEdit = (props: MyInfoType) => {
   // 회원정보 수정 api
   const editBtn = async () => {
     console.log(infos);
+    let editMyInfo: EditMyInfoType;
+
+    if (!infos.imageFile) {
+      editMyInfo = {
+        password: infos.password,
+        nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
+        gender: `${infos.gender === "" ? gender : infos.gender}`,
+        birth: `${
+          infos.year === "" ? `${birth.substring(0, 4)}` : infos.year
+        }-${infos.month === "" ? `${birth.substring(5, 7)}` : infos.month}-${
+          infos.day === "" ? `${birth.substring(8)}` : infos.day
+        }`,
+      };
+    } else
+      editMyInfo = {
+        imageFile: infos.imageFile,
+        password: infos.password,
+        nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
+        gender: `${infos.gender === "" ? gender : infos.gender}`,
+        birth: `${
+          infos.year === "" ? `${birth.substring(0, 4)}` : infos.year
+        }-${infos.month === "" ? `${birth.substring(5, 7)}` : infos.month}-${
+          infos.day === "" ? `${birth.substring(8)}` : infos.day
+        }`,
+      };
+    console.log(editMyInfo);
     try {
-      const res: AxiosResponse<MyInfoRes> | void = await editMyInfoApi();
+      const res: AxiosResponse<MyInfoRes> | void = await editMyInfoApi(
+        editMyInfo
+      );
       console.log(res);
     } catch (err) {
-      console.log(err);
+      const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") refreshTokenApi();
     }
   };
 
@@ -153,7 +195,7 @@ const MyProfileEdit = (props: MyInfoType) => {
           <Input
             id="nickname"
             type="text"
-            placeholder="Nickname"
+            placeholder={nickname}
             width="26vw"
             height="44px"
             name="nickname"

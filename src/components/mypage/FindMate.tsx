@@ -34,11 +34,11 @@ const FindMate = () => {
         setPageInfoList(pageInfo);
       } catch (err) {
         const errorRes = isApiError(err);
-        if (errorRes === "accessToken 만료") refreshTokenApi();
+        // if (errorRes === "accessToken 만료") refreshTokenApi();
       }
       navigate(`?type=mate&pageno=${pageNo}`);
     },
-    [navigate, refreshTokenApi]
+    [navigate]
   );
 
   useEffect(() => {

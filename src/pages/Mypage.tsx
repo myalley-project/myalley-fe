@@ -7,32 +7,37 @@ import MyInfoCard from "../components/mypage/MyInfoCard";
 import MyProfileEdit from "../components/mypage/MyProfileEdit";
 import MyWrite from "../components/mypage/MyWrite";
 import MyBookmark from "../components/mypage/MyBookmark";
+import isApiError from "../utils/isApiError";
+import useRefreshTokenApi from "../apis/useRefreshToken";
 
 const Mypage = () => {
+  const refreshTokenApi = useRefreshTokenApi();
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
-  const [infoData, setInfoData] = useState({
+  const [infoData, setInfoData] = useState<MyInfoRes>({
     memberId: 0,
     email: "",
     nickname: "",
-    gender: "",
+    gender: "W",
     birth: "",
-    level: "",
+    age: 0,
+    level: "level1",
     memberImage: "",
-    authority: "",
+    authority: "ROLE_USER",
   });
 
   // 회원정보 요청 api
   const getMyInfo = useCallback(async () => {
-    // try {
-    //   const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
-    //   if (!res) return;
-    //   const { data } = res;
-    //   setInfoData(data);
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
+      if (!res) return;
+      const { data } = res;
+      setInfoData(data);
+    } catch (err) {
+      const errorRes = isApiError(err);
+      // if (errorRes === "accessToken 만료") refreshTokenApi();
+    }
   }, []);
 
   useEffect(() => {
