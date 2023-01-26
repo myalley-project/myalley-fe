@@ -1,26 +1,29 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import MainCard from "../components/exhibition/MainCard";
 import ContentCard from "../components/exhibition/ContentCard";
 import ToggleSwitch from "../components/exhibition/ToggleSwitch";
 import exhibitionApi, { ExhibitionRes } from "../apis/exhibition";
+import isApiError from "../utils/isApiError";
 
 const Exhibition = () => {
+  const params = useParams();
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
-  const getExhbDetail = useCallback(async () => {
+  const getExhbDetail = useCallback(async (id: number) => {
     try {
-      const res: AxiosResponse<ExhibitionRes> = await exhibitionApi(1);
+      const res: AxiosResponse<ExhibitionRes> = await exhibitionApi(id);
       const { data } = res;
       setExhbDetail(data);
     } catch (err) {
-      console.error(err);
+      isApiError(err);
     }
   }, []);
 
   useEffect(() => {
-    getExhbDetail();
-  }, [getExhbDetail]);
+    getExhbDetail(Number(params.id));
+  }, [getExhbDetail, params]);
 
   const [state, setState] = useState("info");
   return (
