@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
-import { Infos } from "../types/signUp";
 import apiInstance from "../utils/apiInstance";
+import { Infos } from "../types/signUp";
 
 export interface SignUpRes {
   resultCode?: number;

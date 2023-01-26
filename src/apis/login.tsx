@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 
 export interface LoginRes {
@@ -16,6 +16,8 @@ const loginApi = async (loginInfo: { email: string; password: string }) => {
     "/login",
     reqBody
   );
+  // await axios.get("/data/login.json"); // 테스트용 목데이터
+
   return res;
 };
 
