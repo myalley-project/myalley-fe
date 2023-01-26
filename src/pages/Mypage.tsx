@@ -1,31 +1,54 @@
-import React, { useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
-import profileImg from "../assets/icons/profileImg.svg";
-import MenuButtons from "../components/mypage/MenuButtons";
-import EditProfile from "../components/mypage/EditProfile";
-import FindMate from "../components/mypage/FindMate";
+import { AxiosResponse } from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
+import { myInfoApi, MyInfoRes } from "../apis/member";
+import MyInfoCard from "../components/mypage/MyInfoCard";
+import MyProfileEdit from "../components/mypage/MyProfileEdit";
+import MyWrite from "../components/mypage/MyWrite";
+import MyBookmark from "../components/mypage/MyBookmark";
 
 const Mypage = () => {
-  const [mode, setMode] = useState("mypage");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { pathname } = location;
+  const [infoData, setInfoData] = useState({
+    memberId: 0,
+    email: "",
+    nickname: "",
+    gender: "",
+    birth: "",
+    level: "",
+    memberImage: "",
+    authority: "",
+  });
+
+  // 회원정보 요청 api
+  const getMyInfo = useCallback(async () => {
+    // try {
+    //   const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
+    //   if (!res) return;
+    //   const { data } = res;
+    //   setInfoData(data);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  }, []);
+
+  useEffect(() => {
+    getMyInfo();
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인 후 이용해주세요.");
+      navigate("/");
+    }
+  }, [getMyInfo, navigate]);
+
   return (
     <MypageContainer>
-      <MypageWrapper>
-        <Profile>
-          <ProfileImg src={profileImg} alt="profile-img" />
-          <Level>level 1</Level>
-          <Nicname>닉네임</Nicname>
-          <Privacy>
-            <p>여성</p>
-            <p className="partition">|</p>
-            <p>23세</p>
-            <p className="partition">|</p>
-            <p>meme1223@email.com</p>
-          </Privacy>
-          <MenuButtons setMode={setMode} />
-        </Profile>
-      </MypageWrapper>
-      {mode === "mypage" && <EditProfile />}
-      {mode === "review" && <FindMate />}
+      <MyInfoCard infoData={infoData} />
+      {pathname === "/mypage/edit" && <MyProfileEdit infoData={infoData} />}
+      {pathname === "/mypage/write" && <MyWrite />}
+      {pathname === "/mypage/bookmark" && <MyBookmark />}
     </MypageContainer>
   );
 };
@@ -33,56 +56,7 @@ const Mypage = () => {
 export default Mypage;
 
 const MypageContainer = styled.div`
-  margin: 50px 0;
-`;
-
-const MypageWrapper = styled.div`
   width: 83vw;
   max-width: 1200px;
-  margin: 0px auto;
-`;
-
-const Profile = styled.div`
-  border-bottom: 1px solid ${(props) => props.theme.colors.greys40};
-  border-radius: 0px;
-`;
-
-const ProfileImg = styled.img`
-  width: 120px;
-  height: 120px;
-  margin-bottom: 30px;
-`;
-
-const Level = styled.p`
-  width: fit-content;
-  height: 24px;
-  padding: 4px 10px;
-  margin-bottom: 10px;
-  background-color: ${(props) => props.theme.colors.primry60};
-  color: ${(props) => props.theme.colors.white100};
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-  border-radius: 10000px;
-`;
-
-const Nicname = styled.p`
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 28px;
-  margin-bottom: 10px;
-`;
-
-const Privacy = styled.div`
-  display: flex;
-  padding-bottom: 30px;
-  p {
-    font-weight: 500;
-    font-size: 12px;
-    color: ${(props) => props.theme.colors.greys60};
-  }
-  .partition {
-    padding: 0 10px;
-  }
+  margin: 50px auto;
 `;
