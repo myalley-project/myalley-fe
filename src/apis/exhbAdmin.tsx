@@ -11,7 +11,8 @@ export const exhbUploadImgApi = async (formData: FormData) => {
 
 export const exhbCreateApi = async (detail: ExhbCreateType) => {
   const res: AxiosResponse<ExhbCreateRes> = await apiInstance.post(
-    "/api/exhibitions"
+    "/api/exhibitions",
+    detail
   );
   return res;
 };
@@ -39,7 +40,7 @@ export interface ExhbCreateType {
   title: string;
   type: string;
   status: string;
-  date: string;
+  duration: string;
   space: string;
   fileName: string;
   posterUrl: string;

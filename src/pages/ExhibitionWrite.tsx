@@ -28,13 +28,13 @@ const ExhibitionWrite = () => {
   const [disablePrice, setDisablePrice] = useState(false);
   const [detail, setDetail] = useState({
     title: "",
-    type: "",
     status: "",
-    date: "",
+    type: "",
     space: "",
+    adultPrice: 0,
+    duration: "",
     fileName: "",
     posterUrl: "",
-    adultPrice: 1,
     content: "",
     author: "",
     webLink: "",
@@ -59,7 +59,7 @@ const ExhibitionWrite = () => {
     const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
       ...detail,
-      date: dateFormat,
+      duration: dateFormat,
     });
   };
 
@@ -70,7 +70,7 @@ const ExhibitionWrite = () => {
     const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
       ...detail,
-      date: dateFormat,
+      duration: dateFormat,
     });
   };
 
@@ -156,6 +156,7 @@ const ExhibitionWrite = () => {
 
   // 등록 api 요청
   const clickSubmitBtn = async () => {
+    console.log(localStorage.getItem("accessToken"));
     console.log(detail);
     if (detail.title === "") {
       alert("제목을 입력해주세요.");
@@ -163,7 +164,7 @@ const ExhibitionWrite = () => {
       alert("전시 타입을 선택해주세요.");
     } else if (detail.status === "") {
       alert("전시 관람여부를 선택해주세요.");
-    } else if (detail.date === "") {
+    } else if (detail.duration === "") {
       alert("전시 일정을 선택해주세요.");
     } else if (thumbnail === "") {
       alert("전시 포스터를 등록해주세요.");
@@ -179,6 +180,7 @@ const ExhibitionWrite = () => {
       try {
         const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
         console.log(res.data);
+        console.log(detail);
         alert("전시글 등록이 완료되었습니다.");
       } catch (err) {
         isApiError(err);
@@ -282,10 +284,7 @@ const ExhibitionWrite = () => {
               <p>원</p>
             </InputTextArea>
             <CheckLabelArea>
-              <CheckLabel
-                label="무료 관람"
-                onClick={handlePriceFree}
-               />
+              <CheckLabel label="무료 관람" onClick={handlePriceFree} />
             </CheckLabelArea>
           </div>
         </OptionWrapper>
