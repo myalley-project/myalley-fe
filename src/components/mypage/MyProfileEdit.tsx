@@ -121,7 +121,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     }
   };
 
-  // 회원정보 수정 api 현재는 주석처리
+  // 회원정보 수정 api
   const editBtn = async () => {
     console.log(infos);
     try {

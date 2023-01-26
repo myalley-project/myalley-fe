@@ -7,10 +7,12 @@ import Pagination from "../Pagination";
 import { myMatesApi, MateRes } from "../../apis/member";
 import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
+import useRefreshTokenApi from "../../apis/useRefreshToken";
 
 const FindMate = () => {
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
   const navigate = useNavigate();
+  const refreshTokenApi = useRefreshTokenApi();
   const [pageInfoList, setPageInfoList] = useState({
     page: 0,
     size: 0,
@@ -31,12 +33,12 @@ const FindMate = () => {
         setMatesList(mates);
         setPageInfoList(pageInfo);
       } catch (err) {
-        isApiError(err);
-        // if (errorRes === "accessToken 만료") useRefreshTokenApi;
+        const errorRes = isApiError(err);
+        if (errorRes === "accessToken 만료") refreshTokenApi();
       }
       navigate(`?type=mate&pageno=${pageNo}`);
     },
-    [navigate]
+    [navigate, refreshTokenApi]
   );
 
   useEffect(() => {

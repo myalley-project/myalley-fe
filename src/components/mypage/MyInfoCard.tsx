@@ -64,10 +64,10 @@ const Level = styled.p`
 `;
 
 const Nickname = styled.p`
+  margin-bottom: 10px;
   font-weight: 700;
   font-size: 20px;
   line-height: 28px;
-  margin-bottom: 10px;
 `;
 
 const Privacy = styled.div`
