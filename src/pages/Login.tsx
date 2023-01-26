@@ -66,17 +66,17 @@ const Login = () => {
     }
   };
 
-  // 로그인 성공 시 회원정보 로컬스토리지 저장 함수_박예선_23.01.24
+  // 로그인 성공 시 회원정보 로컬스토리지 저장 함수_박예선_23.01.25
   const setInfoToLocalStorage = async () => {
     try {
       const userRes: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
       if (!userRes) return;
       const { memberId, email, nickname, memberImage, authority } =
         userRes.data;
-      localStorage.setItem("userId", String(memberId));
+      localStorage.setItem("memberId", String(memberId));
       localStorage.setItem("email", email);
       localStorage.setItem("nickname", nickname);
-      localStorage.setItem("userImage", memberImage);
+      localStorage.setItem("memberImage", memberImage);
       localStorage.setItem("authority", authority);
       alert("로그인되었습니다.");
     } catch (err) {

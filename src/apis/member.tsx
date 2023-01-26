@@ -4,11 +4,10 @@ import { errorAlert } from "../utils/isApiError";
 import { Mate } from "../types/mateList";
 import { PageInfo } from "../types/pageInfo";
 
-// 내정보 조회/수정(회원, 관리자 공통) api_박예선_23.01.20
+// 내정보 조회/수정(회원, 관리자 공통) api_박예선_23.01.25
 export const myInfoApi = async (type: "get" | "put") => {
   if (type === "get") {
     const getRes: AxiosResponse<MyInfoRes> = await apiInstance.get("/api/me");
-    // await axios.get("/data/member.json"); // 테스트용 목데이터
     return getRes;
   }
   if (type === "put") {
