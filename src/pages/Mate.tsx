@@ -1,5 +1,6 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Calender from "../components/Calendar";
 import { MateRes } from "../types/mate";
@@ -9,10 +10,12 @@ import CommentList, {
   TextArea,
 } from "../components/mate/CommentList";
 import ExhbCard from "../components/mate/ExhbCard";
+import getMateApi from "../apis/mate";
 
 // 메이트 모집글 상세페이지_박예선_23.01.26
 const Mate = () => {
   const mateContentRef = useRef<HTMLTextAreaElement>(null);
+  const mateId = useParams().id;
   const [isMyPost, setIsMyPost] = useState(false);
   const [mateInfo, setMateInfo] = useState<MateRes | null>(null);
   const [mateContentHeight, setMateContentHeight] = useState(0);
@@ -20,15 +23,16 @@ const Mate = () => {
 
   // 메이트 상세페이지 api 호출_박예선_23.01.22
   const getMate = useCallback(async () => {
+    if (!mateId) return;
     try {
-      const res: AxiosResponse<MateRes> = await axios.get("/data/mate.json"); // 테스트용 목데이터
+      const res: AxiosResponse<MateRes> = await getMateApi(Number(mateId));
       setMateInfo(res.data);
     } catch (err) {
       alert(
         "죄송합니다.\n전시목록을 불러오는데에 실패하였습니다. 다시 시도해주십시오."
       );
     }
-  }, []);
+  }, [mateId]);
 
   // 메이트 상세페이지 api 호출_박예선_23.01.22
   useEffect(() => {
@@ -43,6 +47,7 @@ const Mate = () => {
 
   // 내가 작성한 메이트글 여부파악_박예선_23.01.22
   useEffect(() => {
+    if (!mateInfo) return;
     const mateAuthorId = mateInfo?.member.memberId;
     const memberId = Number(localStorage.getItem("memberId"));
     if (mateAuthorId === memberId) setIsMyPost(true);
