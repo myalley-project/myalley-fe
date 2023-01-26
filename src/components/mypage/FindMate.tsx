@@ -49,9 +49,7 @@ const FindMate = () => {
     <FindMateContainer>
       {matesList.length == 0
         ? "아직 작성한 글이 없어요!"
-        : matesList.map((mates) => (
-            <MateCard key={mates.mateId} mates={mates} />
-          ))}
+        : matesList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)}
       {pageInfoList.totalPage > 0 && (
         <Pagination
           pages={pages}

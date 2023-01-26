@@ -1,0 +1,64 @@
+{
+  "mates": [
+    {
+      "mateId": 1,
+      "title": "sldkfjsldkfj",
+      "availableDate": "YYYY-MM-DD",
+      "status": "모집 중",
+      "mateGender": "남성",
+      "mateAge": "20대 후반 ~ 30대 초반",
+      "createdAt": "YYYY-MM-DD",
+      "viewCount": 3,
+      "memberId": 5,
+      "memberNickname": "nickname",
+      "exhibition": {
+        "exhibitionId": 8,
+        "exhibitionTitle": "title",
+        "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+        "exhibitionStatus": "지난 전시"
+      }
+    },
+    {
+      "mateId": 44,
+      "title": "sldkfjsldkfj",
+      "availableDate": "YYYY-MM-DD",
+      "status": "모집 중",
+      "mateGender": "남성",
+      "mateAge": "20대 후반 ~ 30대 초반",
+      "createdAt": "YYYY-MM-DD",
+      "viewCount": 3,
+      "memberId": 5,
+      "memberNickname": "nickname",
+      "exhibition": {
+        "exhibitionId": 8,
+        "exhibitionTitle": "title",
+        "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+        "exhibitionStatus": "지난 전시"
+      }
+    },
+    {
+      "mateId": 3,
+      "title": "sldkfjsldkfj",
+      "availableDate": "YYYY-MM-DD",
+      "status": "모집 중",
+      "mateGender": "남성",
+      "mateAge": "20대 후반 ~ 30대 초반",
+      "createdAt": "YYYY-MM-DD",
+      "viewCount": 3,
+      "memberId": 5,
+      "memberNickname": "nickname",
+      "exhibition": {
+        "exhibitionId": 8,
+        "exhibitionTitle": "title",
+        "posterUrl": "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+        "exhibitionStatus": "지난 전시"
+      }
+    }
+  ],
+  "pageInfo": {
+    "page": 1,
+    "size": 1,
+    "totalElement": 1,
+    "totalPage": 1
+  }
+}
