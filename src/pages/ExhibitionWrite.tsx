@@ -217,7 +217,7 @@ const ExhibitionWrite = () => {
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
             placeholder="전체전시"
-            options={["지난전시", "현재전시", "예정전시"]}
+            options={["지난 전시", "현재 전시", "예정 전시"]}
             width="130px"
             name="status"
             onClick={handleSetDetail}
