@@ -91,8 +91,3 @@ const ExhibitionListContainer = styled.div`
     display: none;
   }
 `;
-
-const CardListContainer = styled.div`
-  flex-wrap: wrap;
-  width: inherit;
-`;

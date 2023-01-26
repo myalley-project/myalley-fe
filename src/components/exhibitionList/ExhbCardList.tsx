@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
 import { Exhibition } from "../../types/exhbList";
+import { theme } from "../../styles/theme";
 
 interface ExhbCardListType {
   exhbList: Exhibition[]; // 전시회 목록 데이터
@@ -18,16 +18,16 @@ const ExhbCardList = ({ exhbList, type }: ExhbCardListType) => (
           <Link to={`/exhibition/${id}`}>
             <Thumbnail alt="thumbnail" src={posterUrl} />
           </Link>
-          <Link className="content-box flex" to={`/exhibition/${id}`}>
+          <Link className="content-box" to={`/exhibition/${id}`}>
             <Content>
-              <div className="content-top">
+              <ContentTop>
                 <div className="title">{title}</div>
                 <div className="space">{space}</div>
-              </div>
-              <div className="content-footer flex space-between">
+              </ContentTop>
+              <ContentFooter>
                 <div className="exhb-period">{duration}</div>
                 <span className="viewCount">조회수 {viewCount}</span>
-              </div>
+              </ContentFooter>
             </Content>
           </Link>
         </ExhibitionCard>
@@ -54,12 +54,10 @@ const ExhibitionCard = styled.div<{
   padding-bottom: 42.99%;
   border: 2px solid ${theme.colors.greys40};
   border-radius: 33px;
+  cursor: pointer;
   :hover {
     border: 2px solid ${theme.colors.primry60};
     box-shadow: 0px 0px 20px #381e7218;
-  }
-  .space-between {
-    justify-content: space-between;
   }
   :nth-child(4n) {
     margin-right: ${(props) => props.type === "exhbList" && 0};
@@ -68,6 +66,7 @@ const ExhibitionCard = styled.div<{
     margin-right: ${(props) => props.type === "myPage" && 0};
   }
   .content-box {
+    display: flex;
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -76,7 +75,6 @@ const ExhibitionCard = styled.div<{
     width: 82.24%;
     height: 24.5%;
     text-decoration: none;
-    cursor: pointer;
   }
 `;
 
@@ -85,43 +83,46 @@ const Thumbnail = styled.img`
   width: 100%;
   height: 75.5%;
   object-fit: cover;
-  cursor: pointer;
 `;
 
 const Content = styled.div`
   position: relative;
   width: 100%;
   height: 60.5%;
-  .content-top {
-    height: 30.4%;
-    max-height: 28px;
-    color: ${theme.colors.greys90};
-    .title {
-      position: relative;
-      border-radius: 0;
-      font-size: 20px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    .space {
-      line-height: 16px;
-      margin: 1.3% 0 0;
-      font-size: 12px;
-      color: ${theme.colors.greys60};
-    }
+`;
+
+const ContentTop = styled.div`
+  height: 30.4%;
+  max-height: 28px;
+  color: ${theme.colors.greys90};
+  .title {
+    position: relative;
+    border-radius: 0;
+    font-size: 20px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
   }
-  .content-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    line-height: 24px;
-    font-size: 14px;
-    .exhb-period {
-      color: ${theme.colors.greys80};
-    }
-    .viewCount {
-      color: ${theme.colors.greys60};
-    }
+  .space {
+    line-height: 16px;
+    margin: 1.3% 0 0;
+    font-size: 12px;
+    color: ${theme.colors.greys60};
+  }
+`;
+
+const ContentFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  line-height: 24px;
+  font-size: 14px;
+  .exhb-period {
+    color: ${theme.colors.greys80};
+  }
+  .viewCount {
+    color: ${theme.colors.greys60};
   }
 `;
