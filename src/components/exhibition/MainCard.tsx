@@ -1,28 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useNavigate, useLocation, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
-import heartOff from "../../assets/icons/heartOff.svg";
-import shareOff from "../../assets/icons/shareOff.svg";
+import { exhbDeleteApi } from "../../apis/exhibition";
+import ExhibitionWrite from "../../pages/ExhibitionWrite";
 import { theme } from "../../styles/theme";
+import isApiError from "../../utils/isApiError";
 
 export interface MainCardType {
+  posterUrl: string;
   title: string;
   date: string;
   place: string;
   charge: number;
+  webLink: string;
+  id: number;
 }
+const MainCard = ({
+  posterUrl,
+  title,
+  date,
+  place,
+  charge,
+  webLink,
+  id,
+}: MainCardType) => {
+  const auth = localStorage.getItem("authority");
+  const location = useLocation();
+  const navigate = useNavigate();
 
-const MainCard = ({ title, date, place, charge }: MainCardType) => {
-  const [auth, setAuth] = useState(localStorage.getItem("authority"));
+  const handleDelete = async () => {
+    try {
+      const res = await exhbDeleteApi(id);
+      alert("전시글 삭제가 완료되었습니다.");
+      navigate("/");
+      console.log(res);
+    } catch (err) {
+      isApiError(err);
+    }
+  };
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(`http://localhost:3000/${location.pathname}`);
+    alert("주소가 복사되었습니다.");
+  };
 
   return (
     <CardContainer>
       <Card>
-        <ImageContainer />
+        <PosterImg src={posterUrl} alt="poster-img" />
         <InfoContainer>
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
-              <Button>수정</Button>
-              <Button>삭제</Button>
+              <Button onClick={() => navigate("edit")}>수정</Button>
+              <Button onClick={handleDelete}>삭제</Button>
             </EditButtons>
           )}
           <Title>{title}</Title>
@@ -37,14 +67,17 @@ const MainCard = ({ title, date, place, charge }: MainCardType) => {
             </InfoDetail>
             <InfoDetail style={{ marginBottom: "0px" }}>
               <dt>관람비용</dt>
-              <dd>{charge}</dd>
+              <dd>
+                {charge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+              </dd>
             </InfoDetail>
           </div>
           <Footer>
-            {/* 나중에 링크로 수정 */}
-            <p>사이트 방문</p>
-            <img src={heartOff} alt="like icon" />
-            <img src={shareOff} alt="share icon" />
+            <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
+              사이트 방문
+            </WebLink>
+            <BookMarkBtn type="button" />
+            <ShareBtn type="button" onClick={copyLink} />
           </Footer>
         </InfoContainer>
       </Card>
@@ -72,9 +105,8 @@ const Card = styled.div`
   background-color: #ffffff;
 `;
 
-const ImageContainer = styled.div`
+const PosterImg = styled.img`
   width: 278px;
-  background-color: #d9d9d9;
 `;
 
 const InfoContainer = styled.div`
@@ -137,12 +169,41 @@ const Footer = styled.div`
   gap: 10px;
   justify-content: flex-end;
   width: 100%;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
   letter-spacing: -0.5px;
   color: ${theme.colors.greys60};
   text-align: right;
-  p {
-    line-height: 24px;
+`;
+
+const WebLink = styled.a`
+  padding: 4px 10px;
+  border-radius: 10px;
+  line-height: 24px;
+  text-decoration: none;
+  color: ${theme.colors.primry70};
+  &:hover {
+    background-color: ${theme.colors.greys10};
+    color: ${theme.colors.greys100};
+  }
+`;
+
+const BookMarkBtn = styled.button`
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+  margin-top: 5px;
+  border-radius: 0px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.6556 5.46527L11.9709 7.60218L10.4492 5.5704C9.27909 4.00811 7.1253 3.56296 5.43005 4.53303C2.70435 6.09275 2.17049 9.79336 4.34455 12.0575L11.9709 20L19.6624 11.9896C21.8117 9.75126 21.3029 6.09626 18.6237 4.52777C16.9657 3.55709 14.8443 3.95739 13.6556 5.46527Z' stroke='%236750A4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  &:hover {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.6556 5.46527L11.9709 7.60218L10.4492 5.5704C9.27909 4.00811 7.1253 3.56296 5.43005 4.53303C2.70435 6.09275 2.17049 9.79336 4.34455 12.0575L11.9709 20L19.6624 11.9896C21.8117 9.75126 21.3029 6.09626 18.6237 4.52777C16.9657 3.55709 14.8443 3.95739 13.6556 5.46527Z' fill='%236750A4' stroke='%236750A4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+`;
+
+const ShareBtn = styled(BookMarkBtn)`
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='5' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='6' cy='12' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='18' cy='19' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Cpath d='M9 10L15 6' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M9 14L15 18' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E%0A");
+  &:hover {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='5' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='6' cy='12' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='18' cy='19' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Cpath d='M9 10L15 6' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M9 14L15 18' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   }
 `;

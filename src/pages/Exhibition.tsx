@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import MainCard from "../components/exhibition/MainCard";
 import ContentCard from "../components/exhibition/ContentCard";
 import ToggleSwitch from "../components/exhibition/ToggleSwitch";
-import exhibitionApi, { ExhibitionRes } from "../apis/exhibition";
+import { ExhibitionRes, exhbApi } from "../apis/exhibition";
 import isApiError from "../utils/isApiError";
 
 const Exhibition = () => {
@@ -13,9 +13,10 @@ const Exhibition = () => {
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
   const getExhbDetail = useCallback(async (id: number) => {
     try {
-      const res: AxiosResponse<ExhibitionRes> = await exhibitionApi(id);
+      const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
       const { data } = res;
       setExhbDetail(data);
+      console.log(data);
     } catch (err) {
       isApiError(err);
     }
@@ -29,10 +30,13 @@ const Exhibition = () => {
   return (
     <ExhibitionContainer>
       <MainCard
+        posterUrl={exhbDetail?.posterUrl ?? ""}
         title={exhbDetail?.title ?? ""}
         date={exhbDetail?.duration ?? ""}
         place={exhbDetail?.space ?? ""}
         charge={exhbDetail?.adultPrice ?? 0}
+        webLink={exhbDetail?.webLink ?? ""}
+        id={exhbDetail?.id ?? 0}
       />
       <ToggleSwitch setState={setState} />
       {state === "info" && (

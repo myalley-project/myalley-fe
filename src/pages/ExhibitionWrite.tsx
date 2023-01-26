@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { AxiosResponse } from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useRefreshTokenApi from "../apis/useRefreshToken";
 import Selectbox from "../components/atom/Selectbox";
 import {
   exhbCreateApi,
   ExhbCreateRes,
+  ExhbCreateType,
   exhbUploadImgApi,
   ExhbUploadImgRes,
 } from "../apis/exhbAdmin";
@@ -18,8 +19,13 @@ import isApiError from "../utils/isApiError";
 import Button from "../components/atom/Button";
 import CheckLabel from "../components/atom/CheckLabel";
 import getExhbTypeArray from "../utils/exhbTypeSelector";
+import { exhbApi, exhbUpdateApi, ExhibitionRes } from "../apis/exhibition";
 
-const ExhibitionWrite = () => {
+interface ModeType {
+  mode: string;
+}
+
+const ExhibitionWrite = (props: ModeType) => {
   const formData = new FormData();
   const navigate = useNavigate();
   const refreshTokenApi = useRefreshTokenApi();
@@ -29,7 +35,7 @@ const ExhibitionWrite = () => {
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
-  const [detail, setDetail] = useState({
+  const [detail, setDetail] = useState<ExhbCreateType>({
     title: "",
     status: "",
     type: "",
@@ -42,6 +48,26 @@ const ExhibitionWrite = () => {
     author: "",
     webLink: "",
   });
+  const [editDetail, setEditDetail] = useState<ExhibitionRes>();
+  const location = useLocation();
+  const id = Number(location.pathname.split("/")[2]);
+  const { mode } = props;
+  const [placeholderText, setplaceholderText] = useState({
+    type: "전체 전시",
+  });
+
+  const getEditExhb = useCallback(async () => {
+    if (mode === "edit") {
+      const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
+      const { data } = res;
+      console.log(data);
+      setEditDetail(data);
+    }
+  }, [id, mode]);
+
+  useEffect(() => {
+    getEditExhb();
+  }, [getEditExhb]);
 
   const handleInputAndTextArea = (
     e:
@@ -158,7 +184,7 @@ const ExhibitionWrite = () => {
     }
   };
 
-  // 등록 api 요청
+  // 등록 api 호출
   const clickSubmitBtn = async () => {
     if (detail.title === "") {
       alert("제목을 입력해주세요.");
@@ -187,8 +213,34 @@ const ExhibitionWrite = () => {
         }
       } catch (err) {
         const errorRes = isApiError(err);
-        if (errorRes === "accessToken 만료") refreshTokenApi();
+        // if (errorRes === "accessToken 만료") refreshTokenApi();
       }
+  };
+
+  // 수정 api 호출
+  const clickEditBtn = async () => {
+    try {
+      const reqbody = {
+        title: editDetail?.title,
+        status: editDetail?.status,
+        type: editDetail?.type,
+        space: editDetail?.space,
+        adultPrice: editDetail?.adultPrice,
+        // fileName: editDetail?.
+        posterUrl: editDetail?.posterUrl,
+        date: editDetail?.duration,
+        webLink: editDetail?.webLink,
+        content: editDetail?.content,
+        author: editDetail?.author,
+      };
+      console.log(detail);
+      const res = await exhbUpdateApi(id, reqbody);
+      console.log(res);
+      alert("수정이 완료되었습니다.");
+      navigate(`/exhibition/${id}`);
+    } catch (err) {
+      isApiError(err);
+    }
   };
 
   return (
@@ -198,7 +250,7 @@ const ExhibitionWrite = () => {
           <InputTitle
             type="text"
             name="title"
-            value={detail.title}
+            value={mode === "edit" ? editDetail?.title ?? "" : detail.title}
             onChange={(e) => handleInputAndTextArea(e)}
             placeholder="제목을 입력해주세요"
           />
@@ -206,7 +258,7 @@ const ExhibitionWrite = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-type">전시타입</Label>
           <Selectbox
-            placeholder="전체전시"
+            placeholder={placeholderText.type}
             options={getExhbTypeArray()}
             width="130px"
             name="type"
@@ -216,7 +268,7 @@ const ExhibitionWrite = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
-            placeholder="전체전시"
+            placeholder="전체 전시"
             options={["지난 전시", "현재 전시", "예정 전시"]}
             width="130px"
             name="status"
@@ -267,7 +319,7 @@ const ExhibitionWrite = () => {
             type="text"
             name="space"
             placeholder="내용을 입력해주세요."
-            value={detail.space}
+            value={mode === "edit" ? editDetail?.space ?? "" : detail.space}
             onChange={(e) => handleInputAndTextArea(e)}
             style={{ width: "280px" }}
           />
@@ -298,7 +350,7 @@ const ExhibitionWrite = () => {
             as="textarea"
             name="content"
             placeholder="내용을 입력해주세요."
-            value={detail.content}
+            value={mode === "edit" ? editDetail?.content ?? "" : detail.content}
             onChange={(e) => handleInputAndTextArea(e)}
           />
         </OptionWrapper>
@@ -308,7 +360,7 @@ const ExhibitionWrite = () => {
             as="textarea"
             name="author"
             placeholder="내용을 입력해주세요."
-            value={detail.author}
+            value={mode === "edit" ? editDetail?.author ?? "" : detail.author}
             onChange={(e) => handleInputAndTextArea(e)}
           />
         </OptionWrapper>
@@ -318,7 +370,7 @@ const ExhibitionWrite = () => {
             type="text"
             name="webLink"
             placeholder="내용을 입력해주세요."
-            value={detail.webLink}
+            value={mode === "edit" ? editDetail?.webLink ?? "" : detail.webLink}
             onChange={(e) => handleInputAndTextArea(e)}
             style={{ width: "100%" }}
           />
@@ -333,14 +385,25 @@ const ExhibitionWrite = () => {
         >
           취소
         </SubmitBtn>
-        <SubmitBtn
-          variant="primary"
-          size="large"
-          type="button"
-          onClick={clickSubmitBtn}
-        >
-          등록하기
-        </SubmitBtn>
+        {mode === "edit" ? (
+          <SubmitBtn
+            variant="primary"
+            size="large"
+            type="button"
+            onClick={clickEditBtn}
+          >
+            수정하기
+          </SubmitBtn>
+        ) : (
+          <SubmitBtn
+            variant="primary"
+            size="large"
+            type="button"
+            onClick={clickSubmitBtn}
+          >
+            등록하기
+          </SubmitBtn>
+        )}
       </ButtonWrapper>
     </WriteExhibitionContainer>
   );

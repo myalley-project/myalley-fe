@@ -15,9 +15,11 @@ export interface ExhibitionRes {
   author: string;
   viewCount: number;
   createdAt: string;
+  bookmarkCount?: number;
+  bookmarked?: boolean;
 }
 
-const exhibitionApi = async (id: number) => {
+export const exhbApi = async (id: number) => {
   const res: AxiosResponse<ExhibitionRes> = await apiInstance.get(
     `/exhibitions/${id}`,
     {
@@ -29,4 +31,14 @@ const exhibitionApi = async (id: number) => {
   return res;
 };
 
-export default exhibitionApi;
+export const exhbUpdateApi = async (id: number, reqbody: object) => {
+  const res = await apiInstance.put(`/exhibitions/${id}`, reqbody);
+  return res;
+};
+
+export const exhbDeleteApi = async (id: number) => {
+  const res: AxiosResponse<ExhibitionRes> = await apiInstance.delete(
+    `/exhibitions/${id}`
+  );
+  return res;
+};
