@@ -6,44 +6,40 @@ interface CommentType {
 }
 
 // 메이트 모집글 댓글 컴포넌트_박예선_23.01.19
-const Comment = ({ type }: CommentType) => {
-  const a = 2;
-  return (
-    <CommentContainer className="flex">
-      {type === "reply" && (
-        <div className="reply-icon-box">
-          <div className="icon" />
-        </div>
-      )}
-      <div className="content flex">
-        <img
-          src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
-          alt=""
-        />
+const Comment = ({ type }: CommentType) => (
+  <CommentContainer className="flex">
+    {type === "reply" && (
+      <div className="reply-icon-box">
+        <div className="icon" />
+      </div>
+    )}
+    <div className="content flex">
+      <img
+        src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
+        alt=""
+      />
+      <div>
+        <div>닉네임</div>
+        <div>content</div>
         <div>
-          <div>닉네임</div>
-          <div>content</div>
-          <div>
-            <span>createdDate</span>
-            <span>createdTime</span>
-            <span>createdTime</span>
-          </div>
-        </div>
-        <div className="btn-container">
-          <button type="button">수정</button>
-          <button type="button">삭제</button>
+          <span>createdDate</span>
+          <span>createdTime</span>
+          <span>createdTime</span>
         </div>
       </div>
-    </CommentContainer>
-  );
-};
+      <div className="btn-container">
+        <button type="button">수정</button>
+        <button type="button">삭제</button>
+      </div>
+    </div>
+  </CommentContainer>
+);
 
 export default Comment;
 
 const CommentContainer = styled.div`
   position: relative;
   height: 136px;
-  /* padding: 30px 0; */
   .reply-icon-box {
     width: 54px;
     .icon {

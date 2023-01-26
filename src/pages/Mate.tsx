@@ -1,22 +1,24 @@
 import axios, { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Calender from "../components/Calendar";
-import Comment from "../components/mate/Comment";
 import { MateRes } from "../types/mate";
 import { theme } from "../styles/theme";
+import CommentList, {
+  SubTitle,
+  TextArea,
+} from "../components/mate/CommentList";
+import ExhbCard from "../components/mate/ExhbCard";
 
-// 메이트 모집글 상세페이지_박예선_23.01.22
+// 메이트 모집글 상세페이지_박예선_23.01.26
 const Mate = () => {
-  const navigate = useNavigate();
-  const memberNickname = localStorage.getItem("memberNickname");
   const mateContentRef = useRef<HTMLTextAreaElement>(null);
   const [isMyPost, setIsMyPost] = useState(false);
   const [mateInfo, setMateInfo] = useState<MateRes | null>(null);
   const [mateContentHeight, setMateContentHeight] = useState(0);
   const [commentTextArea, setCommentTextArea] = useState("");
 
+  // 메이트 상세페이지 api 호출_박예선_23.01.22
   const getMate = useCallback(async () => {
     try {
       const res: AxiosResponse<MateRes> = await axios.get("/data/mate.json"); // 테스트용 목데이터
@@ -28,32 +30,30 @@ const Mate = () => {
     }
   }, []);
 
+  // 메이트 상세페이지 api 호출_박예선_23.01.22
   useEffect(() => {
     getMate();
   }, [getMate]);
 
+  // 메이트 설명글의 길이에 따라 높이 변경_박예선_23.01.22
   useEffect(() => {
     if (mateContentRef.current?.scrollHeight)
       setMateContentHeight(mateContentRef.current?.scrollHeight);
   }, [mateInfo]);
 
+  // 내가 작성한 메이트글 여부파악_박예선_23.01.22
   useEffect(() => {
     const mateAuthorId = mateInfo?.member.memberId;
     const memberId = Number(localStorage.getItem("memberId"));
     if (mateAuthorId === memberId) setIsMyPost(true);
   }, [mateInfo, mateInfo?.member]);
 
-  const handleCommentTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = e.target;
-    if (!value.includes("\n")) setCommentTextArea(value);
-  };
-
   const clickBookmarkBtn = () => {};
 
   return (
     mateInfo && (
       <MateContainer>
-        <div className="top-buttons-container flex space-between">
+        <div className="top-buttons-container flex">
           <BtnTransparent>목록</BtnTransparent>
           {/* <BtnTransparent>이전 글</BtnTransparent>
           <BtnTransparent>다음 글</BtnTransparent> */}
@@ -63,37 +63,15 @@ const Mate = () => {
             <BtnTransparent>삭제</BtnTransparent>
           </div>
         </div>
-        <ExhbCardContainer
-          onClick={() =>
-            navigate(`/exhibition/${mateInfo.exhibition.exhibitionId}`)
-          }
-        >
-          <Thumbnail
-            className="thumbnail"
-            src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
-            alt="thumbnail"
-          />
-          <InfoContainer>
-            <div className="title bold">
-              {mateInfo.exhibition.exhibitionTitle}
-            </div>
-            <DetailContainer>
-              <div className="date flex">
-                <div className="detail-name">일정</div>
-                <div>{mateInfo.exhibition.exhibitionDuration}</div>
-              </div>
-              <div className="flex">
-                <div className="detail-name">장소</div>
-                <div>{mateInfo.exhibition.exhibitionSpace}</div>
-              </div>
-            </DetailContainer>
-          </InfoContainer>
-        </ExhbCardContainer>
+        <ExhbCard exhbData={mateInfo.exhibition} />
         <MateContentContainer>
           <div className="flex">
             <div className="title-container">
               <BtnColored disabled>{mateInfo.status}</BtnColored>
-              <div className="title">{mateInfo.title}</div>
+              <Title size={28} lineHight={36} type="mateTitle">
+                {mateInfo.title}
+              </Title>
+              {/* <div className="title">{mateInfo.title}</div> */}
               <div className="title-info flex">
                 <div>{mateInfo.createdAt}</div>
                 <div className="border" />
@@ -147,7 +125,9 @@ const Mate = () => {
               src={mateInfo.member.memberProfileImg}
             />
             <div>
-              <Title size={20}>{mateInfo.member.memberNickname}</Title>
+              <Title size={20} lineHight={28}>
+                {mateInfo.member.memberNickname}
+              </Title>
               <span>
                 {mateInfo.member.memberGender === "M" ? "남성" : "여성"}
               </span>
@@ -172,31 +152,10 @@ const Mate = () => {
             </BtnTransparent>
           </div>
         </MateContentContainer>
-        <CommentList>
-          <div className="comment-count bold">
-            댓글 <span>0</span>
-          </div>
-          {/* <Comment type="comment" />
-        <Comment type="reply" />
-        댓글기능 추가되면 추가하기 */}
-          <SubTitle type="greys90" marginTop={30}>
-            {memberNickname}
-          </SubTitle>
-          <TextAreaContainer>
-            <TextArea
-              type="comment"
-              placeholder="내용을 입력해주세요."
-              value={commentTextArea}
-              onChange={handleCommentTextArea}
-              maxLength={150}
-              height={150}
-            />
-            <div className="input-status">
-              <span>{commentTextArea.length}</span>/<span>150</span>
-            </div>
-            <BtnColored className="comment-btn">등록</BtnColored>
-          </TextAreaContainer>
-        </CommentList>
+        <CommentList
+          commentTextArea={commentTextArea}
+          setCommentTextArea={setCommentTextArea}
+        />
       </MateContainer>
     )
   );
@@ -204,7 +163,7 @@ const Mate = () => {
 
 export default Mate;
 
-// 작성자 나이 n0대 x반 형식 반환 함수_박예선_23.01.22
+// 작성자 나이 "n0대 x반" 형식 반환 함수_박예선_23.01.22
 function getMemberAgeForm(year: string) {
   const age = (new Date().getFullYear() - Number(year) + 1).toString();
   const firstNumOfAge = Number(age.substring(0, 1));
@@ -226,69 +185,13 @@ const MateContainer = styled.div`
   margin: 50px 0;
   .top-buttons-container {
     height: 40px;
+    justify-content: space-between;
   }
   .flex {
     display: flex;
   }
-  .space-between {
-    justify-content: space-between;
-  }
-  .bold {
-    font-weight: 700;
-  }
   .none {
     display: none;
-  }
-  button {
-    cursor: pointer;
-    &:disabled {
-      cursor: default;
-    }
-  }
-`;
-
-const ExhbCardContainer = styled.div`
-  display: flex;
-  height: 244px;
-  margin: 14px 0 30px;
-  border: 1px solid ${theme.colors.greys40};
-  cursor: pointer;
-`;
-
-const Thumbnail = styled.img`
-  width: 175px;
-  height: inherit;
-`;
-
-const InfoContainer = styled.div`
-  margin: 30px;
-  border-radius: 0;
-  .title {
-    height: 104px;
-    color: ${(props) => props.theme.colors.greys90};
-    font-size: 42px;
-    line-height: 52px;
-  }
-`;
-
-const DetailContainer = styled.div`
-  height: 50px;
-  margin-top: 30px;
-  div {
-    div {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 20px;
-      color: ${theme.colors.greys90};
-      &.detail-name {
-        width: 72px;
-        margin-right: 30px;
-        color: ${theme.colors.greys60};
-      }
-    }
-    &.date {
-      margin-bottom: 10px;
-    }
   }
 `;
 
@@ -301,12 +204,6 @@ const MateContentContainer = styled.div`
     padding-bottom: 15px;
     border-bottom: 1px solid ${theme.colors.greys40};
     border-radius: 0;
-    .title {
-      margin: 10px 0 20px;
-      font-size: 28px;
-      font-weight: 700;
-      line-height: 36px;
-    }
   }
   .title-info {
     align-items: center;
@@ -330,21 +227,17 @@ const MateContentContainer = styled.div`
   }
 `;
 
-const Title = styled.div<{ size: number }>`
+const Title = styled.div<{
+  size: number;
+  lineHight: number;
+  type?: "mateTitle";
+}>`
   margin-bottom: 10px;
+  margin: ${(props) => props.type && "10px 0 20px"};
   color: ${theme.colors.greys90};
   font-size: ${(props) => `${props.size}px`};
   font-weight: 700;
-`;
-
-const SubTitle = styled.div<{ type: "greys60" | "greys90"; marginTop: number }>`
-  margin-top: ${(props) => `${props.marginTop}px`};
-  margin-bottom: ${(props) => (props.type === "greys60" ? "0" : "10px")};
-  color: ${(props) =>
-    props.type === "greys60" ? theme.colors.greys60 : theme.colors.greys90};
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 20px;
+  line-height: ${(props) => `${props.lineHight}px`};
 `;
 
 const BorderedBox = styled.div`
@@ -378,69 +271,16 @@ const MemberProfileImg = styled.img`
   border-radius: 50px;
 `;
 
-const CommentList = styled.div`
-  border: 1px solid #e0e0e0;
-  padding: 30px;
-  .comment-count {
-    padding-bottom: 14px;
-    border-bottom: 1px solid ${theme.colors.greys40};
-    border-radius: 0;
-    font-size: 20px;
-    span {
-      color: ${theme.colors.primry60};
-    }
-  }
-`;
-
-const TextArea = styled.textarea<{
-  type: "comment" | "readOnly";
-  height: number;
-}>`
-  width: 100%;
-  height: ${(props) => `${props.height}px`};
-  padding: ${(props) => (props.type === "comment" ? "20px" : "0")};
-  border: ${(props) =>
-    props.type === "comment" ? `1px solid ${theme.colors.greys40}` : "none"};
-  border-radius: ${(props) => (props.type === "comment" ? "30px" : "0")};
-  color: ${theme.colors.greys90};
-  font-size: 14px;
-  font-weight: 400;
-  resize: none;
-  ::placeholder {
-    color: ${theme.colors.greys60};
-  }
-  :disabled {
-    background-color: transparent;
-  }
-  .apply-btn {
-  }
-`;
-
-const TextAreaContainer = styled.div`
-  position: relative;
-  width: 100%;
-  margin-bottom: 46px;
-  .input-status {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    color: ${theme.colors.greys60};
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .comment-btn {
-    position: absolute;
-    right: 0;
-    bottom: -46px;
-  }
-`;
-
-const BtnColored = styled.button`
+export const BtnColored = styled.button`
   height: 36px;
   padding: 0 20px;
   background-color: ${theme.colors.primry60};
   color: ${theme.colors.white100};
   font-size: 14px;
+  cursor: pointer;
+  &:disabled {
+    cursor: default;
+  }
 `;
 
 const BtnTransparent = styled.button`
@@ -448,6 +288,10 @@ const BtnTransparent = styled.button`
   padding: 0 20px;
   border: 1px solid ${theme.colors.greys40};
   font-size: 14px;
+  cursor: pointer;
+  &:disabled {
+    cursor: default;
+  }
   &:nth-child(1) {
     margin-right: 10px;
   }
