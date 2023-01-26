@@ -14,28 +14,30 @@ interface ExhbCardType {
   };
 }
 
+// 메이트 모집글 전시회 카드컴포넌트_박예선_23.01.26
 const ExhbCard = (props: ExhbCardType) => {
   const { exhbData } = props;
+  const {
+    exhibitionId,
+    exhibitionTitle,
+    exhibitionSpace,
+    exhibitionDuration,
+    posterUrl,
+  } = exhbData;
   const navigate = useNavigate();
   return (
-    <ExhbCardContainer
-      onClick={() => navigate(`/exhibition/${exhbData.exhibitionId}`)}
-    >
-      <Thumbnail
-        className="thumbnail"
-        src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
-        alt="thumbnail"
-      />
+    <ExhbCardContainer onClick={() => navigate(`/exhibition/${exhibitionId}`)}>
+      <Thumbnail className="thumbnail" src={posterUrl} alt="thumbnail" />
       <InfoContainer>
-        <div className="title bold">{exhbData.exhibitionTitle}</div>
+        <div className="title">{exhibitionTitle}</div>
         <DetailContainer>
           <div className="date flex">
             <div className="detail-name">일정</div>
-            <div>{exhbData.exhibitionDuration}</div>
+            <div>{exhibitionDuration}</div>
           </div>
           <div className="flex">
             <div className="detail-name">장소</div>
-            <div>{exhbData.exhibitionSpace}</div>
+            <div>{exhibitionSpace}</div>
           </div>
         </DetailContainer>
       </InfoContainer>

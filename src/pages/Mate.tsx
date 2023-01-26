@@ -1,7 +1,8 @@
-import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { AxiosResponse } from "axios";
 import styled from "styled-components";
+import profileImg from "../assets/icons/profileImg.svg";
 import Calender from "../components/Calendar";
 import { MateRes } from "../types/mate";
 import { theme } from "../styles/theme";
@@ -15,17 +16,17 @@ import isApiError from "../utils/isApiError";
 
 // 메이트 모집글 상세페이지_박예선_23.01.26
 const Mate = () => {
-  const mateContentRef = useRef<HTMLTextAreaElement>(null);
+  const navigate = useNavigate();
   const mateId = Number(useParams().id);
   const memberId = Number(localStorage.getItem("memberId"));
   const [isMyPost, setIsMyPost] = useState(false);
   const [mateInfo, setMateInfo] = useState<MateRes | null>(null);
   const [mateContentHeight, setMateContentHeight] = useState(0);
+  const mateContentRef = useRef<HTMLTextAreaElement>(null);
   const [commentTextArea, setCommentTextArea] = useState("");
 
-  // 메이트 상세페이지 api 호출_박예선_23.01.22
+  // 메이트 상세페이지 api 호출_박예선_23.01.26
   const getMate = useCallback(async () => {
-    if (!mateId) return;
     try {
       const res: AxiosResponse<MateRes> = await getMateApi(mateId, memberId);
       setMateInfo(res.data);
@@ -35,8 +36,9 @@ const Mate = () => {
       const { errorCode } = errorRes;
       if (errorCode === 404)
         alert("등록되지 않은 메이트 모집글입니다. 다시 시도해주십시오.");
+      navigate("/");
     }
-  }, [mateId, memberId]);
+  }, [mateId, memberId, navigate]);
 
   // 메이트 상세페이지 api 호출_박예선_23.01.22
   useEffect(() => {
@@ -79,7 +81,6 @@ const Mate = () => {
               <Title size={28} lineHight={36} type="mateTitle">
                 {mateInfo.title}
               </Title>
-              {/* <div className="title">{mateInfo.title}</div> */}
               <div className="title-info flex">
                 <div>{mateInfo.createdAt}</div>
                 <div className="border" />
@@ -88,7 +89,7 @@ const Mate = () => {
                 <div className="border" />
                 <div>댓글</div>
                 <div className="colored">0</div>
-                {/* 댓글기능 추가되면 변경해야 함 */}
+                {/* 댓글기능 추가되면 데이터 반영하도록 변경해야 함 */}
               </div>
             </div>
           </div>
@@ -130,7 +131,11 @@ const Mate = () => {
           <MemberInfo className="flex">
             <MemberProfileImg
               alt="member profile img"
-              src={mateInfo.member.memberProfileImg}
+              src={
+                mateInfo.member.memberProfileImg
+                  ? mateInfo.member.memberProfileImg
+                  : profileImg
+              }
             />
             <div>
               <Title size={20} lineHight={28}>
@@ -140,7 +145,6 @@ const Mate = () => {
                 {mateInfo.member.memberGender === "M" ? "남성" : "여성"}
               </span>
               <span>{getMemberAgeForm(mateInfo.member.memberAge)}</span>
-              {/* n0대 *반으로 변경해야함 */}
             </div>
           </MemberInfo>
           <div>

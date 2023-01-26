@@ -15,7 +15,7 @@
     "exhibitionId": 1,
     "exhibitionTitle": "제목2",
     "exhibitionSpace": "국립현대미술관",
-    "posterUrl": "https://my-alley-exhibition.s3.ap-northeast-2.amazonaws.com/poster/b769b21c-c858-416a-905c-d5829e35ef34.jpg",
+    "posterUrl": "https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg",
     "exhibitionDuration": "2023-02-01 ~ 2023-05-28",
     "status": "현재 전시"
   },
