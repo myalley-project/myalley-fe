@@ -11,11 +11,13 @@ import CommentList, {
 } from "../components/mate/CommentList";
 import ExhbCard from "../components/mate/ExhbCard";
 import getMateApi from "../apis/mate";
+import isApiError from "../utils/isApiError";
 
 // 메이트 모집글 상세페이지_박예선_23.01.26
 const Mate = () => {
   const mateContentRef = useRef<HTMLTextAreaElement>(null);
-  const mateId = useParams().id;
+  const mateId = Number(useParams().id);
+  const memberId = Number(localStorage.getItem("memberId"));
   const [isMyPost, setIsMyPost] = useState(false);
   const [mateInfo, setMateInfo] = useState<MateRes | null>(null);
   const [mateContentHeight, setMateContentHeight] = useState(0);
@@ -25,14 +27,16 @@ const Mate = () => {
   const getMate = useCallback(async () => {
     if (!mateId) return;
     try {
-      const res: AxiosResponse<MateRes> = await getMateApi(Number(mateId));
+      const res: AxiosResponse<MateRes> = await getMateApi(mateId, memberId);
       setMateInfo(res.data);
     } catch (err) {
-      alert(
-        "죄송합니다.\n전시목록을 불러오는데에 실패하였습니다. 다시 시도해주십시오."
-      );
+      const errorRes = isApiError(err);
+      if (typeof errorRes !== "object") return;
+      const { errorCode } = errorRes;
+      if (errorCode === 404)
+        alert("등록되지 않은 메이트 모집글입니다. 다시 시도해주십시오.");
     }
-  }, [mateId]);
+  }, [mateId, memberId]);
 
   // 메이트 상세페이지 api 호출_박예선_23.01.22
   useEffect(() => {
@@ -49,9 +53,8 @@ const Mate = () => {
   useEffect(() => {
     if (!mateInfo) return;
     const mateAuthorId = mateInfo?.member.memberId;
-    const memberId = Number(localStorage.getItem("memberId"));
     if (mateAuthorId === memberId) setIsMyPost(true);
-  }, [mateInfo, mateInfo?.member]);
+  }, [mateInfo, mateInfo?.member, memberId]);
 
   const clickBookmarkBtn = () => {};
 
