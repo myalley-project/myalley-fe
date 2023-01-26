@@ -3,11 +3,11 @@ import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import { ExhbTypeFilters, Exhibition, FilterType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
-import ExhibitionCard from "../components/exhibitionList/ExhibitionCard";
-import PageNoBar from "../components/exhibitionList/PageNoBar";
+import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
+import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
-// 전시회 목록 페이지 컴포넌트_박예선_23.01.18
+// 전시회 목록 페이지 컴포넌트_박예선_23.01.21
 const ExhibitionList = () => {
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -58,12 +58,8 @@ const ExhibitionList = () => {
         setExhbTypeFilters={setExhbTypeFilters}
         getExhbList={getExhbList}
       />
-      <CardListContainer className="flex">
-        {exhbList.map((exhb) => (
-          <ExhibitionCard key={exhb.id} exhbData={exhb} />
-        ))}
-      </CardListContainer>
-      <PageNoBar pages={pages} setPages={setPages} totalPage={totalPage} />
+      <ExhbCardList exhbList={exhbList} type="exhbList" />
+      <Pagination pages={pages} setPages={setPages} totalPage={totalPage} />
     </ExhibitionListContainer>
   );
 };
@@ -73,7 +69,7 @@ export default ExhibitionList;
 const ExhibitionListContainer = styled.div`
   flex-direction: column;
   align-items: center;
-  width: 99vw;
+  width: 100vw;
   font-size: 14px;
   h1 {
     margin: 50px 0;
@@ -94,11 +90,4 @@ const ExhibitionListContainer = styled.div`
   .none {
     display: none;
   }
-`;
-
-const CardListContainer = styled.div`
-  flex-wrap: wrap;
-  width: inherit;
-  min-height: 60vw;
-  margin: 30px 0;
 `;

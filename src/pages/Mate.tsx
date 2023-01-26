@@ -187,7 +187,7 @@ function getMemberAgeForm(year: string) {
 const MateContainer = styled.div`
   width: 83vw;
   max-width: 1200px;
-  margin: 50px 0;
+  margin: 50px auto;
   .top-buttons-container {
     height: 40px;
     justify-content: space-between;

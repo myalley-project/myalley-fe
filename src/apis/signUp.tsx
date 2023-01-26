@@ -1,14 +1,12 @@
 import { AxiosResponse } from "axios";
-import { Infos } from "../types/signUp";
 import apiInstance from "../utils/apiInstance";
+import { Infos } from "../types/signUp";
 
 export interface SignUpRes {
   resultCode?: number;
-  errorCode?: number;
-  errorMsg?: string;
 }
 
-// 회원가입 api_박예선_2023.01.13
+// 회원가입 api_박예선_2023.01.21
 const signUpApi = async (infos: Infos, isAdmin: boolean) => {
   const { email, password, gender, birth, nickname, name, adminNo } = infos;
   const month = `00${birth.month}`.slice(-2);

@@ -4,7 +4,7 @@ import arrowRightIcon from "../../assets/icons/arrowRight.svg";
 import arrowLeftIcon from "../../assets/icons/arrowLeft.svg";
 import arrowRightDoubleIcon from "../../assets/icons/arrowRightDouble.svg";
 import arrowLeftDoubleIcon from "../../assets/icons/arrowLeftDouble.svg";
-import { PagesState } from "../../types/exhbList";
+import { PagesState } from "../Pagination";
 
 const PageNoBar = (props: PageNoBarType) => {
   const { pages, setPages, totalPage } = props;
