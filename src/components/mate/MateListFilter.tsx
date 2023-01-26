@@ -41,7 +41,13 @@ const MateListFilter = (props: MateListFilterType) => {
         </Button>
       </div>
       <div>
-        <SearchInput placeholder="검색" />
+        <SearchInput
+          placeholder="검색"
+          onClick={() => alert("준비 중인 기능입니다.")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") alert("준비 중인 기능입니다.");
+          }}
+        />
         <Button
           variant="primary"
           size="small"
