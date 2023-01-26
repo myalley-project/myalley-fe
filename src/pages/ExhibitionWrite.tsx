@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { AxiosResponse } from "axios";
 import DatePicker from "react-datepicker";
@@ -149,7 +149,7 @@ const ExhibitionWrite = () => {
     e: React.MouseEvent<HTMLLIElement>,
     name: string
   ) => {
-    if (e != undefined) {
+    if (e !== undefined) {
       const { textContent } = e.currentTarget;
       setDetail({
         ...detail,
