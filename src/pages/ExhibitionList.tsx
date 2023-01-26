@@ -100,5 +100,5 @@ const CardListContainer = styled.div`
   flex-wrap: wrap;
   width: inherit;
   min-height: 60vw;
-  margin: 30px 0;
+  margin-top: 30px;
 `;
