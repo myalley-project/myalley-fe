@@ -4,16 +4,17 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
 import Selectbox from "../atom/Selectbox";
-import { EXHB_TYPE_ARRAY } from "../exhibitionList/Filters";
+import { PagesState } from "../Pagination";
 
 interface MateListFilterType {
   mateStatusFilter: MateStatusSelect;
   setMateStatusFilter: React.Dispatch<React.SetStateAction<MateStatusSelect>>;
+  setPages: React.Dispatch<React.SetStateAction<PagesState>>;
 }
 
 // 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.01.26
 const MateListFilter = (props: MateListFilterType) => {
-  const { mateStatusFilter, setMateStatusFilter } = props;
+  const { mateStatusFilter, setMateStatusFilter, setPages } = props;
   const navigate = useNavigate();
 
   // 필터 조건 핸들 함수_박예선_23.01.26
@@ -26,17 +27,31 @@ const MateListFilter = (props: MateListFilterType) => {
     }
   };
 
+  // 필터 적용버튼 클릭 함수_박예선_23.01.27
+  const clickFilterApplyBtn = () => {
+    setMateStatusFilter({
+      ...mateStatusFilter,
+      applied: mateStatusFilter.selected,
+    });
+    setPages({ started: 1, selected: 1 });
+  };
+
   return (
     <FilterContainer>
       <div className="flex">
         <Selectbox
-          placeholder="전시 유형"
-          options={EXHB_TYPE_ARRAY}
+          placeholder="전체"
+          options={MATE_STATUS_ARRAY}
           width="130px"
           name="filters"
           onClick={handleFilters}
         />
-        <Button variant="primary" size="small" className="filter-apply-btn">
+        <Button
+          variant="primary"
+          size="small"
+          className="filter-apply-btn"
+          onClick={clickFilterApplyBtn}
+        >
           적용
         </Button>
       </div>
@@ -70,7 +85,7 @@ export interface MateStatusSelect {
   applied: MateStatusType;
 }
 
-type MateStatusType = "전체" | "모집 중" | "모집 완료";
+export type MateStatusType = "전체" | "모집 중" | "모집 완료";
 
 const MATE_STATUS_ARRAY: MateStatusType[] = ["전체", "모집 중", "모집 완료"];
 
