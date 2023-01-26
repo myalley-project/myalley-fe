@@ -11,7 +11,7 @@ import CommentList, {
   TextArea,
 } from "../components/mate/CommentList";
 import ExhbCard from "../components/mate/ExhbCard";
-import getMateApi from "../apis/mate";
+import { BookMarkRes, getMateApi, mateBookMarkApi } from "../apis/mate";
 import isApiError from "../utils/isApiError";
 
 // 메이트 모집글 상세페이지_박예선_23.01.26
@@ -23,6 +23,7 @@ const Mate = () => {
   const [mateInfo, setMateInfo] = useState<MateRes | null>(null);
   const [mateContentHeight, setMateContentHeight] = useState(0);
   const mateContentRef = useRef<HTMLTextAreaElement>(null);
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const [commentTextArea, setCommentTextArea] = useState("");
 
   // 메이트 상세페이지 api 호출_박예선_23.01.26
@@ -30,6 +31,7 @@ const Mate = () => {
     try {
       const res: AxiosResponse<MateRes> = await getMateApi(mateId, memberId);
       setMateInfo(res.data);
+      setIsBookmarked(res.data.bookmarked);
     } catch (err) {
       const errorRes = isApiError(err);
       if (typeof errorRes !== "object") return;
@@ -58,7 +60,23 @@ const Mate = () => {
     if (mateAuthorId === memberId) setIsMyPost(true);
   }, [mateInfo, mateInfo?.member, memberId]);
 
-  const clickBookmarkBtn = () => {};
+  // 메이트글 북마크 등록/해제 api 호출_박예선_23.01.26
+  const clickBookmarkBtn = async () => {
+    if (!memberId) alert("로그인이 필요한 기능입니다.");
+    const res: AxiosResponse<BookMarkRes> | void = await mateBookMarkApi(
+      mateId
+    );
+    if (!res) return;
+    const { data } = res.data;
+    if (data) {
+      setIsBookmarked(true);
+      alert("북마크되었습니다.");
+    }
+    if (!data) {
+      setIsBookmarked(false);
+      alert("북마크가 해제되었습니다.");
+    }
+  };
 
   return (
     mateInfo && (
@@ -157,9 +175,9 @@ const Mate = () => {
             <BtnTransparent
               type="button"
               onClick={clickBookmarkBtn}
-              className="bookmark"
+              className={`bookmark ${isBookmarked ? "bookmarked" : ""}`}
             >
-              저장하기
+              {isBookmarked ? "저장됨" : "저장하기"}
               <span>{mateInfo.bookmarkCount}</span>
             </BtnTransparent>
           </div>
@@ -313,6 +331,16 @@ const BtnTransparent = styled.button`
     span {
       margin-left: 10px;
       font-weight: 700;
+    }
+    :hover {
+      background-color: ${theme.colors.greys10};
+    }
+    &:focus-visible {
+      border: 1px solid ${theme.colors.greys100};
+    }
+    &.bookmarked {
+      background-color: ${theme.colors.primry80};
+      color: ${theme.colors.white100};
     }
   }
 `;

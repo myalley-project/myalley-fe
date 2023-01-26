@@ -10,7 +10,7 @@
   "viewCount": 1,
   "createdAt": "2023-01-17",
   "bookmarkCount": 20,
-  "bookmarked": false,
+  "bookmarked": true,
   "exhibition": {
     "exhibitionId": 1,
     "exhibitionTitle": "제목2",
