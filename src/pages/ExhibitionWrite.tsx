@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { AxiosResponse } from "axios";
 import DatePicker from "react-datepicker";
@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
 import { useNavigate } from "react-router-dom";
+import useRefreshTokenApi from "../apis/useRefreshToken";
 import Selectbox from "../components/atom/Selectbox";
 import {
   exhbCreateApi,
@@ -16,10 +17,12 @@ import {
 import isApiError from "../utils/isApiError";
 import Button from "../components/atom/Button";
 import CheckLabel from "../components/atom/CheckLabel";
+import getExhbTypeArray from "../utils/exhbTypeSelector";
 
 const ExhibitionWrite = () => {
   const formData = new FormData();
   const navigate = useNavigate();
+  const refreshTokenApi = useRefreshTokenApi();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [thumbnail, setThumbnail] = useState("");
@@ -107,7 +110,8 @@ const ExhibitionWrite = () => {
         posterUrl: data.s3Url,
       });
     } catch (err) {
-      isApiError(err);
+      const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") refreshTokenApi(); // 토큰 필요한 요청에서는 필수
     }
   };
 
@@ -156,8 +160,6 @@ const ExhibitionWrite = () => {
 
   // 등록 api 요청
   const clickSubmitBtn = async () => {
-    console.log(localStorage.getItem("accessToken"));
-    console.log(detail);
     if (detail.title === "") {
       alert("제목을 입력해주세요.");
     } else if (detail.type === "") {
@@ -179,11 +181,13 @@ const ExhibitionWrite = () => {
     } else
       try {
         const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
-        console.log(res.data);
-        console.log(detail);
-        alert("전시글 등록이 완료되었습니다.");
+        if (res.status === 200) {
+          alert("전시글 등록이 완료되었습니다. 메인 페이지로 돌아갑니다.");
+          navigate("/");
+        }
       } catch (err) {
-        isApiError(err);
+        const errorRes = isApiError(err);
+        if (errorRes === "accessToken 만료") refreshTokenApi();
       }
   };
 
@@ -203,7 +207,7 @@ const ExhibitionWrite = () => {
           <Label htmlFor="exhibition-type">전시타입</Label>
           <Selectbox
             placeholder="전체전시"
-            options={typeOptions}
+            options={getExhbTypeArray()}
             width="130px"
             name="type"
             onClick={handleSetDetail}
@@ -344,32 +348,6 @@ const ExhibitionWrite = () => {
 
 export default ExhibitionWrite;
 
-const typeOptions = [
-  "그림전시",
-  "조각전시",
-  "문학전시",
-  "기획전시",
-  "건축전시",
-  "영화전시",
-  "음악전시",
-  "공연예술전시",
-  "영상전시",
-  "소장품전시",
-  "초점전시",
-  "임시전시",
-  "조망전시",
-  "전문전시",
-  "역사전시",
-  "정기전시",
-  "장소특정적전시",
-  "자유출품전시",
-  "커미션전시",
-  "아트페어",
-  "특별전시",
-  "사진전시",
-  "기타",
-];
-
 const WriteExhibitionContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -426,7 +404,6 @@ const Input = styled.input`
   font-weight: 500;
   font-size: 14px;
   color: ${(props) => props.theme.colors.greys60};
-
   &::placeholder {
     color: ${(props) => props.theme.colors.greys60};
   }
