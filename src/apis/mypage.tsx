@@ -15,13 +15,14 @@ export interface MypageRes {
   authority: string;
 }
 
+export interface PageInfo {
+  page: number;
+  size: number;
+  totalElement: number;
+  totalPage: number;
+}
+
 export const mypageApi = async () => {
   const res: AxiosResponse<MypageRes> = await apiInstance.get("/api/me");
   return res;
 };
-
-// export default mypageApi;
-
-// export const mypageFindMateApi = async () => {
-//   const res:AxiosResponse<
-// }

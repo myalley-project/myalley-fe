@@ -21,7 +21,7 @@ const App = () => (
       <Route path="/exhibition-list" element={<ExhibitionList />} />
       <Route path="/exhibition/:id" element={<Exhibition />} />
       <Route path="/exhibition-write" element={<ExhibitionWrite />} />
-      <Route path="/mypage" element={<Mypage />} />
+      <Route path="/mypage/:subpages" element={<Mypage />} />
     </Routes>
     <ReactQueryDevtools />
     <Footer />
