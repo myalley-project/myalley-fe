@@ -25,14 +25,14 @@ const Mypage = () => {
 
   // 회원정보 요청 api
   const getMyInfo = useCallback(async () => {
-    try {
-      const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
-      if (!res) return;
-      const { data } = res;
-      setInfoData(data);
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
+    //   if (!res) return;
+    //   const { data } = res;
+    //   setInfoData(data);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   }, []);
 
   useEffect(() => {
