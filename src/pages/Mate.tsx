@@ -62,20 +62,17 @@ const Mate = () => {
 
   // 메이트글 북마크 등록/해제 api 호출_박예선_23.01.26
   const clickBookmarkBtn = async () => {
-    if (!memberId) alert("로그인이 필요한 기능입니다.");
+    if (!memberId) {
+      alert("로그인이 필요한 기능입니다.");
+      return;
+    }
     const res: AxiosResponse<BookMarkRes> | void = await mateBookMarkApi(
       mateId
     );
     if (!res) return;
     const { data } = res.data;
-    if (data) {
-      setIsBookmarked(true);
-      alert("북마크되었습니다.");
-    }
-    if (!data) {
-      setIsBookmarked(false);
-      alert("북마크가 해제되었습니다.");
-    }
+    if (data) setIsBookmarked(true);
+    if (!data) setIsBookmarked(false);
   };
 
   return (
