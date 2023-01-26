@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import useLogOut from "../apis/logOut";
 import ProfileImg from "../assets/icons/profileImg.svg";
 import { theme } from "../styles/theme";
 
 const HamburgerMenu = () => {
+  const logOut = useLogOut();
   const [info, setInfo] = useState({
     nickname: localStorage.getItem("nickname")!,
     memberImage: localStorage.getItem("userImage")!,
@@ -29,7 +31,9 @@ const HamburgerMenu = () => {
               <Email className="email">{info.email}</Email>
             </div>
           </MypageArea>
-          <LogoutButton type="button">로그아웃</LogoutButton>
+          <LogoutButton type="button" onClick={logOut}>
+            로그아웃
+          </LogoutButton>
         </MenuWrapper>
       ) : (
         <MenuWrapper>
