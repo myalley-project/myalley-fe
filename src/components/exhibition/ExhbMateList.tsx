@@ -8,6 +8,7 @@ import { Mate } from "../../types/mate";
 import isApiError from "../../utils/isApiError";
 import Button from "../atom/Button";
 import MateCard from "../mate/MateCard";
+import NoList from "../NoList";
 import Pagination from "../Pagination";
 
 const ExhbMateList = () => {
@@ -50,9 +51,11 @@ const ExhbMateList = () => {
         </Button>
       </Header>
 
-      {mateList.length === 0
-        ? "아직 작성한 글이 없어요!"
-        : mateList.map((mate) => <MateCard key={mate.mateId} mates={mate} />)}
+      {mateList.length === 0 ? (
+        <NoList />
+      ) : (
+        mateList.map((mate) => <MateCard key={mate.mateId} mates={mate} />)
+      )}
       {pageInfoData.totalPage > 0 && (
         <Pagination
           pages={pages}
