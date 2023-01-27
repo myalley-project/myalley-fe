@@ -379,6 +379,7 @@ const BirthWrapper = styled.div`
 `;
 
 const PasswordWrapper = styled.div`
+  width: 26vw;
   position: relative;
 `;
 
@@ -391,6 +392,7 @@ const EyeIconbtn = styled.button`
 `;
 
 const PasswordInput = styled(Input)`
+  width: 100%;
   background-position: right 19px center;
   background-repeat: no-repeat;
 `;
