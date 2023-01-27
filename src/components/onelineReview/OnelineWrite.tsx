@@ -52,7 +52,10 @@ const OnelineWrite = ({
   });
   const SubmitHandler = () => {
     const body = getPayload(state);
-    return newReviewMutation.mutate(body);
+    if (!Object.values(body).includes("") || !Object.values(body).includes(0)) {
+      return newReviewMutation.mutate(body);
+    }
+    throw Error("경고!");
   };
 
   return (

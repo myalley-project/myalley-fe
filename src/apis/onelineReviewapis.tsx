@@ -20,18 +20,27 @@ interface PatchOnelineReviewBody {
 }
 
 const onelineReviewApis = {
-  createReview: (body: CreateReviewBody) =>
-    apiInstance.post(`/api/simple-reviews`, body),
+  createReview: async (body: CreateReviewBody) => {
+    const response = await apiInstance.post(`/api/simple-reviews`, body);
+    return response;
+  },
   getReviews: async (exhibitionId = "", pageNo = 1, Type = "Recent") => {
     const response = await apiInstance.get(
       `simple-reviews/exhibitions/${exhibitionId}?page=${pageNo}&order=${Type}`
     );
     return response;
   },
-  updateReview: (simpleId: string, body: PatchOnelineReviewBody) =>
-    apiInstance.patch(`/api/simple-reviews/${simpleId}`, body),
-  deleteReview: (simpleId: string) =>
-    apiInstance.patch(`/api/simple-reviews/${simpleId}`),
+  updateReview: async (simpleId: string, body: PatchOnelineReviewBody) => {
+    const response = await apiInstance.patch(
+      `/api/simple-reviews/${simpleId}`,
+      body
+    );
+    return response;
+  },
+  deleteReview: async (simpleId: string) => {
+    const response = await apiInstance.patch(`/api/simple-reviews/${simpleId}`);
+    return response;
+  },
 };
 
 export default onelineReviewApis;
