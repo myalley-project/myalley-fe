@@ -11,12 +11,13 @@ import CommentList, {
   TextArea,
 } from "../components/mate/CommentList";
 import ExhbCard from "../components/mate/ExhbCard";
-import { BookMarkRes, getMateApi, mateBookMarkApi } from "../apis/mate";
+import { BookMarkRes, mateApi, useMateMookMarkApi } from "../apis/mate";
 import isApiError from "../utils/isApiError";
 
-// 메이트 모집글 상세페이지_박예선_23.01.26
+// 메이트 모집글 상세페이지_박예선_23.01.27
 const Mate = () => {
   const navigate = useNavigate();
+  const mateBookMarkApi = useMateMookMarkApi();
   const mateId = Number(useParams().id);
   const memberId = Number(localStorage.getItem("memberId"));
   const [isMyPost, setIsMyPost] = useState(false);
@@ -29,15 +30,14 @@ const Mate = () => {
   // 메이트 상세페이지 api 호출_박예선_23.01.26
   const getMate = useCallback(async () => {
     try {
-      const res: AxiosResponse<MateRes> = await getMateApi(mateId, memberId);
+      const res: AxiosResponse<MateRes> = await mateApi(mateId, memberId);
       setMateInfo(res.data);
       setIsBookmarked(res.data.bookmarked);
     } catch (err) {
       const errorRes = isApiError(err);
       if (typeof errorRes !== "object") return;
-      const { errorCode } = errorRes;
-      if (errorCode === 404)
-        alert("등록되지 않은 메이트 모집글입니다. 다시 시도해주십시오.");
+      const { errorMsg } = errorRes;
+      alert(errorMsg);
       navigate("/");
     }
   }, [mateId, memberId, navigate]);
@@ -45,7 +45,7 @@ const Mate = () => {
   // 메이트 상세페이지 api 호출_박예선_23.01.22
   useEffect(() => {
     getMate();
-  }, [getMate]);
+  }, [getMate, isBookmarked]);
 
   // 메이트 설명글의 길이에 따라 높이 변경_박예선_23.01.22
   useEffect(() => {
