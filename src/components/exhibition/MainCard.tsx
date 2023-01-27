@@ -92,15 +92,15 @@ const CardContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 0px;
-  background-color: #f5f5f5;
+  background-color: rgba(149, 141, 165, 0.05);
 `;
 
 const Card = styled.div`
   display: flex;
   max-width: 1200px;
   width: 83vw;
-  border: 1px solid #e0e0e0;
-  background-color: #ffffff;
+  border: 1px solid rgba(127, 103, 190, 0.3);
+  background-color: ${theme.colors.white100};
 `;
 
 const PosterImg = styled.img`
@@ -136,7 +136,6 @@ const Title = styled.h1`
   font-weight: 700;
   font-size: 42px;
   line-height: 52px;
-  letter-spacing: -0.5px;
   color: ${theme.colors.greys90};
   text-align: left;
   word-break: break-all;
@@ -148,7 +147,6 @@ const InfoDetail = styled.dl`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.5px;
   color: ${theme.colors.greys80};
   text-align: left;
   margin-bottom: 10px;
@@ -169,7 +167,6 @@ const Footer = styled.div`
   width: 100%;
   font-weight: 600;
   font-size: 14px;
-  letter-spacing: -0.5px;
   color: ${theme.colors.greys60};
   text-align: right;
 `;
