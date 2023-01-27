@@ -51,7 +51,7 @@ const FindMate = () => {
       {matesList.length == 0 ? (
         <NoList />
       ) : (
-        matesList.map((mates) => <MateCard key={mates.mateId} mates={mates} />)
+        matesList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}
       {pageInfoList.totalPage > 0 && (
         <Pagination
