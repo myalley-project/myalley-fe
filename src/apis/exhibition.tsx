@@ -50,6 +50,14 @@ export const exhbDeleteApi = async (id: number) => {
   return res;
 };
 
+// 전시글 북마크
+export const exhbBookMarkApi = async (id: number) => {
+  const res: AxiosResponse<BookMarkRes> = await apiInstance.put(
+    `/api/exhibitions/bookmarks/${id}`
+  );
+  return res;
+};
+
 // 전시글 - 메이트 목록 조회
 export const exhbMateApi = async (id: number, pageNo: number) => {
   const res: AxiosResponse<MateRes> = await apiInstance.get(
@@ -99,4 +107,9 @@ export interface ExhbCreateRes {
   webLink: string;
   content: string;
   author: string;
+}
+
+export interface BookMarkRes {
+  msg: string;
+  data: boolean;
 }

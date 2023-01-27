@@ -1,27 +1,35 @@
 import React from "react";
+import { AxiosResponse } from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { exhbDeleteApi } from "../../apis/exhibition";
+import {
+  BookMarkRes,
+  exhbBookMarkApi,
+  exhbDeleteApi,
+} from "../../apis/exhibition";
 import { theme } from "../../styles/theme";
 import isApiError from "../../utils/isApiError";
+import BookMark from "../atom/BookMark";
 
 export interface MainCardType {
   posterUrl: string;
   title: string;
-  date: string;
+  duration: string;
   place: string;
   charge: number;
   webLink: string;
   id: number;
+  bookmarked: boolean;
 }
 const MainCard = ({
   posterUrl,
   title,
-  date,
+  duration,
   place,
   charge,
   webLink,
   id,
+  bookmarked,
 }: MainCardType) => {
   const auth = localStorage.getItem("authority");
   const location = useLocation();
@@ -37,6 +45,24 @@ const MainCard = ({
     }
   };
 
+  // 북마크 버튼
+  const toggleBookMark = async () => {
+    try {
+      const res: AxiosResponse<BookMarkRes> = await exhbBookMarkApi(id);
+      const { msg } = res.data;
+      alert(msg);
+    } catch (err) {
+      isApiError(err);
+      const errorRes = isApiError(err);
+      if (typeof errorRes !== "object") return;
+      const { errorCode, errorMsg } = errorRes;
+      if (errorCode === 404 && errorMsg === "회원 정보 없음") {
+        alert("북마크 추가는 로그인 후 가능합니다.");
+      }
+    }
+  };
+
+  // 공유하기 버튼
   const copyLink = () => {
     navigator.clipboard.writeText(`http://localhost:3000/${location.pathname}`);
     alert("주소가 복사되었습니다.");
@@ -57,7 +83,7 @@ const MainCard = ({
           <div style={{ padding: "30px 0" }}>
             <InfoDetail>
               <dt>시간</dt>
-              <dd>{date}</dd>
+              <dd>{duration}</dd>
             </InfoDetail>
             <InfoDetail>
               <dt>장소</dt>
@@ -74,7 +100,9 @@ const MainCard = ({
             <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
               사이트 방문
             </WebLink>
-            <BookMarkBtn type="button" />
+            <BookMarkBtn>
+              <BookMark onClick={toggleBookMark} marked={bookmarked} />
+            </BookMarkBtn>
             <ShareBtn type="button" onClick={copyLink} />
           </Footer>
         </InfoContainer>
@@ -108,6 +136,7 @@ const PosterImg = styled.img`
 `;
 
 const InfoContainer = styled.div`
+  position: relative;
   width: 922px;
   padding: 30px;
 `;
@@ -163,6 +192,9 @@ const InfoDetail = styled.dl`
 const Footer = styled.div`
   display: flex;
   gap: 10px;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
   justify-content: flex-end;
   width: 100%;
   font-weight: 600;
@@ -183,20 +215,16 @@ const WebLink = styled.a`
   }
 `;
 
-const BookMarkBtn = styled.button`
+const BookMarkBtn = styled.div`
+  margin-top: 5px;
+`;
+
+const ShareBtn = styled.button`
   width: 24px;
   height: 24px;
   padding: 0px;
   margin-top: 5px;
   border-radius: 0px;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.6556 5.46527L11.9709 7.60218L10.4492 5.5704C9.27909 4.00811 7.1253 3.56296 5.43005 4.53303C2.70435 6.09275 2.17049 9.79336 4.34455 12.0575L11.9709 20L19.6624 11.9896C21.8117 9.75126 21.3029 6.09626 18.6237 4.52777C16.9657 3.55709 14.8443 3.95739 13.6556 5.46527Z' stroke='%236750A4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  &:hover {
-    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.6556 5.46527L11.9709 7.60218L10.4492 5.5704C9.27909 4.00811 7.1253 3.56296 5.43005 4.53303C2.70435 6.09275 2.17049 9.79336 4.34455 12.0575L11.9709 20L19.6624 11.9896C21.8117 9.75126 21.3029 6.09626 18.6237 4.52777C16.9657 3.55709 14.8443 3.95739 13.6556 5.46527Z' fill='%236750A4' stroke='%236750A4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  }
-`;
-
-const ShareBtn = styled(BookMarkBtn)`
   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='5' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='6' cy='12' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='18' cy='19' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Cpath d='M9 10L15 6' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M9 14L15 18' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E%0A");
   &:hover {
     background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='5' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='6' cy='12' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='18' cy='19' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Cpath d='M9 10L15 6' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M9 14L15 18' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");

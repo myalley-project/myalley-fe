@@ -13,31 +13,26 @@ const Exhibition = () => {
   const params = useParams();
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
   const navigate = useNavigate();
-  const getExhbDetail = useCallback(
-    async (id: number) => {
-      try {
-        const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
-        const { data } = res;
-        setExhbDetail(data);
-      } catch (err) {
-        const errorRes = isApiError(err);
-        if (typeof errorRes !== "object") return;
-        const { errorCode, errorMsg } = errorRes;
-        if (
-          errorCode === 404 &&
-          errorMsg === "전시회 정보를 찾을 수 없습니다."
-        ) {
-          navigate(-1);
-          alert("해당 전시회 정보를 찾을 수 없습니다.");
-        }
+  const id = Number(params.id);
+  const getExhbDetail = useCallback(async () => {
+    try {
+      const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
+      const { data } = res;
+      setExhbDetail(data);
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (typeof errorRes !== "object") return;
+      const { errorCode, errorMsg } = errorRes;
+      if (errorCode === 404 && errorMsg === "전시회 정보를 찾을 수 없습니다.") {
+        navigate(-1);
+        alert("해당 전시회 정보를 찾을 수 없습니다.");
       }
-    },
-    [navigate]
-  );
+    }
+  }, [navigate, id]);
 
   useEffect(() => {
-    getExhbDetail(Number(params.id));
-  }, [getExhbDetail, params]);
+    getExhbDetail();
+  }, [getExhbDetail]);
 
   const [state, setState] = useState("info");
   return (
@@ -45,11 +40,12 @@ const Exhibition = () => {
       <MainCard
         posterUrl={exhbDetail?.posterUrl ?? ""}
         title={exhbDetail?.title ?? ""}
-        date={exhbDetail?.duration ?? ""}
+        duration={exhbDetail?.duration ?? ""}
         place={exhbDetail?.space ?? ""}
         charge={exhbDetail?.adultPrice ?? 0}
         webLink={exhbDetail?.webLink ?? ""}
         id={exhbDetail?.id ?? 0}
+        bookmarked={exhbDetail?.bookmarked ?? false}
       />
       <ToggleSwitch setState={setState} />
       {state === "info" && (
