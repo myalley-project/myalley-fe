@@ -16,7 +16,7 @@ export const mateApi = async (id: number, memberId: number) => {
 };
 
 // 메이트글 북마크 추가/삭제 api_박예선_23.01.27
-export const useMateMookMarkApi = () => {
+export const useMateBookMarkApi = () => {
   const refreshTokenApi = useRefreshTokenApi();
   const logOut = useLogOut();
 

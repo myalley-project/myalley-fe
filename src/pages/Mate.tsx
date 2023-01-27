@@ -11,13 +11,13 @@ import CommentList, {
   TextArea,
 } from "../components/mate/CommentList";
 import ExhbCard from "../components/mate/ExhbCard";
-import { BookMarkRes, mateApi, useMateMookMarkApi } from "../apis/mate";
+import { BookMarkRes, mateApi, useMateBookMarkApi } from "../apis/mate";
 import isApiError from "../utils/isApiError";
 
 // 메이트 모집글 상세페이지_박예선_23.01.27
 const Mate = () => {
   const navigate = useNavigate();
-  const mateBookMarkApi = useMateMookMarkApi();
+  const mateBookMarkApi = useMateBookMarkApi();
   const mateId = Number(useParams().id);
   const memberId = Number(localStorage.getItem("memberId"));
   const [isMyPost, setIsMyPost] = useState(false);
