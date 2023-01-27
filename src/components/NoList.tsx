@@ -2,14 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
 
-const NoList = () => {
-  console.log("d");
-  return (
-    <NoListContainer>
-      <Content>아직 작성한 글이 없습니다</Content>
-    </NoListContainer>
-  );
-};
+const NoList = () => (
+  <NoListContainer>
+    <Content>아직 작성한 글이 없습니다</Content>
+  </NoListContainer>
+);
 
 export default NoList;
 
