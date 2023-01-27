@@ -9,8 +9,8 @@ export interface Mate {
   mateAge: string; // n0대 x반 ~ n0대 x반
   createdAt: string; // YYYY-MM-DD
   viewCount: number;
-  memberId: number;
-  memberNickname: string;
+  memberId?: number; // 메이트글 목록 조회 페이지에만 해당
+  memberNickname?: string; // 메이트글 목록 조회 페이지에만 해당
   exhibition: {
     exhibitionId: number;
     exhibitionTitle: string;
