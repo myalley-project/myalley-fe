@@ -5,7 +5,7 @@ import styled from "styled-components";
 import MainCard from "../components/exhibition/MainCard";
 import ContentCard from "../components/exhibition/ContentCard";
 import ToggleSwitch from "../components/exhibition/ToggleSwitch";
-import { ExhibitionRes, exhbApi } from "../apis/exhibition";
+import { exhbApi, ExhibitionRes } from "../apis/exhibition";
 import isApiError from "../utils/isApiError";
 import ExhbMateList from "../components/exhibition/ExhbMateList";
 

@@ -6,20 +6,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
 import { useLocation, useNavigate } from "react-router-dom";
-import useRefreshTokenApi from "../apis/useRefreshToken";
 import Selectbox from "../components/atom/Selectbox";
-import {
-  exhbCreateApi,
-  ExhbCreateRes,
-  ExhbCreateType,
-  exhbUploadImgApi,
-  ExhbUploadImgRes,
-} from "../apis/exhbAdmin";
-import isApiError from "../utils/isApiError";
 import Button from "../components/atom/Button";
 import CheckLabel from "../components/atom/CheckLabel";
 import getExhbTypeArray from "../utils/exhbTypeSelector";
-import { exhbApi, exhbUpdateApi, ExhibitionRes } from "../apis/exhibition";
+import {
+  exhbApi,
+  exhbCreateApi,
+  exhbUploadImgApi,
+  exhbUpdateApi,
+  ExhibitionRes,
+  ExhbCreateRes,
+  ExhbUploadImgRes,
+} from "../apis/exhibition";
+import isApiError from "../utils/isApiError";
+import useRefreshTokenApi from "../apis/useRefreshToken";
 
 interface ModeType {
   mode: string;
@@ -35,7 +36,7 @@ const ExhibitionWrite = (props: ModeType) => {
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
-  const [detail, setDetail] = useState<ExhbCreateType>({
+  const [detail, setDetail] = useState<ExhbCreateRes>({
     title: "",
     status: "",
     type: "",
@@ -48,20 +49,19 @@ const ExhibitionWrite = (props: ModeType) => {
     author: "",
     webLink: "",
   });
-  const [editDetail, setEditDetail] = useState<ExhibitionRes>();
   const location = useLocation();
   const id = Number(location.pathname.split("/")[2]);
   const { mode } = props;
-  const [placeholderText, setplaceholderText] = useState({
-    type: "전체 전시",
-  });
 
+  // 수정모드일때
   const getEditExhb = useCallback(async () => {
     if (mode === "edit") {
       const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
       const { data } = res;
-      console.log(data);
-      setEditDetail(data);
+
+      setDetail(data);
+      setPriceWithCommas(data.adultPrice.toString());
+      setThumbnail(data.posterUrl);
     }
   }, [id, mode]);
 
@@ -69,6 +69,7 @@ const ExhibitionWrite = (props: ModeType) => {
     getEditExhb();
   }, [getEditExhb]);
 
+  // 인풋 입력값 핸들링 함수
   const handleInputAndTextArea = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -143,6 +144,7 @@ const ExhibitionWrite = (props: ModeType) => {
 
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputPrice = e.target.value;
+
     const numCheck = /^[0-9,]+$/.test(inputPrice);
     const numWithCommas = inputPrice.replaceAll(",", "");
 
@@ -220,24 +222,12 @@ const ExhibitionWrite = (props: ModeType) => {
   // 수정 api 호출
   const clickEditBtn = async () => {
     try {
-      const reqbody = {
-        title: editDetail?.title,
-        status: editDetail?.status,
-        type: editDetail?.type,
-        space: editDetail?.space,
-        adultPrice: editDetail?.adultPrice,
-        // fileName: editDetail?.filename,
-        posterUrl: editDetail?.posterUrl,
-        duration: editDetail?.duration,
-        webLink: editDetail?.webLink,
-        content: editDetail?.content,
-        author: editDetail?.author,
-      };
-      console.log(detail);
-      const res = await exhbUpdateApi(id, reqbody);
-      console.log(res);
-      alert("수정이 완료되었습니다.");
-      navigate(`/exhibition/${id}`);
+      const res: AxiosResponse<string> = await exhbUpdateApi(id, detail);
+      const { data } = res;
+      if (data === "전시글 정보 수정이 완료되었습니다.") {
+        alert("수정이 완료되었습니다.");
+        navigate(`/exhibition/${id}`);
+      } else alert("예기치 못한 오류입니다. 관리자에게 문의하세요.");
     } catch (err) {
       isApiError(err);
     }
@@ -250,7 +240,7 @@ const ExhibitionWrite = (props: ModeType) => {
           <InputTitle
             type="text"
             name="title"
-            value={mode === "edit" ? editDetail?.title ?? "" : detail.title}
+            value={detail.title}
             onChange={(e) => handleInputAndTextArea(e)}
             placeholder="제목을 입력해주세요"
           />
@@ -258,7 +248,7 @@ const ExhibitionWrite = (props: ModeType) => {
         <OptionWrapper>
           <Label htmlFor="exhibition-type">전시타입</Label>
           <Selectbox
-            placeholder={placeholderText.type}
+            placeholder="전체 전시"
             options={getExhbTypeArray()}
             width="130px"
             name="type"
@@ -319,7 +309,7 @@ const ExhibitionWrite = (props: ModeType) => {
             type="text"
             name="space"
             placeholder="내용을 입력해주세요."
-            value={mode === "edit" ? editDetail?.space ?? "" : detail.space}
+            value={detail.space}
             onChange={(e) => handleInputAndTextArea(e)}
             style={{ width: "280px" }}
           />
@@ -350,7 +340,7 @@ const ExhibitionWrite = (props: ModeType) => {
             as="textarea"
             name="content"
             placeholder="내용을 입력해주세요."
-            value={mode === "edit" ? editDetail?.content ?? "" : detail.content}
+            value={detail.content}
             onChange={(e) => handleInputAndTextArea(e)}
           />
         </OptionWrapper>
@@ -360,7 +350,7 @@ const ExhibitionWrite = (props: ModeType) => {
             as="textarea"
             name="author"
             placeholder="내용을 입력해주세요."
-            value={mode === "edit" ? editDetail?.author ?? "" : detail.author}
+            value={detail.author}
             onChange={(e) => handleInputAndTextArea(e)}
           />
         </OptionWrapper>
@@ -370,7 +360,7 @@ const ExhibitionWrite = (props: ModeType) => {
             type="text"
             name="webLink"
             placeholder="내용을 입력해주세요."
-            value={mode === "edit" ? editDetail?.webLink ?? "" : detail.webLink}
+            value={detail.webLink}
             onChange={(e) => handleInputAndTextArea(e)}
             style={{ width: "100%" }}
           />
