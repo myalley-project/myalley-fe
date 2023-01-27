@@ -8,6 +8,7 @@ import { myMatesApi, MateRes } from "../../apis/member";
 import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
 import useRefreshTokenApi from "../../apis/useRefreshToken";
+import NoList from "../NoList";
 
 const FindMate = () => {
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
@@ -33,7 +34,7 @@ const FindMate = () => {
         setMatesList(mates);
         setPageInfoList(pageInfo);
       } catch (err) {
-        const errorRes = isApiError(err);
+        isApiError(err);
         // if (errorRes === "accessToken 만료") refreshTokenApi();
       }
       navigate(`?type=mate&pageno=${pageNo}`);
@@ -47,11 +48,11 @@ const FindMate = () => {
 
   return (
     <FindMateContainer>
-      {matesList.length == 0
-        ? "아직 작성한 글이 없어요!"
-        : matesList.map((mates) => (
-            <MateCard key={mates.mateId} mates={mates} />
-          ))}
+      {matesList.length == 0 ? (
+        <NoList />
+      ) : (
+        matesList.map((mates) => <MateCard key={mates.mateId} mates={mates} />)
+      )}
       {pageInfoList.totalPage > 0 && (
         <Pagination
           pages={pages}
