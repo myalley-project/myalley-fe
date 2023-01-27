@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import MainCard from "../components/exhibition/MainCard";
 import ContentCard from "../components/exhibition/ContentCard";
@@ -12,16 +12,28 @@ import ExhbMateList from "../components/exhibition/ExhbMateList";
 const Exhibition = () => {
   const params = useParams();
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
-
-  const getExhbDetail = useCallback(async (id: number) => {
-    try {
-      const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
-      const { data } = res;
-      setExhbDetail(data);
-    } catch (err) {
-      isApiError(err);
-    }
-  }, []);
+  const navigate = useNavigate();
+  const getExhbDetail = useCallback(
+    async (id: number) => {
+      try {
+        const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
+        const { data } = res;
+        setExhbDetail(data);
+      } catch (err) {
+        const errorRes = isApiError(err);
+        if (typeof errorRes !== "object") return;
+        const { errorCode, errorMsg } = errorRes;
+        if (
+          errorCode === 404 &&
+          errorMsg === "전시회 정보를 찾을 수 없습니다."
+        ) {
+          navigate(-1);
+          alert("해당 전시회 정보를 찾을 수 없습니다.");
+        }
+      }
+    },
+    [navigate]
+  );
 
   useEffect(() => {
     getExhbDetail(Number(params.id));
