@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { theme } from "../../styles/theme";
 
 interface StateType {
   setState: (state: string) => void;
@@ -20,7 +21,7 @@ const ToggleSwitch = ({ setState }: StateType) => {
       case "review":
         circle.style.transform = "translateX(125.33px)";
         break;
-      case "findMate":
+      case "mate":
         circle.style.transform = "translateX(250.66px)";
         break;
       default:
@@ -49,7 +50,7 @@ const ToggleSwitch = ({ setState }: StateType) => {
       <FindMateBtn
         type="button"
         value={isInfoOrReviewOrMate}
-        onClick={() => onChangeMode("findMate")}
+        onClick={() => onChangeMode("mate")}
       >
         메이트 찾기
       </FindMateBtn>
@@ -64,7 +65,7 @@ const Switch = styled.div<{ value: string }>`
   width: 380px;
   height: 44px;
   margin: 50px auto 30px auto;
-  background-color: ${(props) => props.theme.colors.greys60};
+  background-color: ${theme.colors.primry70};
   span {
     position: absolute;
     width: 125.33px;
@@ -94,15 +95,21 @@ const button = styled.button<{ value: string }>`
 
 const InfoBtn = styled(button)`
   ${({ value }) =>
-    value === "info" ? "transition:color 1s ease; color: #9C9C9C;" : null}
+    value === "info"
+      ? `transition:color 1s ease; color: ${theme.colors.primry70};`
+      : null}
 `;
 
 const ReviewBtn = styled(button)`
   ${({ value }) =>
-    value === "review" ? "transition:color 1s ease; color: #9C9C9C;" : null}
+    value === "review"
+      ? `transition:color 1s ease; color: ${theme.colors.primry70};`
+      : null}
 `;
 
 const FindMateBtn = styled(button)`
   ${({ value }) =>
-    value === "findMate" ? "transition:color 1s ease; color: #9C9C9C;" : null}
+    value === "mate"
+      ? `transition:color 1s ease; color: ${theme.colors.primry70};`
+      : null}
 `;

@@ -1,25 +1,32 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { AxiosResponse } from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
-import { useNavigate } from "react-router-dom";
-import useRefreshTokenApi from "../apis/useRefreshToken";
+import { useLocation, useNavigate } from "react-router-dom";
 import Selectbox from "../components/atom/Selectbox";
-import {
-  exhbCreateApi,
-  ExhbCreateRes,
-  exhbUploadImgApi,
-  ExhbUploadImgRes,
-} from "../apis/exhbAdmin";
-import isApiError from "../utils/isApiError";
 import Button from "../components/atom/Button";
 import CheckLabel from "../components/atom/CheckLabel";
 import getExhbTypeArray from "../utils/exhbTypeSelector";
+import {
+  exhbApi,
+  exhbCreateApi,
+  exhbUploadImgApi,
+  exhbUpdateApi,
+  ExhibitionRes,
+  ExhbCreateRes,
+  ExhbUploadImgRes,
+} from "../apis/exhibition";
+import isApiError from "../utils/isApiError";
+import useRefreshTokenApi from "../apis/useRefreshToken";
 
-const ExhibitionWrite = () => {
+interface ModeType {
+  mode: string;
+}
+
+const ExhibitionWrite = (props: ModeType) => {
   const formData = new FormData();
   const navigate = useNavigate();
   const refreshTokenApi = useRefreshTokenApi();
@@ -29,7 +36,7 @@ const ExhibitionWrite = () => {
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
-  const [detail, setDetail] = useState({
+  const [detail, setDetail] = useState<ExhbCreateRes>({
     title: "",
     status: "",
     type: "",
@@ -42,7 +49,27 @@ const ExhibitionWrite = () => {
     author: "",
     webLink: "",
   });
+  const location = useLocation();
+  const id = Number(location.pathname.split("/")[2]);
+  const { mode } = props;
 
+  // 수정모드일때
+  const getEditExhb = useCallback(async () => {
+    if (mode === "edit") {
+      const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
+      const { data } = res;
+
+      setDetail(data);
+      setPriceWithCommas(data.adultPrice.toString());
+      setThumbnail(data.posterUrl);
+    }
+  }, [id, mode]);
+
+  useEffect(() => {
+    getEditExhb();
+  }, [getEditExhb]);
+
+  // 인풋 입력값 핸들링 함수
   const handleInputAndTextArea = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -55,6 +82,7 @@ const ExhibitionWrite = () => {
     });
   };
 
+  // 전시 시작 날짜
   const handleStartDate = (date: Date) => {
     setStartDate(date);
     const startDateFormat = date.toISOString().split("T")[0];
@@ -66,6 +94,7 @@ const ExhibitionWrite = () => {
     });
   };
 
+  // 전시 종료 날짜
   const handleEndDate = (date: Date) => {
     setEndDate(date);
     const startDateFormat = startDate.toISOString().split("T")[0];
@@ -117,6 +146,7 @@ const ExhibitionWrite = () => {
 
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputPrice = e.target.value;
+
     const numCheck = /^[0-9,]+$/.test(inputPrice);
     const numWithCommas = inputPrice.replaceAll(",", "");
 
@@ -158,7 +188,7 @@ const ExhibitionWrite = () => {
     }
   };
 
-  // 등록 api 요청
+  // 등록 api 호출
   const clickSubmitBtn = async () => {
     if (detail.title === "") {
       alert("제목을 입력해주세요.");
@@ -186,9 +216,23 @@ const ExhibitionWrite = () => {
           navigate("/");
         }
       } catch (err) {
-        const errorRes = isApiError(err);
-        if (errorRes === "accessToken 만료") refreshTokenApi();
+        isApiError(err);
+        // if (errorRes === "accessToken 만료") refreshTokenApi();
       }
+  };
+
+  // 수정 api 호출
+  const clickEditBtn = async () => {
+    try {
+      const res: AxiosResponse<string> = await exhbUpdateApi(id, detail);
+      const { data } = res;
+      if (data === "전시글 정보 수정이 완료되었습니다.") {
+        alert("수정이 완료되었습니다.");
+        navigate(`/exhibition/${id}`);
+      } else alert("예기치 못한 오류입니다. 관리자에게 문의하세요.");
+    } catch (err) {
+      isApiError(err);
+    }
   };
 
   return (
@@ -206,7 +250,7 @@ const ExhibitionWrite = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-type">전시타입</Label>
           <Selectbox
-            placeholder="전체전시"
+            placeholder={detail.type === "" ? "전체 전시" : detail.type}
             options={getExhbTypeArray()}
             width="130px"
             name="type"
@@ -216,7 +260,7 @@ const ExhibitionWrite = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
-            placeholder="전체전시"
+            placeholder={detail.status === "" ? "전체 전시" : detail.status}
             options={["지난 전시", "현재 전시", "예정 전시"]}
             width="130px"
             name="status"
@@ -232,6 +276,7 @@ const ExhibitionWrite = () => {
             dateFormat="yy - MM - dd"
             selected={startDate}
             onChange={(date: Date) => handleStartDate(date)}
+            value={detail.duration.substring(0, 10)}
           />
           <span>종료일</span>
           <DatePicker
@@ -240,6 +285,7 @@ const ExhibitionWrite = () => {
             dateFormat="yy - MM - dd"
             selected={endDate}
             onChange={(date: Date) => handleEndDate(date)}
+            value={detail.duration.substring(13, 23)}
           />
         </OptionWrapper>
         <OptionWrapper>
@@ -333,14 +379,25 @@ const ExhibitionWrite = () => {
         >
           취소
         </SubmitBtn>
-        <SubmitBtn
-          variant="primary"
-          size="large"
-          type="button"
-          onClick={clickSubmitBtn}
-        >
-          등록하기
-        </SubmitBtn>
+        {mode === "edit" ? (
+          <SubmitBtn
+            variant="primary"
+            size="large"
+            type="button"
+            onClick={clickEditBtn}
+          >
+            수정하기
+          </SubmitBtn>
+        ) : (
+          <SubmitBtn
+            variant="primary"
+            size="large"
+            type="button"
+            onClick={clickSubmitBtn}
+          >
+            등록하기
+          </SubmitBtn>
+        )}
       </ButtonWrapper>
     </WriteExhibitionContainer>
   );
