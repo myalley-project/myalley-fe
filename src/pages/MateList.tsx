@@ -9,7 +9,7 @@ import MateCard from "../components/mate/MateCard";
 import Pagination, { PagesState } from "../components/Pagination";
 import { Mate, MateListType } from "../types/mateList";
 import { theme } from "../styles/theme";
-import { getMateListApi } from "../apis/mate";
+import { mateListApi } from "../apis/mate";
 import { errorAlert } from "../utils/isApiError";
 
 // 메이트글 목록 페이지_박예선_23.01.26
@@ -26,12 +26,13 @@ const MateList = () => {
   const getMateList = useCallback(
     async (status: MateStatusType, page: number) => {
       try {
-        const res: AxiosResponse<MateListType> = await getMateListApi(
+        const res: AxiosResponse<MateListType> = await mateListApi(
           status,
           page
         );
-        setMateList(res.data.mates);
-        setTotalPage(res.data.pageInfo.totalPage);
+        const { mates, pageInfo } = res.data;
+        setMateList(mates);
+        setTotalPage(pageInfo.totalPage);
       } catch (err) {
         errorAlert();
       }
