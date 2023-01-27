@@ -1,9 +1,11 @@
-import { AxiosResponse } from "axios";
-import { MateRes } from "../types/mate";
+import axios, { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
-import isApiError, { errorAlert } from "../utils/isApiError";
 import useLogOut from "./logOut";
 import useRefreshTokenApi from "./useRefreshToken";
+import { MateRes } from "../types/mate";
+import { MateStatusType } from "../components/mate/MateListFilter";
+import { MateListType } from "../types/mateList";
+import isApiError, { errorAlert } from "../utils/isApiError";
 
 // 메이트글 상세조회 api_박예선_2023.01.27
 export const mateApi = async (id: number, memberId: number) => {
@@ -51,3 +53,17 @@ export interface BookMarkRes {
   msg?: string;
   data?: true | false;
 }
+
+// 메이트 목록 조회 api_박예선_23.01.26
+export const mateListApi = async (status: MateStatusType, page: number) => {
+  const res: AxiosResponse<MateListType> =
+    //   await apiInstance.get(
+    //   `/mates?page=${page}&status=${status.replace(" ", "")}`
+    // );
+    await axios.get("/data/mateList.json"); // 테스트용 목데이터
+  return res;
+};
+
+export const postMateApi = async () => {
+  // const res=await apiInstance.post()
+};
