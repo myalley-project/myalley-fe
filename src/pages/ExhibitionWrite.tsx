@@ -82,6 +82,7 @@ const ExhibitionWrite = (props: ModeType) => {
     });
   };
 
+  // 전시 시작 날짜
   const handleStartDate = (date: Date) => {
     setStartDate(date);
     const startDateFormat = date.toISOString().split("T")[0];
@@ -93,6 +94,7 @@ const ExhibitionWrite = (props: ModeType) => {
     });
   };
 
+  // 전시 종료 날짜
   const handleEndDate = (date: Date) => {
     setEndDate(date);
     const startDateFormat = startDate.toISOString().split("T")[0];
@@ -248,7 +250,7 @@ const ExhibitionWrite = (props: ModeType) => {
         <OptionWrapper>
           <Label htmlFor="exhibition-type">전시타입</Label>
           <Selectbox
-            placeholder="전체 전시"
+            placeholder={detail.type === "" ? "전체 전시" : detail.type}
             options={getExhbTypeArray()}
             width="130px"
             name="type"
@@ -258,7 +260,7 @@ const ExhibitionWrite = (props: ModeType) => {
         <OptionWrapper>
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
-            placeholder="전체 전시"
+            placeholder={detail.status === "" ? "전체 전시" : detail.status}
             options={["지난 전시", "현재 전시", "예정 전시"]}
             width="130px"
             name="status"
@@ -274,6 +276,7 @@ const ExhibitionWrite = (props: ModeType) => {
             dateFormat="yy - MM - dd"
             selected={startDate}
             onChange={(date: Date) => handleStartDate(date)}
+            value={detail.duration.substring(0, 10)}
           />
           <span>종료일</span>
           <DatePicker
@@ -282,6 +285,7 @@ const ExhibitionWrite = (props: ModeType) => {
             dateFormat="yy - MM - dd"
             selected={endDate}
             onChange={(date: Date) => handleEndDate(date)}
+            value={detail.duration.substring(13, 23)}
           />
         </OptionWrapper>
         <OptionWrapper>

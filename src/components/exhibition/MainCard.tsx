@@ -82,7 +82,7 @@ const MainCard = ({
           <Title>{title}</Title>
           <div style={{ padding: "30px 0" }}>
             <InfoDetail>
-              <dt>시간</dt>
+              <dt>일정</dt>
               <dd>{duration}</dd>
             </InfoDetail>
             <InfoDetail>
