@@ -4,6 +4,7 @@ import styled from "styled-components";
 import MainCard from "../components/exhibition/MainCard";
 import ContentCard from "../components/exhibition/ContentCard";
 import ToggleSwitch from "../components/exhibition/ToggleSwitch";
+import ReviewWrapper from "../components/ReviewWrapper";
 // import exhibitionApi, { ExhibitionRes } from "../apis/exhibition";
 
 const Exhibition = () => {
@@ -36,6 +37,7 @@ const Exhibition = () => {
           <ContentCard title="작가 정보" content="lorem" />
         </>
       )}
+      {state === "review" ? <ReviewWrapper /> : null}
     </ExhibitionContainer>
   );
 };

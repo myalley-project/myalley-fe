@@ -9,12 +9,6 @@ interface CreateReviewBody {
   content: string;
 }
 
-interface GetOnelineReviewType {
-  exhibitionId: string;
-  pageNo: string;
-  orderType: string;
-}
-
 interface PatchOnelineReviewBody {
   exhibitionId: number;
   writer: string;
@@ -28,10 +22,12 @@ interface PatchOnelineReviewBody {
 const onelineReviewApis = {
   createReview: (body: CreateReviewBody) =>
     apiInstance.post(`/api/simple-reviews`, body),
-  getReviews: ({ exhibitionId, pageNo, orderType }: GetOnelineReviewType) =>
-    apiInstance.get(
-      `/simple-reviews/exhibitions/${exhibitionId}?page=${pageNo}&order=${orderType}`
-    ),
+  getReviews: async (exhibitionId = "", pageNo = 1, Type = "Recent") => {
+    const response = await apiInstance.get(
+      `simple-reviews/exhibitions/${exhibitionId}?page=${pageNo}&order=${Type}`
+    );
+    return response;
+  },
   updateReview: (simpleId: string, body: PatchOnelineReviewBody) =>
     apiInstance.patch(`/api/simple-reviews/${simpleId}`, body),
   deleteReview: (simpleId: string) =>

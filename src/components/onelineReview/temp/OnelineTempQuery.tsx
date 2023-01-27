@@ -18,17 +18,6 @@ type PatchOnelineReviewBody = {
 
 const OnelineTempQuery = () => {
   // Read function
-  // const onelineReaqFunction = onelineReviewApis.getReviews;
-  // const { params }=useParams();
-  // const [page, setPage] = useState(1);
-  // const [orderType, setOrderType ] =useState("");
-
-  // const { error, data, isPreviousData } = useQuery({
-  //   queryKey: ["simpleReviews", { page }],
-  //   keepPreviousData: true,
-  //   queryFn: () => onelineReaqFunction(params, page, orderType)
-  // })
-  // data.map()
 
   // update function
   const onelineUpdateFunction = onelineReviewApis.updateReview;
