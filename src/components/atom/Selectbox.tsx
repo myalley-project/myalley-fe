@@ -33,7 +33,7 @@ const Selectbox = ({
   };
 
   return (
-    <div style={{ marginBottom: "10px" }}>
+    <div>
       <SelectBtn width={width} type="button" onClick={ToggleSelector}>
         {selectItem}
       </SelectBtn>
@@ -61,8 +61,7 @@ export default Selectbox;
 
 const SelectBtn = styled.button<{ width: string }>`
   width: ${(props) => props.width};
-  height: 40px;
-  margin: 10px 0;
+  height: 36px;
   padding-left: 20px;
   border: 1px solid ${(props) => props.theme.colors.greys40};
   border-radius: 30px;
