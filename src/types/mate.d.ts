@@ -3,7 +3,7 @@ export interface Mate {
   title: string;
   availableDate: string;
   status: "모집 중" | "모집 완료";
-  mateGender: "남성" | "여성" | "성별무관";
+  mateGender: "남성" | "여성" | "성별 무관";
   mateAge: string;
   createdAt: string;
   viewCount: number;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Mate } from "../../types/mateList";
+import { Mate } from "../../types/mate";
 import partition from "../../assets/icons/partition.svg";
 
 interface MateListType {

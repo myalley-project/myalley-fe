@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { exhbMateApi } from "../../apis/exhibition";
 import { MateRes } from "../../apis/member";
 import { theme } from "../../styles/theme";
-import { Mate } from "../../types/mateList";
+import { Mate } from "../../types/mate";
 import isApiError from "../../utils/isApiError";
 import Button from "../atom/Button";
 import MateCard from "../mate/MateCard";

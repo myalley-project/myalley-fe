@@ -5,7 +5,7 @@ import styled from "styled-components";
 import MateCard from "../mate/MateCard";
 import Pagination from "../Pagination";
 import { myMatesApi, MateRes } from "../../apis/member";
-import { Mate } from "../../types/mateList";
+import { Mate } from "../../types/mate";
 import isApiError from "../../utils/isApiError";
 import useRefreshTokenApi from "../../apis/useRefreshToken";
 import NoList from "../NoList";
