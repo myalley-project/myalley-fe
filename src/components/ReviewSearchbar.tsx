@@ -6,9 +6,15 @@ import SearchBar from "./atom/Searchbar";
 
 interface ReviewSearchbarProps {
   setFilter: (state: "oneline" | "blog") => void;
+  setOrderType: (state: "Recent" | "StarScore") => void;
+  totalElement: number;
 }
 
-const ReviewSearchbar = ({ setFilter }: ReviewSearchbarProps) => (
+const ReviewSearchbar = ({
+  setFilter,
+  setOrderType,
+  totalElement,
+}: ReviewSearchbarProps) => (
   <Container>
     <ReviewSelector>
       <button onClick={() => setFilter("oneline")} type="button">
@@ -20,9 +26,15 @@ const ReviewSearchbar = ({ setFilter }: ReviewSearchbarProps) => (
       </button>
     </ReviewSelector>
     <SearchbarContainer>
-      <p>
-        <span>999</span>개의 리뷰를 확인해보세요!
-      </p>
+      {totalElement !== 0 ? (
+        <p>
+          <span>{totalElement}</span>개의 리뷰를 확인해보세요!
+        </p>
+      ) : (
+        <p>
+          <span>0</span>개의 리뷰를 확인해보세요!
+        </p>
+      )}
       <Searchbar>
         <SearchBar placeholder="검색" width="277px" />
         <Button variant="primary" size="large">
@@ -32,9 +44,13 @@ const ReviewSearchbar = ({ setFilter }: ReviewSearchbarProps) => (
     </SearchbarContainer>
     <Divider />
     <ButtonItems>
-      <button type="button">최근순</button>
+      <button onClick={() => setOrderType("Recent")} type="button">
+        최근순
+      </button>
       <Spliter />
-      <button type="button">별점순</button>
+      <button onClick={() => setOrderType("StarScore")} type="button">
+        별점순
+      </button>
     </ButtonItems>
   </Container>
 );

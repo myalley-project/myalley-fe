@@ -1,46 +1,53 @@
 import React, { useEffect, useState } from "react";
+import { AxiosResponse } from "axios";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import axios from "axios";
 import ReviewSearchbar from "./ReviewSearchbar";
 import OnelineCard from "./onelineReview/OnelineCard";
+import { OnelineReviewReadType } from "../types/OnelineReview";
 import onelineReviewApis from "../apis/onelineReviewapis";
-
-const getReviews = async (
-  baseUrl = "",
-  exhibitionId = "",
-  pageNo = 0,
-  Type = "Recent"
-) => {
-  const response = await axios.get(
-    `${baseUrl}simple-reviews/exhibitions/${exhibitionId}?page=${pageNo}&order=${Type}`
-  );
-  return response;
-};
 
 const ReviewWrapper = () => {
   const [filter, setFilter] = useState("oneline");
   const [page, setPage] = useState(1);
   const [orderType, setOrderType] = useState("Recent");
-
   const { id } = useParams();
 
-  const { error, data, isPreviousData } = useQuery({
-    queryKey: ["simpleReviews", { page }],
-    keepPreviousData: true,
+  const { error, data } = useQuery<
+    Promise<AxiosResponse<any, any>>,
+    Error,
+    OnelineReviewReadType
+  >({
+    queryKey: ["simpleReviews", { page, orderType }],
     queryFn: () => onelineReviewApis.getReviews(id, page, orderType),
   });
 
+  if (error) return <div>{error.message}</div>;
+
   return (
     <Container>
-      <ReviewSearchbar setFilter={setFilter} />
-      <Button onClick={() => setPage((p) => p + 1)} type="button">
-        버튼!!!!
-      </Button>
+      <ReviewSearchbar
+        totalElement={data?.pageInfo.totalElement as number}
+        setFilter={setFilter}
+        setOrderType={setOrderType}
+      />
       {filter === "oneline" ? (
         <OnelineContainer>
-          <OnelineCard />
+          {data &&
+            data.simpleInfo.map((each) => (
+              <div key={each.id}>
+                <OnelineCard
+                  id={each.id}
+                  viewDate={each.viewDate}
+                  rate={each.rate}
+                  content={each.content}
+                  time={each.time}
+                  congestion={each.congestion}
+                  memberInfo={each.memberInfo}
+                />
+              </div>
+            ))}
         </OnelineContainer>
       ) : null}
       {filter === "blog" ? <div /> : null}

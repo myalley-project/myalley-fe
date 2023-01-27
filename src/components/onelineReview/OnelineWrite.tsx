@@ -9,7 +9,6 @@ import {
   getMonthArray,
   getDayArray,
 } from "../../utils/dateSelector";
-import getTimeArray from "../../utils/timeSelector";
 import SimpleInput from "../atom/SimpleInput";
 import { OnelineReviewPostType } from "../../types/OnelineReview";
 import onelineReviewApis from "../../apis/onelineReviewapis";
@@ -19,11 +18,10 @@ interface HandlerProps {
   yearHandler: (e: React.MouseEvent) => void;
   monthHandler: (e: React.MouseEvent) => void;
   dayHandler: (e: React.MouseEvent) => void;
-  enteranceHandler: (e: React.MouseEvent) => void;
-  exitHandler: (e: React.MouseEvent) => void;
+  timeHandler: (e: React.MouseEvent) => void;
   congestionHandler: (e: React.MouseEvent) => void;
   rateHandler: (e: React.MouseEvent) => void;
-  contentHandler: (e: React.MouseEvent) => void;
+  contentHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Payload = {
@@ -40,8 +38,7 @@ const OnelineWrite = ({
   yearHandler,
   monthHandler,
   dayHandler,
-  enteranceHandler,
-  exitHandler,
+  timeHandler,
   congestionHandler,
   rateHandler,
   contentHandler,
@@ -52,10 +49,10 @@ const OnelineWrite = ({
   });
   const SubmitHandler = () => {
     const body = getPayload(state);
-    if (!Object.values(body).includes("") || !Object.values(body).includes(0)) {
-      return newReviewMutation.mutate(body);
+    if (Object.values(body).includes("") || Object.values(body).includes(0)) {
+      newReviewMutation.mutate(body);
     }
-    throw Error("경고!");
+    throw Error("빈 칸으로 남겨진 값이 있습니다.");
   };
 
   return (
@@ -88,33 +85,34 @@ const OnelineWrite = ({
           </SelectboxContainer>
         </SelectForm>
         <SelectForm>
-          <p>방문 시간</p>
-          <SelectboxContainer>
-            <span>입장</span>
-            <Selectbox
-              placeholder="00시"
-              options={getTimeArray()}
-              onClick={enteranceHandler}
-              name="입장 시간"
-              width="133px"
-            />
-            <span>퇴장</span>
-            <Selectbox
-              placeholder="00시"
-              options={getTimeArray()}
-              onClick={exitHandler}
-              name="퇴장 시간"
-              width="133px"
-            />
-          </SelectboxContainer>
+          <p>시간대</p>
+          <Selectbox
+            placeholder="6시-7시"
+            options={[
+              "6시-7시",
+              "7시-8시",
+              "8시-9시",
+              "9시-10시",
+              "11시-12시",
+              "12시-13시",
+              "13시-14시",
+              "14시-15시",
+              "15시-16시",
+              "17시-18시",
+              "18시-19시",
+            ]}
+            onClick={timeHandler}
+            name="시간대"
+            width="350px"
+          />
         </SelectForm>
         <SelectForm>
-          <p>모집 상태</p>
+          <p>평점</p>
           <Selectbox
-            placeholder="모집 중"
-            options={["모집 중", "모집 마감"]}
-            onClick={() => {}}
-            name="모집 상태"
+            placeholder="1"
+            options={["1", "2", "3", "4", "5"]}
+            onClick={rateHandler}
+            name="평점"
             width="350px"
           />
         </SelectForm>
@@ -122,15 +120,18 @@ const OnelineWrite = ({
           <p>혼잡도</p>
           <Selectbox
             placeholder="매우 혼잡"
-            options={["매우 혼잡", "혼잡", "보통", "한산"]}
+            options={["매우 혼잡", "혼잡", "보통", "원활"]}
             onClick={congestionHandler}
             name="혼잡도"
             width="350px"
           />
         </SelectForm>
         <SelectForm>
-          <p>전시회 웹페이지 주소</p>
-          <SimpleInput />
+          <p>한 줄 리뷰 작성</p>
+          <SimpleInput
+            inputlength={state.content.length}
+            onChangeHandler={contentHandler}
+          />
         </SelectForm>
       </SelectContainer>
       <ButtonContainer>
@@ -149,12 +150,11 @@ export default OnelineWrite;
 
 function getPayload(state: OnelineReviewPostType): Payload {
   const BIRTHDAY = `${state.date.year}-${state.date.month}-${state.date.day}`;
-  const TIME = `${state.time.enterence}-${state.time.exit}`;
 
   return {
     exhibitionId: state.exhibitionId,
     date: BIRTHDAY,
-    time: TIME,
+    time: state.time,
     congestion: state.congestion,
     rate: state.rate,
     content: state.content,

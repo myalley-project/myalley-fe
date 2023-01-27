@@ -1,4 +1,9 @@
+import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
+import {
+  OnelineReviewReadType,
+  OnelineReviewCardType,
+} from "../types/OnelineReview";
 
 interface CreateReviewBody {
   exhibitionId: number;
@@ -37,7 +42,7 @@ const onelineReviewApis = {
     );
     return response;
   },
-  deleteReview: async (simpleId: string) => {
+  deleteReview: async (simpleId: number) => {
     const response = await apiInstance.patch(`/api/simple-reviews/${simpleId}`);
     return response;
   },

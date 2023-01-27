@@ -25,10 +25,7 @@ const initialState: OnelineReviewPostType = {
     month: "",
     day: "",
   },
-  time: {
-    enterence: "",
-    exit: "",
-  },
+  time: "",
   congestion: "",
   rate: 0,
   content: "",
@@ -38,8 +35,7 @@ const ReducerActionType = {
   YEAR: "YEAR",
   MONTH: "MONTH",
   DAY: "DAY",
-  ENTERANCETIME: "ENTERANCETIME",
-  EXITTIME: "EXITTIME",
+  TIME: "TIME",
   CONGESTION: "CONGESTION",
   RATE: "RATE",
   CONTENT: "CONTENT",
@@ -71,15 +67,10 @@ const reducer = (
         ...state,
         date: { ...state.date, day: action.payload ?? "" },
       };
-    case ReducerActionType.ENTERANCETIME:
+    case ReducerActionType.TIME:
       return {
         ...state,
-        time: { ...state.time, enterence: action.payload ?? "" },
-      };
-    case ReducerActionType.EXITTIME:
-      return {
-        ...state,
-        time: { ...state.time, exit: action.payload ?? "" },
+        time: action.payload ?? "",
       };
     case ReducerActionType.CONGESTION:
       return {
@@ -137,22 +128,11 @@ const OnelineWrapper = () => {
     }
   };
 
-  const enteranceHandler = (e: React.MouseEvent) => {
+  const timeHandler = (e: React.MouseEvent) => {
     if (e !== undefined) {
       if (e.currentTarget.textContent !== null) {
         dispatch({
-          type: ReducerActionType.ENTERANCETIME,
-          payload: e.currentTarget.textContent,
-        });
-      }
-    }
-  };
-
-  const exitHandler = (e: React.MouseEvent) => {
-    if (e !== undefined) {
-      if (e.currentTarget.textContent !== null) {
-        dispatch({
-          type: ReducerActionType.EXITTIME,
+          type: ReducerActionType.TIME,
           payload: e.currentTarget.textContent,
         });
       }
@@ -183,7 +163,7 @@ const OnelineWrapper = () => {
     }
   };
 
-  const contentHandler = (e: React.MouseEvent) => {
+  const contentHandler = (e: React.ChangeEvent) => {
     if (e !== undefined) {
       if (e.currentTarget.textContent !== null) {
         dispatch({
@@ -200,8 +180,7 @@ const OnelineWrapper = () => {
       yearHandler={yearHandler}
       monthHandler={monthHandler}
       dayHandler={dayHandler}
-      enteranceHandler={enteranceHandler}
-      exitHandler={exitHandler}
+      timeHandler={timeHandler}
       congestionHandler={congestionHandler}
       rateHandler={rateHandler}
       contentHandler={contentHandler}

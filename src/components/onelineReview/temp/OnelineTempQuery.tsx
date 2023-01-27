@@ -27,13 +27,6 @@ const OnelineTempQuery = () => {
   });
   // patchMutation.mutate({ simpleId, body })
 
-  // delete function
-  const onelineDeleteFunction = onelineReviewApis.deleteReview;
-  const deleteMutation = useMutation({
-    mutationFn: (simpleId: string) => onelineDeleteFunction(simpleId),
-  });
-  // deleteMutation.mutate(simpleId)
-
   return <div>OnelineTempQuery</div>;
 };
 
