@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Mate } from "../../types/mateList";
@@ -11,7 +11,10 @@ interface MateListType {
 const MateList = ({ mates }: MateListType) => (
   <Link to="/" style={{ textDecoration: "none" }}>
     <Card>
-      <Thumbnail src={mates.exhibition.posterUrl} alt="exhibition-img" />
+      {mates.exhibition.posterUrl && (
+        <Thumbnail src={mates.exhibition.posterUrl} alt="exhibition-img" />
+      )}
+
       <FindMateDetail>
         <TitleAndEdit>
           <Title className="title">{mates.title}</Title>

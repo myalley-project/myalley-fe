@@ -212,7 +212,7 @@ const ExhibitionWrite = (props: ModeType) => {
           navigate("/");
         }
       } catch (err) {
-        const errorRes = isApiError(err);
+        isApiError(err);
         // if (errorRes === "accessToken 만료") refreshTokenApi();
       }
   };
@@ -226,9 +226,9 @@ const ExhibitionWrite = (props: ModeType) => {
         type: editDetail?.type,
         space: editDetail?.space,
         adultPrice: editDetail?.adultPrice,
-        // fileName: editDetail?.
+        // fileName: editDetail?.filename,
         posterUrl: editDetail?.posterUrl,
-        date: editDetail?.duration,
+        duration: editDetail?.duration,
         webLink: editDetail?.webLink,
         content: editDetail?.content,
         author: editDetail?.author,

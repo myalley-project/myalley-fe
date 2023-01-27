@@ -7,16 +7,17 @@ import ContentCard from "../components/exhibition/ContentCard";
 import ToggleSwitch from "../components/exhibition/ToggleSwitch";
 import { ExhibitionRes, exhbApi } from "../apis/exhibition";
 import isApiError from "../utils/isApiError";
+import ExhbMateList from "../components/exhibition/ExhbMateList";
 
 const Exhibition = () => {
   const params = useParams();
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
+
   const getExhbDetail = useCallback(async (id: number) => {
     try {
       const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
       const { data } = res;
       setExhbDetail(data);
-      console.log(data);
     } catch (err) {
       isApiError(err);
     }
@@ -45,6 +46,7 @@ const Exhibition = () => {
           <ContentCard title="작가 정보" content={exhbDetail?.author ?? ""} />
         </>
       )}
+      {state === "mate" && <ExhbMateList />}
     </ExhibitionContainer>
   );
 };

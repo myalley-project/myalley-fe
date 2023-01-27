@@ -12,8 +12,8 @@ export interface Mate {
   exhibition: {
     exhibitionId: number;
     exhibitionTitle: string;
-    exhibitionSpace: string;
-    posterUrl: string;
-    exhibitionStatus: "지난 전시" | "현재 전시" | "예정 전시";
+    exhibitionSpace?: string;
+    posterUrl?: string;
+    exhibitionStatus?: "지난 전시" | "현재 전시" | "예정 전시";
   };
 }

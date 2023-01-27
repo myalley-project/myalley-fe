@@ -1,8 +1,7 @@
 import React from "react";
-import { useNavigate, useLocation, Route, Routes } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { exhbDeleteApi } from "../../apis/exhibition";
-import ExhibitionWrite from "../../pages/ExhibitionWrite";
 import { theme } from "../../styles/theme";
 import isApiError from "../../utils/isApiError";
 
@@ -30,10 +29,9 @@ const MainCard = ({
 
   const handleDelete = async () => {
     try {
-      const res = await exhbDeleteApi(id);
+      await exhbDeleteApi(id);
       alert("전시글 삭제가 완료되었습니다.");
       navigate("/");
-      console.log(res);
     } catch (err) {
       isApiError(err);
     }

@@ -21,7 +21,7 @@ const ToggleSwitch = ({ setState }: StateType) => {
       case "review":
         circle.style.transform = "translateX(125.33px)";
         break;
-      case "findMate":
+      case "mate":
         circle.style.transform = "translateX(250.66px)";
         break;
       default:
@@ -50,7 +50,7 @@ const ToggleSwitch = ({ setState }: StateType) => {
       <FindMateBtn
         type="button"
         value={isInfoOrReviewOrMate}
-        onClick={() => onChangeMode("findMate")}
+        onClick={() => onChangeMode("mate")}
       >
         메이트 찾기
       </FindMateBtn>
@@ -109,7 +109,7 @@ const ReviewBtn = styled(button)`
 
 const FindMateBtn = styled(button)`
   ${({ value }) =>
-    value === "findMate"
+    value === "mate"
       ? `transition:color 1s ease; color: ${theme.colors.primry70};`
       : null}
 `;

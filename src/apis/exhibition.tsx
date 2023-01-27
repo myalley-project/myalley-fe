@@ -1,5 +1,7 @@
 import { AxiosResponse } from "axios";
+import { PageInfo } from "../types/pageInfo";
 import apiInstance from "../utils/apiInstance";
+import { MateRes } from "./member";
 
 export interface ExhibitionRes {
   id: number;
@@ -32,13 +34,25 @@ export const exhbApi = async (id: number) => {
 };
 
 export const exhbUpdateApi = async (id: number, reqbody: object) => {
-  const res = await apiInstance.put(`/exhibitions/${id}`, reqbody);
+  const res = await apiInstance.put(`/api/exhibitions/${id}`, reqbody);
   return res;
 };
 
 export const exhbDeleteApi = async (id: number) => {
   const res: AxiosResponse<ExhibitionRes> = await apiInstance.delete(
-    `/exhibitions/${id}`
+    `/api/exhibitions/${id}`
+  );
+  return res;
+};
+
+export const exhbMateApi = async (id: number, pageNo: number) => {
+  const res: AxiosResponse<MateRes> = await apiInstance.get(
+    `/exhibitions/mates/${id}`,
+    {
+      params: {
+        page: pageNo,
+      },
+    }
   );
   return res;
 };
