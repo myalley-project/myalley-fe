@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { exhbMateApi } from "../../apis/exhibition";
 import { MateRes } from "../../apis/member";
 import { theme } from "../../styles/theme";
-import { Mate } from "../../types/mate";
+import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
 import Button from "../atom/Button";
 import MateCard from "../mate/MateCard";
@@ -54,7 +54,7 @@ const ExhbMateList = () => {
       {mateList.length === 0 ? (
         <NoList />
       ) : (
-        mateList.map((mate) => <MateCard key={mate.mateId} mates={mate} />)
+        mateList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}
       {pageInfoData.totalPage > 0 && (
         <Pagination

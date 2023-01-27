@@ -5,7 +5,7 @@ import styled from "styled-components";
 import MateCard from "../mate/MateCard";
 import Pagination from "../Pagination";
 import { myMatesApi, MateRes } from "../../apis/member";
-import { Mate } from "../../types/mate";
+import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
 import useRefreshTokenApi from "../../apis/useRefreshToken";
 import NoList from "../NoList";
@@ -51,7 +51,7 @@ const FindMate = () => {
       {matesList.length == 0 ? (
         <NoList />
       ) : (
-        matesList.map((mates) => <MateCard key={mates.mateId} mates={mates} />)
+        matesList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}
       {pageInfoList.totalPage > 0 && (
         <Pagination

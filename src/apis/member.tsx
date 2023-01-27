@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 import { errorAlert } from "../utils/isApiError";
-import { Mate } from "../types/mate";
+import { Mate } from "../types/mateList";
 import { PageInfo } from "../types/pageInfo";
 
 // 내정보 조회/수정(회원, 관리자 공통) api_박예선_23.01.25
