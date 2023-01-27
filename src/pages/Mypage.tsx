@@ -4,9 +4,9 @@ import { AxiosResponse } from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { myInfoApi, MyInfoRes } from "../apis/member";
 import MyInfoCard from "../components/mypage/MyInfoCard";
-import MyProfileEdit from "../components/mypage/MyProfileEdit";
-import MyWrite from "../components/mypage/MyWrite";
-import MyBookmark from "../components/mypage/MyBookmark";
+import EditProfile from "../components/mypage/EditProfile";
+import WrittenPosts from "../components/mypage/WrittenPosts";
+import BookMarkedPosts from "../components/mypage/BookMarkedPosts";
 import isApiError from "../utils/isApiError";
 
 const Mypage = () => {
@@ -48,9 +48,9 @@ const Mypage = () => {
   return (
     <MypageContainer>
       <MyInfoCard infoData={infoData} />
-      {pathname === "/mypage/edit" && <MyProfileEdit infoData={infoData} />}
-      {pathname === "/mypage/write" && <MyWrite />}
-      {pathname === "/mypage/bookmark" && <MyBookmark />}
+      {pathname === "/mypage/edit" && <EditProfile infoData={infoData} />}
+      {pathname === "/mypage/write" && <WrittenPosts />}
+      {pathname === "/mypage/bookmark" && <BookMarkedPosts />}
     </MypageContainer>
   );
 };

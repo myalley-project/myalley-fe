@@ -1,19 +1,19 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import FindMate from "./FindMate";
-import WriteMenuBtns from "./WriteMenuBtns";
+import WrittenMates from "./WrittenMates";
+import SubMenuBtns from "./SubMenuBtns";
 
-const MyWrite = () => {
+const WrittenPosts = () => {
   const location = useLocation();
   const { search } = location;
 
   return (
     <div>
-      <WriteMenuBtns />
+      <SubMenuBtns />
       {/* 한줄리뷰 컴포넌트, 블로그 리뷰 컴포넌트 추가해야함 */}
-      {search.includes("?type=mate") && <FindMate />}
+      {search.includes("?type=mate") && <WrittenMates />}
     </div>
   );
 };
 
-export default MyWrite;
+export default WrittenPosts;
