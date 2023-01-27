@@ -1,10 +1,4 @@
-import React from "react";
-import styled from "styled-components";
-import { theme } from "../../styles/theme";
-import SubTitle from "../SubTitle";
-import Selector from "../Selector";
-
-const TimeSelect = () => {
+const getTimeArray = () => {
   const visitTimeOptions = [
     "00시",
     "01시",
@@ -32,32 +26,7 @@ const TimeSelect = () => {
     "23시",
     "24시",
   ];
-  const exitTimeOptions = visitTimeOptions.slice();
-
-  return (
-    <div>
-      <SubTitle text="관람 시간" />
-      <FlexContainer>
-        <Description>입장</Description>
-        <Selector options={visitTimeOptions} width="100px" />
-        <Description>퇴장</Description>
-        <Selector options={exitTimeOptions} width="100px" />
-      </FlexContainer>
-    </div>
-  );
+  return visitTimeOptions;
 };
 
-export default TimeSelect;
-
-const Description = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  color: ${theme.colors.greys60};
-`;
-
-const FlexContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  margin-bottom: 30px;
-`;
+export default getTimeArray;
