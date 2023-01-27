@@ -146,11 +146,7 @@ const Mate = () => {
           <MemberInfo className="flex">
             <MemberProfileImg
               alt="member profile img"
-              src={
-                mateInfo.member.memberProfileImg
-                  ? mateInfo.member.memberProfileImg
-                  : profileImg
-              }
+              src={mateInfo.member.memberProfileImg || profileImg}
             />
             <div>
               <Title size={20} lineHight={28}>
