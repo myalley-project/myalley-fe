@@ -3,7 +3,6 @@ import apiInstance from "../utils/apiInstance";
 import { errorAlert } from "../utils/isApiError";
 import { Mate } from "../types/mateList";
 import { PageInfo } from "../types/pageInfo";
-import apiImgInstance from "../utils/apiImgInstance";
 
 // 내정보 조회/수정(회원, 관리자 공통) api_박예선_23.01.25
 export const myInfoApi = async (type: "get" | "put") => {
@@ -21,9 +20,10 @@ export const myInfoApi = async (type: "get" | "put") => {
 };
 
 export const editMyInfoApi = async (reqBody: FormData) => {
-  const putRes: AxiosResponse<MyInfoRes> = await apiImgInstance.put("/api/me", {
-    reqBody,
-  });
+  const putRes: AxiosResponse<MyInfoRes> = await apiInstance.put(
+    "/api/me",
+    reqBody
+  );
   return putRes;
 };
 

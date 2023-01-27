@@ -161,7 +161,6 @@ const MyProfileEdit = (props: MyInfoType) => {
     }
     formData.append(
       "data",
-      // JSON.stringify(editMyInfo)
       new Blob([JSON.stringify(editMyInfo)], { type: "application/json" })
     );
 
