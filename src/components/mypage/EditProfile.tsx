@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import { MyInfoRes, editMyInfoApi, EditMyInfoType } from "../../apis/member";
-import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
+import { Input, Label, Notice } from "../atom/labelInput";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
 import Selectbox from "../atom/Selectbox";

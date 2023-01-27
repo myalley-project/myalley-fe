@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MateCard from "../mate/MateCard";
 import Pagination from "../Pagination";
@@ -23,7 +23,7 @@ const FindMate = () => {
     selected: 1,
   });
 
-  // 내가 쓴 메이트 목록 요청 api 호출
+  // 내가 쓴 메이트 목록 api 호출
   const getFindMateList = useCallback(
     async (pageNo: number) => {
       try {

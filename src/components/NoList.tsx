@@ -11,7 +11,7 @@ const NoList = () => (
 export default NoList;
 
 const NoListContainer = styled.div`
-  width: inherit;
+  width: -webkit-fill-available;
   min-height: 528px;
   display: flex;
   align-items: center;
