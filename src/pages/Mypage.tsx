@@ -8,10 +8,8 @@ import MyProfileEdit from "../components/mypage/MyProfileEdit";
 import MyWrite from "../components/mypage/MyWrite";
 import MyBookmark from "../components/mypage/MyBookmark";
 import isApiError from "../utils/isApiError";
-import useRefreshTokenApi from "../apis/useRefreshToken";
 
 const Mypage = () => {
-  const refreshTokenApi = useRefreshTokenApi();
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
@@ -35,8 +33,7 @@ const Mypage = () => {
       const { data } = res;
       setInfoData(data);
     } catch (err) {
-      const errorRes = isApiError(err);
-      // if (errorRes === "accessToken 만료") refreshTokenApi();
+      isApiError(err);
     }
   }, []);
 
