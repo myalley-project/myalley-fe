@@ -38,7 +38,7 @@ const isApiError = (err: unknown, type?: "refreshToken 만료") => {
         "403 Forbidden\n유효하지 않은 접근입니다. 다시 시도해주십시오."
       );
     // accessToken 만료 메세지를 리턴해 refreshToken api 호출 유도
-    if (errorCode === 403 && errorMsg === "Acess토큰 만료")
+    if (errorCode === 403 && errorMsg === "ACCESS토큰 만료")
       return "accessToken 만료";
     // 위의 두 에러를 제외한 백엔드에서 { errorMsg,errorCode } 형식으로 보낸 에러는 리턴
     // 리턴받은 에러로 catch문에서 각자 필요한 에러 처리
