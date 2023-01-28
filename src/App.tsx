@@ -11,6 +11,7 @@ import ExhibitionWrite from "./pages/ExhibitionWrite";
 import Mypage from "./pages/Mypage";
 import MateList from "./pages/MateList";
 import Mate from "./pages/Mate";
+import MateWrite from "./pages/MateWrite";
 import Footer from "./components/Footer";
 
 const App = () => (
@@ -26,6 +27,7 @@ const App = () => (
       <Route path="/mypage/:subpages" element={<Mypage />} />
       <Route path="/mate-list" element={<MateList />} />
       <Route path="/mate/:id" element={<Mate />} />
+      <Route path="/mate-write" element={<MateWrite />} />
     </Routes>
     <ReactQueryDevtools />
     <Footer />

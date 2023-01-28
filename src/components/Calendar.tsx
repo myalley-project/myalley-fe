@@ -168,7 +168,7 @@ const CalendarWrapper = styled.div`
   width: 318px;
   height: fit-content;
   border: 1px solid ${theme.colors.greys40};
-  padding: 30px;
+  padding: 30px 30px 14px;
 `;
 
 const Header = styled.div`
