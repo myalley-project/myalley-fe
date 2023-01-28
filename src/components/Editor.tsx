@@ -12,15 +12,13 @@ import SubTitle from "./SubTitle";
 
 interface EditorProps {
   children: ReactElement;
+}
+
+interface TextInputAreaProps {
   textChangeHandler: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const Editor = ({ children, textChangeHandler }: EditorProps) => (
-  <Container>
-    {children}
-    <TextArea onChange={textChangeHandler} />
-  </Container>
-);
+const Editor = ({ children }: EditorProps) => <Container>{children}</Container>;
 
 export default Editor;
 
@@ -80,12 +78,18 @@ const ImageArea = () => {
     </>
   );
 };
+
+const TextInputArea = ({ textChangeHandler }: TextInputAreaProps) => (
+  <TextArea onChange={textChangeHandler} />
+);
+
 Editor.ImageArea = ImageArea;
+Editor.TextInputArea = TextInputArea;
 
 const Container = styled.div`
   max-width: 1200px;
   /* padding: 30px; */
-  margin-inline: auto;
+  /* margin-inline: auto; */
 `;
 
 const PreviewContainer = styled.div`
