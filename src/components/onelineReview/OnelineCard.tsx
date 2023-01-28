@@ -8,6 +8,7 @@ import { OnelineReviewCardType } from "../../types/OnelineReview";
 import Modal from "../../Modal";
 import Button from "../atom/Button";
 import onelineReviewApis from "../../apis/onelineReviewapis";
+import OnelineWrapper from "../../pages/OnelineWrapper";
 
 const OnelineCard = ({
   id,
@@ -87,9 +88,9 @@ const OnelineCard = ({
           삭제
         </button>
       </ButtonItems>
-      <Modal open={modifyModalIsopen} setIsOpen={modifyModalHandler}>
-        // ...
-      </Modal>
+      {/* <Modal open={modifyModalIsopen} setIsOpen={modifyModalHandler}>
+        <OnelineWrapper />
+      </Modal> */}
       <Modal open={deleteModalIsopen} setIsOpen={deleteModalHandler}>
         <Dialog>
           <Message>
