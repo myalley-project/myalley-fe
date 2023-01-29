@@ -187,9 +187,9 @@ const OnelineWrapper = ({ writeType, simpleId = 0 }: OnelineWrapperProps) => {
 
   const SubmitHandler = () => {
     const body = getPayload(state);
-    if (Object.values(body).includes("") || Object.values(body).includes(0)) {
-      throw Error("빈 칸으로 남겨진 값이 있습니다.");
-    }
+    // if (Object.values(body).includes("") || Object.values(body).includes(0)) {
+    //   throw Error("빈 칸으로 남겨진 값이 있습니다.");
+    // }
 
     if (writeType === "create") {
       newReviewMutation.mutate(body);
