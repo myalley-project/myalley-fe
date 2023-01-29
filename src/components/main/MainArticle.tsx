@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ArrowButton from "../assets/icons/arrowRight.svg";
-import { theme } from "../styles/theme";
+import { theme } from "../../styles/theme";
 
 const MainArticle = () => (
   <ArticleContainer>
