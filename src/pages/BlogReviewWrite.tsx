@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useReducer } from "react";
+import React, { useState, ChangeEvent, useReducer } from "react";
 import styled from "styled-components";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
@@ -110,6 +110,7 @@ const reducer = (
 
 const BlogReviewWrite = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [selectedDate, setSelectedDate] = useState("");
 
   const handleTitleInput = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: ReducerActionType.Title, payload: event.target.value });
@@ -123,7 +124,7 @@ const BlogReviewWrite = () => {
           <ExhibitionSelect />
           <div>
             <SubTitle text="관람일" />
-            <Calender />
+            <Calender setSelectedDate={setSelectedDate} />
           </div>
         </ExhibitionPicker>
         <SelectorConatiner>
