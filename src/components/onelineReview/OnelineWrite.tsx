@@ -40,7 +40,7 @@ const OnelineWrite = ({
         <p>생년 월일</p>
         <SelectboxContainer>
           <Selectbox
-            placeholder="1990"
+            placeholder="1950"
             options={getYearArray()}
             onClick={yearHandler}
             name="년도"
@@ -98,7 +98,7 @@ const OnelineWrite = ({
         <p>혼잡도</p>
         <Selectbox
           placeholder="매우 혼잡"
-          options={["매우 혼잡", "혼잡", "보통", "원활"]}
+          options={["매우 혼잡", "북적거림", "보통", "한산함"]}
           onClick={congestionHandler}
           name="혼잡도"
           width="350px"
@@ -142,10 +142,14 @@ const SelectContainer = styled.div`
   display: flex;
   flex-flow: row wrap;
   gap: 30px;
+  & > * {
+    flex: 1;
+  }
 `;
 
 const SelectForm = styled.div`
   & > p {
+    margin-bottom: 10px;
     font-weight: 700;
     font-size: 14px;
     color: ${theme.colors.greys90};

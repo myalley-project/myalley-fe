@@ -165,12 +165,12 @@ const OnelineWrapper = ({ writeType, simpleId = 0 }: OnelineWrapperProps) => {
     }
   };
 
-  const contentHandler = (e: React.ChangeEvent) => {
+  const contentHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e !== undefined) {
-      if (e.currentTarget.textContent !== null) {
+      if (e.target.value !== null) {
         dispatch({
           type: ReducerActionType.CONTENT,
-          payload: e.currentTarget.textContent,
+          payload: e.target.value,
         });
       }
     }
