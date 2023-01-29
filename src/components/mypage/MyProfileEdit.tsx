@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-// import { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import { Input, Label, Notice } from "../../styles/labelAndInputStyles";
+import { MyInfoRes, myInfoApi, editMyInfoApi } from "../../apis/member";
+import { Input, Label, Notice } from "../atom/labelInput";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
 import Selectbox from "../atom/Selectbox";
@@ -11,9 +12,23 @@ import {
   getDayArray,
 } from "../../utils/dateSelector";
 import { theme } from "../../styles/theme";
-// import mypageApi, { MypageRes } from "../../apis/mypage";
 
-const EditProfile = () => {
+interface MyInfoType {
+  infoData: {
+    memberId: number;
+    email: string;
+    nickname: string;
+    gender: string;
+    birth: string;
+    level: string;
+    memberImage: string;
+    authority: string;
+  };
+}
+
+const MyProfileEdit = (props: MyInfoType) => {
+  const { infoData } = props;
+  const { birth, nickname, gender } = infoData;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [profileImage, setProfileImage] = useState(profileImg);
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -22,7 +37,7 @@ const EditProfile = () => {
     password: false,
   });
   const [infos, setInfos] = useState({
-    password: "",
+    password: null,
     nickname: "",
     gender: "",
     year: "",
@@ -31,6 +46,7 @@ const EditProfile = () => {
     imageFile: "",
   });
 
+  // input 핸들러 함수
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setInfos({
@@ -39,6 +55,7 @@ const EditProfile = () => {
     });
   };
 
+  // selectbox 핸들러 함수
   const handleSetInfos = (e: React.MouseEvent<HTMLLIElement>, name: string) => {
     if (e !== undefined) {
       const { textContent } = e.currentTarget;
@@ -51,6 +68,7 @@ const EditProfile = () => {
     }
   };
 
+  // 닉네임 유효성 검사
   const handleNicknameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const rNickname = /^[가-힣|a-z|A-Z|0-9|]{2,10}$/;
@@ -68,6 +86,7 @@ const EditProfile = () => {
     setTimer(newTimer);
   };
 
+  // 비밀번호 유효성 검사
   const handlePwValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const rPassword =
@@ -102,15 +121,15 @@ const EditProfile = () => {
     }
   };
 
-  const editBtn = () => {
+  // 회원정보 수정 api
+  const editBtn = async () => {
     console.log(infos);
-    // get mypage api test
-    // try {
-    //   const res: AxiosResponse<MypageRes> = await mypageApi();
-    //   console.log(res);
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    try {
+      const res: AxiosResponse<MyInfoRes> | void = await editMyInfoApi();
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -180,7 +199,7 @@ const EditProfile = () => {
           <Label htmlFor="gender">성별</Label>
           <Selectbox
             placeholder="성별"
-            options={gender}
+            options={["여성", "남성"]}
             width="26vw"
             name="gender"
             onClick={handleSetInfos}
@@ -234,9 +253,7 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
-
-const gender = ["여성", "남성"];
+export default MyProfileEdit;
 
 const colors = {
   default: `${theme.colors.greys60}`,
@@ -306,7 +323,6 @@ const BirthWrapper = styled.div`
 `;
 
 const PasswordInput = styled(Input)`
-  /* background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='3' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M2.95402 10.789L2 12.1942L2.28897 12.6807C6.58859 19.9188 17.5916 19.7322 21.6186 12.3529L22 11.6539L21.4704 10.86C17.169 4.41087 7.30969 4.37306 2.95402 10.789Z' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); */
   background-position: right 19px center;
   background-repeat: no-repeat;
 `;
