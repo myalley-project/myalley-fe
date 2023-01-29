@@ -12,8 +12,10 @@ import {
 import onelineReviewApis from "../apis/onelineReviewapis";
 import Pagination from "./Pagination";
 
+type ReviewFilter = "oneline" | "blog";
+
 const ReviewWrapper = () => {
-  const [filter, setFilter] = useState("oneline");
+  const [filter, setFilter] = useState<ReviewFilter>("oneline");
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,

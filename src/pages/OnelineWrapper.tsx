@@ -2,22 +2,6 @@ import React, { useEffect, useReducer } from "react";
 import OnelineWrite from "../components/onelineReview/OnelineWrite";
 import { OnelineReviewPostType } from "../types/OnelineReview";
 
-// interface OnelineReviewPost {
-//   exhibitionId: number;
-//   date: {
-//     year: string;
-//     month: string;
-//     day: string;
-//   };
-//   time: {
-//     enterence: string;
-//     exit: string;
-//   };
-//   congestion: string;
-//   rate: number;
-//   content: string;
-// }
-
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
   date: {
