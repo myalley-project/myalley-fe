@@ -211,7 +211,12 @@ const BlogReviewWrite = () => {
             </SelectContainer>
           </SelectorConatiner>
         </ConvinenceSelector>
-        <Editor />
+        <Editor>
+          <div>
+            <Editor.ImageArea />
+            <Editor.TextInputArea textChangeHandler={() => {}} />
+          </div>
+        </Editor>
       </div>
       <ButtonContainer>
         <Button variant="text" size="large">

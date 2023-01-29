@@ -9,6 +9,8 @@ import ExhibitionList from "./pages/ExhibitionList";
 import Exhibition from "./pages/Exhibition";
 import ExhibitionWrite from "./pages/ExhibitionWrite";
 import Mypage from "./pages/Mypage";
+import MateList from "./pages/MateList";
+import Mate from "./pages/Mate";
 import Footer from "./components/Footer";
 
 const App = () => (
@@ -20,8 +22,18 @@ const App = () => (
       <Route path="/signup?" element={<SignUp />} />
       <Route path="/exhibition-list" element={<ExhibitionList />} />
       <Route path="/exhibition/:id" element={<Exhibition />} />
-      <Route path="/exhibition-write" element={<ExhibitionWrite />} />
-      <Route path="/mypage" element={<Mypage />} />
+      <Route
+        path="/exhibition/:id/edit"
+        element={<ExhibitionWrite mode="edit" />}
+      />
+
+      <Route
+        path="/exhibition-write"
+        element={<ExhibitionWrite mode="create" />}
+      />
+      <Route path="/mypage/:subpages" element={<Mypage />} />
+      <Route path="/mate-list" element={<MateList />} />
+      <Route path="/mate/:id" element={<Mate />} />
     </Routes>
     <ReactQueryDevtools />
     <Footer />

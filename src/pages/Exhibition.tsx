@@ -1,43 +1,60 @@
-import React, { useState } from "react";
-// import axios, { AxiosResponse } from "axios";
+import React, { useCallback, useEffect, useState } from "react";
+import { AxiosResponse } from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import MainCard from "../components/exhibition/MainCard";
 import ContentCard from "../components/exhibition/ContentCard";
 import ToggleSwitch from "../components/exhibition/ToggleSwitch";
-import ReviewWrapper from "../components/ReviewWrapper";
-// import exhibitionApi, { ExhibitionRes } from "../apis/exhibition";
+import { exhbApi, ExhibitionRes } from "../apis/exhibition";
+import isApiError from "../utils/isApiError";
+import ExhbMateList from "../components/exhibition/ExhbMateList";
 
 const Exhibition = () => {
-  // const test = async () => {
-  //   try {
-  //     const res: AxiosResponse<ExhibitionRes> = await exhibitionApi(1);
-  //     const { data } = res;
-  //     console.log(data.title);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+  const params = useParams();
+  const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
+  const navigate = useNavigate();
+  const id = Number(params.id);
+  const getExhbDetail = useCallback(async () => {
+    try {
+      const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
+      const { data } = res;
+      setExhbDetail(data);
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (typeof errorRes !== "object") return;
+      const { errorCode, errorMsg } = errorRes;
+      if (errorCode === 404 && errorMsg === "전시회 정보를 찾을 수 없습니다.") {
+        navigate(-1);
+        alert("해당 전시회 정보를 찾을 수 없습니다.");
+      }
+    }
+  }, [navigate, id]);
+
+  useEffect(() => {
+    getExhbDetail();
+  }, [getExhbDetail]);
 
   const [state, setState] = useState("info");
   return (
     <ExhibitionContainer>
-      {/* <button type="button" onClick={test}>
-        api 통신 테스트 버튼
-      </button> */}
       <MainCard
-        title="DDP 오픈큐레이팅 vol.26 <Beyond The City: Cultural Monuments>"
-        date="2022-12-14 ~ 2023-01-15"
-        place="DDP"
-        charge="무료"
+        posterUrl={exhbDetail?.posterUrl ?? ""}
+        title={exhbDetail?.title ?? ""}
+        duration={exhbDetail?.duration ?? ""}
+        place={exhbDetail?.space ?? ""}
+        charge={exhbDetail?.adultPrice ?? 0}
+        webLink={exhbDetail?.webLink ?? ""}
+        id={exhbDetail?.id ?? 0}
+        bookmarked={exhbDetail?.bookmarked ?? false}
       />
       <ToggleSwitch setState={setState} />
       {state === "info" && (
         <>
-          <ContentCard title="전시 내용" content="lorem" />
-          <ContentCard title="작가 정보" content="lorem" />
+          <ContentCard title="전시 내용" content={exhbDetail?.content ?? ""} />
+          <ContentCard title="작가 정보" content={exhbDetail?.author ?? ""} />
         </>
       )}
-      {state === "review" ? <ReviewWrapper /> : null}
+      {state === "mate" && <ExhbMateList />}
     </ExhibitionContainer>
   );
 };
@@ -48,15 +65,4 @@ const ExhibitionContainer = styled.div`
   width: 100vw;
   text-align: center;
   border-radius: 0px;
-`;
-
-const button = styled.button<{ value: string }>`
-  position: relative;
-  width: 188px;
-  height: 44px;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  z-index: 2;
 `;
