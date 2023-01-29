@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 import useLogOut from "./logOut";
 import useRefreshTokenApi from "./useRefreshToken";
-import { MateRes } from "../types/mate";
+import { MateRes, MateWriteType } from "../types/mate";
 import { MateStatusType } from "../components/mate/MateListFilter";
 import { MateListType } from "../types/mateList";
 import isApiError, { errorAlert } from "../utils/isApiError";
@@ -64,6 +64,41 @@ export const mateListApi = async (status: MateStatusType, page: number) => {
   return res;
 };
 
-export const postMateApi = async () => {
-  // const res=await apiInstance.post()
+// 메이트글 작성/수정 api_박예선_23.01.29
+// export const mateWriteApi = {
+//   post: async () => {
+//     const res: AxiosResponse = await apiInstance.post("/api/mates");
+//     return res;
+//   },
+//   put: async (mateId: number) => {
+//     const res: AxiosResponse = await apiInstance.put(`/api/mates/${mateId}`);
+//     return res;
+//   },
+// };
+
+// 메이트글 작성/수정 api_박예선_23.01.29
+export const mateWriteApi = async (
+  type: "post" | "put",
+  reqBody: MateWriteType,
+  mateId?: number
+) => {
+  if (type === "put" && mateId) {
+    const res: AxiosResponse<MateWriteRes> = await apiInstance.put(
+      `/api/mates/${mateId}`,
+      reqBody
+    );
+    return res;
+  }
+  const res: AxiosResponse<MateWriteRes> = await apiInstance.post(
+    "/api/mates",
+    reqBody
+  );
+  return res;
 };
+
+export type MateWriteRes =
+  | string
+  | {
+      errorCode: number;
+      errorMsg: string;
+    };

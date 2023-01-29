@@ -288,7 +288,11 @@ const ExhibitionWrite = () => {
               <p>원</p>
             </InputTextArea>
             <CheckLabelArea>
-              <CheckLabel label="무료 관람" onClick={handlePriceFree} />
+              <CheckLabel
+                label="무료 관람"
+                checked={false}
+                onClick={handlePriceFree}
+              />
             </CheckLabelArea>
           </div>
         </OptionWrapper>
