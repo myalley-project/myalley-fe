@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface SelectBoxType {
@@ -18,6 +18,11 @@ const Selectbox = ({
 }: SelectBoxType) => {
   const [show, setShow] = useState(false);
   const [selectItem, setSelectItem] = useState(placeholder);
+
+  // 수정모드일 시 기존 placeholder 보여주기 위함
+  useEffect(() => {
+    setSelectItem(placeholder);
+  }, [placeholder]);
 
   const ToggleSelector = () => {
     setShow((prev) => !prev);

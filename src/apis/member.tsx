@@ -19,31 +19,13 @@ export const myInfoApi = async (type: "get" | "put") => {
   return errorAlert();
 };
 
-export const editMyInfoApi = async () => {
-  const reqBody = {
-    data: {
-      password: null,
-      nickname: "hong길동12",
-      gender: "W",
-      birth: "2000-01-01",
-    },
-  };
-  const putRes: AxiosResponse<MyInfoRes> = await apiInstance.put("/api/me", {
-    reqBody,
-  });
+export const editMyInfoApi = async (reqBody: FormData) => {
+  const putRes: AxiosResponse<MyInfoRes> = await apiInstance.put(
+    "/api/me",
+    reqBody
+  );
   return putRes;
 };
-
-export interface MyInfoRes {
-  memberId: number;
-  email: string;
-  nickname: string;
-  gender: "W" | "M";
-  birth: string; // YYYY-MM-DD
-  level: "level1" | "level2" | "level3" | "level4";
-  memberImage: string | "";
-  authority: "ROLE_USER" | "ROLE_ADMIN";
-}
 
 export const myBookmarkedApi = async () => {};
 
@@ -61,4 +43,23 @@ export const myMatesApi = async (pageNo: number) => {
 export interface MateRes {
   mates: Mate[] | [];
   pageInfo: PageInfo;
+}
+
+export interface MyInfoRes {
+  memberId: number;
+  email: string;
+  nickname: string;
+  gender: "W" | "M";
+  age: number;
+  birth: string; // YYYY-MM-DD
+  level: "level1" | "level2" | "level3" | "level4";
+  memberImage: string | "";
+  authority: "ROLE_USER" | "ROLE_ADMIN";
+}
+
+export interface EditMyInfoType {
+  password: string | null;
+  nickname: string;
+  gender: string;
+  birth: string;
 }

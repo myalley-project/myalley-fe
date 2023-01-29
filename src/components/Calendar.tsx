@@ -206,11 +206,9 @@ const Week = styled.div`
 const Day = styled.div`
   width: calc(100% / 7);
   aspect-ratio: 1 / 1;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 5px;
   margin-bottom: 1rem;
   text-align: center;

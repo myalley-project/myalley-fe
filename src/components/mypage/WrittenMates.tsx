@@ -1,19 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MateCard from "../mate/MateCard";
 import Pagination from "../Pagination";
 import { myMatesApi, MateRes } from "../../apis/member";
 import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
-import useRefreshTokenApi from "../../apis/useRefreshToken";
 import NoList from "../NoList";
 
 const FindMate = () => {
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
   const navigate = useNavigate();
-  const refreshTokenApi = useRefreshTokenApi();
   const [pageInfoList, setPageInfoList] = useState({
     page: 0,
     size: 0,
@@ -25,7 +23,7 @@ const FindMate = () => {
     selected: 1,
   });
 
-  // 내가 쓴 메이트 목록 요청 api 호출
+  // 내가 쓴 메이트 목록 api 호출
   const getFindMateList = useCallback(
     async (pageNo: number) => {
       try {
@@ -35,7 +33,6 @@ const FindMate = () => {
         setPageInfoList(pageInfo);
       } catch (err) {
         isApiError(err);
-        // if (errorRes === "accessToken 만료") refreshTokenApi();
       }
       navigate(`?type=mate&pageno=${pageNo}`);
     },
@@ -48,7 +45,7 @@ const FindMate = () => {
 
   return (
     <FindMateContainer>
-      {matesList.length == 0 ? (
+      {matesList.length === 0 ? (
         <NoList />
       ) : (
         matesList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
