@@ -27,6 +27,7 @@ export const editMyInfoApi = async (reqBody: FormData) => {
     reqBody
   );
   return putRes;
+
 };
 
 // 내가 쓴 한줄 리뷰 목록 조회
@@ -167,4 +168,23 @@ export interface BlogInfo {
 export interface ExhibitionListRes {
   exhibitions: Exhibition[];
   pageInfo: PageInfo;
+}
+
+export interface MyInfoRes {
+  memberId: number;
+  email: string;
+  nickname: string;
+  gender: "W" | "M";
+  age: number;
+  birth: string; // YYYY-MM-DD
+  level: "level1" | "level2" | "level3" | "level4";
+  memberImage: string | "";
+  authority: "ROLE_USER" | "ROLE_ADMIN";
+}
+
+export interface EditMyInfoType {
+  password: string | null;
+  nickname: string;
+  gender: string;
+  birth: string;
 }
