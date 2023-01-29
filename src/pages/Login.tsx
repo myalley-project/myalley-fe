@@ -112,7 +112,11 @@ const Login = () => {
             {isPwInputShow && <EyeOn className="eye-icon" />}
           </button>
         </div>
-        <CheckLabel label="로그인 상태 유지" onClick={handleStayLogBtn} />
+        <CheckLabel
+          label="로그인 상태 유지"
+          checked={false}
+          onClick={handleStayLogBtn}
+        />
       </InputContainer>
       <BtnContainer>
         <Button
