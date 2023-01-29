@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import plus from "../assets/icons/plus.svg";
@@ -37,37 +37,61 @@ const MateWrite = () => {
     contact: "",
     exhibitionId: 1,
   });
-  const [isAgeRegardless, setIsAgeRegardless] = useState(false);
-  const [isDateRegardless, setIsDateRegardless] = useState(false);
   const [ageRange, setAgeRange] = useState({
     minimum: "",
     maximum: "",
   });
-  const { title, status, mateGender, mateAge, content, contact } = writeData;
+  const {
+    title,
+    status,
+    mateGender,
+    mateAge,
+    availableDate,
+    content,
+    contact,
+  } = writeData;
 
-  // 수정페이지면 원래 정보 가져오기
   // 전시회 선택 모달 연결하기
   // 달력 선택값 가져오기
   // 에디터 연결하기
 
   // 토큰 없을 때 접속하면 로그인페이지로 리다이렉트_박예선_23.01.29
   useEffect(() => {
-    if (!localStorage.getItem("accessToken")) {
+    if (!memberId) {
       alert("로그인이 필요한 기능입니다.");
       navigate("/login");
     }
-  }, [navigate]);
+  }, [memberId, navigate]);
 
   // 기존 메이트글 정보 조회 api 호출_박예선_23.01.28
-  const getMate = async () => {
-    if (!memberId) return;
+  const getMate = useCallback(async () => {
     try {
       const res: AxiosResponse<MateRes> = await mateApi(mateId, memberId);
-      console.log(res);
+      const { data } = res;
+      if (memberId !== data.member.memberId) {
+        alert("본인이 작성한 메이트글만 수정할 수 있습니다.");
+        navigate("/mate-list");
+        return;
+      }
+      setWriteData({
+        title: data.title,
+        status: data.status,
+        mateGender: data.mateGender,
+        mateAge: data.mateAge,
+        availableDate: data.availableDate,
+        content: data.content,
+        contact: data.contact,
+        exhibitionId: data.exhibition.exhibitionId,
+      });
+      if (data.mateAge !== "연령 무관")
+        setAgeRange({
+          minimum: data.mateAge.split(" ~ ")[0],
+          maximum: data.mateAge.split(" ~ ")[2],
+        });
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [mateId, memberId, navigate]);
 
   // 메이트글 작성/수정 api 호출_박예선_23.01.29
   const clickApplyBtn = async (type: "post" | "put") => {
@@ -101,10 +125,9 @@ const MateWrite = () => {
   // 메이트글 수정페이지인 경우 기존 메이트글 정보 조회_박예선_23.01.29
   useEffect(() => {
     if (mateId) {
-      //   getMate();
-      //   console.log(mateId);
+      getMate();
     }
-  }, [mateId]);
+  }, [getMate, mateId]);
 
   // 테스트용 useEffect
   useEffect(() => {
@@ -112,8 +135,9 @@ const MateWrite = () => {
     // console.log(urlSearch.get("mateId"));
     // console.log(isModifyPage);
     // console.log(ageRange);
-    // console.log(writeData.mateAge);
-  }, [ageRange, isModifyPage, location.search, urlSearch, writeData]);
+    console.log("writeData", writeData);
+    // console.log(availableDate === "미정");
+  }, [availableDate, writeData]);
 
   // 제목, 내용, 연락망 input/textArea 상태관리_박예선_23.01.29
   const handleInputAndTextArea = (
@@ -141,7 +165,7 @@ const MateWrite = () => {
     }
     if (name === "minimum") {
       setAgeRange({ ...ageRange, minimum: value });
-      if (!isAgeRegardless)
+      if (mateAge !== "연령 무관")
         setWriteData({
           ...writeData,
           mateAge: `${value} ~ ${ageRange.maximum}`,
@@ -150,7 +174,7 @@ const MateWrite = () => {
     }
     if (name === "maximum") {
       setAgeRange({ ...ageRange, maximum: value });
-      if (!isAgeRegardless)
+      if (mateAge !== "연령 무관")
         setWriteData({
           ...writeData,
           mateAge: `${ageRange.minimum} ~ ${value}`,
@@ -161,20 +185,19 @@ const MateWrite = () => {
   // 연령 무관 체크박스 클릭함수_박예선_23.01.28
   const clickAgeRegardless = () => {
     const { minimum, maximum } = ageRange;
-    if (!isAgeRegardless) setWriteData({ ...writeData, mateAge: "연령 무관" });
-    if (isAgeRegardless)
+    if (mateAge !== "연령 무관")
+      setWriteData({ ...writeData, mateAge: "연령 무관" });
+    if (mateAge === "연령 무관")
       setWriteData({ ...writeData, mateAge: `${minimum} ~ ${maximum}` });
-    setIsAgeRegardless(!isAgeRegardless);
   };
 
   // 관람일 미정 체크박스 클릭함수_박예선_23.01.28
   // 달력과 연결해야 함
   const clickDateRegardless = () => {
-    if (!isDateRegardless)
+    if (availableDate !== "미정")
       setWriteData({ ...writeData, availableDate: "미정" });
-    if (isDateRegardless)
+    if (availableDate === "미정")
       setWriteData({ ...writeData, availableDate: "YYYY-MM-DD" });
-    setIsDateRegardless(!isDateRegardless);
   };
 
   return (
@@ -202,7 +225,7 @@ const MateWrite = () => {
           <SubTitle text="원하는 메이트 성별" />
           <Selectbox
             placeholder={mateGender}
-            options={["성별 무관", "남", "여"]}
+            options={["성별 무관", "남성", "여성"]}
             width="130px"
             name="mateGender"
             onClick={handleSelect}
@@ -232,7 +255,7 @@ const MateWrite = () => {
           </div>
           <CheckLabel
             label="연령 무관"
-            checked={isAgeRegardless}
+            checked={mateAge === "연령 무관"}
             onClick={clickAgeRegardless}
           />
         </Section>
@@ -247,7 +270,7 @@ const MateWrite = () => {
             <SubTitle text="관람일" />
             <CheckLabel
               label="미정"
-              checked={isDateRegardless}
+              checked={availableDate === "미정"}
               onClick={clickDateRegardless}
             />
             <CalenderContainer>
