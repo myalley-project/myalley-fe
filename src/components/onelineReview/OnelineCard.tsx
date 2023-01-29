@@ -88,9 +88,9 @@ const OnelineCard = ({
           삭제
         </button>
       </ButtonItems>
-      {/* <Modal open={modifyModalIsopen} setIsOpen={modifyModalHandler}>
-        <OnelineWrapper />
-      </Modal> */}
+      <Modal open={modifyModalIsopen} setIsOpen={modifyModalHandler}>
+        <OnelineWrapper writeType="modify" simpleId={id} />
+      </Modal>
       <Modal open={deleteModalIsopen} setIsOpen={deleteModalHandler}>
         <Dialog>
           <Message>

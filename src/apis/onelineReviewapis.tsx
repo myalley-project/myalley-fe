@@ -15,9 +15,7 @@ interface CreateReviewBody {
 }
 
 interface PatchOnelineReviewBody {
-  exhibitionId: number;
-  writer: string;
-  date: string;
+  viewDate: string;
   time: string;
   congestion: string;
   rate: number;
@@ -32,14 +30,14 @@ const onelineReviewApis = {
     );
     return response;
   },
-  getReviews: async (exhibitionId = "", pageNo = 1, Type = "Recent") => {
+  getReviews: async (exhibitionId = "", pageNo = 0, Type = "Recent") => {
     const response: AxiosResponse<OnelineReviewCardType> =
       await apiInstance.get(
         `simple-reviews/exhibitions/${exhibitionId}?page=${pageNo}&order=${Type}`
       );
     return response.data;
   },
-  updateReview: async (simpleId: string, body: PatchOnelineReviewBody) => {
+  updateReview: async (simpleId: number, body: PatchOnelineReviewBody) => {
     const response = await apiInstance.patch(
       `/api/simple-reviews/${simpleId}`,
       body

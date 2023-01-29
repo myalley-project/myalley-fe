@@ -62,7 +62,7 @@ const ReviewWrapper = () => {
             ))}
         </OnelineContainer>
       ) : null}
-      {filter === "blog" ? <div /> : null}
+      {filter === "blog" ? <div>블로그 작업영역!</div> : null}
       {data ? (
         <Pagination
           pages={pages}

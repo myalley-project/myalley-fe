@@ -1,6 +1,8 @@
 import React, { useEffect, useReducer } from "react";
+import { useMutation } from "react-query";
 import OnelineWrite from "../components/onelineReview/OnelineWrite";
 import { OnelineReviewPostType } from "../types/OnelineReview";
+import onelineReviewApis from "../apis/onelineReviewapis";
 
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
@@ -76,7 +78,23 @@ const reducer = (
   }
 };
 
-const OnelineWrapper = () => {
+type Payload = {
+  exhibitionId: number;
+  viewDate: string;
+  time: string;
+  congestion: string;
+  rate: number;
+  content: string;
+};
+
+type WriteType = "create" | "modify";
+
+interface OnelineWrapperProps {
+  writeType: WriteType;
+  simpleId: number;
+}
+
+const OnelineWrapper = ({ writeType, simpleId = 0 }: OnelineWrapperProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const yearHandler = (e: React.MouseEvent) => {
@@ -158,6 +176,28 @@ const OnelineWrapper = () => {
     }
   };
 
+  const newReviewMutation = useMutation({
+    mutationFn: (payload: Payload) => onelineReviewApis.createReview(payload),
+  });
+
+  const modifyMutation = useMutation({
+    mutationFn: (payload: Payload) =>
+      onelineReviewApis.updateReview(simpleId, payload),
+  });
+
+  const SubmitHandler = () => {
+    const body = getPayload(state);
+    if (Object.values(body).includes("") || Object.values(body).includes(0)) {
+      throw Error("빈 칸으로 남겨진 값이 있습니다.");
+    }
+
+    if (writeType === "create") {
+      newReviewMutation.mutate(body);
+    } else if (writeType === "modify") {
+      modifyMutation.mutate(body);
+    }
+  };
+
   return (
     <OnelineWrite
       state={state}
@@ -168,8 +208,22 @@ const OnelineWrapper = () => {
       congestionHandler={congestionHandler}
       rateHandler={rateHandler}
       contentHandler={contentHandler}
+      submitHandler={SubmitHandler}
     />
   );
 };
 
 export default OnelineWrapper;
+
+function getPayload(state: OnelineReviewPostType): Payload {
+  const BIRTHDAY = `${state.date.year}-${state.date.month}-${state.date.day}`;
+
+  return {
+    exhibitionId: state.exhibitionId,
+    viewDate: BIRTHDAY,
+    time: state.time,
+    congestion: state.congestion,
+    rate: state.rate,
+    content: state.content,
+  };
+}
