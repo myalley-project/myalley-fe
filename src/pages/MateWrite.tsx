@@ -112,6 +112,7 @@ const MateWrite = () => {
     // console.log(urlSearch.get("mateId"));
     // console.log(isModifyPage);
     // console.log(ageRange);
+    // console.log(writeData.mateAge);
   }, [ageRange, isModifyPage, location.search, urlSearch, writeData]);
 
   // 제목, 내용, 연락망 input/textArea 상태관리_박예선_23.01.29
@@ -130,6 +131,7 @@ const MateWrite = () => {
     name: string
   ) => {
     const value = e.currentTarget.textContent;
+    if (!value) return;
     if (name === "status" || name === "mateGender") {
       setWriteData({
         ...writeData,
@@ -137,9 +139,22 @@ const MateWrite = () => {
       });
       return;
     }
-    if (name === "minimum" || name === "maximum") {
-      setAgeRange({ ...ageRange, [name]: value });
-      // 연령무관 아닐 때는 writeData에 반영하기 추가
+    if (name === "minimum") {
+      setAgeRange({ ...ageRange, minimum: value });
+      if (!isAgeRegardless)
+        setWriteData({
+          ...writeData,
+          mateAge: `${value} ~ ${ageRange.maximum}`,
+        });
+      return;
+    }
+    if (name === "maximum") {
+      setAgeRange({ ...ageRange, maximum: value });
+      if (!isAgeRegardless)
+        setWriteData({
+          ...writeData,
+          mateAge: `${ageRange.minimum} ~ ${value}`,
+        });
     }
   };
 
