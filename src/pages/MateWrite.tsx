@@ -7,13 +7,13 @@ import Button from "../components/atom/Button";
 import CheckLabel from "../components/atom/CheckLabel";
 import Selectbox from "../components/atom/Selectbox";
 import Calender from "../components/Calendar";
-// import Editor, { EditTextArea } from "../components/Editor";
 import SubTitle from "../components/SubTitle";
 import { theme } from "../styles/theme";
 import { MateRes, MateWriteType } from "../types/mate";
 import { mateApi, mateWriteApi, MateWriteRes } from "../apis/mate";
 import isApiError from "../utils/isApiError";
 import useRefreshTokenApi from "../apis/useRefreshToken";
+import Editor from "../components/Editor";
 
 // 메이트글 작성/수정 페이지_박예선_23.01.28
 const MateWrite = () => {
@@ -242,9 +242,13 @@ const MateWrite = () => {
         </Section>
         <Section>
           <SubTitle text="메이트 설명글" />
-          {/* <TextArea onChange={handleInputAndTextArea} value={content} name="content" /> */}
-          {/* 임시 텍스트박스 */}
-          {/* <Editor /> */}
+          <Editor>
+            <Editor.TextInputArea
+              value={content}
+              name="content"
+              textChangeHandler={handleInputAndTextArea}
+            />
+          </Editor>
         </Section>
         <Section>
           <SubTitle text="연락망" />

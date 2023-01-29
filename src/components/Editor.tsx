@@ -15,6 +15,8 @@ interface EditorProps {
 }
 
 interface TextInputAreaProps {
+  name: string;
+  value: string;
   textChangeHandler: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
@@ -79,8 +81,12 @@ const ImageArea = () => {
   );
 };
 
-const TextInputArea = ({ textChangeHandler }: TextInputAreaProps) => (
-  <TextArea onChange={textChangeHandler} />
+const TextInputArea = ({
+  name,
+  value,
+  textChangeHandler,
+}: TextInputAreaProps) => (
+  <TextArea name={name} value={value} onChange={textChangeHandler} />
 );
 
 Editor.ImageArea = ImageArea;
