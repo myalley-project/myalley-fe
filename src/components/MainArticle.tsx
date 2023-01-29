@@ -34,7 +34,7 @@ const MainArticle = () => (
         <h3>메이트</h3>
         <p>전시회에 같이 갈 친구를 찾아보세요</p>
       </div>
-      <StyledLink to="">
+      <StyledLink to="/mate-list">
         <span>자세히 보기</span>
         <img src={ArrowButton} alt="" />
       </StyledLink>
