@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import { ReactComponent as EyeOff } from "../assets/icons/eyeOff.svg";
 import { ReactComponent as EyeOn } from "../assets/icons/eyeOn.svg";
 import loginApi, { LoginRes } from "../apis/login";
 import { myInfoApi, MyInfoRes } from "../apis/member";
+import isApiError from "../utils/isApiError";
 
 // 로그인 컴포넌트_박예선_23.01.23
 const Login = () => {
@@ -16,6 +17,14 @@ const Login = () => {
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
   const [isPwInputShow, setIsPwInputShow] = useState(false);
   const [stayLog, setStayLog] = useState(false);
+
+  // 로그인 된 상태로 접속 시 리다이렉트_박예선_23.01.24
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      alert("이미 로그인되어있습니다.");
+      navigate("/");
+    }
+  }, [navigate]);
 
   // input 상태관리 함수_박예선_23.01.01
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,35 +38,20 @@ const Login = () => {
   // stayLog 상태관리 함수_박예선_23.01.01
   const handleStayLogBtn = () => setStayLog(!stayLog);
 
-  // 로그인 요청, 요청 후 처리 함수_박예선_23.01.13
+  // 로그인 요청, 요청 후 처리 함수_박예선_23.01.24
   const clickLoginBtn = async () => {
     try {
       const res: AxiosResponse<LoginRes> = await loginApi(loginInfo);
-      const { accessToken, refreshToken, errorCode, errorMsg } = res.data;
-      if (accessToken && refreshToken) {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-        try {
-          const userRes: AxiosResponse<MyInfoRes> | void = await myInfoApi(
-            "get"
-          );
-          if (!userRes) return;
-          const { userId, email, nickname, userImage, authority } =
-            userRes.data;
-          localStorage.setItem("userId", String(userId));
-          localStorage.setItem("email", email);
-          localStorage.setItem("nickname", nickname);
-          localStorage.setItem("userImage", userImage);
-          localStorage.setItem("authority", authority);
-        } catch (err) {
-          alert(
-            "죄송합니다.\n회원정보를 불러오는데에 실패하였습니다. 다시 시도해주십시오."
-          );
-        }
-        // alert("로그인되었습니다.");
-        // navigate("/");
-        return;
-      }
+      const { accessToken, refreshToken } = res.data;
+      if (!accessToken || !refreshToken) return;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      setInfoToLocalStorage();
+      navigate("/");
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (typeof errorRes !== "object") return;
+      const { errorCode, errorMsg } = errorRes;
       if (errorMsg === "회원 정보 없음") {
         alert("등록된 회원정보가 없습니다.");
         return;
@@ -68,11 +62,26 @@ const Login = () => {
             errorMsg === "이메일 형식 오류" ? "이메일" : "비밀번호"
           } 형식을 확인하세요.`
         );
-        return;
       }
+    }
+  };
+
+  // 로그인 성공 시 회원정보 로컬스토리지 저장 함수_박예선_23.01.25
+  const setInfoToLocalStorage = async () => {
+    try {
+      const userRes: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
+      if (!userRes) return;
+      const { memberId, email, nickname, memberImage, authority } =
+        userRes.data;
+      localStorage.setItem("memberId", String(memberId));
+      localStorage.setItem("email", email);
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("memberImage", memberImage);
+      localStorage.setItem("authority", authority);
+      alert("로그인되었습니다.");
     } catch (err) {
       alert(
-        "죄송합니다.\n통신에 오류가 있어 로그인에 실패하였습니다. 다시 시도해주십시오."
+        "죄송합니다.\n회원정보를 불러오는데에 실패하였습니다. 다시 시도해주십시오."
       );
     }
   };

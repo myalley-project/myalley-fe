@@ -14,7 +14,6 @@ const Nav = () => {
   const menuImg = document.getElementById(
     "user-menu"
   ) as HTMLInputElement | null;
-
   const handleToggleMenu = () => {
     setIsShowMenu((prevState) => !prevState);
   };

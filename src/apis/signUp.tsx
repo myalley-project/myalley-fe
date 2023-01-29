@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { Infos } from "../types/signUp";
+import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
+import { Infos } from "../types/signUp";
 
 export interface SignUpRes {
   resultCode?: number;
@@ -23,7 +23,6 @@ const signUpApi = async (infos: Infos, isAdmin: boolean) => {
     "/signup",
     reqBody
   );
-  // await axios.get("/data/signUp.json"); // 테스트용 목데이터
   return res;
 };
 

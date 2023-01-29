@@ -1,31 +1,75 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import { AxiosResponse } from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/datePickerStyle.css";
 import { ko } from "date-fns/esm/locale";
+import { useLocation, useNavigate } from "react-router-dom";
 import Selectbox from "../components/atom/Selectbox";
+import Button from "../components/atom/Button";
+import CheckLabel from "../components/atom/CheckLabel";
+import getExhbTypeArray from "../utils/exhbTypeSelector";
+import {
+  exhbApi,
+  exhbCreateApi,
+  exhbUploadImgApi,
+  exhbUpdateApi,
+  ExhibitionRes,
+  ExhbCreateRes,
+  ExhbUploadImgRes,
+} from "../apis/exhibition";
+import isApiError from "../utils/isApiError";
+import useRefreshTokenApi from "../apis/useRefreshToken";
 
-const ExhibitionWrite = () => {
+interface ModeType {
+  mode: string;
+}
+
+const ExhibitionWrite = (props: ModeType) => {
+  const formData = new FormData();
+  const navigate = useNavigate();
+  const refreshTokenApi = useRefreshTokenApi();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [thumbnail, setThumbnail] = useState("");
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
-  const [detail, setDetail] = useState({
+  const [detail, setDetail] = useState<ExhbCreateRes>({
     title: "",
+    status: "",
     type: "",
-    state: "",
-    date: "",
     space: "",
-    fileName: "",
     adultPrice: 0,
+    duration: "",
+    fileName: "",
+    posterUrl: "",
     content: "",
     author: "",
     webLink: "",
   });
+  const location = useLocation();
+  const id = Number(location.pathname.split("/")[2]);
+  const { mode } = props;
 
+  // 수정모드일때
+  const getEditExhb = useCallback(async () => {
+    if (mode === "edit") {
+      const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
+      const { data } = res;
+
+      setDetail(data);
+      setPriceWithCommas(data.adultPrice.toString());
+      setThumbnail(data.posterUrl);
+    }
+  }, [id, mode]);
+
+  useEffect(() => {
+    getEditExhb();
+  }, [getEditExhb]);
+
+  // 인풋 입력값 핸들링 함수
   const handleInputAndTextArea = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -38,25 +82,27 @@ const ExhibitionWrite = () => {
     });
   };
 
+  // 전시 시작 날짜
   const handleStartDate = (date: Date) => {
     setStartDate(date);
     const startDateFormat = date.toISOString().split("T")[0];
     const endDateFormat = endDate.toISOString().split("T")[0];
-    const dateFormat = `${startDateFormat}~${endDateFormat}`;
+    const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
       ...detail,
-      date: dateFormat,
+      duration: dateFormat,
     });
   };
 
+  // 전시 종료 날짜
   const handleEndDate = (date: Date) => {
     setEndDate(date);
     const startDateFormat = startDate.toISOString().split("T")[0];
     const endDateFormat = date.toISOString().split("T")[0];
-    const dateFormat = `${startDateFormat}~${endDateFormat}`;
+    const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
       ...detail,
-      date: dateFormat,
+      duration: dateFormat,
     });
   };
 
@@ -74,11 +120,33 @@ const ExhibitionWrite = () => {
         }
       };
       reader.readAsDataURL(e.target.files[0]);
+      formData.append("file", e.target.files[0]);
+      // api 호출
+      postUploadImg(formData);
+    }
+  };
+
+  // 이미지 업로드 api 호출
+  const postUploadImg = async (imgfile: FormData) => {
+    try {
+      const res: AxiosResponse<ExhbUploadImgRes> = await exhbUploadImgApi(
+        imgfile
+      );
+      const { data } = res;
+      setDetail({
+        ...detail,
+        fileName: data.filename,
+        posterUrl: data.s3Url,
+      });
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") refreshTokenApi(); // 토큰 필요한 요청에서는 필수
     }
   };
 
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputPrice = e.target.value;
+
     const numCheck = /^[0-9,]+$/.test(inputPrice);
     const numWithCommas = inputPrice.replaceAll(",", "");
 
@@ -111,7 +179,7 @@ const ExhibitionWrite = () => {
     e: React.MouseEvent<HTMLLIElement>,
     name: string
   ) => {
-    if (e != undefined) {
+    if (e !== undefined) {
       const { textContent } = e.currentTarget;
       setDetail({
         ...detail,
@@ -120,8 +188,51 @@ const ExhibitionWrite = () => {
     }
   };
 
-  const clickSubmitBtn = () => {
-    console.log(detail);
+  // 등록 api 호출
+  const clickSubmitBtn = async () => {
+    if (detail.title === "") {
+      alert("제목을 입력해주세요.");
+    } else if (detail.type === "") {
+      alert("전시 타입을 선택해주세요.");
+    } else if (detail.status === "") {
+      alert("전시 관람여부를 선택해주세요.");
+    } else if (detail.duration === "") {
+      alert("전시 일정을 선택해주세요.");
+    } else if (thumbnail === "") {
+      alert("전시 포스터를 등록해주세요.");
+    } else if (detail.space === "") {
+      alert("전시 장소를 입력해주세요.");
+    } else if (detail.content === "") {
+      alert("전시 내용을 작성해주세요.");
+    } else if (detail.author === "") {
+      alert("작가정보를 작성해주세요.");
+    } else if (detail.webLink === "") {
+      alert("전시회 웹페이지 주소를 작성해주세요.");
+    } else
+      try {
+        const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
+        if (res.status === 200) {
+          alert("전시글 등록이 완료되었습니다. 메인 페이지로 돌아갑니다.");
+          navigate("/");
+        }
+      } catch (err) {
+        isApiError(err);
+        // if (errorRes === "accessToken 만료") refreshTokenApi();
+      }
+  };
+
+  // 수정 api 호출
+  const clickEditBtn = async () => {
+    try {
+      const res: AxiosResponse<string> = await exhbUpdateApi(id, detail);
+      const { data } = res;
+      if (data === "전시글 정보 수정이 완료되었습니다.") {
+        alert("수정이 완료되었습니다.");
+        navigate(`/exhibition/${id}`);
+      } else alert("예기치 못한 오류입니다. 관리자에게 문의하세요.");
+    } catch (err) {
+      isApiError(err);
+    }
   };
 
   return (
@@ -139,8 +250,8 @@ const ExhibitionWrite = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-type">전시타입</Label>
           <Selectbox
-            placeholder="전체 전시"
-            options={typeOptions}
+            placeholder={detail.type === "" ? "전체 전시" : detail.type}
+            options={getExhbTypeArray()}
             width="130px"
             name="type"
             onClick={handleSetDetail}
@@ -149,10 +260,10 @@ const ExhibitionWrite = () => {
         <OptionWrapper>
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
-            placeholder="전체 전시"
-            options={stateOptions}
+            placeholder={detail.status === "" ? "전체 전시" : detail.status}
+            options={["지난 전시", "현재 전시", "예정 전시"]}
             width="130px"
-            name="state"
+            name="status"
             onClick={handleSetDetail}
           />
         </OptionWrapper>
@@ -165,6 +276,7 @@ const ExhibitionWrite = () => {
             dateFormat="yy - MM - dd"
             selected={startDate}
             onChange={(date: Date) => handleStartDate(date)}
+            value={detail.duration.substring(0, 10)}
           />
           <span>종료일</span>
           <DatePicker
@@ -173,6 +285,7 @@ const ExhibitionWrite = () => {
             dateFormat="yy - MM - dd"
             selected={endDate}
             onChange={(date: Date) => handleEndDate(date)}
+            value={detail.duration.substring(13, 23)}
           />
         </OptionWrapper>
         <OptionWrapper>
@@ -220,14 +333,9 @@ const ExhibitionWrite = () => {
               />
               <p>원</p>
             </InputTextArea>
-            <InputCheckbox
-              type="checkbox"
-              checked={priceFree}
-              onChange={handlePriceFree}
-            />
-            <span style={{ paddingLeft: "43px", fontWeight: 700 }}>
-              무료 관람
-            </span>
+            <CheckLabelArea>
+              <CheckLabel label="무료 관람" onClick={handlePriceFree} />
+            </CheckLabelArea>
           </div>
         </OptionWrapper>
         <OptionWrapper>
@@ -263,19 +371,39 @@ const ExhibitionWrite = () => {
         </OptionWrapper>
       </WriteExhibitionWrapper>
       <ButtonWrapper>
-        <CancelBtn>취소</CancelBtn>
-        <SubmitBtn type="submit" onClick={clickSubmitBtn}>
-          등록하기
+        <SubmitBtn
+          variant="primary"
+          size="large"
+          type="button"
+          onClick={() => navigate("/")}
+        >
+          취소
         </SubmitBtn>
+        {mode === "edit" ? (
+          <SubmitBtn
+            variant="primary"
+            size="large"
+            type="button"
+            onClick={clickEditBtn}
+          >
+            수정하기
+          </SubmitBtn>
+        ) : (
+          <SubmitBtn
+            variant="primary"
+            size="large"
+            type="button"
+            onClick={clickSubmitBtn}
+          >
+            등록하기
+          </SubmitBtn>
+        )}
       </ButtonWrapper>
     </WriteExhibitionContainer>
   );
 };
 
 export default ExhibitionWrite;
-
-const typeOptions = ["그림 전시", "조각 전시", "문학 전시", "기획 전시"];
-const stateOptions = ["지난 전시", "현재 전시", "예정 전시"];
 
 const WriteExhibitionContainer = styled.div`
   display: flex;
@@ -333,7 +461,6 @@ const Input = styled.input`
   font-weight: 500;
   font-size: 14px;
   color: ${(props) => props.theme.colors.greys60};
-
   &::placeholder {
     color: ${(props) => props.theme.colors.greys60};
   }
@@ -393,24 +520,18 @@ const InputTextArea = styled(Input)`
 
 const InputPrice = styled.input`
   width: 55px;
+  height: 17px;
   font-weight: 400;
   font-size: 14px;
   color: ${(props) => props.theme.colors.greys60};
   text-align: right;
 `;
 
-const InputCheckbox = styled.input`
-  appearance: none;
+const CheckLabelArea = styled.div`
+  display: inline-block;
   position: absolute;
-  top: 3px;
-  left: 146px;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='%239C9C9C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
-  &:checked {
-    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' fill='%239C9C9C'/%3E%3Cpath d='M7.5 12L10.5 15L16.5 9' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
-  }
+  top: 5px;
+  margin-left: 20px;
 `;
 
 const TextArea = styled(Input)`
@@ -448,25 +569,6 @@ const ButtonWrapper = styled.div`
   margin-bottom: 50px;
 `;
 
-const SubmitBtn = styled.button`
-  width: 175px;
-  height: 48px;
-  background-color: ${(props) => props.theme.colors.primry70};
-  border-radius: 10000px;
-  font-weight: 500;
-  font-size: 20px;
-  color: ${(props) => props.theme.colors.white100};
-  cursor: pointer;
-  &:hover {
-    background-color: #381e72;
-  }
-`;
-
-const CancelBtn = styled(SubmitBtn)`
-  background-color: ${(props) => props.theme.colors.white100};
-  color: ${(props) => props.theme.colors.greys60};
-  &:hover {
-    background-color: ${(props) => props.theme.colors.greys90};
-    color: ${(props) => props.theme.colors.white100};
-  }
+const SubmitBtn = styled(Button)`
+  width: 153px;
 `;
