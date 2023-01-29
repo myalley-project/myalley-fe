@@ -30,7 +30,7 @@ const onelineReviewApis = {
     apiInstance.post(`/api/simple-reviews`, body),
   getReviews: ({ exhibitionId, pageNo, orderType }: GetOnelineReviewType) =>
     apiInstance.get(
-      `/simple-reviews/exhibitions/${exhibitionId}?page=${pageNo}&order=${orderType}`
+      `/blogs/exhibitions/${exhibitionId}?page=${pageNo}&order=${orderType}`
     ),
   updateReview: (simpleId: string, body: PatchOnelineReviewBody) =>
     apiInstance.patch(`/api/simple-reviews/${simpleId}`, body),
