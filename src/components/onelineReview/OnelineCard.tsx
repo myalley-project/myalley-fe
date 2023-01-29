@@ -7,7 +7,7 @@ import StarIcon from "../../assets/icons/starIcon.svg";
 import { OnelineReviewCardType } from "../../types/OnelineReview";
 import Modal from "../../Modal";
 import Button from "../atom/Button";
-import onelineReviewApis from "../../apis/onelineReviewapis";
+import OnelineReviewApis from "../../apis/onelineReviewapis";
 import OnelineWrapper from "../../pages/OnelineWrapper";
 
 const OnelineCard = ({
@@ -31,7 +31,7 @@ const OnelineCard = ({
   };
 
   const deleteMutation = useMutation({
-    mutationFn: () => onelineReviewApis.deleteReview(id),
+    mutationFn: () => OnelineReviewApis.deleteReview(id),
   });
 
   return (

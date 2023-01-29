@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from "react";
 import { useMutation } from "react-query";
 import OnelineWrite from "../components/onelineReview/OnelineWrite";
 import { OnelineReviewPostType } from "../types/OnelineReview";
-import onelineReviewApis from "../apis/onelineReviewapis";
+import oneLineReviewApis from "../apis/onelineReviewapis";
 
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
@@ -177,12 +177,12 @@ const OnelineWrapper = ({ writeType, simpleId = 0 }: OnelineWrapperProps) => {
   };
 
   const newReviewMutation = useMutation({
-    mutationFn: (payload: Payload) => onelineReviewApis.createReview(payload),
+    mutationFn: (payload: Payload) => oneLineReviewApis.createReview(payload),
   });
 
   const modifyMutation = useMutation({
     mutationFn: (payload: Payload) =>
-      onelineReviewApis.updateReview(simpleId, payload),
+      oneLineReviewApis.updateReview(simpleId, payload),
   });
 
   const SubmitHandler = () => {

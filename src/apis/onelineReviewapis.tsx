@@ -22,7 +22,7 @@ interface PatchOnelineReviewBody {
   content: string;
 }
 
-const onelineReviewApis = {
+const oneLineReviewApis = {
   createReview: async (body: CreateReviewBody) => {
     const response: AxiosResponse = await apiInstance.post(
       `/api/simple-reviews`,
@@ -50,4 +50,4 @@ const onelineReviewApis = {
   },
 };
 
-export default onelineReviewApis;
+export default oneLineReviewApis;
