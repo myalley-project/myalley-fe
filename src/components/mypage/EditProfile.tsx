@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import { MyInfoRes, myInfoApi, editMyInfoApi } from "../../apis/member";
+import { MyInfoRes, editMyInfoApi, EditMyInfoType } from "../../apis/member";
 import { Input, Label, Notice } from "../atom/labelInput";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
@@ -12,6 +12,10 @@ import {
   getDayArray,
 } from "../../utils/dateSelector";
 import { theme } from "../../styles/theme";
+import useRefreshTokenApi from "../../apis/useRefreshToken";
+import isApiError from "../../utils/isApiError";
+import eyeOff from "../../assets/icons/eyeOff.svg";
+import eyeOn from "../../assets/icons/eyeOn.svg";
 
 interface MyInfoType {
   infoData: {
@@ -26,7 +30,19 @@ interface MyInfoType {
   };
 }
 
+interface InfosType {
+  password: string | null;
+  nickname: string;
+  gender: string;
+  year: string;
+  month: string;
+  day: string;
+  imageFile: File | null;
+}
+
 const MyProfileEdit = (props: MyInfoType) => {
+  const refreshTokenApi = useRefreshTokenApi();
+  const formData = new FormData();
   const { infoData } = props;
   const { birth, nickname, gender } = infoData;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
@@ -36,15 +52,17 @@ const MyProfileEdit = (props: MyInfoType) => {
     nickname: false,
     password: false,
   });
-  const [infos, setInfos] = useState({
+  const [infos, setInfos] = useState<InfosType>({
     password: null,
     nickname: "",
     gender: "",
     year: "",
     month: "",
     day: "",
-    imageFile: "",
+    imageFile: null,
   });
+  const [isPwType, setIsPwType] = useState(true);
+  const [isPwCheckType, setIsCheckPwType] = useState(true);
 
   // input 핸들러 함수
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +77,12 @@ const MyProfileEdit = (props: MyInfoType) => {
   const handleSetInfos = (e: React.MouseEvent<HTMLLIElement>, name: string) => {
     if (e !== undefined) {
       const { textContent } = e.currentTarget;
-      if (textContent !== null) {
+      if (name === "gender") {
+        setInfos({
+          ...infos,
+          gender: gender === "여성" ? "W" : "M",
+        });
+      } else if (textContent !== null) {
         setInfos({
           ...infos,
           [name]: textContent,
@@ -110,7 +133,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     if (e.target.files !== null) {
       setInfos({
         ...infos,
-        imageFile: e.target.files[0].name,
+        imageFile: e.target.files[0],
       });
       reader.onload = () => {
         if (e.target.files !== null) {
@@ -123,12 +146,29 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   // 회원정보 수정 api
   const editBtn = async () => {
-    console.log(infos);
+    const editMyInfo: EditMyInfoType = {
+      password: infos.password,
+      nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
+      gender: `${infos.gender === "" ? gender : infos.gender}`,
+      birth: `${infos.year === "" ? `${birth.substring(0, 4)}` : infos.year}-${
+        infos.month === "" ? `${birth.substring(5, 7)}` : infos.month
+      }-${infos.day === "" ? `${birth.substring(8)}` : infos.day}`,
+    };
+    if (infos.imageFile !== null) {
+      formData.append("imageFile", infos.imageFile);
+    }
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(editMyInfo)], { type: "application/json" })
+    );
     try {
-      const res: AxiosResponse<MyInfoRes> | void = await editMyInfoApi();
+      const res: AxiosResponse<MyInfoRes> | void = await editMyInfoApi(
+        formData
+      );
+      // 회원정보 수정이 완료되었습니다 alert 띄우기
       console.log(res);
     } catch (err) {
-      console.log(err);
+      isApiError(err);
     }
   };
 
@@ -153,7 +193,7 @@ const MyProfileEdit = (props: MyInfoType) => {
           <Input
             id="nickname"
             type="text"
-            placeholder="Nickname"
+            placeholder={nickname}
             width="26vw"
             height="44px"
             name="nickname"
@@ -173,21 +213,21 @@ const MyProfileEdit = (props: MyInfoType) => {
           <Label>생년월일</Label>
           <BirthWrapper>
             <Selectbox
-              placeholder="9999"
+              placeholder={birth.substring(0, 4)}
               options={getYearArray()}
               width="9vw"
               name="year"
               onClick={handleSetInfos}
             />
             <Selectbox
-              placeholder="12"
+              placeholder={birth.substring(5, 7)}
               options={getMonthArray()}
               width="6.9vw"
               name="month"
               onClick={handleSetInfos}
             />
             <Selectbox
-              placeholder="31"
+              placeholder={birth.substring(8, 10)}
               options={getDayArray()}
               width="6.9vw"
               name="day"
@@ -198,7 +238,7 @@ const MyProfileEdit = (props: MyInfoType) => {
         <InputWrapper style={{ marginBottom: "50px" }}>
           <Label htmlFor="gender">성별</Label>
           <Selectbox
-            placeholder="성별"
+            placeholder={gender === "W" ? "여성" : "남성"}
             options={["여성", "남성"]}
             width="26vw"
             name="gender"
@@ -207,18 +247,26 @@ const MyProfileEdit = (props: MyInfoType) => {
         </InputWrapper>
         <InputWrapper>
           <Label htmlFor="password">비밀번호 변경</Label>
-          <PasswordInput
-            id="password"
-            type="password"
-            name="password"
-            placeholder="비밀번호를 입력하세요"
-            width="26vw"
-            height="44px"
-            onChange={(e) => {
-              handleInput(e);
-              handlePwValid(e);
-            }}
-          />
+          <PasswordWrapper>
+            <PasswordInput
+              id="password"
+              type={isPwType ? "password" : "text"}
+              name="password"
+              placeholder="비밀번호를 입력하세요"
+              width="26vw"
+              height="44px"
+              onChange={(e) => {
+                handleInput(e);
+                handlePwValid(e);
+              }}
+            />
+            <EyeIconbtn
+              type="button"
+              onClick={() => setIsPwType((prev) => !prev)}
+            >
+              <img src={isPwType ? eyeOff : eyeOn} alt="eye-icon" />
+            </EyeIconbtn>
+          </PasswordWrapper>
           {!valids.password ? (
             <Notice color={colors.default}>
               영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요
@@ -229,16 +277,24 @@ const MyProfileEdit = (props: MyInfoType) => {
         </InputWrapper>
         <InputWrapper>
           <Label htmlFor="password-check">비밀번호 재확인</Label>
-          <PasswordInput
-            id="password-check"
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-            width="26vw"
-            height="44px"
-            onChange={(e) => {
-              setPasswordCheck(e.target.value);
-            }}
-          />
+          <PasswordWrapper>
+            <PasswordInput
+              id="password-check"
+              type={isPwCheckType ? "password" : "text"}
+              placeholder="비밀번호를 입력하세요"
+              width="26vw"
+              height="44px"
+              onChange={(e) => {
+                setPasswordCheck(e.target.value);
+              }}
+            />
+            <EyeIconbtn
+              type="button"
+              onClick={() => setIsCheckPwType((prev) => !prev)}
+            >
+              <img src={isPwCheckType ? eyeOff : eyeOn} alt="eye-icon" />
+            </EyeIconbtn>
+          </PasswordWrapper>
           {passwordCheck !== "" && passwordCheck === infos.password ? (
             <Notice color={colors.success}>동일한 비밀번호입니다</Notice>
           ) : (
@@ -322,7 +378,21 @@ const BirthWrapper = styled.div`
   }
 `;
 
+const PasswordWrapper = styled.div`
+  width: 26vw;
+  position: relative;
+`;
+
+const EyeIconbtn = styled.button`
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  padding: 0;
+  cursor: pointer;
+`;
+
 const PasswordInput = styled(Input)`
+  width: 100%;
   background-position: right 19px center;
   background-repeat: no-repeat;
 `;

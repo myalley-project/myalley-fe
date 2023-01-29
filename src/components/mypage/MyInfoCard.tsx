@@ -1,24 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { MyInfoRes } from "../../apis/member";
 import profileImg from "../../assets/icons/profileImg.svg";
 import MenuBtns from "./MenuBtns";
 
 interface MyInfoType {
-  infoData: {
-    memberId: number;
-    email: string;
-    nickname: string;
-    gender: string;
-    birth: string;
-    level: string;
-    memberImage: string;
-    authority: string;
-  };
+  infoData: MyInfoRes;
 }
 
 const MyInfo = (props: MyInfoType) => {
   const { infoData } = props;
-  const { memberImage, level, nickname, gender, email } = infoData;
+  const { level, nickname, gender, email, age } = infoData;
   return (
     <Profile>
       <ProfileImg src={profileImg} alt="profile-img" />
@@ -27,7 +19,7 @@ const MyInfo = (props: MyInfoType) => {
       <Privacy>
         <p>{gender === "W" ? "여성" : "남성"}</p>
         <p className="partition">|</p>
-        <p>23세</p>
+        <p>{age}</p>
         <p className="partition">|</p>
         <p>{email}</p>
       </Privacy>

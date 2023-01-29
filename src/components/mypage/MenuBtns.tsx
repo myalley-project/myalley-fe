@@ -4,13 +4,9 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
 const MenuButtons = () => {
-  const navigete = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
-
-  const Navigate = (query: string) => {
-    navigete(query);
-  };
 
   return (
     <Buttons>
@@ -27,7 +23,7 @@ const MenuButtons = () => {
                 color: `${theme.colors.greys60}`,
               }
         }
-        onClick={() => Navigate("/mypage/edit")}
+        onClick={() => navigate("/mypage/edit")}
       >
         회원 정보 수정
       </MenuButton>
@@ -44,15 +40,14 @@ const MenuButtons = () => {
                 color: `${theme.colors.greys60}`,
               }
         }
-        onClick={() => Navigate("/mypage/write?type=oneline&pageno=1")}
+        onClick={() => navigate("/mypage/write?type=oneline&pageno=1")}
       >
         작성글 조회
       </MenuButton>
-
       <MenuButton
         type="button"
         style={
-          /^\/myapge\/bookmark/.test(pathname)
+          /^\/mypage\/bookmark/.test(pathname)
             ? {
                 backgroundColor: `${theme.colors.primry70}`,
                 color: `${theme.colors.white100}`,
@@ -62,7 +57,7 @@ const MenuButtons = () => {
                 color: `${theme.colors.greys60}`,
               }
         }
-        onClick={() => Navigate("/mypage/bookmark")}
+        onClick={() => navigate("/mypage/bookmark?type=oneline&pageno=1")}
       >
         북마크
       </MenuButton>
