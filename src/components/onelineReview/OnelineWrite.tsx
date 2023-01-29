@@ -26,7 +26,7 @@ interface HandlerProps {
 
 type Payload = {
   exhibitionId: number;
-  date: string;
+  viewDate: string;
   time: string;
   congestion: string;
   rate: number;
@@ -49,7 +49,7 @@ const OnelineWrite = ({
   });
   const SubmitHandler = () => {
     const body = getPayload(state);
-    if (Object.values(body).includes("") || Object.values(body).includes(0)) {
+    if (!Object.values(body).includes("") || !Object.values(body).includes(0)) {
       newReviewMutation.mutate(body);
     }
     throw Error("빈 칸으로 남겨진 값이 있습니다.");
@@ -153,7 +153,7 @@ function getPayload(state: OnelineReviewPostType): Payload {
 
   return {
     exhibitionId: state.exhibitionId,
-    date: BIRTHDAY,
+    viewDate: BIRTHDAY,
     time: state.time,
     congestion: state.congestion,
     rate: state.rate,

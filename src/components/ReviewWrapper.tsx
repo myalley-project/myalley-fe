@@ -2,28 +2,38 @@ import React, { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useQuery } from "react-query";
+import { useQuery, UseQueryResult } from "react-query";
 import ReviewSearchbar from "./ReviewSearchbar";
 import OnelineCard from "./onelineReview/OnelineCard";
-import { OnelineReviewReadType } from "../types/OnelineReview";
+import {
+  OnelineReviewCardType,
+  OnelineReviewReadType,
+} from "../types/OnelineReview";
 import onelineReviewApis from "../apis/onelineReviewapis";
+import Pagination from "./Pagination";
 
 const ReviewWrapper = () => {
   const [filter, setFilter] = useState("oneline");
-  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState({
+    started: 1,
+    selected: 1,
+  });
   const [orderType, setOrderType] = useState("Recent");
   const { id } = useParams();
 
-  const { error, data } = useQuery<
-    Promise<AxiosResponse<any, any>>,
-    Error,
-    OnelineReviewReadType
-  >({
-    queryKey: ["simpleReviews", { page, orderType }],
-    queryFn: () => onelineReviewApis.getReviews(id, page, orderType),
+  const {
+    isLoading,
+    isError,
+    error,
+    data,
+  }: UseQueryResult<OnelineReviewReadType, Error> = useQuery({
+    queryKey: ["simpleReviews", { page: pages.selected, orderType }],
+    queryFn: () => onelineReviewApis.getReviews(id, pages.selected, orderType),
   });
 
-  if (error) return <div>{error.message}</div>;
+  if (isLoading) return <div>...loading</div>;
+
+  if (isError) return <div>{error.message}</div>;
 
   return (
     <Container>
@@ -51,6 +61,13 @@ const ReviewWrapper = () => {
         </OnelineContainer>
       ) : null}
       {filter === "blog" ? <div /> : null}
+      {data ? (
+        <Pagination
+          pages={pages}
+          setPages={setPages}
+          totalPage={data.pageInfo.totalElement}
+        />
+      ) : null}
     </Container>
   );
 };
