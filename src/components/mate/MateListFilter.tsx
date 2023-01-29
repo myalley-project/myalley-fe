@@ -12,7 +12,7 @@ interface MateListFilterType {
   setPages: React.Dispatch<React.SetStateAction<PagesState>>;
 }
 
-// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.01.26
+// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.01.29
 const MateListFilter = (props: MateListFilterType) => {
   const { mateStatusFilter, setMateStatusFilter, setPages } = props;
   const navigate = useNavigate();
@@ -68,6 +68,10 @@ const MateListFilter = (props: MateListFilterType) => {
           size="small"
           className="mate-write-btn"
           onClick={() => {
+            if (!localStorage.getItem("accessToken")) {
+              alert("로그인이 필요합니다.");
+              return;
+            }
             navigate("/mate-write");
           }}
         >

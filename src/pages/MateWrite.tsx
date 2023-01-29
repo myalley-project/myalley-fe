@@ -35,7 +35,7 @@ const MateWrite = () => {
     availableDate: "2023-10-30",
     content: "같이 전시봐요",
     contact: "",
-    exhibitionId: 2,
+    exhibitionId: 1,
   });
   const [isAgeRegardless, setIsAgeRegardless] = useState(false);
   const [isDateRegardless, setIsDateRegardless] = useState(false);
@@ -50,10 +50,10 @@ const MateWrite = () => {
   // 달력 선택값 가져오기
   // 에디터 연결하기
 
-  // 토큰 없을 때 접속하면 로그인페이지로 리다이렉트_박예선_23.01.28
+  // 토큰 없을 때 접속하면 로그인페이지로 리다이렉트_박예선_23.01.29
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
-      alert("로그인이 필요한 기능입니다. 로그인 페이지로 이동합니다.");
+      alert("로그인이 필요한 기능입니다.");
       navigate("/login");
     }
   }, [navigate]);
