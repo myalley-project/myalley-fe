@@ -214,7 +214,11 @@ const BlogReviewWrite = () => {
         <Editor>
           <div>
             <Editor.ImageArea />
-            <Editor.TextInputArea textChangeHandler={() => {}} />
+            <Editor.TextInputArea
+              name="임시"
+              value="임시"
+              textChangeHandler={() => {}}
+            />
           </div>
         </Editor>
       </div>
