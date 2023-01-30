@@ -1,7 +1,11 @@
 import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 import apiMultipartInstance from "../utils/apimultipartInstance";
-import { BlogReviewPost, BlogReviewResponse } from "../types/blogReview";
+import {
+  BlogReviewPost,
+  BlogReviewResponse,
+  BlogReviewDetailResponse,
+} from "../types/blogReview";
 
 const blogReviewApis = {
   createReview: async (body: BlogReviewPost) => {
@@ -10,13 +14,22 @@ const blogReviewApis = {
   },
   readBlogReviews: async (
     pageNo: number,
-    orderType: "Recent" | "StarScore"
+    orderType: "Recent" | "ViewCount"
   ) => {
     const response: AxiosResponse<BlogReviewResponse> = await apiInstance.get(
       `/blogs?page=${pageNo}&order=${orderType}`
     );
     return response.data;
   },
+  // readDetailBlogReview: async (blogId: number) => {
+  //   const response: AxiosResponse<BlogReviewDetailResponse> =
+  //     await apiInstance.get(`/blogs/${blogId}`, {
+  //       headers: {
+  //         memberId: localStorage.getItem("memberId"),
+  //       },
+  //     });
+  //   return response;
+  // },
   readExhibitionReviews: async (
     exhibitionId = 0,
     pageNo = 0,

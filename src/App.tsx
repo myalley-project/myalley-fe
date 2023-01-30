@@ -12,6 +12,7 @@ import Mypage from "./pages/Mypage";
 import MateList from "./pages/MateList";
 import Mate from "./pages/Mate";
 import Footer from "./components/Footer";
+import BlogReviewPage from "./pages/BlogReviewPage";
 
 const App = () => (
   <BrowserRouter>
@@ -26,7 +27,7 @@ const App = () => (
         path="/exhibition/:id/edit"
         element={<ExhibitionWrite mode="edit" />}
       />
-
+      <Route path="/blogs" element={<BlogReviewPage />} />
       <Route
         path="/exhibition-write"
         element={<ExhibitionWrite mode="create" />}

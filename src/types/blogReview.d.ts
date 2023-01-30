@@ -62,3 +62,32 @@ export interface BlogReviewResponse {
   blogInfo: BlogReviewInfo[];
   pageInfo: PageInfo;
 }
+
+export interface BlogReviewDetailResponse {
+  id: number;
+  viewDate: string;
+  createdAt: string;
+  title: string;
+  content: string;
+  likeCount: number;
+  viewCount: number;
+  bookmarkCount: number;
+  transportation: string;
+  revisit: string;
+  congestion: string;
+  likeStatus: boolean;
+  bookmarkStatus: boolean;
+  imageInfo: ImageInfo[];
+  memberInfo: {
+    memberId: number;
+    nickname: string;
+    memberImage: string;
+  };
+  exhibitionInfo: {
+    id: number;
+    title: string;
+    posterUrl: string;
+    duration: string;
+    space: string;
+  };
+}

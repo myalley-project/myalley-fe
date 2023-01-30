@@ -9,12 +9,12 @@ import SimpleInput from "../components/atom/SimpleInput";
 import blogReviewApis from "../apis/blogReviewApis";
 import Pagination from "../components/Pagination";
 
-const BlogReviewList = () => {
+const BlogReviewPage = () => {
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
   });
-  const [orderType, setOrderType] = useState<"Recent" | "StarScore">("Recent");
+  const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
 
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogReviews", { page: pages.selected, orderType }],
@@ -31,24 +31,35 @@ const BlogReviewList = () => {
       <Title>전시 리뷰</Title>
       <Divider />
       <SelectContainer>
-        <div style={{ columnCount: "2" }}>
+        <Flex>
           <Selectbox
             placeholder="최신 순"
             options={["최신 순", "인기 순"]}
             width="130px"
             name="정렬 필터"
-            onClick={(e: React.MouseEvent<HTMLElement>, name = "sjei") => {}}
+            onClick={(
+              e: React.MouseEvent<HTMLElement>,
+              name = "최신순 필터"
+            ) => {}}
           />
-          <Button size="small" variant="primary">
+          <Button
+            style={{ padding: "8px 20px" }}
+            size="small"
+            variant="primary"
+          >
             적용
           </Button>
-        </div>
-        <div>
-          <SimpleInput />
-          <Button size="large" variant="primary">
+        </Flex>
+        <Flex style={{ gap: "10px" }}>
+          <SimpleInput placeholder="검색" width="277px" />
+          <Button
+            style={{ padding: "8px 20px" }}
+            size="large"
+            variant="primary"
+          >
             리뷰 등록
           </Button>
-        </div>
+        </Flex>
       </SelectContainer>
       {data ? (
         <BlogReviewListWrapper
@@ -67,7 +78,7 @@ const BlogReviewList = () => {
   );
 };
 
-export default BlogReviewList;
+export default BlogReviewPage;
 
 const Container = styled.div`
   width: 62.5vw;
@@ -96,7 +107,8 @@ const SelectContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const Filter = styled.div`
+const Flex = styled.div`
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 4px;
 `;

@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
-const SimpleInput = () => {
+interface SimpleInputProps {
+  width: string;
+  placeholder: string;
+}
+
+const SimpleInput = ({ width, placeholder }: SimpleInputProps) => {
   const [inputlength, setInputlength] = useState(0);
 
   const lengthChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,8 +18,9 @@ const SimpleInput = () => {
     <Container>
       <Input
         type="text"
-        placeholder="내용을 입력해주세요"
+        placeholder={placeholder}
         onChange={lengthChangeHandler}
+        width={width}
       />
       <InputLegnth inputlength={inputlength}>{inputlength}/60</InputLegnth>
     </Container>
@@ -28,7 +34,7 @@ const Container = styled.div`
 `;
 
 const Input = styled.input`
-  width: 730px;
+  width: ${(props) => props.width};
   height: 36px;
   margin: 10px auto;
   padding-left: 10px;

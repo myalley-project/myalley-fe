@@ -127,7 +127,7 @@ const OnelineWrite = ({
         </SelectForm>
         <SelectForm>
           <p>전시회 웹페이지 주소</p>
-          <SimpleInput />
+          <SimpleInput placeholder="내용을 입력해주세요" width="740px" />
         </SelectForm>
       </SelectContainer>
       <ButtonContainer>
