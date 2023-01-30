@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 import isApiError, { errorAlert } from "../utils/isApiError";
+import removeLocalStorageItem from "../utils/removeLocalStorageItem";
 
 // refresh토큰 요청 api_박예선_2023.01.30
 const useRefreshTokenApi = () => {
@@ -26,13 +27,7 @@ const useRefreshTokenApi = () => {
         if (typeof errorRes !== "object") return undefined;
         const { errorMsg } = errorRes;
         if (errorMsg === "Forbidden") {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          localStorage.removeItem("memberId");
-          localStorage.removeItem("email");
-          localStorage.removeItem("nickname");
-          localStorage.removeItem("memberImage");
-          localStorage.removeItem("authority");
+          removeLocalStorageItem();
           alert("자동 로그인 기간이 만료되었습니다. 다시 로그인해주세요.");
           navigate("/login");
           return undefined;
