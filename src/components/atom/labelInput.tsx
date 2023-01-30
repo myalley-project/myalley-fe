@@ -21,6 +21,9 @@ export const Input = styled.input<{ width: string; height: string }>`
   &::placeholder {
     color: ${(props) => props.theme.colors.greys60};
   }
+  &.error {
+    border: 1px solid ${(props) => props.theme.colors.error};
+  }
 `;
 
 export const Notice = styled.span<{ color: string }>`

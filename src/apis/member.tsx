@@ -22,11 +22,19 @@ export const myInfoApi = async (type: "get" | "put") => {
 
 // 내 정보 수정
 export const editMyInfoApi = async (reqBody: FormData) => {
-  const putRes: AxiosResponse<MyInfoRes> = await apiInstance.put(
+  const res: AxiosResponse<EditMyInfoRes> = await apiInstance.put(
     "/api/me",
     reqBody
   );
-  return putRes;
+  return res;
+};
+
+// 회원 탈퇴
+export const withdrawalsApi = async () => {
+  const res: AxiosResponse<EditMyInfoRes> = await apiInstance.delete(
+    "/api/me/withdrawals"
+  );
+  return res;
 };
 
 // 내가 쓴 한줄 리뷰 목록 조회
@@ -119,6 +127,10 @@ export interface MyInfoRes {
   level: "level1" | "level2" | "level3" | "level4";
   memberImage: string | "";
   authority: "ROLE_USER" | "ROLE_ADMIN";
+}
+
+export interface EditMyInfoRes {
+  resultCode: number;
 }
 
 export interface EditMyInfoType {
