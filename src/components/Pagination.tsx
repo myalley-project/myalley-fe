@@ -169,6 +169,9 @@ const PaginationContainer = styled.div`
   .flex {
     display: flex;
   }
+  &.none {
+    display: none;
+  }
 `;
 
 const ArrowBtn = styled.button`
