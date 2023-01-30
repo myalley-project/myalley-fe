@@ -34,12 +34,31 @@ export interface BlogReviewCardProps {
   };
 }
 
-export interface BlogReviewResponse {
-  blogInfo: BlogReviewCardProps[];
-  pageInfo: {
-    page: number;
-    size: number;
-    totalElement: number;
-    totalPage: number;
+type ImageInfo = {
+  id: string;
+  url: string;
+};
+
+export interface BlogReviewInfo {
+  id: number;
+  title: string;
+  writer: string;
+  viewDate: string;
+  viewCount: number;
+  imageInfo: {
+    id: string;
+    url: string;
   };
+}
+
+type PageInfo = {
+  page: number;
+  size: number;
+  totalElement: number;
+  totalPage: number;
+};
+
+export interface BlogReviewResponse {
+  blogInfo: BlogReviewInfo[];
+  pageInfo: PageInfo;
 }

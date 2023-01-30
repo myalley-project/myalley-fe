@@ -1,33 +1,7 @@
 import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 import apiMultipartInstance from "../utils/apimultipartInstance";
-import { BlogReviewPost } from "../types/blogReview";
-
-type ImageInfo = {
-  id: string;
-  url: string;
-};
-
-type BlogReviewInfo = {
-  id: number;
-  title: string;
-  writer: string;
-  viewDate: string;
-  viewCount: number;
-  imageInfo: ImageInfo[];
-};
-
-type PageInfo = {
-  page: number;
-  size: number;
-  totalElement: number;
-  totalPage: number;
-};
-
-interface BlogReviewResponse {
-  blogInfo: BlogReviewInfo[];
-  pageInfo: PageInfo;
-}
+import { BlogReviewPost, BlogReviewResponse } from "../types/blogReview";
 
 const blogReviewApis = {
   createReview: async (body: BlogReviewPost) => {

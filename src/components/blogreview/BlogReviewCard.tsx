@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-import { BlogReviewCardProps } from "../../types/blogReview";
+import { BlogReviewInfo } from "../../types/blogReview";
 
 const BlogReviewCard = ({
   title,
@@ -9,7 +9,7 @@ const BlogReviewCard = ({
   viewDate,
   viewCount,
   imageInfo,
-}: BlogReviewCardProps) => (
+}: BlogReviewInfo) => (
   <Container>
     <Image>
       <img src={imageInfo.url} alt="블로그 리뷰 이미지" />

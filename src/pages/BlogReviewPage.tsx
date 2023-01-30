@@ -7,6 +7,7 @@ import BlogReviewListWrapper from "../components/blogreview/BlogReviewList";
 import Button from "../components/atom/Button";
 import SimpleInput from "../components/atom/SimpleInput";
 import blogReviewApis from "../apis/blogReviewApis";
+import Pagination from "../components/Pagination";
 
 const BlogReviewList = () => {
   const [pages, setPages] = useState({
@@ -19,6 +20,7 @@ const BlogReviewList = () => {
     queryKey: ["blogReviews", { page: pages.selected, orderType }],
     queryFn: () => blogReviewApis.readBlogReviews(pages.selected, orderType),
   });
+  const totalPageNumber = data?.pageInfo.totalPage ?? 0;
 
   if (isLoading) return <div>...loading</div>;
 
@@ -48,7 +50,19 @@ const BlogReviewList = () => {
           </Button>
         </div>
       </SelectContainer>
-      {data ? <BlogReviewListWrapper blogInfo={data?.blogInfo} /> : null}
+      {data ? (
+        <BlogReviewListWrapper
+          blogInfo={data?.blogInfo}
+          pageInfo={data?.pageInfo}
+        />
+      ) : null}
+      {totalPageNumber > 0 ? (
+        <Pagination
+          pages={pages}
+          setPages={setPages}
+          totalPage={totalPageNumber}
+        />
+      ) : null}
     </Container>
   );
 };
