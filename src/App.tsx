@@ -13,6 +13,7 @@ import MateList from "./pages/MateList";
 import Mate from "./pages/Mate";
 import Footer from "./components/Footer";
 import BlogReviewPage from "./pages/BlogReviewPage";
+import BlogReviewDetail from "./components/blogreview/BlogReviewDetail";
 
 const App = () => (
   <BrowserRouter>
@@ -35,6 +36,7 @@ const App = () => (
       <Route path="/mypage/:subpages" element={<Mypage />} />
       <Route path="/mate-list" element={<MateList />} />
       <Route path="/mate/:id" element={<Mate />} />
+      <Route path="/blog-detail" element={<BlogReviewDetail />} />
     </Routes>
     <ReactQueryDevtools />
     <Footer />
