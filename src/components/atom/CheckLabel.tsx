@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { ReactComponent as CheckOn } from "../../assets/icons/checkOn.svg";
@@ -14,6 +14,10 @@ interface CheckLabelType {
 const CheckLabel = ({ label, checked, onClick }: CheckLabelType) => {
   const [isChecked, setIsChecked] = useState(checked);
   const [isCheckOffHover, setIsCheckOffHover] = useState(false);
+
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
 
   return (
     <CheckLabelContainer
