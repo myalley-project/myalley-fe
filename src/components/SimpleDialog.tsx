@@ -7,22 +7,36 @@ interface SimpleDialogProps {
   message: string;
   cancelMessage: string;
   confirmMessage: string;
+  clickCancleBtn: () => void;
+  clickConfirmBtn: () => void;
 }
 
 const SimpleDialog = ({
   message,
   cancelMessage,
   confirmMessage,
+  clickCancleBtn,
+  clickConfirmBtn,
 }: SimpleDialogProps) => (
   <Dialog>
     <Message>
       <Title>{message}</Title>
     </Message>
     <Container>
-      <Button variant="text" size="large" type="button">
+      <Button
+        onClick={clickCancleBtn}
+        variant="text"
+        size="large"
+        type="button"
+      >
         {cancelMessage}
       </Button>
-      <Button variant="primary" size="large" type="button">
+      <Button
+        onClick={clickConfirmBtn}
+        variant="primary"
+        size="large"
+        type="button"
+      >
         {confirmMessage}
       </Button>
     </Container>

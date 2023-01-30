@@ -19,7 +19,7 @@ const MyInfo = (props: MyInfoType) => {
       <Privacy>
         <p>{gender === "W" ? "여성" : "남성"}</p>
         <p className="partition">|</p>
-        <p>{age}</p>
+        <p>{age}세</p>
         <p className="partition">|</p>
         <p>{email}</p>
       </Privacy>

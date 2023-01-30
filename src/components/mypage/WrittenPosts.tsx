@@ -1,7 +1,9 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import WrittenMates from "./WrittenMates";
 import SubMenuBtns from "./SubMenuBtns";
+import WrittenSimpleReviews from "./WrittenSimpleReview";
+import WrittenMates from "./WrittenMate";
+import WrittenBlogReviews from "./WrittenBlogReview";
 
 const WrittenPosts = () => {
   const location = useLocation();
@@ -10,7 +12,8 @@ const WrittenPosts = () => {
   return (
     <div>
       <SubMenuBtns />
-      {/* 한줄리뷰 컴포넌트, 블로그 리뷰 컴포넌트 추가해야함 */}
+      {search.includes("?type=simple") && <WrittenSimpleReviews />}
+      {search.includes("?type=blog") && <WrittenBlogReviews />}
       {search.includes("?type=mate") && <WrittenMates />}
     </div>
   );

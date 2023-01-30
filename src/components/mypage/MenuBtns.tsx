@@ -40,7 +40,7 @@ const MenuButtons = () => {
                 color: `${theme.colors.greys60}`,
               }
         }
-        onClick={() => navigate("/mypage/write?type=oneline&pageno=1")}
+        onClick={() => navigate("/mypage/write?type=simple&pageno=1")}
       >
         작성글 조회
       </MenuButton>
@@ -57,7 +57,7 @@ const MenuButtons = () => {
                 color: `${theme.colors.greys60}`,
               }
         }
-        onClick={() => navigate("/mypage/bookmark?type=oneline&pageno=1")}
+        onClick={() => navigate("/mypage/bookmark?type=exhibition&pageno=1")}
       >
         북마크
       </MenuButton>
