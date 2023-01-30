@@ -1,20 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-
-interface BlogReviewProps {
-  title: string;
-  writer: string;
-  viewDate: string;
-  viewCount: number;
-}
+import { BlogReviewCardProps } from "../../types/blogReview";
 
 const BlogReviewCard = ({
   title,
   writer,
   viewDate,
   viewCount,
-}: BlogReviewProps) => (
+}: BlogReviewCardProps) => (
   <Container>
     <Image />
     <Review>

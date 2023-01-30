@@ -22,6 +22,24 @@ export interface BlogReviewPatch {
   content: string;
 }
 
-// interface BlogImagePost {
+export interface BlogReviewCardProps {
+  id: number;
+  title: string;
+  writer: string;
+  viewDate: string;
+  viewCount: number;
+  imageInfo: {
+    id: number;
+    url: string;
+  };
+}
 
-// }
+export interface BlogReviewResponse {
+  blogInfo: BlogReviewCardProps[];
+  pageInfo: {
+    page: number;
+    size: number;
+    totalElement: number;
+    totalPage: number;
+  };
+}

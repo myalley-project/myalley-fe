@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
 import Selectbox from "../components/atom/Selectbox";
-import BlogReviewCard from "../components/blogreview/BlogReviewCard";
+import BlogReviewListWrapper from "../components/blogreview/BlogReviewList";
 import Button from "../components/atom/Button";
 import SimpleInput from "../components/atom/SimpleInput";
 
@@ -30,9 +30,7 @@ const BlogReviewList = () => (
         </Button>
       </div>
     </SelectContainer>
-    <ListContainer>
-      <BlogReviewCard />
-    </ListContainer>
+    {/* <BlogReviewListWrapper /> */}
   </Container>
 );
 
