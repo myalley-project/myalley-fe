@@ -5,7 +5,7 @@ import LoginSignUp from "../components/LoginSignUp.style";
 import EmailAndPw from "../components/signUp/EmailAndPw";
 import CommonOnly from "../components/signUp/CommonOnly";
 import AdminOnly from "../components/signUp/AdminOnly";
-import { IsOnly } from "../types/signUp";
+import { IsOnly, Valids } from "../types/signUp";
 import signUpApi from "../apis/signUp";
 import isApiError from "../utils/isApiError";
 import Button from "../components/atom/Button";
@@ -24,13 +24,13 @@ const SignUp = () => {
     adminNo: 0,
     name: "",
   });
-  const [valids, setValids] = useState({
-    email: false,
-    password: false,
-    pwCheck: false,
-    nickname: false,
-    adminNo: false,
-    name: false,
+  const [valids, setValids] = useState<Valids>({
+    email: null,
+    password: null,
+    pwCheck: null,
+    nickname: null,
+    adminNo: null,
+    name: null,
   });
   const [isOnly, setIsOnly] = useState<IsOnly>({
     email: null,
@@ -77,6 +77,7 @@ const SignUp = () => {
       ...infos,
       [name]: value,
     });
+    setIsOnly({ email: null, nickname: null, adminNo: null });
   };
 
   // 회원가입 요청, 요청 후 처리 함수_박예선_2023.01.21
