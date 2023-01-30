@@ -12,21 +12,21 @@ import {
 } from "date-fns";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
-import ArrowLeft from "../assets/icons/arrowLeft.svg";
-import ArrowRight from "../assets/icons/arrowRight.svg";
+import arrowLeft from "../assets/icons/arrowLeft.svg";
+import arrowRight from "../assets/icons/arrowRight.svg";
 
-const Calender = () => {
+interface CalendarProps {
+  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Calender = ({ setSelectedDate }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedNumber, setSelectedNumber] = useState(new Date().getDate());
 
   const calendarDays = useMemo(
     () => getCalendarDays(currentMonth),
     [currentMonth]
   );
-
-  useEffect(() => {
-    setSelectedDate("");
-  }, [currentMonth]);
 
   const prevMonth = () => {
     const prevDate = subMonths(currentMonth, 1);
@@ -42,6 +42,9 @@ const Calender = () => {
 
     if (e.target.dataset.valid === "true") {
       const day = e.target.dataset.value as string;
+      const numberDay = parseInt(day, 10);
+      setSelectedNumber(numberDay);
+
       const selectedDay = new Date(
         getYear(currentMonth),
         getMonth(currentMonth),
@@ -53,7 +56,7 @@ const Calender = () => {
         .replaceAll(". ", "-")
         .slice(0, -1);
 
-      setSelectedDate(() => result);
+      setSelectedDate(result);
     }
   };
 
@@ -62,7 +65,7 @@ const Calender = () => {
       <Header>
         <div>
           <button type="button" onClick={prevMonth}>
-            <img src={ArrowLeft} alt="이전 화살표" />
+            <img src={arrowLeft} alt="이전 화살표" />
           </button>
         </div>
         <div>
@@ -70,7 +73,7 @@ const Calender = () => {
         </div>
         <div>
           <button type="button" onClick={nextMonth}>
-            <img src={ArrowRight} alt="다음 화살표" />
+            <img src={arrowRight} alt="다음 화살표" />
           </button>
         </div>
       </Header>
@@ -86,7 +89,12 @@ const Calender = () => {
       </DayOfWeek>
       <Week onClick={onDateSelect} onKeyDown={onDateSelect} role="presentation">
         {calendarDays.map((each) => (
-          <Day key={each.id} data-valid={each.isValid} data-value={each.day}>
+          <Day
+            key={each.id}
+            className={each.day === selectedNumber ? "selected" : ""}
+            data-valid={each.isValid}
+            data-value={each.day}
+          >
             {each.day}
           </Day>
         ))}
@@ -206,16 +214,14 @@ const Week = styled.div`
 const Day = styled.div`
   width: calc(100% / 7);
   aspect-ratio: 1 / 1;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 5px;
   margin-bottom: 1rem;
   text-align: center;
-  &:is(:hover, :focus) {
-    background-color: #6750a4;
+  &:is(:hover, :focus, :focus-within) {
+    background-color: ${theme.colors.primry70};
     border-radius: 100vmax;
   }
   &:nth-child(7n + 1) {
@@ -223,5 +229,9 @@ const Day = styled.div`
   }
   &[data-valid="false"] {
     opacity: 0.65;
+  }
+  &.selected {
+    background-color: ${theme.colors.primry70};
+    color: ${theme.colors.white100};
   }
 `;

@@ -66,16 +66,17 @@ const Login = () => {
     }
   };
 
-  // 로그인 성공 시 회원정보 로컬스토리지 저장 함수_박예선_23.01.24
+  // 로그인 성공 시 회원정보 로컬스토리지 저장 함수_박예선_23.01.25
   const setInfoToLocalStorage = async () => {
     try {
       const userRes: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
       if (!userRes) return;
-      const { userId, email, nickname, userImage, authority } = userRes.data;
-      localStorage.setItem("userId", String(userId));
+      const { memberId, email, nickname, memberImage, authority } =
+        userRes.data;
+      localStorage.setItem("memberId", String(memberId));
       localStorage.setItem("email", email);
       localStorage.setItem("nickname", nickname);
-      localStorage.setItem("userImage", userImage);
+      localStorage.setItem("memberImage", memberImage);
       localStorage.setItem("authority", authority);
       alert("로그인되었습니다.");
     } catch (err) {
@@ -111,7 +112,11 @@ const Login = () => {
             {isPwInputShow && <EyeOn className="eye-icon" />}
           </button>
         </div>
-        <CheckLabel label="로그인 상태 유지" onClick={handleStayLogBtn} />
+        <CheckLabel
+          label="로그인 상태 유지"
+          checked={false}
+          onClick={handleStayLogBtn}
+        />
       </InputContainer>
       <BtnContainer>
         <Button

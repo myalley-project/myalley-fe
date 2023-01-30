@@ -57,6 +57,7 @@ const Button = styled.button<ButtonProps>`
   font-size: 1rem;
   color: ${(props) => fontColor[props.variant]};
   background-color: ${(props) => backgroundColor[props.variant]};
+  cursor: pointer;
   &:is(:hover, :focus) {
     color: ${(props) => hoverFontColor[props.variant]};
     background-color: ${(props) => hoverBackgroundColor[props.variant]};
