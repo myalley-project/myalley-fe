@@ -4,6 +4,7 @@ import { theme } from "../styles/theme";
 import Selectbox from "../components/atom/Selectbox";
 import BlogReviewCard from "../components/blogreview/BlogReviewCard";
 import Button from "../components/atom/Button";
+import SimpleInput from "../components/atom/SimpleInput";
 
 const BlogReviewList = () => (
   <Container>
@@ -23,21 +24,13 @@ const BlogReviewList = () => (
         </Button>
       </div>
       <div>
-        <span>여기 서치바</span>
+        <SimpleInput />
         <Button size="large" variant="primary">
           리뷰 등록
         </Button>
       </div>
     </SelectContainer>
     <ListContainer>
-      <BlogReviewCard />
-      <BlogReviewCard />
-      <BlogReviewCard />
-      <BlogReviewCard />
-      <BlogReviewCard />
-      <BlogReviewCard />
-      <BlogReviewCard />
-      <BlogReviewCard />
       <BlogReviewCard />
     </ListContainer>
   </Container>

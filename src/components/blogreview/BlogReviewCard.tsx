@@ -2,15 +2,27 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
-const BlogReviewCard = () => (
+interface BlogReviewProps {
+  title: string;
+  writer: string;
+  viewDate: string;
+  viewCount: number;
+}
+
+const BlogReviewCard = ({
+  title,
+  writer,
+  viewDate,
+  viewCount,
+}: BlogReviewProps) => (
   <Container>
     <Image />
     <Review>
-      <h2>리뷰 제목</h2>
-      <p>별명</p>
+      <h2>{title}</h2>
+      <p>{writer}</p>
       <div>
-        <div>2022-12-14</div>
-        <div>조회수 999</div>
+        <div>{viewDate}</div>
+        <div>조회수 {viewCount}</div>
       </div>
     </Review>
   </Container>
