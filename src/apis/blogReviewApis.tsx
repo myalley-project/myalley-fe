@@ -34,7 +34,20 @@ const blogReviewApis = {
     const response = await apiMultipartInstance.post(`api/blogs`, body);
     return response;
   },
-  readReviews: async (exhibitionId = 0, pageNo = 0, orderType = "Recent") => {
+  readBlogReviews: async (
+    pageNo: number,
+    orderType: "Recent" | "StarScore"
+  ) => {
+    const response: AxiosResponse<BlogReviewResponse> = await apiInstance.get(
+      `/blogs?page=${pageNo}&order=${orderType}`
+    );
+    return response.data;
+  },
+  readExhibitionReviews: async (
+    exhibitionId = 0,
+    pageNo = 0,
+    orderType = "Recent"
+  ) => {
     const response: AxiosResponse<BlogReviewResponse> = await apiInstance.get(
       `/blogs/exhibitions/${exhibitionId}?page=${pageNo}&order=${orderType}`
     );
