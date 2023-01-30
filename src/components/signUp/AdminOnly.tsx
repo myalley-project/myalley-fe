@@ -57,7 +57,7 @@ const AdminOnly = (props: AdminOnlyType) => {
       <label className="title">
         관리자 고유번호
         <input
-          type="text"
+          type="password"
           name="adminNo"
           placeholder="회사에서 제공한 개인 고유 번호를 입력해주세요"
           value={infos.adminNo === 0 ? "" : infos.adminNo}
@@ -65,14 +65,17 @@ const AdminOnly = (props: AdminOnlyType) => {
             handleInput(e);
             handleAdiminNoValid(e);
           }}
+          className={valids.adminNo === false ? "err" : ""}
         />
       </label>
-      <div className="notice err">
-        {isOnly.adminNo === null && !valids.adminNo && "숫자만 입력가능합니다"}
-        {isOnly.adminNo !== null &&
-          !isOnly.adminNo &&
-          "확인할 수 없는 고유번호입니다"}
-      </div>
+      {valids.adminNo !== null &&
+        isOnly.adminNo === null &&
+        !valids.adminNo && (
+          <div className="notice err">숫자만 입력가능합니다</div>
+        )}
+      {isOnly.adminNo !== null && !isOnly.adminNo && (
+        <div className="notice err">확인할 수 없는 고유번호입니다</div>
+      )}
       <label className="title">
         이름
         <input
@@ -84,11 +87,12 @@ const AdminOnly = (props: AdminOnlyType) => {
             handleInput(e);
             handleNameValid(e);
           }}
+          className={valids.name === false ? "err" : ""}
         />
       </label>
-      <div className="notice err">
-        {!valids.name && "한글 10자 이내로 입력하세요"}
-      </div>
+      {valids.name !== null && !valids.name && (
+        <div className="notice err">한글 10자 이내로 입력하세요</div>
+      )}
     </>
   );
 };

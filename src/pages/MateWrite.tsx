@@ -274,7 +274,7 @@ const MateWrite = () => {
               onClick={clickDateRegardless}
             />
             <CalenderContainer>
-              <Calender />
+              <Calender setSelectedDate={() => {}} />
             </CalenderContainer>
           </div>
         </Section>

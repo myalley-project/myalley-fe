@@ -79,9 +79,12 @@ const EmailAndPw = (props: EmailAndPwType) => {
             handleInput(e);
             handleEmailValid(e);
           }}
+          className={
+            valids.email === false || isOnly.email === false ? "err" : ""
+          }
         />
       </label>
-      {isOnly.email === null && (
+      {isOnly.email === null && valids.email !== null && (
         <div className={`notice ${valids.email ? "pass" : "err"}`}>
           {valids.email
             ? "올바른 이메일 형식입니다"
@@ -93,7 +96,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
           {!isOnly.email && "이미 등록된 이메일입니다"}
         </div>
       )}
-      <label htmlFor="pw" className="title">
+      <label className="title">
         비밀번호
         <input
           type="password"
@@ -104,14 +107,22 @@ const EmailAndPw = (props: EmailAndPwType) => {
             handleInput(e);
             handlePwValid(e);
           }}
+          className={valids.password === false ? "err" : ""}
         />
       </label>
-      <div className={`notice ${valids.password ? "pass" : "err"}`}>
-        {valids.password
-          ? "안전한 비밀번호입니다"
-          : "  영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요"}
-      </div>
-      <label htmlFor="pwValid" className="title">
+      {valids.password === null && (
+        <div className="notice default">
+          영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요
+        </div>
+      )}
+      {valids.password !== null && (
+        <div className={`notice ${valids.password ? "pass" : "err"}`}>
+          {valids.password
+            ? "안전한 비밀번호입니다"
+            : "  영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요"}
+        </div>
+      )}
+      <label className="title pw-check">
         비밀번호 재확인
         <input
           type="password"
@@ -122,13 +133,16 @@ const EmailAndPw = (props: EmailAndPwType) => {
             handleInput(e);
             handlePwCheckValid(e);
           }}
+          className={valids.pwCheck === false ? "err" : ""}
         />
+        {valids.pwCheck !== null && (
+          <div className={`notice ${valids.pwCheck ? "pass" : "err"}`}>
+            {valids.pwCheck
+              ? "동일한 비밀번호입니다"
+              : "비밀번호가 일치하지 않습니다"}
+          </div>
+        )}
       </label>
-      <div className={`notice pw-check ${valids.pwCheck ? "pass" : "err"}`}>
-        {valids.pwCheck
-          ? "동일한 비밀번호입니다"
-          : "비밀번호가 일치하지 않습니다"}
-      </div>
     </>
   );
 };

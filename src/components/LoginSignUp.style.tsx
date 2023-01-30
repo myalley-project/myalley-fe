@@ -51,7 +51,7 @@ const InputContainer = styled.div`
     font-weight: 700;
   }
   .title {
-    color: ${theme.colors.greys60};
+    color: ${theme.colors.greys80};
     font-weight: 700;
   }
   .notice {
@@ -63,9 +63,12 @@ const InputContainer = styled.div`
     &.pass {
       color: ${theme.colors.success};
     }
-    &.pw-check {
-      margin-bottom: 30px;
+    &.default {
+      color: ${theme.colors.greys60};
     }
+  }
+  .pw-check {
+    margin-bottom: 20px;
   }
   label {
     display: flex;
@@ -75,7 +78,7 @@ const InputContainer = styled.div`
     width: 320px;
     height: 44px;
     margin: 10px 0;
-    padding-left: 20px;
+    padding: 0 49px 0 20px;
     border: 1px solid ${theme.colors.greys40};
     background-color: ${theme.colors.white100};
     color: ${theme.colors.greys90};
@@ -87,6 +90,13 @@ const InputContainer = styled.div`
     ::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
+    }
+    &.err {
+      border-color: ${theme.colors.error};
+      color: ${theme.colors.error};
+      background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23FD3D51' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 6V13' stroke='%23FD3D51' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='17' r='1' fill='%23FD3D51'/%3E%3C/svg%3E%0A")
+        no-repeat;
+      background-position: right 20px center;
     }
   }
 `;
