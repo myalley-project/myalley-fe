@@ -25,6 +25,9 @@ export const Input = styled.input<{ width: string; height: string }>`
   &.error {
     border: 1px solid ${theme.colors.error};
   }
+  &.error {
+    border: 1px solid ${(props) => props.theme.colors.error};
+  }
 `;
 
 export const Notice = styled.span<{ color: string }>`
