@@ -78,7 +78,7 @@ const InputContainer = styled.div`
     width: 320px;
     height: 44px;
     margin: 10px 0;
-    padding-left: 20px;
+    padding: 0 49px 0 20px;
     border: 1px solid ${theme.colors.greys40};
     background-color: ${theme.colors.white100};
     color: ${theme.colors.greys90};
