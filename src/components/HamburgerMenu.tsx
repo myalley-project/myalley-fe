@@ -14,7 +14,7 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [info, setInfo] = useState({
     nickname: localStorage.getItem("nickname"),
-    memberImage: localStorage.getItem("userImage")!,
+    memberImage: localStorage.getItem("memberImage")!,
     email: localStorage.getItem("email"),
     authority: localStorage.getItem("authority"),
   });
