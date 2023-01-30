@@ -32,6 +32,7 @@ const Mypage = () => {
       if (!res) return;
       const { data } = res;
       setInfoData(data);
+      localStorage.setItem("memberImage", data.memberImage);
     } catch (err) {
       isApiError(err);
     }

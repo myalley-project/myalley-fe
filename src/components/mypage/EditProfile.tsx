@@ -54,7 +54,7 @@ const MyProfileEdit = (props: MyInfoType) => {
   const [nicknameClass, setNicknameClass] = useState("");
   const [nicknameError, setNicknameError] = useState("");
   const { infoData } = props;
-  const { birth, nickname, gender } = infoData;
+  const { birth, nickname, gender, memberImage } = infoData;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [profileImage, setProfileImage] = useState(profileImg);
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -164,7 +164,7 @@ const MyProfileEdit = (props: MyInfoType) => {
 
     const editMyInfo: EditMyInfoType = {
       password: infos.password,
-      nickname: `${infos.nickname === nickname ? nickname : infos.nickname}`,
+      nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
       gender: `${infos.gender === "" ? gender : infos.gender}`,
       birth: `${infos.year === "" ? `${birth.substring(0, 4)}` : infos.year}-${
         infos.month === "" ? `${birth.substring(5, 7)}` : infos.month
@@ -177,6 +177,7 @@ const MyProfileEdit = (props: MyInfoType) => {
       "data",
       new Blob([JSON.stringify(editMyInfo)], { type: "application/json" })
     );
+    console.log(editMyInfo);
     try {
       const res: AxiosResponse<EditMyInfoRes> = await editMyInfoApi(formData);
       const { resultCode } = res.data;
@@ -246,7 +247,10 @@ const MyProfileEdit = (props: MyInfoType) => {
 
       <EditProtileWrapper>
         <ImgWrapper>
-          <ProfileImg src={profileImage} alt="base-img" />
+          <ProfileImg
+            src={memberImage === "" ? profileImage : memberImage}
+            alt="base-img"
+          />
           <label htmlFor="exhibition-posterUrl">
             <UploadImg src={cameraCircle} alt="upload-btn" />
           </label>
