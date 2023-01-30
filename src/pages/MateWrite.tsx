@@ -2,20 +2,21 @@ import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { theme } from "../styles/theme";
 import plus from "../assets/icons/plus.svg";
 import Button from "../components/atom/Button";
 import CheckLabel from "../components/atom/CheckLabel";
 import Selectbox from "../components/atom/Selectbox";
 import Calender from "../components/Calendar";
 import SubTitle from "../components/SubTitle";
-import { theme } from "../styles/theme";
+import Editor from "../components/Editor";
+import SimpleDialog from "../components/SimpleDialog";
 import { MateRes, MateWriteType } from "../types/mate";
 import { mateApi, mateWriteApi, MateWriteRes } from "../apis/mate";
-import isApiError from "../utils/isApiError";
 import useRefreshTokenApi from "../apis/useRefreshToken";
-import Editor from "../components/Editor";
+import isApiError from "../utils/isApiError";
 
-// 메이트글 작성/수정 페이지_박예선_23.01.28
+// 메이트글 작성/수정 페이지_박예선_23.01.30
 const MateWrite = () => {
   const refreshTokenApi = useRefreshTokenApi();
   const location = useLocation();
@@ -24,7 +25,6 @@ const MateWrite = () => {
     () => new URLSearchParams(location.search),
     [location.search]
   );
-  const isModifyPage = location.search.includes("mateId");
   const memberId = Number(localStorage.getItem("memberId"));
   const mateId = Number(urlSearch.get("mateId"));
   const [writeData, setWriteData] = useState<MateWriteType>({
@@ -33,7 +33,7 @@ const MateWrite = () => {
     mateGender: "성별 무관",
     mateAge: "",
     availableDate: "2023-10-30",
-    content: "같이 전시봐요",
+    content: "",
     contact: "",
     exhibitionId: 1,
   });
@@ -41,6 +41,7 @@ const MateWrite = () => {
     minimum: "",
     maximum: "",
   });
+  const [openCancleModal, setOpenCancleModal] = useState(false);
   const {
     title,
     status,
@@ -53,7 +54,6 @@ const MateWrite = () => {
 
   // 전시회 선택 모달 연결하기
   // 달력 선택값 가져오기
-  // 에디터 연결하기
 
   // 토큰 없을 때 접속하면 로그인페이지로 리다이렉트_박예선_23.01.29
   useEffect(() => {
@@ -300,18 +300,33 @@ const MateWrite = () => {
         </Section>
       </MateWriteContainer>
       <BtnContainer>
-        <Button variant="text" size="small">
+        <Button
+          variant="text"
+          size="small"
+          onClick={() => setOpenCancleModal(true)}
+        >
           취소하기
         </Button>
+        {openCancleModal && (
+          <SimpleDialog
+            message={`${mateId ? "수정" : "등록"}을 취소하시겠습니까?`}
+            cancelMessage="계속하기"
+            confirmMessage="확인"
+            clickCancleBtn={() => setOpenCancleModal(false)}
+            clickConfirmBtn={() => {
+              navigate("/mate-list", { replace: true });
+            }}
+          />
+        )}
         <Button
           variant="primary"
           size="small"
           onClick={() => {
-            if (!isModifyPage) clickApplyBtn("post");
-            if (isModifyPage) clickApplyBtn("put");
+            if (!mateId) clickApplyBtn("post");
+            if (mateId) clickApplyBtn("put");
           }}
         >
-          {isModifyPage ? "수정" : "등록"}하기
+          {mateId ? "수정" : "등록"}하기
         </Button>
       </BtnContainer>
     </>
