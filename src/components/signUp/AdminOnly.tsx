@@ -54,7 +54,7 @@ const AdminOnly = (props: AdminOnlyType) => {
 
   return (
     <>
-      <div className="title">관리자 고유번호 </div>
+      <div className="title">관리자 고유번호</div>
       <input
         type="password"
         name="adminNo"
@@ -64,6 +64,7 @@ const AdminOnly = (props: AdminOnlyType) => {
           handleInput(e);
           handleAdiminNoValid(e);
         }}
+        className={valids.adminNo === false ? "err" : ""}
       />
       {valids.adminNo !== null &&
         isOnly.adminNo === null &&
@@ -83,6 +84,7 @@ const AdminOnly = (props: AdminOnlyType) => {
           handleInput(e);
           handleNameValid(e);
         }}
+        className={valids.name === false ? "err" : ""}
       />
       {valids.name !== null && !valids.name && (
         <div className="notice err">한글 10자 이내로 입력하세요</div>

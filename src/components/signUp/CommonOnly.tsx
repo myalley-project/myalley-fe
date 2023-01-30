@@ -70,6 +70,9 @@ const CommonOnly = (props: CommonOnlyType) => {
           handleInput(e);
           handleNicknameValid(e);
         }}
+        className={
+          valids.nickname === false || isOnly.nickname === false ? "err" : ""
+        }
       />
       {!valids.nickname && (
         <div

@@ -79,6 +79,9 @@ const EmailAndPw = (props: EmailAndPwType) => {
             handleInput(e);
             handleEmailValid(e);
           }}
+          className={
+            valids.email === false || isOnly.email === false ? "err" : ""
+          }
         />
       </label>
       {isOnly.email === null && valids.email !== null && (
@@ -104,6 +107,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
             handleInput(e);
             handlePwValid(e);
           }}
+          className={valids.password === false ? "err" : ""}
         />
       </label>
       {valids.password === null && (
@@ -129,6 +133,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
             handleInput(e);
             handlePwCheckValid(e);
           }}
+          className={valids.pwCheck === false ? "err" : ""}
         />
         {valids.pwCheck !== null && (
           <div className={`notice ${valids.pwCheck ? "pass" : "err"}`}>

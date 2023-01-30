@@ -77,6 +77,7 @@ const SignUp = () => {
       ...infos,
       [name]: value,
     });
+    setIsOnly({ email: null, nickname: null, adminNo: null });
   };
 
   // 회원가입 요청, 요청 후 처리 함수_박예선_2023.01.21
