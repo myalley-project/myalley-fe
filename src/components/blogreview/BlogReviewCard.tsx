@@ -8,9 +8,12 @@ const BlogReviewCard = ({
   writer,
   viewDate,
   viewCount,
+  imageInfo,
 }: BlogReviewCardProps) => (
   <Container>
-    <Image />
+    <Image>
+      <img src={imageInfo.url} alt="블로그 리뷰 이미지" />
+    </Image>
     <Review>
       <h2>{title}</h2>
       <p>{writer}</p>
@@ -30,7 +33,6 @@ const Container = styled.div`
 
 const Image = styled.div`
   height: 244px;
-  background-color: brown;
 `;
 
 const Review = styled.div`

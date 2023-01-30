@@ -67,15 +67,3 @@ const Filter = styled.div`
   display: flex;
   gap: 10px;
 `;
-
-const ListContainer = styled.div`
-  display: grid;
-  /* grid-template-columns: repeat(auto-fill, minmax(250px, 380px)); */
-  grid-template-columns: repeat(auto-fit, 380px);
-
-  grid-template-rows: auto;
-  /* align-content:; */
-  /* flex-flow: row wrap; */
-  gap: 30px;
-  margin-bottom: 120px;
-`;
