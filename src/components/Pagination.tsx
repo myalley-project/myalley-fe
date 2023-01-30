@@ -150,6 +150,7 @@ const PaginationContainer = styled.div`
   width: 326px;
   height: 30px;
   margin: 30px 0 50px;
+  margin-inline: auto;
   button {
     width: 30px;
     height: 30px;
@@ -167,6 +168,9 @@ const PaginationContainer = styled.div`
   }
   .flex {
     display: flex;
+  }
+  &.none {
+    display: none;
   }
 `;
 

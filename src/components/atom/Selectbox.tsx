@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface SelectBoxType {
@@ -19,6 +19,11 @@ const Selectbox = ({
   const [show, setShow] = useState(false);
   const [selectItem, setSelectItem] = useState(placeholder);
 
+  // 수정모드일 시 기존 placeholder 보여주기 위함
+  useEffect(() => {
+    setSelectItem(placeholder);
+  }, [placeholder]);
+
   const ToggleSelector = () => {
     setShow((prev) => !prev);
   };
@@ -33,7 +38,7 @@ const Selectbox = ({
   };
 
   return (
-    <div style={{ marginBottom: "10px" }}>
+    <div>
       <SelectBtn width={width} type="button" onClick={ToggleSelector}>
         {selectItem}
       </SelectBtn>
@@ -61,8 +66,7 @@ export default Selectbox;
 
 const SelectBtn = styled.button<{ width: string }>`
   width: ${(props) => props.width};
-  height: 40px;
-  margin: 10px 0;
+  height: 36px;
   padding-left: 20px;
   border: 1px solid ${(props) => props.theme.colors.greys40};
   border-radius: 30px;

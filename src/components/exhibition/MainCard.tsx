@@ -1,38 +1,89 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { AxiosResponse } from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import heartOff from "../../assets/icons/heartOff.svg";
-import shareOff from "../../assets/icons/shareOff.svg";
+import {
+  BookMarkRes,
+  exhbBookMarkApi,
+  exhbDeleteApi,
+} from "../../apis/exhibition";
+import { theme } from "../../styles/theme";
+import isApiError from "../../utils/isApiError";
+import BookMark from "../atom/BookMark";
 
-type MainCardType = {
-  [key in "title" | "date" | "place" | "charge"]: string;
-};
+export interface MainCardType {
+  posterUrl: string;
+  title: string;
+  duration: string;
+  place: string;
+  charge: number;
+  webLink: string;
+  id: number;
+  bookmarked: boolean;
+}
+const MainCard = ({
+  posterUrl,
+  title,
+  duration,
+  place,
+  charge,
+  webLink,
+  id,
+  bookmarked,
+}: MainCardType) => {
+  const auth = localStorage.getItem("authority");
+  const location = useLocation();
+  const navigate = useNavigate();
 
-const MainCard = ({ title, date, place, charge }: MainCardType) => {
-  const [cardHeight, setCardHeight] = useState("358px");
-  const [auth, setAuth] = useState("user");
+  const handleDelete = async () => {
+    try {
+      await exhbDeleteApi(id);
+      alert("전시글 삭제가 완료되었습니다.");
+      navigate("/");
+    } catch (err) {
+      isApiError(err);
+    }
+  };
 
-  useEffect(() => {
-    if (auth === "admin") {
-      setCardHeight("412px");
-    } else setCardHeight("332px");
-  }, [auth, cardHeight]);
+  // 북마크 버튼
+  const toggleBookMark = async () => {
+    try {
+      const res: AxiosResponse<BookMarkRes> = await exhbBookMarkApi(id);
+      const { msg } = res.data;
+      alert(msg);
+    } catch (err) {
+      isApiError(err);
+      const errorRes = isApiError(err);
+      if (typeof errorRes !== "object") return;
+      const { errorCode, errorMsg } = errorRes;
+      if (errorCode === 404 && errorMsg === "회원 정보 없음") {
+        alert("북마크 추가는 로그인 후 가능합니다.");
+      }
+    }
+  };
+
+  // 공유하기 버튼
+  const copyLink = () => {
+    navigator.clipboard.writeText(`http://localhost:3000/${location.pathname}`);
+    alert("주소가 복사되었습니다.");
+  };
 
   return (
     <CardContainer>
-      <Card height={cardHeight}>
-        <ImageContainer />
-        <InfoContainer height={cardHeight}>
-          {auth === "admin" && (
+      <Card>
+        <PosterImg src={posterUrl} alt="poster-img" />
+        <InfoContainer>
+          {auth === "ROLE_ADMIN" && (
             <EditButtons>
-              <Button>수정</Button>
-              <Button>삭제</Button>
+              <Button onClick={() => navigate("edit")}>수정</Button>
+              <Button onClick={handleDelete}>삭제</Button>
             </EditButtons>
           )}
           <Title>{title}</Title>
           <div style={{ padding: "30px 0" }}>
             <InfoDetail>
-              <dt>시간</dt>
-              <dd>{date}</dd>
+              <dt>일정</dt>
+              <dd>{duration}</dd>
             </InfoDetail>
             <InfoDetail>
               <dt>장소</dt>
@@ -40,14 +91,19 @@ const MainCard = ({ title, date, place, charge }: MainCardType) => {
             </InfoDetail>
             <InfoDetail style={{ marginBottom: "0px" }}>
               <dt>관람비용</dt>
-              <dd>{charge}</dd>
+              <dd>
+                {charge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+              </dd>
             </InfoDetail>
           </div>
           <Footer>
-            {/* 나중에 링크로 수정 */}
-            <p>사이트 방문</p>
-            <img src={heartOff} alt="like icon" />
-            <img src={shareOff} alt="share icon" />
+            <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
+              사이트 방문
+            </WebLink>
+            <BookMarkBtn>
+              <BookMark onClick={toggleBookMark} marked={bookmarked} />
+            </BookMarkBtn>
+            <ShareBtn type="button" onClick={copyLink} />
           </Footer>
         </InfoContainer>
       </Card>
@@ -64,26 +120,24 @@ const CardContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 0px;
-  background-color: #f5f5f5;
+  background-color: rgba(149, 141, 165, 0.05);
 `;
 
-const Card = styled.div<{ height: string }>`
+const Card = styled.div`
   display: flex;
   max-width: 1200px;
   width: 83vw;
-  min-height: ${(props) => props.height};
-  border: 1px solid #e0e0e0;
-  background-color: #ffffff;
+  border: 1px solid rgba(127, 103, 190, 0.3);
+  background-color: ${theme.colors.white100};
 `;
 
-const ImageContainer = styled.div`
+const PosterImg = styled.img`
   width: 278px;
-  background-color: #d9d9d9;
 `;
 
-const InfoContainer = styled.div<{ height: string }>`
+const InfoContainer = styled.div`
+  position: relative;
   width: 922px;
-  min-height: ${(props) => props.height};
   padding: 30px;
 `;
 
@@ -97,12 +151,12 @@ const EditButtons = styled.div`
 
 const Button = styled.button`
   padding: 0;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${theme.colors.greys60};
   font-size: 14px;
   cursor: pointer;
   &:hover {
     font-weight: 700;
-    color: ${(props) => props.theme.colors.greys100};
+    color: ${theme.colors.greys100};
   }
 `;
 
@@ -111,9 +165,9 @@ const Title = styled.h1`
   font-weight: 700;
   font-size: 42px;
   line-height: 52px;
-  letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.greys90};
+  color: ${theme.colors.greys90};
   text-align: left;
+  word-break: break-all;
 `;
 
 const InfoDetail = styled.dl`
@@ -122,8 +176,7 @@ const InfoDetail = styled.dl`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.greys80};
+  color: ${theme.colors.greys80};
   text-align: left;
   margin-bottom: 10px;
   dt {
@@ -139,14 +192,41 @@ const InfoDetail = styled.dl`
 const Footer = styled.div`
   display: flex;
   gap: 10px;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
   justify-content: flex-end;
   width: 100%;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
-  letter-spacing: -0.5px;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${theme.colors.greys60};
   text-align: right;
-  p {
-    line-height: 24px;
+`;
+
+const WebLink = styled.a`
+  padding: 4px 10px;
+  border-radius: 10px;
+  line-height: 24px;
+  text-decoration: none;
+  color: ${theme.colors.primry70};
+  &:hover {
+    background-color: ${theme.colors.greys10};
+    color: ${theme.colors.greys100};
+  }
+`;
+
+const BookMarkBtn = styled.div`
+  margin-top: 5px;
+`;
+
+const ShareBtn = styled.button`
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+  margin-top: 5px;
+  border-radius: 0px;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='5' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='6' cy='12' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='18' cy='19' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Cpath d='M9 10L15 6' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M9 14L15 18' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E%0A");
+  &:hover {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='5' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='6' cy='12' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='18' cy='19' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Cpath d='M9 10L15 6' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M9 14L15 18' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   }
 `;
