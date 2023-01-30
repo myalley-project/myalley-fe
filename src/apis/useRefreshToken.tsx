@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
-import useLogOut from "./logOut";
 import isApiError, { errorAlert } from "../utils/isApiError";
 
-// refresh토큰 요청 api_박예선_2023.01.23
+// refresh토큰 요청 api_박예선_2023.01.30
 const useRefreshTokenApi = () => {
   const navigate = useNavigate();
-  const logOut = useLogOut("refreshToken 만료");
   const token = localStorage.getItem("refreshToken");
 
   const refreshTokenApi = async () => {
@@ -18,7 +16,6 @@ const useRefreshTokenApi = () => {
           "/refresh",
           { refreshToken: `Bearer ${token}` }
         );
-        // await axios.get("/data/refreshToken.json"); // 테스트용 목데이터
         const { accessToken, refreshToken } = res.data;
         if (accessToken && refreshToken) {
           localStorage.setItem("accessToken", accessToken);
@@ -29,9 +26,16 @@ const useRefreshTokenApi = () => {
         if (typeof errorRes !== "object") return undefined;
         const { errorMsg } = errorRes;
         if (errorMsg === "Forbidden") {
-          await logOut();
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("memberId");
+          localStorage.removeItem("email");
+          localStorage.removeItem("nickname");
+          localStorage.removeItem("memberImage");
+          localStorage.removeItem("authority");
           alert("자동 로그인 기간이 만료되었습니다. 다시 로그인해주세요.");
           navigate("/login");
+          return undefined;
         }
       }
     return undefined;
