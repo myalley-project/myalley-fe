@@ -60,9 +60,7 @@ const CommonOnly = (props: CommonOnlyType) => {
 
   return (
     <CommonOnlyContainer>
-      <label className="title" htmlFor="nickname">
-        별명
-      </label>
+      <div className="title">별명</div>
       <input
         type="text"
         name="nickname"
@@ -74,7 +72,9 @@ const CommonOnly = (props: CommonOnlyType) => {
         }}
       />
       {!valids.nickname && (
-        <div className="notice err">
+        <div
+          className={`notice ${valids.nickname === null ? "default" : "err"}`}
+        >
           한글, 영어 대소문자, 숫자 2~10자를 입력하세요
         </div>
       )}

@@ -9,12 +9,12 @@ export interface Infos {
   name: string;
 }
 export interface Valids {
-  email: boolean;
-  password: boolean;
-  pwCheck: boolean;
-  nickname: boolean;
-  adminNo: boolean;
-  name: boolean;
+  email: boolean | null;
+  password: boolean | null;
+  pwCheck: boolean | null;
+  nickname: boolean | null;
+  adminNo: boolean | null;
+  name: boolean | null;
 }
 export interface IsOnly {
   email: boolean | null;

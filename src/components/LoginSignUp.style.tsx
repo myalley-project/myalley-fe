@@ -51,7 +51,7 @@ const InputContainer = styled.div`
     font-weight: 700;
   }
   .title {
-    color: ${theme.colors.greys60};
+    color: ${theme.colors.greys80};
     font-weight: 700;
   }
   .notice {
@@ -63,9 +63,12 @@ const InputContainer = styled.div`
     &.pass {
       color: ${theme.colors.success};
     }
-    &.pw-check {
-      margin-bottom: 30px;
+    &.default {
+      color: ${theme.colors.greys60};
     }
+  }
+  .pw-check {
+    margin-bottom: 20px;
   }
   label {
     display: flex;
