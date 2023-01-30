@@ -412,7 +412,7 @@ const ExhibitionWrite = (props: ModeType) => {
           confirmMessage="확인"
           clickCancleBtn={() => setIsCancel(false)}
           clickConfirmBtn={() => navigate("/")}
-         />
+        />
       )}
     </WriteExhibitionContainer>
   );
@@ -498,6 +498,12 @@ const InputFileName = styled.input`
   font-size: 14px;
   color: ${theme.colors.greys60};
   margin-right: 10px;
+  &:hover {
+    border: 1px solid ${theme.colors.primry60};
+    &::placeholder {
+      color: ${theme.colors.greys90};
+    }
+  }
 `;
 
 const FileLabel = styled.label`
@@ -544,7 +550,6 @@ const InputPrice = styled.input`
   height: 17px;
   font-weight: 400;
   font-size: 14px;
-  /* color: ${theme.colors.greys90}; */
   text-align: right;
 `;
 
