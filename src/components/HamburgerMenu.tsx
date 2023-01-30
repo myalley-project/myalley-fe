@@ -11,7 +11,6 @@ interface PropsType {
 const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
   const [isMenuOpen, setIsMenuOpen] = useState(true);
-  const ousideRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [info, setInfo] = useState({
     nickname: localStorage.getItem("nickname"),
@@ -31,7 +30,7 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   return (
     <Background>
       {isMenuOpen && (
-        <MenuOutSide onClick={toggleMenu} ref={ousideRef}>
+        <MenuOutSide onClick={toggleMenu}>
           <MenuContainer ref={menuRef}>
             {localStorage.getItem("accessToken") ? (
               <MenuWrapper>
