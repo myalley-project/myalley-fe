@@ -54,18 +54,20 @@ const AdminOnly = (props: AdminOnlyType) => {
 
   return (
     <>
-      <div className="title">관리자 고유번호</div>
-      <input
-        type="password"
-        name="adminNo"
-        placeholder="회사에서 제공한 개인 고유 번호를 입력해주세요"
-        value={infos.adminNo === 0 ? "" : infos.adminNo}
-        onChange={(e) => {
-          handleInput(e);
-          handleAdiminNoValid(e);
-        }}
-        className={valids.adminNo === false ? "err" : ""}
-      />
+      <label className="title">
+        관리자 고유번호
+        <input
+          type="password"
+          name="adminNo"
+          placeholder="회사에서 제공한 개인 고유 번호를 입력해주세요"
+          value={infos.adminNo === 0 ? "" : infos.adminNo}
+          onChange={(e) => {
+            handleInput(e);
+            handleAdiminNoValid(e);
+          }}
+          className={valids.adminNo === false ? "err" : ""}
+        />
+      </label>
       {valids.adminNo !== null &&
         isOnly.adminNo === null &&
         !valids.adminNo && (
@@ -74,18 +76,20 @@ const AdminOnly = (props: AdminOnlyType) => {
       {isOnly.adminNo !== null && !isOnly.adminNo && (
         <div className="notice err">확인할 수 없는 고유번호입니다</div>
       )}
-      <div className="title">이름</div>
-      <input
-        type="text"
-        name="name"
-        placeholder="신분증에 적힌 본명을 입력해주세요"
-        value={infos.name}
-        onChange={(e) => {
-          handleInput(e);
-          handleNameValid(e);
-        }}
-        className={valids.name === false ? "err" : ""}
-      />
+      <label className="title">
+        이름
+        <input
+          type="text"
+          name="name"
+          placeholder="신분증에 적힌 본명을 입력해주세요"
+          value={infos.name}
+          onChange={(e) => {
+            handleInput(e);
+            handleNameValid(e);
+          }}
+          className={valids.name === false ? "err" : ""}
+        />
+      </label>
       {valids.name !== null && !valids.name && (
         <div className="notice err">한글 10자 이내로 입력하세요</div>
       )}

@@ -60,20 +60,22 @@ const CommonOnly = (props: CommonOnlyType) => {
 
   return (
     <CommonOnlyContainer>
-      <div className="title">별명</div>
-      <input
-        type="text"
-        name="nickname"
-        placeholder="Nickname"
-        value={infos.nickname}
-        onChange={(e) => {
-          handleInput(e);
-          handleNicknameValid(e);
-        }}
-        className={
-          valids.nickname === false || isOnly.nickname === false ? "err" : ""
-        }
-      />
+      <label className="title">
+        별명
+        <input
+          type="text"
+          name="nickname"
+          placeholder="Nickname"
+          value={infos.nickname}
+          onChange={(e) => {
+            handleInput(e);
+            handleNicknameValid(e);
+          }}
+          className={
+            valids.nickname === false || isOnly.nickname === false ? "err" : ""
+          }
+        />
+      </label>
       {!valids.nickname && (
         <div
           className={`notice ${valids.nickname === null ? "default" : "err"}`}

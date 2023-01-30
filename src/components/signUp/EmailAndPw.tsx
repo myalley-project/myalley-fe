@@ -96,7 +96,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
           {!isOnly.email && "이미 등록된 이메일입니다"}
         </div>
       )}
-      <label htmlFor="pw" className="title">
+      <label className="title">
         비밀번호
         <input
           type="password"
@@ -122,7 +122,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
             : "  영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요"}
         </div>
       )}
-      <div className="title pw-check">
+      <label className="title pw-check">
         비밀번호 재확인
         <input
           type="password"
@@ -142,7 +142,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
               : "비밀번호가 일치하지 않습니다"}
           </div>
         )}
-      </div>
+      </label>
     </>
   );
 };
