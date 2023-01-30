@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 import useLogOut from "./logOut";
 import useRefreshTokenApi from "./useRefreshToken";
@@ -57,9 +57,8 @@ export interface BookMarkRes {
 // 메이트 목록 조회 api_박예선_23.01.26
 export const mateListApi = async (status: MateStatusType, page: number) => {
   const res: AxiosResponse<MateListType> = await apiInstance.get(
-    `/mates?page=${page}&status=${status.replace(" ", "")}`
+    `/mates?page=${page}&status=${status === "전체" ? "" : status}`
   );
-  // await axios.get("/data/mateList.json"); // 테스트용 목데이터
   return res;
 };
 
