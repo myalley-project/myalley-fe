@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MateCard from "../mate/MateCard";
 import Pagination from "../Pagination";
-import { myMatesApi, MateRes } from "../../apis/member";
+import { MateRes, myMatesApi } from "../../apis/member";
 import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
 import NoList from "../NoList";
 
-const FindMate = () => {
-  const [matesList, setMatesList] = useState<Mate[] | []>([]);
+const WrittenMate = () => {
   const navigate = useNavigate();
+  const [matesList, setMatesList] = useState<Mate[] | []>([]);
   const [pageInfoList, setPageInfoList] = useState({
     page: 0,
     size: 0,
@@ -50,18 +50,16 @@ const FindMate = () => {
       ) : (
         matesList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}
-      {pageInfoList.totalPage > 0 && (
-        <Pagination
-          pages={pages}
-          setPages={setPages}
-          totalPage={pageInfoList.totalPage}
-        />
-      )}
+      <Pagination
+        pages={pages}
+        setPages={setPages}
+        totalPage={pageInfoList.totalPage}
+      />
     </FindMateContainer>
   );
 };
 
-export default FindMate;
+export default WrittenMate;
 
 const FindMateContainer = styled.div`
   width: 83vw;

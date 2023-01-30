@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import { MyInfoRes, editMyInfoApi, EditMyInfoType } from "../../apis/member";
+import { useNavigate } from "react-router-dom";
+import {
+  editMyInfoApi,
+  EditMyInfoType,
+  EditMyInfoRes,
+  withdrawalsApi,
+} from "../../apis/member";
 import { Input, Label, Notice } from "../atom/labelInput";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
@@ -12,10 +18,10 @@ import {
   getDayArray,
 } from "../../utils/dateSelector";
 import { theme } from "../../styles/theme";
-import useRefreshTokenApi from "../../apis/useRefreshToken";
 import isApiError from "../../utils/isApiError";
 import eyeOff from "../../assets/icons/eyeOff.svg";
 import eyeOn from "../../assets/icons/eyeOn.svg";
+import SimpleDialog from "../SimpleDialog";
 
 interface MyInfoType {
   infoData: {
@@ -41,8 +47,12 @@ interface InfosType {
 }
 
 const MyProfileEdit = (props: MyInfoType) => {
-  const refreshTokenApi = useRefreshTokenApi();
+  const navigate = useNavigate();
   const formData = new FormData();
+  const nicknameRef = useRef<HTMLInputElement>(null);
+  const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const [nicknameClass, setNicknameClass] = useState("");
+  const [nicknameError, setNicknameError] = useState("");
   const { infoData } = props;
   const { birth, nickname, gender } = infoData;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
@@ -67,6 +77,7 @@ const MyProfileEdit = (props: MyInfoType) => {
   // input 핸들러 함수
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
+
     setInfos({
       ...infos,
       [name]: value,
@@ -128,6 +139,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     setTimer(newTimer);
   };
 
+  // 이미지 업로드
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     if (e.target.files !== null) {
@@ -146,9 +158,13 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   // 회원정보 수정 api
   const editBtn = async () => {
+    if (!valids.nickname) {
+      setNicknameError("form");
+    }
+
     const editMyInfo: EditMyInfoType = {
       password: infos.password,
-      nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
+      nickname: `${infos.nickname === nickname ? nickname : infos.nickname}`,
       gender: `${infos.gender === "" ? gender : infos.gender}`,
       birth: `${infos.year === "" ? `${birth.substring(0, 4)}` : infos.year}-${
         infos.month === "" ? `${birth.substring(5, 7)}` : infos.month
@@ -162,11 +178,55 @@ const MyProfileEdit = (props: MyInfoType) => {
       new Blob([JSON.stringify(editMyInfo)], { type: "application/json" })
     );
     try {
-      const res: AxiosResponse<MyInfoRes> | void = await editMyInfoApi(
-        formData
-      );
-      // 회원정보 수정이 완료되었습니다 alert 띄우기
-      console.log(res);
+      const res: AxiosResponse<EditMyInfoRes> = await editMyInfoApi(formData);
+      const { resultCode } = res.data;
+      if (resultCode === 200) {
+        setNicknameClass("");
+        setNicknameError("");
+        setValids({ ...valids, nickname: false, password: false });
+        alert("회원정보 수정이 완료되었습니다.");
+      } else {
+        alert("알 수 없는 오류입니다. 관리자에게 문의하세요.");
+      }
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (typeof errorRes !== "object") return;
+      const { errorCode, errorMsg } = errorRes;
+      if (errorCode === 409 && errorMsg === "닉네임 중복") {
+        setValids({ ...valids, nickname: true });
+        setNicknameClass("error");
+        setNicknameError("duplicate");
+      } else if (errorCode === 400 && errorMsg === "닉네임 형식 오류") {
+        setNicknameError("form");
+      } else if (errorCode === 400 && errorMsg === "비밀번호 형식 오류") {
+        alert("비밀번호 형식을 다시 확인해주세요.");
+      } else if (
+        errorCode === 400 &&
+        errorMsg === "올바른 형식의 이미지 파일이 아닙니다."
+      )
+        alert("이미지 형식을 다시 확인해주세요.");
+      // TODO: 토큰 에러 로직 추가
+    }
+  };
+
+  // 탈퇴 버튼
+  const withdrawalsBtn = async () => {
+    try {
+      const res: AxiosResponse<EditMyInfoRes> = await withdrawalsApi();
+      const { resultCode } = res.data;
+      if (resultCode === 200) {
+        alert("탈퇴가 완료되었습니다.");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("memberId");
+        localStorage.removeItem("email");
+        localStorage.removeItem("nickname");
+        localStorage.removeItem("memberImage");
+        localStorage.removeItem("authority");
+        navigate("/");
+      } else {
+        alert("알 수 없는 오류입니다. 관리자에게 문의하세요.");
+      }
     } catch (err) {
       isApiError(err);
     }
@@ -174,6 +234,16 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   return (
     <EditProfileContainer>
+      {isWithdrawal && (
+        <SimpleDialog
+          message="정말 탈퇴하시겠습니까?"
+          cancelMessage="취소"
+          confirmMessage="탈퇴하기"
+          clickCancleBtn={() => setIsWithdrawal(false)}
+          clickConfirmBtn={() => withdrawalsBtn()}
+        />
+      )}
+
       <EditProtileWrapper>
         <ImgWrapper>
           <ProfileImg src={profileImage} alt="base-img" />
@@ -194,19 +264,34 @@ const MyProfileEdit = (props: MyInfoType) => {
             id="nickname"
             type="text"
             placeholder={nickname}
+            ref={nicknameRef}
             width="26vw"
+            className={nicknameClass}
             height="44px"
             name="nickname"
             value={infos.nickname}
+            onFocus={() => {
+              if (infos.nickname === "") {
+                setInfos({ ...infos, nickname });
+              }
+            }}
             onChange={(e) => {
               handleInput(e);
               handleNicknameValid(e);
             }}
           />
-          {!valids.nickname && (
+          {!valids.nickname && nicknameError === "" && (
             <Notice color={colors.default}>
               한글, 영어 대소문자, 숫자 2~10자를 입력하세요
             </Notice>
+          )}
+          {nicknameError === "form" && infos.nickname !== "" && (
+            <Notice color={colors.error}>
+              별명은 2~10자리의 한글 또는 영어 대소문자 또는 숫자만 가능합니다.
+            </Notice>
+          )}
+          {nicknameError === "duplicate" && (
+            <Notice color={colors.error}>이미 사용중인 별명입니다.</Notice>
           )}
         </InputWrapper>
         <InputWrapper>
@@ -235,7 +320,7 @@ const MyProfileEdit = (props: MyInfoType) => {
             />
           </BirthWrapper>
         </InputWrapper>
-        <InputWrapper style={{ marginBottom: "50px" }}>
+        <GenderWrapper style={{ marginBottom: "50px" }}>
           <Label htmlFor="gender">성별</Label>
           <Selectbox
             placeholder={gender === "W" ? "여성" : "남성"}
@@ -244,7 +329,7 @@ const MyProfileEdit = (props: MyInfoType) => {
             name="gender"
             onClick={handleSetInfos}
           />
-        </InputWrapper>
+        </GenderWrapper>
         <InputWrapper>
           <Label htmlFor="password">비밀번호 변경</Label>
           <PasswordWrapper>
@@ -304,6 +389,12 @@ const MyProfileEdit = (props: MyInfoType) => {
         <EditBtn type="submit" onClick={editBtn}>
           수정하기
         </EditBtn>
+        <WithdrawalBtn
+          type="button"
+          onClick={() => setIsWithdrawal((prev) => !prev)}
+        >
+          탈퇴하기
+        </WithdrawalBtn>
       </EditProtileWrapper>
     </EditProfileContainer>
   );
@@ -372,9 +463,16 @@ const BirthWrapper = styled.div`
   justify-content: space-between;
   button {
     max-width: 100px;
+    height: 44px;
   }
   > div:first-child > button {
     max-width: 130px;
+  }
+`;
+
+const GenderWrapper = styled(InputWrapper)`
+  button {
+    height: 44px;
   }
 `;
 
@@ -408,5 +506,13 @@ const EditBtn = styled.button`
   cursor: pointer;
   &:hover {
     background-color: ${(props) => props.theme.colors.greys90};
+  }
+`;
+
+const WithdrawalBtn = styled.button`
+  color: ${theme.colors.greys60};
+  cursor: pointer;
+  &:hover {
+    color: ${theme.colors.greys100};
   }
 `;
