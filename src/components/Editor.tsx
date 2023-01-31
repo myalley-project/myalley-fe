@@ -1,6 +1,9 @@
 import React, {
+  ChangeEvent,
   Children,
+  Dispatch,
   ReactElement,
+  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -14,9 +17,13 @@ interface EditorProps {
   children: ReactElement;
 }
 
+interface ImageProps {
+  imageFiles: FileList | null;
+  setImageFiles: Dispatch<SetStateAction<FileList | null>>;
+}
+
 interface TextInputAreaProps {
   name: string;
-  value: string;
   textChangeHandler: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
@@ -44,15 +51,18 @@ function usePreviewImages(imageFiles: FileList) {
   return { previewImages };
 }
 
-const ImageArea = () => {
-  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
+const ImageArea = ({ imageFiles, setImageFiles }: ImageProps) => {
+  // const [imageFiles, setImageFiles] = useState<FileList | null>(null);
 
   const imageRef = useRef<HTMLInputElement | null>(null);
   const { previewImages } = usePreviewImages(imageFiles as FileList);
   const previewIds = returnkeys(previewImages.length);
 
-  const ChangePictureHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImageFiles(() => event.target.files);
+  const ChangePictureHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files !== null) {
+      const targetFiles = event.target.files;
+      setImageFiles(targetFiles);
+    }
   };
 
   return (
@@ -81,12 +91,8 @@ const ImageArea = () => {
   );
 };
 
-const TextInputArea = ({
-  name,
-  value,
-  textChangeHandler,
-}: TextInputAreaProps) => (
-  <TextArea name={name} value={value} onChange={textChangeHandler} />
+const TextInputArea = ({ name, textChangeHandler }: TextInputAreaProps) => (
+  <TextArea name={name} onChange={textChangeHandler} />
 );
 
 Editor.ImageArea = ImageArea;
