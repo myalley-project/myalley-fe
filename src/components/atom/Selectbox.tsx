@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { theme } from "../../styles/theme";
 
 interface SelectBoxType {
   placeholder: string;
@@ -17,6 +18,8 @@ const Selectbox = ({
   onClick,
 }: SelectBoxType) => {
   const [show, setShow] = useState(false);
+  const selectboxRef = useRef<HTMLUListElement>(null);
+  const [isSelectboxOpen, setIsSelectboxOpen] = useState(false);
   const [selectItem, setSelectItem] = useState(placeholder);
 
   // 수정모드일 시 기존 placeholder 보여주기 위함
@@ -25,6 +28,7 @@ const Selectbox = ({
   }, [placeholder]);
 
   const ToggleSelector = () => {
+    setIsSelectboxOpen((prev) => !prev);
     setShow((prev) => !prev);
   };
 
@@ -35,15 +39,29 @@ const Selectbox = ({
     setSelectItem(item);
     ToggleSelector();
     onClick(e, name);
+    setIsSelectboxOpen(false);
+  };
+
+  const toggleSelectbox = () => {
+    if (selectboxRef.current) {
+      setIsSelectboxOpen(false);
+      setShow(false);
+    }
   };
 
   return (
     <div>
-      <SelectBtn width={width} type="button" onClick={ToggleSelector}>
+      {isSelectboxOpen && <Background onClick={toggleSelectbox} />}
+      <SelectBtn
+        width={width}
+        type="button"
+        onClick={ToggleSelector}
+        show={show}
+      >
         {selectItem}
       </SelectBtn>
       {show && (
-        <SelectUl>
+        <SelectUl ref={selectboxRef}>
           <SubTitle>종류</SubTitle>
           {options &&
             options.map((item) => (
@@ -64,19 +82,49 @@ const Selectbox = ({
 
 export default Selectbox;
 
-const SelectBtn = styled.button<{ width: string }>`
+interface SelectboxProps {
+  width: string;
+  show: boolean;
+}
+
+const Background = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const SelectBtn = styled.button<SelectboxProps>`
   width: ${(props) => props.width};
   height: 36px;
   padding-left: 20px;
-  border: 1px solid ${(props) => props.theme.colors.greys40};
+  border: 1px solid
+    ${(props) =>
+      props.show === true
+        ? `${theme.colors.primry60}`
+        : `${theme.colors.greys40}`};
   border-radius: 30px;
-  background: url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.2998 1.69995L6.6998 6.29995C6.5998 6.39995 6.49147 6.47062 6.3748 6.51195C6.25814 6.55395 6.13314 6.57495 5.9998 6.57495C5.86647 6.57495 5.74147 6.55395 5.6248 6.51195C5.50814 6.47062 5.3998 6.39995 5.2998 6.29995L0.699804 1.69995C0.516471 1.51662 0.424804 1.28328 0.424804 0.999951C0.424804 0.716618 0.516471 0.483285 0.699804 0.299952C0.883137 0.116618 1.11647 0.024951 1.3998 0.0249509C1.68314 0.0249509 1.91647 0.116618 2.0998 0.299951L5.9998 4.19995L9.8998 0.299951C10.0831 0.116618 10.3165 0.0249505 10.5998 0.0249505C10.8831 0.0249505 11.1165 0.116618 11.2998 0.299951C11.4831 0.483284 11.5748 0.716618 11.5748 0.999951C11.5748 1.28328 11.4831 1.51662 11.2998 1.69995Z' fill='%239C9C9C'/%3E%3C/svg%3E%0A")
+  background: ${(props) =>
+      props.show === true
+        ? `url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.2998 1.69995L6.6998 6.29995C6.5998 6.39995 6.49147 6.47062 6.3748 6.51195C6.25814 6.55395 6.13314 6.57495 5.9998 6.57495C5.86647 6.57495 5.74147 6.55395 5.6248 6.51195C5.50814 6.47062 5.3998 6.39995 5.2998 6.29995L0.699804 1.69995C0.516471 1.51662 0.424804 1.28328 0.424804 0.999951C0.424804 0.716618 0.516471 0.483285 0.699804 0.299952C0.883137 0.116618 1.11647 0.024951 1.3998 0.0249509C1.68314 0.0249509 1.91647 0.116618 2.0998 0.299951L5.9998 4.19995L9.8998 0.299951C10.0831 0.116618 10.3165 0.0249505 10.5998 0.0249505C10.8831 0.0249505 11.1165 0.116618 11.2998 0.299951C11.4831 0.483284 11.5748 0.716618 11.5748 0.999951C11.5748 1.28328 11.4831 1.51662 11.2998 1.69995Z' fill='%234F378B'/%3E%3C/svg%3E%0A")`
+        : `url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.2998 1.69995L6.6998 6.29995C6.5998 6.39995 6.49147 6.47062 6.3748 6.51195C6.25814 6.55395 6.13314 6.57495 5.9998 6.57495C5.86647 6.57495 5.74147 6.55395 5.6248 6.51195C5.50814 6.47062 5.3998 6.39995 5.2998 6.29995L0.699804 1.69995C0.516471 1.51662 0.424804 1.28328 0.424804 0.999951C0.424804 0.716618 0.516471 0.483285 0.699804 0.299952C0.883137 0.116618 1.11647 0.024951 1.3998 0.0249509C1.68314 0.0249509 1.91647 0.116618 2.0998 0.299951L5.9998 4.19995L9.8998 0.299951C10.0831 0.116618 10.3165 0.0249505 10.5998 0.0249505C10.8831 0.0249505 11.1165 0.116618 11.2998 0.299951C11.4831 0.483284 11.5748 0.716618 11.5748 0.999951C11.5748 1.28328 11.4831 1.51662 11.2998 1.69995Z' fill='%239C9C9C'/%3E%3C/svg%3E%0A")`}
     no-repeat;
-  background-size: 11.15px 6.55px;
-  background-position: right 26px center;
-  color: ${(props) => props.theme.colors.greys60};
+  background-position: right 16px center;
+  color: ${(props) =>
+    props.show === true
+      ? `${theme.colors.primry60}`
+      : `${theme.colors.greys60}`};
+  border-radius: 30px;
   text-align: left;
   cursor: pointer;
+  &:hover {
+    border: 1px solid ${theme.colors.primry60};
+    background: url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.2998 1.69995L6.6998 6.29995C6.5998 6.39995 6.49147 6.47062 6.3748 6.51195C6.25814 6.55395 6.13314 6.57495 5.9998 6.57495C5.86647 6.57495 5.74147 6.55395 5.6248 6.51195C5.50814 6.47062 5.3998 6.39995 5.2998 6.29995L0.699804 1.69995C0.516471 1.51662 0.424804 1.28328 0.424804 0.999951C0.424804 0.716618 0.516471 0.483285 0.699804 0.299952C0.883137 0.116618 1.11647 0.024951 1.3998 0.0249509C1.68314 0.0249509 1.91647 0.116618 2.0998 0.299951L5.9998 4.19995L9.8998 0.299951C10.0831 0.116618 10.3165 0.0249505 10.5998 0.0249505C10.8831 0.0249505 11.1165 0.116618 11.2998 0.299951C11.4831 0.483284 11.5748 0.716618 11.5748 0.999951C11.5748 1.28328 11.4831 1.51662 11.2998 1.69995Z' fill='%234F378B'/%3E%3C/svg%3E%0A")
+      no-repeat;
+    background-position: right 16px center;
+    color: ${theme.colors.primry60};
+  }
 `;
 
 const SubTitle = styled.div`
@@ -93,10 +141,11 @@ const SelectUl = styled.ul`
   height: fit-content;
   max-height: 300px;
   overflow-x: hidden;
+  margin-top: 10px;
   padding: 10px;
   border: 1px solid #f6f3fe;
   border-radius: 10px;
-  background-color: ${(props) => props.theme.colors.white100};
+  background-color: ${theme.colors.white100};
   ::-webkit-scrollbar {
     display: block;
     width: 14px;
@@ -121,10 +170,10 @@ const SelectLi = styled.li`
   border-radius: 10px;
   font-weight: 50px;
   font-size: 14px;
-  color: #333333;
+  color: ${theme.colors.greys90};
   cursor: pointer;
   &:hover {
-    color: ${(props) => props.theme.colors.primry70};
+    color: ${theme.colors.primry70};
     background-color: #f6f3fe;
   }
 `;
