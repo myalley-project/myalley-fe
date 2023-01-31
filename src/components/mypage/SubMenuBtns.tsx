@@ -12,11 +12,11 @@ const MenuButtons = () => {
       {pathname === "/mypage/write" && (
         <Link
           style={
-            /\?type=oneline/.test(search)
+            /\?type=simple/.test(search)
               ? { color: `${theme.colors.greys100}` }
               : { color: `${theme.colors.greys60}` }
           }
-          to={`${pathname}?type=oneline&pageno=1`}
+          to={`${pathname}?type=simple&pageno=1`}
         >
           한줄 리뷰
         </Link>
@@ -24,11 +24,11 @@ const MenuButtons = () => {
       {pathname === "/mypage/bookmark" && (
         <Link
           style={
-            /\?type=oneline/.test(search)
+            /\?type=exhibition/.test(search)
               ? { color: `${theme.colors.greys100}` }
               : { color: `${theme.colors.greys60}` }
           }
-          to={`${pathname}?type=oneline&pageno=1`}
+          to={`${pathname}?type=exhibition&pageno=1`}
         >
           전시회
         </Link>
