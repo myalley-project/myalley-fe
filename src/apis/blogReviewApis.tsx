@@ -60,7 +60,7 @@ const blogReviewApis = {
     );
     return response;
   },
-  deleteReview: async (blogId: number) => {
+  deleteReview: async (blogId: string) => {
     const response = await apiInstance.patch(`/api/blogs/${blogId}`);
     return response;
   },
