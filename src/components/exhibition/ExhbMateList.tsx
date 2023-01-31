@@ -46,23 +46,22 @@ const ExhbMateList = () => {
         <Text>
           <span>{pageInfoData.size}</span> 개의 리뷰를 확인해보세요!
         </Text>
-        <Button variant="primary" size="small">
-          메이트 모집하기
-        </Button>
+        <Link href="/mate-write">
+          <Button variant="primary" size="small">
+            메이트 모집하기
+          </Button>
+        </Link>
       </Header>
-
       {mateList.length === 0 ? (
         <NoList />
       ) : (
         mateList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}
-      {pageInfoData.totalPage > 0 && (
-        <Pagination
-          pages={pages}
-          setPages={setPages}
-          totalPage={pageInfoData.totalPage}
-        />
-      )}
+      <Pagination
+        pages={pages}
+        setPages={setPages}
+        totalPage={pageInfoData.totalPage}
+      />
     </ExhbMateContainer>
   );
 };
@@ -96,3 +95,5 @@ const Text = styled.p`
     color: ${theme.colors.primry60};
   }
 `;
+
+const Link = styled.a``;
