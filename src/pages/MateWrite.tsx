@@ -32,7 +32,7 @@ const MateWrite = () => {
     status: "모집 중",
     mateGender: "성별 무관",
     mateAge: "",
-    availableDate: "2023-10-30",
+    availableDate: "",
     content: "",
     contact: "",
     exhibitionId: 1,
@@ -43,6 +43,7 @@ const MateWrite = () => {
   });
   const [selectedDate, setSelectedDate] = useState("");
   const [openCancleModal, setOpenCancleModal] = useState(false);
+  const [isDiabledApplyBtn, setIsDisabledApplyBtn] = useState(true);
   const {
     title,
     status,
@@ -130,15 +131,39 @@ const MateWrite = () => {
     }
   }, [getMate, mateId]);
 
+  // 작성/등록 버튼 활성화 여부_박예선_23.01.31
+  useEffect(() => {
+    const { minimum, maximum } = ageRange;
+    if (mateAge !== "연령 무관") {
+      if (
+        title &&
+        availableDate &&
+        mateAge &&
+        minimum &&
+        maximum &&
+        content &&
+        contact
+      ) {
+        setIsDisabledApplyBtn(false);
+        return;
+      }
+    }
+    if (mateAge === "연령 무관") {
+      if (title && availableDate && mateAge && content && contact)
+        setIsDisabledApplyBtn(false);
+      return;
+    }
+    setIsDisabledApplyBtn(true);
+  }, [ageRange, availableDate, contact, content, mateAge, title]);
+
   // 테스트용 useEffect
   useEffect(() => {
-    // console.log(location.search);
-    // console.log(urlSearch.get("mateId"));
     // console.log(isModifyPage);
     // console.log(ageRange);
-    // console.log("writeData", writeData);
+    console.log("writeData :", writeData);
+    // console.log("selectedDate :", selectedDate);
     // console.log(availableDate === "미정");
-  }, [availableDate, writeData]);
+  }, [writeData]);
 
   // 제목, 내용, 연락망 input/textArea 상태관리_박예선_23.01.29
   const handleInputAndTextArea = (
@@ -203,7 +228,6 @@ const MateWrite = () => {
 
   // 달력 클릭 함수_박예선_23.01.31
   const clickCalendar = (date: string) => {
-    console.log(date);
     setSelectedDate(date);
     if (availableDate !== "미정")
       setWriteData({ ...writeData, availableDate: date });
@@ -334,6 +358,7 @@ const MateWrite = () => {
             if (!mateId) clickApplyBtn("post");
             if (mateId) clickApplyBtn("put");
           }}
+          disabled={isDiabledApplyBtn}
         >
           {mateId ? "수정" : "등록"}하기
         </Button>

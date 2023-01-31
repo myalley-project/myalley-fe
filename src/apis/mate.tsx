@@ -26,10 +26,10 @@ export const useMateDeleteApi = () => {
 
   const mateDeleteApi = async (mateId: number) => {
     try {
-      const res: AxiosResponse<MateWriteRes> = await apiInstance.get(
+      const res: AxiosResponse<MateWriteRes> = await apiInstance.delete(
         `/api/mates/${mateId}`
       );
-      if (res.data === "메이트글 삭제가 완료되었습니다.") {
+      if (res.data === "메이트 모집글 삭제가 완료되었습니다.") {
         alert(res.data);
         navigate("/mate-list");
       }
