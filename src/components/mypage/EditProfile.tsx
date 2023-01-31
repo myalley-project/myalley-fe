@@ -198,7 +198,7 @@ const MyProfileEdit = (props: MyInfoType) => {
 
     const editMyInfo: EditMyInfoType = {
       password: infos.password,
-      nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
+      nickname: `${infos.nickname === nickname ? nickname : infos.nickname}`,
       gender: `${infos.gender === "" ? gender : infos.gender}`,
       birth: `${infos.year === "" ? `${birth.substring(0, 4)}` : infos.year}-${
         infos.month === "" ? `${birth.substring(5, 7)}` : infos.month
@@ -269,6 +269,16 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   return (
     <EditProfileContainer>
+      {isWithdrawal && (
+        <SimpleDialog
+          message="정말 탈퇴하시겠습니까?"
+          cancelMessage="취소"
+          confirmMessage="탈퇴하기"
+          clickCancleBtn={() => setIsWithdrawal(false)}
+          clickConfirmBtn={() => withdrawalsBtn()}
+        />
+      )}
+
       <EditProtileWrapper>
         <ImgWrapper>
           <ProfileImg
