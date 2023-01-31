@@ -21,6 +21,7 @@ import { theme } from "../../styles/theme";
 import isApiError from "../../utils/isApiError";
 import eyeOff from "../../assets/icons/eyeOff.svg";
 import eyeOn from "../../assets/icons/eyeOn.svg";
+import error from "../../assets/icons/error.svg";
 import SimpleDialog from "../SimpleDialog";
 
 interface MyInfoType {
@@ -193,12 +194,14 @@ const MyProfileEdit = (props: MyInfoType) => {
     } else if (passwordCheck !== "" && passwordCheck !== infos.password) {
       // 비밀번호 일치 체크
       setErrorClass({ ...errorClass, password: "error" });
+    } else if (passwordCheck === "" && infos.password !== "") {
+      setErrorClass({ ...errorClass, password: "error" });
       return;
     }
 
     const editMyInfo: EditMyInfoType = {
       password: infos.password,
-      nickname: `${infos.nickname === nickname ? nickname : infos.nickname}`,
+      nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
       gender: `${infos.gender === "" ? gender : infos.gender}`,
       birth: `${infos.year === "" ? `${birth.substring(0, 4)}` : infos.year}-${
         infos.month === "" ? `${birth.substring(5, 7)}` : infos.month
@@ -231,6 +234,7 @@ const MyProfileEdit = (props: MyInfoType) => {
         setErrorClass({ ...errorClass, nickname: "error" });
         setErrorType({ ...errorType, nickname: "duplicate" });
       } else if (errorCode === 400 && errorMsg === "닉네임 형식 오류") {
+        console.log(infos.nickname);
         setErrorType({ ...errorType, nickname: "form" });
       } else if (errorCode === 400 && errorMsg === "비밀번호 형식 오류") {
         setErrorClass({ ...errorClass, password: "error" });
@@ -318,6 +322,9 @@ const MyProfileEdit = (props: MyInfoType) => {
               handleNicknameValid(e);
             }}
           />
+          <ErrorIcon>
+            {errorType.nickname !== "" && <img src={error} alt="error-icon" />}
+          </ErrorIcon>
           {!valids.nickname && errorType.nickname === "" && (
             <Notice color={colors.default}>
               한글, 영어 대소문자, 숫자 2~10자를 입력하세요
@@ -425,9 +432,10 @@ const MyProfileEdit = (props: MyInfoType) => {
               <img src={isPwCheckType ? eyeOff : eyeOn} alt="eye-icon" />
             </EyeIconbtn>
           </PasswordWrapper>
-          {passwordCheck !== "" && passwordCheck !== infos.password && (
-            <Notice color={colors.error}>비밀번호가 일치하지 않습니다</Notice>
-          )}
+          {(passwordCheck !== "" && passwordCheck !== infos.password) ||
+            (passwordCheck === "" && infos.password !== "" && (
+              <Notice color={colors.error}>비밀번호가 일치하지 않습니다</Notice>
+            ))}
         </InputWrapper>
         <EditBtn type="submit" onClick={editBtn}>
           수정하기
@@ -502,12 +510,21 @@ const InputFile = styled.input`
 
 const InputWrapper = styled.div`
   margin-bottom: 10px;
+  position: relative;
   > * {
     max-width: 380px !important;
   }
   button {
     max-width: 380px;
   }
+`;
+
+const ErrorIcon = styled.div`
+  position: absolute;
+  top: 40px;
+  right: 20px;
+  width: 24px;
+  height: 24px;
 `;
 
 const BirthWrapper = styled.div`
