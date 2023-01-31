@@ -8,8 +8,10 @@ import { MateRes, myMatesApi } from "../../apis/member";
 import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
 import NoList from "../NoList";
+import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 
 const WrittenMate = () => {
+  const getNewTokenApi = useGetNewTokenApi;
   const navigate = useNavigate();
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
   const [pageInfoList, setPageInfoList] = useState({
@@ -26,17 +28,27 @@ const WrittenMate = () => {
   // 내가 쓴 메이트 목록 api 호출
   const getFindMateList = useCallback(
     async (pageNo: number) => {
+      const refreshToken = localStorage.getItem("refreshToken");
+
       try {
         const res: AxiosResponse<MateRes> = await myMatesApi(pageNo);
         const { mates, pageInfo } = res.data;
         setMatesList(mates);
         setPageInfoList(pageInfo);
       } catch (err) {
-        isApiError(err);
+        const errorRes = isApiError(err);
+        if (errorRes === "accessToken 만료") {
+          await getNewTokenApi(refreshToken);
+          const reRes: AxiosResponse<MateRes> = await myMatesApi(pageNo);
+          if (!reRes) return;
+          const { mates, pageInfo } = reRes.data;
+          setMatesList(mates);
+          setPageInfoList(pageInfo);
+        }
       }
       navigate(`?type=mate&pageno=${pageNo}`);
     },
-    [navigate]
+    [navigate, getNewTokenApi]
   );
 
   useEffect(() => {
