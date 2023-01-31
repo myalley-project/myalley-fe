@@ -52,6 +52,7 @@ const MateWrite = () => {
     availableDate,
     content,
     contact,
+    exhibitionId,
   } = writeData;
 
   // 전시회 선택 모달 연결하기
@@ -142,19 +143,27 @@ const MateWrite = () => {
         minimum &&
         maximum &&
         content &&
-        contact
+        contact &&
+        exhibitionId
       ) {
         setIsDisabledApplyBtn(false);
         return;
       }
     }
     if (mateAge === "연령 무관") {
-      if (title && availableDate && mateAge && content && contact)
+      if (
+        title &&
+        availableDate &&
+        mateAge &&
+        content &&
+        contact &&
+        exhibitionId
+      )
         setIsDisabledApplyBtn(false);
       return;
     }
     setIsDisabledApplyBtn(true);
-  }, [ageRange, availableDate, contact, content, mateAge, title]);
+  }, [ageRange, availableDate, contact, content, exhibitionId, mateAge, title]);
 
   // 테스트용 useEffect
   useEffect(() => {
