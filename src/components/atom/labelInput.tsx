@@ -17,12 +17,15 @@ export const Input = styled.input<{ width: string; height: string }>`
   border-radius: 10000px;
   font-weight: 500;
   font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${(props) => props.theme.colors.greys90};
   &::placeholder {
     color: ${(props) => props.theme.colors.greys60};
   }
   &.error {
     border: 1px solid ${(props) => props.theme.colors.error};
+  }
+  &:focus {
+    border: 1px solid ${(props) => props.theme.colors.primry60};
   }
 `;
 
