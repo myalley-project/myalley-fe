@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "../../styles/theme";
 
 export const Label = styled.label`
   display: block;
@@ -13,13 +14,22 @@ export const Input = styled.input<{ width: string; height: string }>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   padding: 8px 20px;
-  border: 1px solid ${(props) => props.theme.colors.greys40};
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 10000px;
   font-weight: 500;
   font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${theme.colors.greys60};
   &::placeholder {
-    color: ${(props) => props.theme.colors.greys60};
+    color: ${theme.colors.greys60};
+  }
+  &.error {
+    border: 1px solid ${theme.colors.error};
+  }
+  &.error {
+    border: 1px solid ${(props) => props.theme.colors.error};
+  }
+  &:focus {
+    border: 1px solid ${(props) => props.theme.colors.primry60};
   }
 `;
 

@@ -1,53 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  Children,
+  ReactElement,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
 import returnkeys from "../utils/returnkeys";
 import SubTitle from "./SubTitle";
 
-const Editor = () => {
-  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
-  const [contents, setContents] = useState("");
-  const imageRef = useRef<HTMLInputElement | null>(null);
-  const { previewImages } = usePreviewImages(imageFiles as FileList);
-  const previewIds = returnkeys(previewImages.length);
+interface EditorProps {
+  children: ReactElement;
+}
 
-  const ChangePictureHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImageFiles(() => event.target.files);
-  };
+interface TextInputAreaProps {
+  name: string;
+  value: string;
+  textChangeHandler: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+}
 
-  const contentsHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContents(() => event.target.value);
-  };
-
-  const onSubmitHandler = () => {};
-
-  return (
-    <Container>
-      <SubTitle text="오늘의 사진" />
-      <PreviewContainer>
-        {previewImages &&
-          previewImages.map((each, index) => (
-            <Preview key={previewIds[index]}>
-              <PreviewImage src={each} alt="프리뷰 이미지" />
-            </Preview>
-          ))}
-      </PreviewContainer>
-      <FormBox>
-        <label htmlFor="image-files">사진 올리기</label>
-        <input
-          onChange={ChangePictureHandler}
-          type="file"
-          accept="image/jpg, image/jpeg, image/png"
-          multiple
-          id="image-files"
-          ref={imageRef}
-        />
-      </FormBox>
-      <SubTitle text="본문 내용" />
-      <TextArea onChange={contentsHandler} />
-    </Container>
-  );
-};
+const Editor = ({ children }: EditorProps) => <Container>{children}</Container>;
 
 export default Editor;
 
@@ -71,10 +44,58 @@ function usePreviewImages(imageFiles: FileList) {
   return { previewImages };
 }
 
+const ImageArea = () => {
+  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
+
+  const imageRef = useRef<HTMLInputElement | null>(null);
+  const { previewImages } = usePreviewImages(imageFiles as FileList);
+  const previewIds = returnkeys(previewImages.length);
+
+  const ChangePictureHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setImageFiles(() => event.target.files);
+  };
+
+  return (
+    <>
+      <SubTitle text="오늘의 사진" />
+      <PreviewContainer>
+        {previewImages &&
+          previewImages.map((each, index) => (
+            <Preview key={previewIds[index]}>
+              <PreviewImage src={each} alt="프리뷰 이미지" />
+            </Preview>
+          ))}
+      </PreviewContainer>
+      <FormBox>
+        <label htmlFor="image-files">사진 올리기</label>
+        <input
+          onChange={ChangePictureHandler}
+          type="file"
+          accept="image/jpg, image/jpeg, image/png"
+          multiple
+          id="image-files"
+          ref={imageRef}
+        />
+      </FormBox>
+    </>
+  );
+};
+
+const TextInputArea = ({
+  name,
+  value,
+  textChangeHandler,
+}: TextInputAreaProps) => (
+  <TextArea name={name} value={value} onChange={textChangeHandler} />
+);
+
+Editor.ImageArea = ImageArea;
+Editor.TextInputArea = TextInputArea;
+
 const Container = styled.div`
   max-width: 1200px;
   /* padding: 30px; */
-  margin-inline: auto;
+  /* margin-inline: auto; */
 `;
 
 const PreviewContainer = styled.div`

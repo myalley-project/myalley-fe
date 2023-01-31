@@ -21,6 +21,8 @@ import {
 } from "../apis/exhibition";
 import isApiError from "../utils/isApiError";
 import useRefreshTokenApi from "../apis/useRefreshToken";
+import { theme } from "../styles/theme";
+import SimpleDialog from "../components/SimpleDialog";
 
 interface ModeType {
   mode: string;
@@ -29,6 +31,7 @@ interface ModeType {
 const ExhibitionWrite = (props: ModeType) => {
   const formData = new FormData();
   const navigate = useNavigate();
+  const [isCancel, setIsCancel] = useState(false);
   const refreshTokenApi = useRefreshTokenApi();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -217,7 +220,6 @@ const ExhibitionWrite = (props: ModeType) => {
         }
       } catch (err) {
         isApiError(err);
-        // if (errorRes === "accessToken 만료") refreshTokenApi();
       }
   };
 
@@ -248,7 +250,7 @@ const ExhibitionWrite = (props: ModeType) => {
           />
         </TitleWrapper>
         <OptionWrapper>
-          <Label htmlFor="exhibition-type">전시타입</Label>
+          <Label htmlFor="exhibition-type">전시 타입</Label>
           <Selectbox
             placeholder={detail.type === "" ? "전체 전시" : detail.type}
             options={getExhbTypeArray()}
@@ -289,25 +291,6 @@ const ExhibitionWrite = (props: ModeType) => {
           />
         </OptionWrapper>
         <OptionWrapper>
-          <Label htmlFor="exhibition-poster">전시 포스터 등록</Label>
-          <InputFileName type="text" value={detail.fileName} disabled />
-          <FileLabel htmlFor="exhibition-posterUrl">올리기</FileLabel>
-          <InputFile
-            type="file"
-            name="fileName"
-            id="exhibition-posterUrl"
-            onChange={uploadImgFile}
-            accept="image/jpeg,image/jpg,image/png"
-          />
-          {thumbnail && (
-            <img
-              src={thumbnail}
-              alt="thumbnail"
-              style={{ maxWidth: "500px", marginTop: "10px" }}
-            />
-          )}
-        </OptionWrapper>
-        <OptionWrapper>
           <Label htmlFor="exhibition-space">전시 장소</Label>
           <InputLink
             type="text"
@@ -334,9 +317,32 @@ const ExhibitionWrite = (props: ModeType) => {
               <p>원</p>
             </InputTextArea>
             <CheckLabelArea>
-              <CheckLabel label="무료 관람" onClick={handlePriceFree} />
+              <CheckLabel
+                label="무료 관람"
+                checked={false}
+                onClick={handlePriceFree}
+              />
             </CheckLabelArea>
           </div>
+        </OptionWrapper>
+        <OptionWrapper>
+          <Label htmlFor="exhibition-poster">전시 포스터 등록</Label>
+          <InputFileName type="text" value={detail.fileName} disabled />
+          <FileLabel htmlFor="exhibition-posterUrl">올리기</FileLabel>
+          <InputFile
+            type="file"
+            name="fileName"
+            id="exhibition-posterUrl"
+            onChange={uploadImgFile}
+            accept="image/jpeg,image/jpg,image/png"
+          />
+          {thumbnail && (
+            <img
+              src={thumbnail}
+              alt="thumbnail"
+              style={{ maxWidth: "500px", marginTop: "10px" }}
+            />
+          )}
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-content">전시내용</Label>
@@ -363,7 +369,7 @@ const ExhibitionWrite = (props: ModeType) => {
           <InputLink
             type="text"
             name="webLink"
-            placeholder="내용을 입력해주세요."
+            placeholder="반드시 https:// 부터 입력해주세요."
             value={detail.webLink}
             onChange={(e) => handleInputAndTextArea(e)}
             style={{ width: "100%" }}
@@ -371,14 +377,14 @@ const ExhibitionWrite = (props: ModeType) => {
         </OptionWrapper>
       </WriteExhibitionWrapper>
       <ButtonWrapper>
-        <SubmitBtn
+        <CancelBtn
           variant="primary"
           size="large"
           type="button"
-          onClick={() => navigate("/")}
+          onClick={() => setIsCancel(true)}
         >
           취소
-        </SubmitBtn>
+        </CancelBtn>
         {mode === "edit" ? (
           <SubmitBtn
             variant="primary"
@@ -399,6 +405,15 @@ const ExhibitionWrite = (props: ModeType) => {
           </SubmitBtn>
         )}
       </ButtonWrapper>
+      {isCancel && (
+        <SimpleDialog
+          message="전시글 작성을 정말 취소하시겠습니까? 작성중이던 내용은 저장되지 않습니다."
+          cancelMessage="취소"
+          confirmMessage="확인"
+          clickCancleBtn={() => setIsCancel(false)}
+          clickConfirmBtn={() => navigate("/")}
+        />
+      )}
     </WriteExhibitionContainer>
   );
 };
@@ -417,14 +432,14 @@ const WriteExhibitionWrapper = styled.div`
   max-width: 1200px;
   padding: 30px;
   margin: 50px 0 30px 0;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
+  background-color: ${theme.colors.white100};
+  border: 1px solid ${theme.colors.greys40};
 `;
 
 const TitleWrapper = styled.div`
   height: 66px;
   margin-bottom: 30px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid ${theme.colors.greys40};
   border-radius: 0px;
 `;
 
@@ -434,7 +449,7 @@ const InputTitle = styled.input`
   font-weight: 700;
   font-size: 28px;
   line-height: 36px;
-  color: ${(props) => props.theme.colors.greys90};
+  color: ${theme.colors.greys90};
 `;
 
 const OptionWrapper = styled.div`
@@ -442,7 +457,7 @@ const OptionWrapper = styled.div`
   span {
     font-weight: 500;
     font-size: 14px;
-    color: ${(props) => props.theme.colors.greys60};
+    color: ${theme.colors.greys60};
   }
 `;
 
@@ -452,17 +467,23 @@ const Label = styled.label`
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
-  color: ${(props) => props.theme.colors.greys90};
+  color: ${theme.colors.greys90};
 `;
 
 const Input = styled.input`
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 10000px;
   font-weight: 500;
   font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${theme.colors.greys90};
   &::placeholder {
-    color: ${(props) => props.theme.colors.greys60};
+    color: ${theme.colors.greys60};
+  }
+  &:hover {
+    border: 1px solid ${theme.colors.primry60};
+    &::placeholder {
+      color: ${theme.colors.greys90};
+    }
   }
 `;
 
@@ -471,19 +492,25 @@ const InputFileName = styled.input`
   max-width: 851px;
   height: 36px;
   padding: 8px 20px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 10000px;
   font-weight: 400;
   font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${theme.colors.greys60};
   margin-right: 10px;
+  &:hover {
+    border: 1px solid ${theme.colors.primry60};
+    &::placeholder {
+      color: ${theme.colors.greys90};
+    }
+  }
 `;
 
 const FileLabel = styled.label`
   display: inline-block;
   padding: 8px 20px;
   height: 36px;
-  background: ${(props) => props.theme.colors.primry70};
+  background: ${theme.colors.primry70};
   border-radius: 10000px;
   font-weight: 700;
   font-size: 14px;
@@ -523,7 +550,6 @@ const InputPrice = styled.input`
   height: 17px;
   font-weight: 400;
   font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
   text-align: right;
 `;
 
@@ -569,6 +595,16 @@ const ButtonWrapper = styled.div`
   margin-bottom: 50px;
 `;
 
+const CancelBtn = styled(Button)`
+  width: 153px;
+  &:hover {
+    background-color: ${theme.colors.greys90};
+  }
+`;
+
 const SubmitBtn = styled(Button)`
   width: 153px;
+  & :hover {
+    background-color: ${theme.colors.primry90};
+  }
 `;

@@ -1,33 +1,28 @@
 import React from "react";
 import styled from "styled-components";
+import { MyInfoRes } from "../../apis/member";
 import profileImg from "../../assets/icons/profileImg.svg";
 import MenuBtns from "./MenuBtns";
 
 interface MyInfoType {
-  infoData: {
-    memberId: number;
-    email: string;
-    nickname: string;
-    gender: string;
-    birth: string;
-    level: string;
-    memberImage: string;
-    authority: string;
-  };
+  infoData: MyInfoRes;
 }
 
 const MyInfo = (props: MyInfoType) => {
   const { infoData } = props;
-  const { memberImage, level, nickname, gender, email } = infoData;
+  const { level, nickname, gender, email, age, memberImage } = infoData;
   return (
     <Profile>
-      <ProfileImg src={profileImg} alt="profile-img" />
+      <ProfileImg
+        src={memberImage === "" ? profileImg : memberImage}
+        alt="profile-img"
+      />
       <Level>{level}</Level>
       <Nickname>{nickname}</Nickname>
       <Privacy>
         <p>{gender === "W" ? "여성" : "남성"}</p>
         <p className="partition">|</p>
-        <p>23세</p>
+        <p>{age}세</p>
         <p className="partition">|</p>
         <p>{email}</p>
       </Privacy>
@@ -47,6 +42,7 @@ const ProfileImg = styled.img`
   width: 120px;
   height: 120px;
   margin-bottom: 30px;
+  border-radius: 10000px;
 `;
 
 const Level = styled.p`

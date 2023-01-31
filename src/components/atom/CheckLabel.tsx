@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { ReactComponent as CheckOn } from "../../assets/icons/checkOn.svg";
@@ -6,13 +6,18 @@ import { ReactComponent as CheckOff } from "../../assets/icons/checkOff.svg";
 
 interface CheckLabelType {
   label: string;
+  checked: boolean;
   onClick: () => void; // 체크박스를 클릭했을 때 실행될 함수
 }
 
 // 체크박스 + 라벨 컴포넌트_박예선_23.01.23
-const CheckLabel = ({ label, onClick }: CheckLabelType) => {
-  const [isChecked, setIsChecked] = useState(false);
+const CheckLabel = ({ label, checked, onClick }: CheckLabelType) => {
+  const [isChecked, setIsChecked] = useState(checked);
   const [isCheckOffHover, setIsCheckOffHover] = useState(false);
+
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
 
   return (
     <CheckLabelContainer

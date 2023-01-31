@@ -46,11 +46,11 @@ const ExhbMateList = () => {
         <Text>
           <span>{pageInfoData.size}</span> 개의 리뷰를 확인해보세요!
         </Text>
-        <Link href="/mate-write">
+        <a href="/mate-write">
           <Button variant="primary" size="small">
             메이트 모집하기
           </Button>
-        </Link>
+        </a>
       </Header>
       {mateList.length === 0 ? (
         <NoList />
@@ -95,5 +95,3 @@ const Text = styled.p`
     color: ${theme.colors.primry60};
   }
 `;
-
-const Link = styled.a``;

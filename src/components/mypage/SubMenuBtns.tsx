@@ -5,40 +5,53 @@ import { theme } from "../../styles/theme";
 
 const MenuButtons = () => {
   const location = useLocation();
-  const { search } = location;
+  const { search, pathname } = location;
 
   return (
     <Buttons>
-      <Link
-        style={
-          /\?type=oneline/.test(search)
-            ? { color: `${theme.colors.greys100}` }
-            : { color: `${theme.colors.greys60}` }
-        }
-        to="/mypage/write?type=oneline&pageno=1"
-      >
-        한줄리뷰
-      </Link>
+      {pathname === "/mypage/write" && (
+        <Link
+          style={
+            /\?type=simple/.test(search)
+              ? { color: `${theme.colors.greys100}` }
+              : { color: `${theme.colors.greys60}` }
+          }
+          to={`${pathname}?type=simple&pageno=1`}
+        >
+          한줄 리뷰
+        </Link>
+      )}
+      {pathname === "/mypage/bookmark" && (
+        <Link
+          style={
+            /\?type=exhibition/.test(search)
+              ? { color: `${theme.colors.greys100}` }
+              : { color: `${theme.colors.greys60}` }
+          }
+          to={`${pathname}?type=exhibition&pageno=1`}
+        >
+          전시회
+        </Link>
+      )}
       <Link
         style={
           /\?type=blog/.test(search)
             ? { color: `${theme.colors.greys100}` }
             : { color: `${theme.colors.greys60}` }
         }
-        to="/mypage/write?type=blog&pageno=1"
+        to={`${pathname}?type=blog&pageno=1`}
       >
-        블로그리뷰
+        블로그 리뷰
       </Link>
-
       <Link
         style={
           /\?type=mate/.test(search)
             ? { color: `${theme.colors.greys100}` }
             : { color: `${theme.colors.greys60}` }
         }
-        to="/mypage/write?type=mate&pageno=1"
+        to={`${pathname}?type=mate&pageno=1`}
       >
-        메이트찾기
+        메이트 찾기
       </Link>
     </Buttons>
   );
