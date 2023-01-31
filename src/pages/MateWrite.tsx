@@ -158,11 +158,7 @@ const MateWrite = () => {
 
   // 테스트용 useEffect
   useEffect(() => {
-    // console.log(isModifyPage);
-    // console.log(ageRange);
     console.log("writeData :", writeData);
-    // console.log("selectedDate :", selectedDate);
-    // console.log(availableDate === "미정");
   }, [writeData]);
 
   // 제목, 내용, 연락망 input/textArea 상태관리_박예선_23.01.29
@@ -218,7 +214,6 @@ const MateWrite = () => {
   };
 
   // 관람일 미정 체크박스 클릭함수_박예선_23.01.28
-  // 달력과 연결해야 함
   const clickDateRegardless = () => {
     if (availableDate !== "미정")
       setWriteData({ ...writeData, availableDate: "미정" });

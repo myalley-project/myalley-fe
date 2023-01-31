@@ -31,7 +31,6 @@ const MateList = () => {
           page
         );
         const { mates, pageInfo } = res.data;
-        console.log(res);
         setMateList(mates);
         setTotalPage(pageInfo.totalPage);
       } catch (err) {
