@@ -14,9 +14,9 @@ import SimpleDialog from "../components/SimpleDialog";
 import { MateRes, MateWriteType } from "../types/mate";
 import { mateApi, mateWriteApi, MateWriteRes } from "../apis/mate";
 import useRefreshTokenApi from "../apis/useRefreshToken";
-import isApiError from "../utils/isApiError";
+import isApiError, { errorAlert } from "../utils/isApiError";
 
-// 메이트글 작성/수정 페이지_박예선_23.01.30
+// 메이트글 작성/수정 페이지_박예선_23.01.31
 const MateWrite = () => {
   const refreshTokenApi = useRefreshTokenApi();
   const location = useLocation();
@@ -41,6 +41,7 @@ const MateWrite = () => {
     minimum: "",
     maximum: "",
   });
+  const [selectedDate, setSelectedDate] = useState("");
   const [openCancleModal, setOpenCancleModal] = useState(false);
   const {
     title,
@@ -53,7 +54,6 @@ const MateWrite = () => {
   } = writeData;
 
   // 전시회 선택 모달 연결하기
-  // 달력 선택값 가져오기
 
   // 토큰 없을 때 접속하면 로그인페이지로 리다이렉트_박예선_23.01.29
   useEffect(() => {
@@ -86,10 +86,11 @@ const MateWrite = () => {
       if (data.mateAge !== "연령 무관")
         setAgeRange({
           minimum: data.mateAge.split(" ~ ")[0],
-          maximum: data.mateAge.split(" ~ ")[2],
+          maximum: data.mateAge.split(" ~ ")[1],
         });
     } catch (err) {
-      console.log(err);
+      errorAlert();
+      navigate("/");
     }
   }, [mateId, memberId, navigate]);
 
@@ -135,7 +136,7 @@ const MateWrite = () => {
     // console.log(urlSearch.get("mateId"));
     // console.log(isModifyPage);
     // console.log(ageRange);
-    console.log("writeData", writeData);
+    // console.log("writeData", writeData);
     // console.log(availableDate === "미정");
   }, [availableDate, writeData]);
 
@@ -197,7 +198,15 @@ const MateWrite = () => {
     if (availableDate !== "미정")
       setWriteData({ ...writeData, availableDate: "미정" });
     if (availableDate === "미정")
-      setWriteData({ ...writeData, availableDate: "YYYY-MM-DD" });
+      setWriteData({ ...writeData, availableDate: selectedDate });
+  };
+
+  // 달력 클릭 함수_박예선_23.01.31
+  const clickCalendar = (date: string) => {
+    console.log(date);
+    setSelectedDate(date);
+    if (availableDate !== "미정")
+      setWriteData({ ...writeData, availableDate: date });
   };
 
   return (
@@ -274,7 +283,7 @@ const MateWrite = () => {
               onClick={clickDateRegardless}
             />
             <CalenderContainer>
-              <Calender setSelectedDate={() => {}} />
+              <Calender handleSelectedDate={clickCalendar} />
             </CalenderContainer>
           </div>
         </Section>

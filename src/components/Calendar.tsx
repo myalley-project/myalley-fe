@@ -16,10 +16,10 @@ import arrowLeft from "../assets/icons/arrowLeft.svg";
 import arrowRight from "../assets/icons/arrowRight.svg";
 
 interface CalendarProps {
-  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+  handleSelectedDate: (date: string) => void;
 }
 
-const Calender = ({ setSelectedDate }: CalendarProps) => {
+const Calender = ({ handleSelectedDate }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedNumber, setSelectedNumber] = useState(new Date().getDate());
 
@@ -56,7 +56,7 @@ const Calender = ({ setSelectedDate }: CalendarProps) => {
         .replaceAll(". ", "-")
         .slice(0, -1);
 
-      setSelectedDate(result);
+      handleSelectedDate(result);
     }
   };
 
