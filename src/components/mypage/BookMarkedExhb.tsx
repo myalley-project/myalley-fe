@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookMarkedExhbApi, ExhibitionListRes } from "../../apis/member";
+import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 import { Exhibition } from "../../types/exhbList";
 import isApiError from "../../utils/isApiError";
 import ExhbCardList from "../exhibitionList/ExhbCardList";
@@ -9,6 +10,8 @@ import NoList from "../NoList";
 import Pagination from "../Pagination";
 
 const BookMarkedExhb = () => {
+  const getNewTokenApi = useGetNewTokenApi;
+
   const navigate = useNavigate();
   const [exhibitionList, setExhibitionList] = useState<Exhibition[] | []>([]);
   const [pageInfoList, setPageInfoList] = useState({
@@ -24,6 +27,8 @@ const BookMarkedExhb = () => {
 
   const getBookMarkedExhb = useCallback(
     async (pageNo: number) => {
+      const token = localStorage.getItem("refreshToken");
+
       try {
         const res: AxiosResponse<ExhibitionListRes> = await BookMarkedExhbApi(
           pageNo
@@ -32,11 +37,20 @@ const BookMarkedExhb = () => {
         setExhibitionList(exhibitions);
         setPageInfoList(pageInfo);
       } catch (err) {
-        isApiError(err);
+        const errorRes = isApiError(err);
+        if (errorRes === "accessToken 만료") {
+          await getNewTokenApi(token);
+          const reRes: AxiosResponse<ExhibitionListRes> =
+            await BookMarkedExhbApi(pageNo);
+          if (!reRes) return;
+          const { exhibitions, pageInfo } = reRes.data;
+          setExhibitionList(exhibitions);
+          setPageInfoList(pageInfo);
+        }
       }
       navigate(`?type=exhibition&pageno=${pageNo}`);
     },
-    [navigate]
+    [navigate, getNewTokenApi]
   );
 
   useEffect(() => {
