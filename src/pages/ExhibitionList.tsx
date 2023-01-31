@@ -21,6 +21,8 @@ const ExhibitionList = () => {
     selected: 1,
   });
 
+  const getImgAndId = (imgUrl: string, exhbId: number) => {};
+
   // 전시회 목록 요청 api_박예선_23.01.18
   const getExhbList = useCallback(
     async (status: StatusType, type: FilterType, page: number) => {
@@ -58,7 +60,11 @@ const ExhibitionList = () => {
         setExhbTypeFilters={setExhbTypeFilters}
         getExhbList={getExhbList}
       />
-      <ExhbCardList exhbList={exhbList} type="exhbList" />
+      <ExhbCardList
+        exhbList={exhbList}
+        type="exhbList"
+        getImgAndId={getImgAndId}
+      />
       <Pagination pages={pages} setPages={setPages} totalPage={totalPage} />
     </ExhibitionListContainer>
   );

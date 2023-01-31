@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Exhibition } from "../../types/exhbList";
 import { theme } from "../../styles/theme";
@@ -7,34 +7,51 @@ import { theme } from "../../styles/theme";
 interface ExhbCardListType {
   exhbList: Exhibition[]; // 전시회 목록 데이터
   type: "myPage" | "exhbList";
+  getImgAndId: (imgUrl: string, exhbId: number) => void;
 }
+// to={`/exhibition/${id}`}
+const ExhbCardList = ({ exhbList, type, getImgAndId }: ExhbCardListType) => {
+  const navigate = useNavigate();
 
-const ExhbCardList = ({ exhbList, type }: ExhbCardListType) => (
-  <CardListContainer>
-    {exhbList.map((exhb) => {
-      const { id, title, space, duration, posterUrl, viewCount } = exhb;
-      return (
-        <ExhibitionCard key={exhb.id} type={type}>
-          <Link to={`/exhibition/${id}`}>
-            <Thumbnail alt="thumbnail" src={posterUrl} />
-          </Link>
-          <Link className="content-box" to={`/exhibition/${id}`}>
-            <Content>
-              <ContentTop>
-                <div className="title">{title}</div>
-                <div className="space">{space}</div>
-              </ContentTop>
-              <ContentFooter>
-                <div className="exhb-period">{duration}</div>
-                <span className="viewCount">조회수 {viewCount}</span>
-              </ContentFooter>
-            </Content>
-          </Link>
-        </ExhibitionCard>
-      );
-    })}
-  </CardListContainer>
-);
+  const HandleClick = (imgUrl: string, exhbId: number) => {
+    if (type === "myPage") {
+      navigate(`/exhibition/${exhbId}`);
+    } else {
+      getImgAndId(imgUrl, exhbId);
+    }
+  };
+
+  return (
+    <CardListContainer>
+      {exhbList.map((exhb) => {
+        const { id, title, space, duration, posterUrl, viewCount } = exhb;
+        return (
+          <ExhibitionCard
+            onClick={() => HandleClick(posterUrl, id)}
+            key={exhb.id}
+            type={type}
+          >
+            <div>
+              <Thumbnail alt="thumbnail" src={posterUrl} />
+            </div>
+            <div className="content-box">
+              <Content>
+                <ContentTop>
+                  <div className="title">{title}</div>
+                  <div className="space">{space}</div>
+                </ContentTop>
+                <ContentFooter>
+                  <div className="exhb-period">{duration}</div>
+                  <span className="viewCount">조회수 {viewCount}</span>
+                </ContentFooter>
+              </Content>
+            </div>
+          </ExhibitionCard>
+        );
+      })}
+    </CardListContainer>
+  );
+};
 
 export default ExhbCardList;
 

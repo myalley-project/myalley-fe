@@ -9,11 +9,24 @@ import Button from "./atom/Button";
 import { FilterType, Exhibition } from "../types/exhbList";
 import { StatusType } from "./exhibitionList/Filters";
 
-const ExhibitionChoice = () => {
+interface ChoiceProps {
+  getImgAndId: (imgUrl: string, exhbId: number) => void;
+}
+
+// 이런 형태의 state와
+// const [selectedExhb, setSelectedExhb] = useState({
+//   imageUrl: "",
+//   exhbitionId: 0,
+// });
+
+// 이런 형식의 함수를 상위 컴포넌트에서 내려주는걸로 생각하고 있습니다.
+// const getImgAndId = (imgUrl: string, exhbId: number) => {
+//   setSelectedExhb({ imageUrl: imgUrl, exhbitionId: exhbId });
+// };
+
+const ExhibitionChoice = ({ getImgAndId }: ChoiceProps) => {
   const [exhbStatus, setExhbStatus] = useState<StatusType>("현재");
-  // const [type, setType] = useState<FilterType>("전체");
   const [pageInfo, setPageInfo] = useState(1);
-  // const [exhbList, setExhbList] = useState<Exhibition[] | []>([]);
 
   const getexhbListApi = async (
     status: StatusType,
@@ -52,16 +65,28 @@ const ExhibitionChoice = () => {
       <Infowrapper>
         <h1>전시회 목록</h1>
         <ButtonGroup>
-          <Button size="small" variant="primary">
+          <Button
+            onClick={() => setExhbStatus("현재")}
+            size="small"
+            variant="primary"
+          >
             현재 전시
           </Button>
-          <Button size="small" variant="text">
+          <Button
+            onClick={() => setExhbStatus("예정")}
+            size="small"
+            variant="text"
+          >
             예정 전시
           </Button>
         </ButtonGroup>
       </Infowrapper>
       {data ? (
-        <ExhbCardList exhbList={data.exhibitions} type="exhbList" />
+        <ExhbCardList
+          exhbList={data.exhibitions}
+          type="exhbList"
+          getImgAndId={getImgAndId}
+        />
       ) : null}
     </Container>
   );
@@ -77,6 +102,7 @@ const Container = styled.div`
 
 const Infowrapper = styled.div`
   display: flex;
+  flex-flow: column;
   justify-content: center;
   align-items: center;
   gap: 30px;
@@ -90,4 +116,5 @@ const Infowrapper = styled.div`
 const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
+  margin-bottom: 28px;
 `;
