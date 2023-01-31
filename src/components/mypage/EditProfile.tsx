@@ -21,8 +21,9 @@ import { theme } from "../../styles/theme";
 import isApiError from "../../utils/isApiError";
 import eyeOff from "../../assets/icons/eyeOff.svg";
 import eyeOn from "../../assets/icons/eyeOn.svg";
-import error from "../../assets/icons/error.svg";
+import alertCircle from "../../assets/icons/alertCircle.svg";
 import SimpleDialog from "../SimpleDialog";
+import removeLocalStorageItem from "../../utils/removeLocalStorageItem";
 
 interface MyInfoType {
   infoData: {
@@ -255,13 +256,7 @@ const MyProfileEdit = (props: MyInfoType) => {
       const { resultCode } = res.data;
       if (resultCode === 200) {
         alert("탈퇴가 완료되었습니다.");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("memberId");
-        localStorage.removeItem("email");
-        localStorage.removeItem("nickname");
-        localStorage.removeItem("memberImage");
-        localStorage.removeItem("authority");
+        removeLocalStorageItem();
         navigate("/");
       } else {
         alert("알 수 없는 오류입니다. 관리자에게 문의하세요.");
@@ -323,7 +318,9 @@ const MyProfileEdit = (props: MyInfoType) => {
             }}
           />
           <ErrorIcon>
-            {errorType.nickname !== "" && <img src={error} alt="error-icon" />}
+            {errorType.nickname !== "" && (
+              <img src={alertCircle} alt="error-icon" />
+            )}
           </ErrorIcon>
           {!valids.nickname && errorType.nickname === "" && (
             <Notice color={colors.default}>

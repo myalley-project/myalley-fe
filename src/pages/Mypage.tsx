@@ -1,17 +1,18 @@
 import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import { AxiosResponse } from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { myInfoApi, MyInfoRes } from "../apis/member";
 import MyInfoCard from "../components/mypage/MyInfoCard";
 import EditProfile from "../components/mypage/EditProfile";
 import WrittenPosts from "../components/mypage/WrittenPosts";
 import BookMarkedPosts from "../components/mypage/BookMarkedPosts";
 import isApiError from "../utils/isApiError";
+import useGetNewTokenApi from "../apis/useGetRefreshToken";
 
 const Mypage = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+  const getNewTokenApi = useGetNewTokenApi;
   const { pathname } = location;
   const [infoData, setInfoData] = useState<MyInfoRes>({
     memberId: 0,
@@ -25,8 +26,8 @@ const Mypage = () => {
     authority: "ROLE_USER",
   });
 
-  // 회원정보 요청 api
   const getMyInfo = useCallback(async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
     try {
       const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
       if (!res) return;
@@ -34,17 +35,20 @@ const Mypage = () => {
       setInfoData(data);
       localStorage.setItem("memberImage", data.memberImage);
     } catch (err) {
-      isApiError(err);
+      const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") {
+        await getNewTokenApi(refreshToken);
+        const reRes: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
+        if (!reRes) return;
+        const refreshData = reRes.data;
+        setInfoData(refreshData);
+      }
     }
-  }, []);
+  }, [getNewTokenApi]);
 
   useEffect(() => {
     getMyInfo();
-    if (!localStorage.getItem("accessToken")) {
-      alert("로그인 후 이용해주세요.");
-      navigate("/");
-    }
-  }, [getMyInfo, navigate]);
+  }, [getMyInfo]);
 
   return (
     <MypageContainer>
