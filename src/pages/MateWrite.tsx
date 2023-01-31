@@ -42,6 +42,15 @@ const MateWrite = () => {
     maximum: "",
   });
   const [selectedDate, setSelectedDate] = useState("");
+  const [openExhbModal, setOpenExhbModal] = useState(false);
+  const [selectedExhb, setSelectedExhb] = useState({
+    thumbnail:
+      "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
+    status: "현재 전시",
+    title: "제목",
+    duration: "0000-00-00 ~ 0000-00-00",
+  });
+  const [isThumbnailHovered, setIsThumbnailHovered] = useState(false);
   const [openCancleModal, setOpenCancleModal] = useState(false);
   const [isDiabledApplyBtn, setIsDisabledApplyBtn] = useState(true);
   const {
@@ -237,6 +246,23 @@ const MateWrite = () => {
       setWriteData({ ...writeData, availableDate: date });
   };
 
+  // 전시회 모달 선택 함수_박예선_23.01.31
+  const handleExhbModal = (
+    id: number,
+    thumbnail: string,
+    exhbTitle: string,
+    duration: string,
+    exhbStatus: string
+  ) => {
+    setWriteData({ ...writeData, exhibitionId: id });
+    setSelectedExhb({
+      title: exhbTitle,
+      thumbnail,
+      status: exhbStatus,
+      duration,
+    });
+  };
+
   return (
     <>
       <MateWriteContainer>
@@ -299,9 +325,45 @@ const MateWrite = () => {
         <Section className="flex">
           <div className="exhb-choice">
             <SubTitle text="전시회" />
-            <ExhbChoiceBtn type="button">
-              <img src={plus} alt="전시회 선택하기" />
+            <ExhbChoiceBtn
+              onClick={() => setOpenExhbModal(true)}
+              onMouseOver={() => setIsThumbnailHovered(true)}
+              onMouseOut={() => setIsThumbnailHovered(false)}
+            >
+              {!exhibitionId && <img src={plus} alt="전시회 선택하기" />}
+              {exhibitionId !== 0 && (
+                <img
+                  className="thumbnail"
+                  src={selectedExhb.thumbnail}
+                  alt="선택된 전시회"
+                />
+              )}
+              {exhibitionId !== 0 && isThumbnailHovered && (
+                <ThumbnailHover>
+                  <Button variant="primary" size="small" className="status">
+                    {selectedExhb.status}
+                  </Button>
+                  <button
+                    type="button"
+                    className="x-btn"
+                    onClick={() => {
+                      setWriteData({ ...writeData, exhibitionId: 0 });
+                    }}
+                  >
+                    X
+                  </button>
+                  <div className="title">{selectedExhb.title}</div>
+                  <div className="duration">{selectedExhb.duration}</div>
+                </ThumbnailHover>
+              )}
             </ExhbChoiceBtn>
+            {openExhbModal && (
+              // <button type="button" onClick={handleExhbModal}>
+              <button type="button" onClick={() => console.log("전시회 선택")}>
+                모달
+              </button>
+              // 전시회 선택모달 자리 (완성되면 연결하기)
+            )}
           </div>
           <div>
             <SubTitle text="관람일" />
@@ -428,7 +490,7 @@ const SelectLabel = styled.span`
   line-height: 36px;
 `;
 
-const ExhbChoiceBtn = styled.button`
+const ExhbChoiceBtn = styled.div`
   position: relative;
   display: flex;
   text-align: center;
@@ -447,6 +509,50 @@ const ExhbChoiceBtn = styled.button`
     transform: translate(-50%, 50%);
     width: 70px;
     height: 70px;
+  }
+  .thumbnail {
+    width: inherit;
+    height: inherit;
+    object-fit: cover;
+  }
+`;
+
+const ThumbnailHover = styled.div`
+  width: inherit;
+  height: inherit;
+  background-color: #000000;
+  color: ${theme.colors.white100};
+  opacity: 80%;
+  .x-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 16px;
+    padding: 0;
+    background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 4L20 20' stroke='%23FFFF' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M20 4L4 20' stroke='%23FFFF' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E%0A")
+      no-repeat;
+    color: transparent;
+    cursor: pointer;
+  }
+  .status {
+    position: absolute;
+    top: 92px;
+    right: 50%;
+    transform: translate(50%);
+  }
+  .title {
+    position: absolute;
+    top: 162px;
+    right: 50%;
+    transform: translate(50%);
+    font-size: 14px;
+  }
+  .duration {
+    position: absolute;
+    top: 252px;
+    right: 50%;
+    transform: translate(50%);
+    font-size: 12px;
   }
 `;
 

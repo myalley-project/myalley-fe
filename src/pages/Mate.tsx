@@ -69,7 +69,6 @@ const Mate = () => {
   // 메이트글 삭제 api 호출_박예선_23.01.31
   const clickDeleteBtn = async () => {
     await mateDeleteApi(mateId);
-    // console.log("ss");
   };
 
   // 메이트글 북마크 등록/해제 api 호출_박예선_23.01.26
