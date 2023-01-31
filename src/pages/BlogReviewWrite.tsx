@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useReducer } from "react";
+import React, { useState, ChangeEvent, useReducer, useEffect } from "react";
 import styled from "styled-components";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
@@ -53,6 +53,7 @@ const enum ReducerActionType {
 type ReducerAction = {
   type: ReducerActionType;
   payload?: string;
+  fileList?: FormData;
 };
 
 const reducer = (
@@ -103,6 +104,11 @@ const reducer = (
           exhibition: Number(action.payload),
         },
       };
+    case ReducerActionType.Images:
+      return {
+        ...state,
+        images: [action.fileList as FormData],
+      };
     default:
       return state;
   }
@@ -111,6 +117,10 @@ const reducer = (
 const BlogReviewWrite = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [selectedDate, setSelectedDate] = useState("");
+
+  useEffect(() => {
+    console.log(selectedDate);
+  }, [selectedDate]);
 
   const handleTitleInput = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: ReducerActionType.Title, payload: event.target.value });

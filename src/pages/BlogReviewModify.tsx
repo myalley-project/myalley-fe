@@ -123,7 +123,7 @@ const BlogReviewModify = () => {
           <ExhibitionSelect />
           <div>
             <SubTitle text="관람일" />
-            <Calender />
+            {/* <Calender /> */}
           </div>
         </ExhibitionPicker>
         <SelectorConatiner>

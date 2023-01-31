@@ -14,6 +14,7 @@ import Mate from "./pages/Mate";
 import Footer from "./components/Footer";
 import BlogReviewPage from "./pages/BlogReviewPage";
 import BlogReviewDetail from "./components/blogreview/BlogReviewDetail";
+import BlogReviewWrite from "./pages/BlogReviewWrite";
 
 const App = () => (
   <BrowserRouter>
@@ -28,7 +29,6 @@ const App = () => (
         path="/exhibition/:id/edit"
         element={<ExhibitionWrite mode="edit" />}
       />
-      <Route path="/blogs" element={<BlogReviewPage />} />
       <Route
         path="/exhibition-write"
         element={<ExhibitionWrite mode="create" />}
@@ -36,6 +36,8 @@ const App = () => (
       <Route path="/mypage/:subpages" element={<Mypage />} />
       <Route path="/mate-list" element={<MateList />} />
       <Route path="/mate/:id" element={<Mate />} />
+      <Route path="/blogs" element={<BlogReviewPage />} />
+      <Route path="/blog-write" element={<BlogReviewWrite />} />
       <Route path="/blog-detail" element={<BlogReviewDetail />} />
     </Routes>
     <ReactQueryDevtools />

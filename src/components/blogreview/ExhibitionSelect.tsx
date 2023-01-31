@@ -2,7 +2,7 @@ import React, { MouseEvent } from "react";
 import styled from "styled-components";
 import SubTitle from "../SubTitle";
 import { theme } from "../../styles/theme";
-import PlusLarge from "../../assets/icons/plusLarge.svg";
+import PlusLarge from "../../assets/icons/plus.svg";
 
 const ExhibitionSelect = () => (
   <Container>
