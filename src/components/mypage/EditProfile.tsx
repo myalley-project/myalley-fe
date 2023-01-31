@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import { MyInfoRes, editMyInfoApi, EditMyInfoType } from "../../apis/member";
+import { useNavigate } from "react-router-dom";
+import {
+  editMyInfoApi,
+  EditMyInfoType,
+  EditMyInfoRes,
+  withdrawalsApi,
+} from "../../apis/member";
 import { Input, Label, Notice } from "../atom/labelInput";
 import profileImg from "../../assets/icons/profileImg.svg";
 import cameraCircle from "../../assets/icons/cameraCircle.svg";
@@ -12,10 +18,11 @@ import {
   getDayArray,
 } from "../../utils/dateSelector";
 import { theme } from "../../styles/theme";
-import useRefreshTokenApi from "../../apis/useRefreshToken";
 import isApiError from "../../utils/isApiError";
 import eyeOff from "../../assets/icons/eyeOff.svg";
 import eyeOn from "../../assets/icons/eyeOn.svg";
+import error from "../../assets/icons/error.svg";
+import SimpleDialog from "../SimpleDialog";
 
 interface MyInfoType {
   infoData: {
@@ -41,13 +48,23 @@ interface InfosType {
 }
 
 const MyProfileEdit = (props: MyInfoType) => {
-  const refreshTokenApi = useRefreshTokenApi();
+  const navigate = useNavigate();
   const formData = new FormData();
+  const nicknameRef = useRef<HTMLInputElement>(null);
+  const [isWithdrawal, setIsWithdrawal] = useState(false);
   const { infoData } = props;
-  const { birth, nickname, gender } = infoData;
+  const { birth, nickname, gender, memberImage } = infoData;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [profileImage, setProfileImage] = useState(profileImg);
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [errorType, setErrorType] = useState({
+    nickname: "",
+    password: "",
+  });
+  const [errorClass, setErrorClass] = useState({
+    nickname: "",
+    password: "",
+  });
   const [valids, setValids] = useState({
     nickname: false,
     password: false,
@@ -67,6 +84,7 @@ const MyProfileEdit = (props: MyInfoType) => {
   // input 핸들러 함수
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
+
     setInfos({
       ...infos,
       [name]: value,
@@ -101,11 +119,15 @@ const MyProfileEdit = (props: MyInfoType) => {
     }
     const newTimer = setTimeout(() => {
       const isNicknameValid = rNickname.test(value);
+      if (isNicknameValid) {
+        setErrorClass({ ...errorClass, nickname: "" });
+        setErrorType({ ...errorType, nickname: "" });
+      }
       setValids({
         ...valids,
         nickname: isNicknameValid,
       });
-    }, 800);
+    }, 500);
     setTimer(newTimer);
   };
 
@@ -120,6 +142,10 @@ const MyProfileEdit = (props: MyInfoType) => {
     }
     const newTimer = setTimeout(() => {
       const isPwValid = rPassword.test(value);
+      if (isPwValid) {
+        setErrorClass({ ...errorClass, password: "" });
+        setErrorType({ ...errorType, password: "" });
+      }
       setValids({
         ...valids,
         password: isPwValid,
@@ -128,6 +154,16 @@ const MyProfileEdit = (props: MyInfoType) => {
     setTimer(newTimer);
   };
 
+  // 비밀번호 체크 유효성 검사
+  const handlePwCheckValid = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
+    if (value !== "" && value === infos.password) {
+      setErrorClass({ ...errorClass, password: "" });
+    }
+  };
+
+  // 이미지 업로드
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     if (e.target.files !== null) {
@@ -146,6 +182,23 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   // 회원정보 수정 api
   const editBtn = async () => {
+    // 프론트 유효성 검사
+    if (!valids.nickname && infos.nickname !== "") {
+      // 별명 형식 체크
+      setErrorClass({ ...errorClass, nickname: "error" });
+      setErrorType({ ...errorType, nickname: "form" });
+    } else if (!valids.password) {
+      // 비밀번호 형식 체크
+      setErrorClass({ ...errorClass, password: "error" });
+      setErrorType({ ...errorType, password: "form" });
+    } else if (passwordCheck !== "" && passwordCheck !== infos.password) {
+      // 비밀번호 일치 체크
+      setErrorClass({ ...errorClass, password: "error" });
+    } else if (passwordCheck === "" && infos.password !== "") {
+      setErrorClass({ ...errorClass, password: "error" });
+      return;
+    }
+
     const editMyInfo: EditMyInfoType = {
       password: infos.password,
       nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
@@ -162,11 +215,57 @@ const MyProfileEdit = (props: MyInfoType) => {
       new Blob([JSON.stringify(editMyInfo)], { type: "application/json" })
     );
     try {
-      const res: AxiosResponse<MyInfoRes> | void = await editMyInfoApi(
-        formData
-      );
-      // 회원정보 수정이 완료되었습니다 alert 띄우기
-      console.log(res);
+      const res: AxiosResponse<EditMyInfoRes> = await editMyInfoApi(formData);
+      const { resultCode } = res.data;
+      if (resultCode === 200) {
+        alert("회원정보 수정이 완료되었습니다.");
+        setErrorClass({ ...errorClass, nickname: "", password: "" });
+        setErrorType({ ...errorType, nickname: "", password: "" });
+        setValids({ ...valids, nickname: false, password: false });
+      } else {
+        alert("알 수 없는 오류입니다. 관리자에게 문의하세요.");
+      }
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (typeof errorRes !== "object") return;
+      const { errorCode, errorMsg } = errorRes;
+      if (errorCode === 409 && errorMsg === "닉네임 중복") {
+        setValids({ ...valids, nickname: true });
+        setErrorClass({ ...errorClass, nickname: "error" });
+        setErrorType({ ...errorType, nickname: "duplicate" });
+      } else if (errorCode === 400 && errorMsg === "닉네임 형식 오류") {
+        console.log(infos.nickname);
+        setErrorType({ ...errorType, nickname: "form" });
+      } else if (errorCode === 400 && errorMsg === "비밀번호 형식 오류") {
+        setErrorClass({ ...errorClass, password: "error" });
+        setErrorType({ ...errorType, password: "form" });
+      } else if (
+        errorCode === 400 &&
+        errorMsg === "올바른 형식의 이미지 파일이 아닙니다."
+      )
+        alert("이미지 형식을 다시 확인해주세요.");
+      // TODO: 토큰 에러 로직 추가
+    }
+  };
+
+  // 탈퇴 버튼
+  const withdrawalsBtn = async () => {
+    try {
+      const res: AxiosResponse<EditMyInfoRes> = await withdrawalsApi();
+      const { resultCode } = res.data;
+      if (resultCode === 200) {
+        alert("탈퇴가 완료되었습니다.");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("memberId");
+        localStorage.removeItem("email");
+        localStorage.removeItem("nickname");
+        localStorage.removeItem("memberImage");
+        localStorage.removeItem("authority");
+        navigate("/");
+      } else {
+        alert("알 수 없는 오류입니다. 관리자에게 문의하세요.");
+      }
     } catch (err) {
       isApiError(err);
     }
@@ -174,9 +273,22 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   return (
     <EditProfileContainer>
+      {isWithdrawal && (
+        <SimpleDialog
+          message="정말 탈퇴하시겠습니까?"
+          cancelMessage="취소"
+          confirmMessage="탈퇴하기"
+          clickCancleBtn={() => setIsWithdrawal(false)}
+          clickConfirmBtn={() => withdrawalsBtn()}
+        />
+      )}
+
       <EditProtileWrapper>
         <ImgWrapper>
-          <ProfileImg src={profileImage} alt="base-img" />
+          <ProfileImg
+            src={memberImage === "" ? profileImage : memberImage}
+            alt="base-img"
+          />
           <label htmlFor="exhibition-posterUrl">
             <UploadImg src={cameraCircle} alt="upload-btn" />
           </label>
@@ -194,40 +306,58 @@ const MyProfileEdit = (props: MyInfoType) => {
             id="nickname"
             type="text"
             placeholder={nickname}
+            ref={nicknameRef}
             width="26vw"
+            className={errorClass.nickname}
             height="44px"
             name="nickname"
             value={infos.nickname}
+            onFocus={() => {
+              if (infos.nickname === "") {
+                setInfos({ ...infos, nickname });
+              }
+            }}
             onChange={(e) => {
               handleInput(e);
               handleNicknameValid(e);
             }}
           />
-          {!valids.nickname && (
+          <ErrorIcon>
+            {errorType.nickname !== "" && <img src={error} alt="error-icon" />}
+          </ErrorIcon>
+          {!valids.nickname && errorType.nickname === "" && (
             <Notice color={colors.default}>
               한글, 영어 대소문자, 숫자 2~10자를 입력하세요
             </Notice>
+          )}
+          {errorType.nickname === "form" && infos.nickname !== "" && (
+            <Notice color={colors.error}>
+              별명은 2~10자리의 한글 또는 영어 대소문자 또는 숫자만 가능합니다.
+            </Notice>
+          )}
+          {errorType.nickname === "duplicate" && (
+            <Notice color={colors.error}>이미 사용중인 별명입니다.</Notice>
           )}
         </InputWrapper>
         <InputWrapper>
           <Label>생년월일</Label>
           <BirthWrapper>
             <Selectbox
-              placeholder={birth.substring(0, 4)}
+              placeholder={birth === null ? "" : birth.substring(0, 4)}
               options={getYearArray()}
               width="9vw"
               name="year"
               onClick={handleSetInfos}
             />
             <Selectbox
-              placeholder={birth.substring(5, 7)}
+              placeholder={birth === null ? "" : birth.substring(5, 7)}
               options={getMonthArray()}
               width="6.9vw"
               name="month"
               onClick={handleSetInfos}
             />
             <Selectbox
-              placeholder={birth.substring(8, 10)}
+              placeholder={birth === null ? "" : birth.substring(8, 10)}
               options={getDayArray()}
               width="6.9vw"
               name="day"
@@ -235,7 +365,7 @@ const MyProfileEdit = (props: MyInfoType) => {
             />
           </BirthWrapper>
         </InputWrapper>
-        <InputWrapper style={{ marginBottom: "50px" }}>
+        <GenderWrapper style={{ marginBottom: "50px" }}>
           <Label htmlFor="gender">성별</Label>
           <Selectbox
             placeholder={gender === "W" ? "여성" : "남성"}
@@ -244,7 +374,7 @@ const MyProfileEdit = (props: MyInfoType) => {
             name="gender"
             onClick={handleSetInfos}
           />
-        </InputWrapper>
+        </GenderWrapper>
         <InputWrapper>
           <Label htmlFor="password">비밀번호 변경</Label>
           <PasswordWrapper>
@@ -253,6 +383,7 @@ const MyProfileEdit = (props: MyInfoType) => {
               type={isPwType ? "password" : "text"}
               name="password"
               placeholder="비밀번호를 입력하세요"
+              className={errorClass.password}
               width="26vw"
               height="44px"
               onChange={(e) => {
@@ -267,12 +398,16 @@ const MyProfileEdit = (props: MyInfoType) => {
               <img src={isPwType ? eyeOff : eyeOn} alt="eye-icon" />
             </EyeIconbtn>
           </PasswordWrapper>
-          {!valids.password ? (
+          {!valids.password && errorType.password === "" && (
             <Notice color={colors.default}>
               영어 대소문자, 숫자, 특수문자를 포함한 8~16자를 입력하세요
             </Notice>
-          ) : (
-            <Notice color={colors.success}>안전한 비밀번호입니다</Notice>
+          )}
+          {errorType.password === "form" && infos.password !== "" && (
+            <Notice color={colors.error}>
+              비밀번호는 8~16자의 영어 대소문자, 숫자, 특수문자를 포함한
+              형식이여야합니다.
+            </Notice>
           )}
         </InputWrapper>
         <InputWrapper>
@@ -282,9 +417,11 @@ const MyProfileEdit = (props: MyInfoType) => {
               id="password-check"
               type={isPwCheckType ? "password" : "text"}
               placeholder="비밀번호를 입력하세요"
+              className={errorClass.password}
               width="26vw"
               height="44px"
               onChange={(e) => {
+                handlePwCheckValid(e);
                 setPasswordCheck(e.target.value);
               }}
             />
@@ -295,16 +432,30 @@ const MyProfileEdit = (props: MyInfoType) => {
               <img src={isPwCheckType ? eyeOff : eyeOn} alt="eye-icon" />
             </EyeIconbtn>
           </PasswordWrapper>
-          {passwordCheck !== "" && passwordCheck === infos.password ? (
-            <Notice color={colors.success}>동일한 비밀번호입니다</Notice>
-          ) : (
-            <Notice color={colors.error}>비밀번호가 일치하지 않습니다</Notice>
-          )}
+          {(passwordCheck !== "" && passwordCheck !== infos.password) ||
+            (passwordCheck === "" && infos.password !== "" && (
+              <Notice color={colors.error}>비밀번호가 일치하지 않습니다</Notice>
+            ))}
         </InputWrapper>
         <EditBtn type="submit" onClick={editBtn}>
           수정하기
         </EditBtn>
+        <WithdrawalBtn
+          type="button"
+          onClick={() => setIsWithdrawal((prev) => !prev)}
+        >
+          탈퇴하기
+        </WithdrawalBtn>
       </EditProtileWrapper>
+      {isWithdrawal && (
+        <SimpleDialog
+          message="정말 탈퇴하시겠습니까?"
+          cancelMessage="취소"
+          confirmMessage="탈퇴하기"
+          clickCancleBtn={() => setIsWithdrawal(false)}
+          clickConfirmBtn={() => withdrawalsBtn()}
+        />
+      )}
     </EditProfileContainer>
   );
 };
@@ -359,6 +510,7 @@ const InputFile = styled.input`
 
 const InputWrapper = styled.div`
   margin-bottom: 10px;
+  position: relative;
   > * {
     max-width: 380px !important;
   }
@@ -367,14 +519,29 @@ const InputWrapper = styled.div`
   }
 `;
 
+const ErrorIcon = styled.div`
+  position: absolute;
+  top: 40px;
+  right: 20px;
+  width: 24px;
+  height: 24px;
+`;
+
 const BirthWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   button {
     max-width: 100px;
+    height: 44px;
   }
   > div:first-child > button {
     max-width: 130px;
+  }
+`;
+
+const GenderWrapper = styled(InputWrapper)`
+  button {
+    height: 44px;
   }
 `;
 
@@ -395,6 +562,11 @@ const PasswordInput = styled(Input)`
   width: 100%;
   background-position: right 19px center;
   background-repeat: no-repeat;
+  color: ${(props) => props.theme.colors.greys90};
+
+  &:focus {
+    border: 1px solid ${(props) => props.theme.colors.primry60};
+  }
 `;
 
 const EditBtn = styled.button`
@@ -408,5 +580,13 @@ const EditBtn = styled.button`
   cursor: pointer;
   &:hover {
     background-color: ${(props) => props.theme.colors.greys90};
+  }
+`;
+
+const WithdrawalBtn = styled.button`
+  color: ${theme.colors.greys60};
+  cursor: pointer;
+  &:hover {
+    color: ${theme.colors.greys100};
   }
 `;

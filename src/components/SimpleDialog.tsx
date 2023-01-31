@@ -24,18 +24,18 @@ const SimpleDialog = ({
     </Message>
     <Container>
       <Button
+        onClick={clickCancleBtn}
         variant="text"
         size="large"
         type="button"
-        onClick={clickCancleBtn}
       >
         {cancelMessage}
       </Button>
       <Button
+        onClick={clickConfirmBtn}
         variant="primary"
         size="large"
         type="button"
-        onClick={clickConfirmBtn}
       >
         {confirmMessage}
       </Button>

@@ -10,16 +10,19 @@ interface MyInfoType {
 
 const MyInfo = (props: MyInfoType) => {
   const { infoData } = props;
-  const { level, nickname, gender, email, age } = infoData;
+  const { level, nickname, gender, email, age, memberImage } = infoData;
   return (
     <Profile>
-      <ProfileImg src={profileImg} alt="profile-img" />
+      <ProfileImg
+        src={memberImage === "" ? profileImg : memberImage}
+        alt="profile-img"
+      />
       <Level>{level}</Level>
       <Nickname>{nickname}</Nickname>
       <Privacy>
         <p>{gender === "W" ? "여성" : "남성"}</p>
         <p className="partition">|</p>
-        <p>{age}</p>
+        <p>{age}세</p>
         <p className="partition">|</p>
         <p>{email}</p>
       </Privacy>
@@ -39,6 +42,7 @@ const ProfileImg = styled.img`
   width: 120px;
   height: 120px;
   margin-bottom: 30px;
+  border-radius: 10000px;
 `;
 
 const Level = styled.p`
