@@ -61,7 +61,7 @@ const HamburgerMenu = () => {
             </List>
           )}
           {info.authority !== "ROLE_ADMIN" && (
-            <List as="a" href="/">
+            <List as="a" href="/mate-list">
               메이트 찾기
             </List>
           )}
