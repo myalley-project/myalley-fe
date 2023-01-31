@@ -13,7 +13,7 @@ const WrittenSimpleReview = () => {
   // 내가 쓴 한줄 리뷰 목록 조회
   const getSimpleReview = useCallback(
     async (pageNo: number) => {
-      const token = localStorage.getItem("refreshToken");
+      const refreshToken = localStorage.getItem("refreshToken");
 
       try {
         const res: AxiosResponse<MySimpleReviewRes> = await mySimpleReviewsApi(
@@ -23,7 +23,7 @@ const WrittenSimpleReview = () => {
       } catch (err) {
         const errorRes = isApiError(err);
         if (errorRes === "accessToken 만료") {
-          await getNewTokenApi(token);
+          await getNewTokenApi(refreshToken);
           const reRes: AxiosResponse<MySimpleReviewRes> =
             await mySimpleReviewsApi(pageNo);
           if (!reRes) return;

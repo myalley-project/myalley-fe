@@ -28,7 +28,7 @@ const WrittenMate = () => {
   // 내가 쓴 메이트 목록 api 호출
   const getFindMateList = useCallback(
     async (pageNo: number) => {
-      const token = localStorage.getItem("refreshToken");
+      const refreshToken = localStorage.getItem("refreshToken");
 
       try {
         const res: AxiosResponse<MateRes> = await myMatesApi(pageNo);
@@ -38,7 +38,7 @@ const WrittenMate = () => {
       } catch (err) {
         const errorRes = isApiError(err);
         if (errorRes === "accessToken 만료") {
-          await getNewTokenApi(token);
+          await getNewTokenApi(refreshToken);
           const reRes: AxiosResponse<MateRes> = await myMatesApi(pageNo);
           if (!reRes) return;
           const { mates, pageInfo } = reRes.data;

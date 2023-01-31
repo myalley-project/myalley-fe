@@ -27,7 +27,7 @@ const BookMarkedExhb = () => {
 
   const getBookMarkedExhb = useCallback(
     async (pageNo: number) => {
-      const token = localStorage.getItem("refreshToken");
+      const refreshToken = localStorage.getItem("refreshToken");
 
       try {
         const res: AxiosResponse<ExhibitionListRes> = await BookMarkedExhbApi(
@@ -39,7 +39,7 @@ const BookMarkedExhb = () => {
       } catch (err) {
         const errorRes = isApiError(err);
         if (errorRes === "accessToken 만료") {
-          await getNewTokenApi(token);
+          await getNewTokenApi(refreshToken);
           const reRes: AxiosResponse<ExhibitionListRes> =
             await BookMarkedExhbApi(pageNo);
           if (!reRes) return;

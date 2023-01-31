@@ -25,7 +25,7 @@ const BookMarkedMate = () => {
   });
   const getBookMarkedMate = useCallback(
     async (pageNo: number) => {
-      const token = localStorage.getItem("refreshToken");
+      const refreshToken = localStorage.getItem("refreshToken");
 
       try {
         const res: AxiosResponse<MateRes> = await BookMarkedMateApi(pageNo);
@@ -35,7 +35,7 @@ const BookMarkedMate = () => {
       } catch (err) {
         const errorRes = isApiError(err);
         if (errorRes === "accessToken 만료") {
-          await getNewTokenApi(token);
+          await getNewTokenApi(refreshToken);
           const reRes: AxiosResponse<MateRes> = await BookMarkedMateApi(pageNo);
           if (!reRes) return;
           const { mates, pageInfo } = reRes.data;

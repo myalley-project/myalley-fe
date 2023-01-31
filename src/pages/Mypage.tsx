@@ -27,7 +27,7 @@ const Mypage = () => {
   });
 
   const getMyInfo = useCallback(async () => {
-    const token = localStorage.getItem("refreshToken");
+    const refreshToken = localStorage.getItem("refreshToken");
     try {
       const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
       if (!res) return;
@@ -37,7 +37,7 @@ const Mypage = () => {
     } catch (err) {
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
-        await getNewTokenApi(token);
+        await getNewTokenApi(refreshToken);
         const reRes: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
         if (!reRes) return;
         const refreshData = reRes.data;

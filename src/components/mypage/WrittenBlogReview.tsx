@@ -14,7 +14,7 @@ const WrittenBlogReview = () => {
   // 내가 쓴 블로그 리뷰 목록 조회
   const getBlogReview = useCallback(
     async (pageNo: number) => {
-      const token = localStorage.getItem("refreshToken");
+      const refreshToken = localStorage.getItem("refreshToken");
 
       try {
         const res: AxiosResponse<BlogReviewListRes> = await myBlogReviewsApi(
@@ -24,7 +24,7 @@ const WrittenBlogReview = () => {
       } catch (err) {
         const errorRes = isApiError(err);
         if (errorRes === "accessToken 만료") {
-          await getNewTokenApi(token);
+          await getNewTokenApi(refreshToken);
           const reRes: AxiosResponse<BlogReviewListRes> =
             await myBlogReviewsApi(pageNo);
           if (!reRes) return;
