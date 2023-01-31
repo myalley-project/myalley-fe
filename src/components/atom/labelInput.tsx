@@ -28,6 +28,9 @@ export const Input = styled.input<{ width: string; height: string }>`
   &.error {
     border: 1px solid ${(props) => props.theme.colors.error};
   }
+  &:focus {
+    border: 1px solid ${(props) => props.theme.colors.primry60};
+  }
 `;
 
 export const Notice = styled.span<{ color: string }>`
