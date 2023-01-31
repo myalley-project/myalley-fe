@@ -302,21 +302,21 @@ const MyProfileEdit = (props: MyInfoType) => {
           <Label>생년월일</Label>
           <BirthWrapper>
             <Selectbox
-              placeholder={birth.substring(0, 4)}
+              placeholder={birth === null ? "" : birth.substring(0, 4)}
               options={getYearArray()}
               width="9vw"
               name="year"
               onClick={handleSetInfos}
             />
             <Selectbox
-              placeholder={birth.substring(5, 7)}
+              placeholder={birth === null ? "" : birth.substring(5, 7)}
               options={getMonthArray()}
               width="6.9vw"
               name="month"
               onClick={handleSetInfos}
             />
             <Selectbox
-              placeholder={birth.substring(8, 10)}
+              placeholder={birth === null ? "" : birth.substring(8, 10)}
               options={getDayArray()}
               width="6.9vw"
               name="day"
