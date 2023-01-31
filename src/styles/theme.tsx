@@ -9,6 +9,7 @@ const colors = {
   primry60: "#7F67BE",
   primry70: "#6750A4",
   primry80: "#4F378B",
+  primry90: "#381E72",
   secondary5: "#F6F3FE",
   secondary30: "#CCC2DC",
   secondary40: "#B0A7C0",
