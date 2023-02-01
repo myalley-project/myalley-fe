@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 import { OnelineReviewCardType } from "../types/oneLineReview";
 
+
 interface CreateReviewBody {
   exhibitionId: number;
   viewDate: string;

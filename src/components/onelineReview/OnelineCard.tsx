@@ -8,6 +8,7 @@ import { OnelineReviewCardType } from "../../types/oneLineReview";
 import Modal from "../../Modal";
 import Button from "../atom/Button";
 import oneLineReviewApis from "../../apis/oneLineReviewApis";
+
 import OnelineWrapper from "../../pages/OnelineWrapper";
 
 const OnelineCard = ({
