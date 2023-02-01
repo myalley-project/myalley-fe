@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Exhibition } from "../../types/exhbList";
 import { theme } from "../../styles/theme";
+import NoList from "../NoList";
 
 interface ExhbCardListType {
   exhbList: Exhibition[]; // 전시회 목록 데이터
@@ -11,6 +12,7 @@ interface ExhbCardListType {
 
 const ExhbCardList = ({ exhbList, type }: ExhbCardListType) => (
   <CardListContainer>
+    {exhbList.length === 0 && <NoList notice="등록된 전시글이 없습니다" />}
     {exhbList.map((exhb) => {
       const { id, title, space, duration, posterUrl, viewCount } = exhb;
       return (

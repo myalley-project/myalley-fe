@@ -55,7 +55,7 @@ const BookMarkedMate = () => {
   return (
     <div>
       {matesList.length === 0 ? (
-        <NoList />
+        <NoList notice="아직 작성한 글이 없습니다" />
       ) : (
         matesList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}

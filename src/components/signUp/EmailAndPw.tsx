@@ -73,7 +73,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
         <input
           type="email"
           name="email"
-          placeholder="ex_mail@exhibition.com"
+          placeholder="이메일을 입력하세요"
           value={infos.email}
           onChange={(e) => {
             handleInput(e);
@@ -101,7 +101,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
         <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="비밀번호를 입력하세요"
           value={infos.password}
           onChange={(e) => {
             handleInput(e);
@@ -127,7 +127,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
         <input
           type="password"
           name="pwCheck"
-          placeholder="Password"
+          placeholder="비밀번호를 다시 입력하세요"
           value={infos.pwCheck}
           onChange={(e) => {
             handleInput(e);
