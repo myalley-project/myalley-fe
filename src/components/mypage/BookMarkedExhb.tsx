@@ -60,7 +60,7 @@ const BookMarkedExhb = () => {
   return (
     <div>
       {exhibitionList.length === 0 ? (
-        <NoList />
+        <NoList notice="아직 작성한 글이 없습니다" />
       ) : (
         <ExhbCardList exhbList={exhibitionList} type="myPage" />
       )}
