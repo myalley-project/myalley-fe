@@ -11,8 +11,9 @@ import { Mate, MateListType } from "../types/mateList";
 import { theme } from "../styles/theme";
 import { mateListApi } from "../apis/mate";
 import { errorAlert } from "../utils/isApiError";
+import NoList from "../components/NoList";
 
-// 메이트글 목록 페이지_박예선_23.01.26
+// 메이트글 목록 페이지_박예선_23.02.01
 const MateList = () => {
   const [mateList, setMateList] = useState<Mate[] | null>(null);
   const [mateStatusFilter, setMateStatusFilter] = useState<MateStatusSelect>({
@@ -53,6 +54,7 @@ const MateList = () => {
         setMateStatusFilter={setMateStatusFilter}
         setPages={setPages}
       />
+      {mateList?.length === 0 && <NoList notice="작성된 메이트글이 없습니다" />}
       {mateList?.map((mate) => (
         <MateCard key={mate.mateId} mate={mate} />
       ))}
