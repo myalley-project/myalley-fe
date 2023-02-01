@@ -13,8 +13,8 @@ const ExhibitionList = () => {
   const [totalPage, setTotalPage] = useState<number>(0);
   const [selectedStatus, setSelectedStatus] = useState<StatusType>("현재");
   const [exhbTypeFilters, setExhbTypeFilters] = useState<ExhbTypeFilters>({
-    selected: "전체",
-    applied: "전체",
+    selected: "전체 전시",
+    applied: "전체 전시",
   });
   const [pages, setPages] = useState({
     started: 1,

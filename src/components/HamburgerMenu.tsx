@@ -1,82 +1,116 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import useLogOut from "../apis/logOut";
 import ProfileImg from "../assets/icons/profileImg.svg";
 import { theme } from "../styles/theme";
 
-const HamburgerMenu = () => {
+interface PropsType {
+  setIsShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [info, setInfo] = useState({
-    nickname: localStorage.getItem("nickname")!,
-    memberImage: localStorage.getItem("userImage")!,
-    email: localStorage.getItem("email")!,
-    authority: localStorage.getItem("authority")!,
+    nickname: localStorage.getItem("nickname"),
+    memberImage: localStorage.getItem("memberImage")!,
+    email: localStorage.getItem("email"),
+    authority: localStorage.getItem("authority"),
   });
 
-  return (
-    <MenuContainer>
-      {localStorage.getItem("accessToken") ? (
-        <MenuWrapper>
-          <Subtitle>계정</Subtitle>
-          <MypageArea href="/mypage/edit">
-            <ProfileWrapper>
-              <img
-                src={ProfileImg}
-                alt="profile-img"
-                style={{ width: "40px" }}
-              />
-            </ProfileWrapper>
-            <div>
-              <Nickname>{info.nickname}</Nickname>
-              <Email className="email">{info.email}</Email>
-            </div>
-          </MypageArea>
-          <LogoutButton type="button" onClick={logOut}>
-            로그아웃
-          </LogoutButton>
-        </MenuWrapper>
-      ) : (
-        <MenuWrapper>
-          <Subtitle>계정</Subtitle>
-          <List as="a" href="/login">
-            로그인
-          </List>
-          <List as="a" href="/signup">
-            회원가입
-          </List>
-        </MenuWrapper>
-      )}
+  const toggleMenu = () => {
+    if (!menuRef.current) {
+      return;
+    }
+    setIsShowMenu(false);
+    setIsMenuOpen(false);
+  };
 
-      <MenuWrapper>
-        <Subtitle>메뉴</Subtitle>
-        <ul>
-          {info.authority !== "ROLE_ADMIN" && (
-            <List as="a" href="/exhibition-list">
-              전시회
-            </List>
-          )}
-          {info.authority !== "ROLE_ADMIN" && (
-            <List as="a" href="/">
-              전시회 리뷰
-            </List>
-          )}
-          {info.authority !== "ROLE_ADMIN" && (
-            <List as="a" href="/">
-              메이트 찾기
-            </List>
-          )}
-          {info.authority === "ROLE_ADMIN" && (
-            <List as="a" href="/exhibition-write">
-              전시회 정보 등록하기
-            </List>
-          )}
-        </ul>
-      </MenuWrapper>
-    </MenuContainer>
+  return (
+    <Background>
+      {isMenuOpen && (
+        <MenuOutSide onClick={toggleMenu}>
+          <MenuContainer ref={menuRef}>
+            {localStorage.getItem("accessToken") ? (
+              <MenuWrapper>
+                <Subtitle>계정</Subtitle>
+                <MypageArea href="/mypage/edit">
+                  <ProfileWrapper>
+                    <img
+                      src={
+                        info.memberImage === "" ? ProfileImg : info.memberImage
+                      }
+                      alt="profile-img"
+                      style={{ width: "40px" }}
+                    />
+                  </ProfileWrapper>
+                  <div>
+                    <Nickname>{info.nickname}</Nickname>
+                    <Email className="email">{info.email}</Email>
+                  </div>
+                </MypageArea>
+                <LogoutButton type="button" onClick={logOut}>
+                  로그아웃
+                </LogoutButton>
+              </MenuWrapper>
+            ) : (
+              <MenuWrapper>
+                <Subtitle>계정</Subtitle>
+                <List as="a" href="/login">
+                  로그인
+                </List>
+                <List as="a" href="/signup">
+                  회원가입
+                </List>
+              </MenuWrapper>
+            )}
+
+            <MenuWrapper>
+              <Subtitle>메뉴</Subtitle>
+              <ul>
+                {info.authority !== "ROLE_ADMIN" && (
+                  <List as="a" href="/exhibition-list">
+                    전시회
+                  </List>
+                )}
+                {info.authority !== "ROLE_ADMIN" && (
+                  <List as="a" href="/">
+                    전시회 리뷰
+                  </List>
+                )}
+                {info.authority !== "ROLE_ADMIN" && (
+                  <List as="a" href="/mate-list">
+                    메이트 찾기
+                  </List>
+                )}
+                {info.authority === "ROLE_ADMIN" && (
+                  <List as="a" href="/exhibition-write">
+                    전시회 정보 등록하기
+                  </List>
+                )}
+              </ul>
+            </MenuWrapper>
+          </MenuContainer>
+        </MenuOutSide>
+      )}
+    </Background>
   );
 };
 
 export default HamburgerMenu;
+
+const Background = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+const MenuOutSide = styled.div`
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+`;
 
 const MenuContainer = styled.div`
   position: absolute;

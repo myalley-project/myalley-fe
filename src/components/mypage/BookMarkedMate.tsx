@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookMarkedMateApi, MateRes } from "../../apis/member";
+import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
 import MateCard from "../mate/MateCard";
@@ -9,6 +10,7 @@ import NoList from "../NoList";
 import Pagination from "../Pagination";
 
 const BookMarkedMate = () => {
+  const getNewTokenApi = useGetNewTokenApi;
   const navigate = useNavigate();
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
   const [pageInfoList, setPageInfoList] = useState({
@@ -23,17 +25,27 @@ const BookMarkedMate = () => {
   });
   const getBookMarkedMate = useCallback(
     async (pageNo: number) => {
+      const refreshToken = localStorage.getItem("refreshToken");
+
       try {
         const res: AxiosResponse<MateRes> = await BookMarkedMateApi(pageNo);
         const { mates, pageInfo } = res.data;
         setMatesList(mates);
         setPageInfoList(pageInfo);
       } catch (err) {
-        isApiError(err);
+        const errorRes = isApiError(err);
+        if (errorRes === "accessToken 만료") {
+          await getNewTokenApi(refreshToken);
+          const reRes: AxiosResponse<MateRes> = await BookMarkedMateApi(pageNo);
+          if (!reRes) return;
+          const { mates, pageInfo } = reRes.data;
+          setMatesList(mates);
+          setPageInfoList(pageInfo);
+        }
       }
       navigate(`?type=mate&pageno=${pageNo}`);
     },
-    [navigate]
+    [navigate, getNewTokenApi]
   );
 
   useEffect(() => {
@@ -43,7 +55,7 @@ const BookMarkedMate = () => {
   return (
     <div>
       {matesList.length === 0 ? (
-        <NoList />
+        <NoList notice="아직 작성한 글이 없습니다" />
       ) : (
         matesList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}

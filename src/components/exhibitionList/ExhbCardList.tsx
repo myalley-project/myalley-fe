@@ -12,7 +12,7 @@ interface ExhbCardListType {
 
 const ExhbCardList = ({ exhbList, type }: ExhbCardListType) => (
   <CardListContainer>
-    {exhbList.length === 0 && <NoList />}
+    {exhbList.length === 0 && <NoList notice="등록된 전시글이 없습니다" />}
     {exhbList.map((exhb) => {
       const { id, title, space, duration, posterUrl, viewCount } = exhb;
       return (

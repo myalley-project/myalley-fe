@@ -2,20 +2,41 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
 import Button from "./atom/Button";
+import SearchBar from "./atom/Searchbar";
 
-const ReviewSearchbar = () => (
-  <div>
+interface ReviewSearchbarProps {
+  setFilter: (state: "oneline" | "blog") => void;
+  setOrderType: (state: "Recent" | "StarScore") => void;
+  totalElement: number;
+}
+
+const ReviewSearchbar = ({
+  setFilter,
+  setOrderType,
+  totalElement,
+}: ReviewSearchbarProps) => (
+  <Container>
     <ReviewSelector>
-      <button type="button">한 줄 리뷰</button>
+      <button onClick={() => setFilter("oneline")} type="button">
+        한 줄 리뷰
+      </button>
       <Spliter />
-      <button type="button">블로그 리뷰</button>
+      <button onClick={() => setFilter("blog")} type="button">
+        블로그 리뷰
+      </button>
     </ReviewSelector>
     <SearchbarContainer>
-      <p>
-        <span>999</span>개의 리뷰를 확인해보세요!
-      </p>
+      {totalElement !== 0 ? (
+        <p>
+          <span>{totalElement}</span>개의 리뷰를 확인해보세요!
+        </p>
+      ) : (
+        <p>
+          <span>0</span>개의 리뷰를 확인해보세요!
+        </p>
+      )}
       <Searchbar>
-        <div>여기 써치바!</div>
+        <SearchBar placeholder="검색" width="277px" />
         <Button variant="primary" size="large">
           리뷰 등록
         </Button>
@@ -23,14 +44,24 @@ const ReviewSearchbar = () => (
     </SearchbarContainer>
     <Divider />
     <ButtonItems>
-      <button type="button">최근순</button>
+      <button onClick={() => setOrderType("Recent")} type="button">
+        최근순
+      </button>
       <Spliter />
-      <button type="button">별점순</button>
+      <button onClick={() => setOrderType("StarScore")} type="button">
+        별점순
+      </button>
     </ButtonItems>
-  </div>
+  </Container>
 );
 
 export default ReviewSearchbar;
+
+const Container = styled.div`
+  & button.clicked {
+    color: ${theme.colors.greys100};
+  }
+`;
 
 const ReviewSelector = styled.div`
   display: flex;
@@ -66,6 +97,7 @@ const SearchbarContainer = styled.div`
 const Searchbar = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
 `;
 
 const Divider = styled.div`

@@ -16,7 +16,7 @@ import arrowLeft from "../assets/icons/arrowLeft.svg";
 import arrowRight from "../assets/icons/arrowRight.svg";
 
 interface CalendarProps {
-  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedDate: (date: string) => void;
 }
 
 const Calender = ({ setSelectedDate }: CalendarProps) => {
@@ -51,10 +51,7 @@ const Calender = ({ setSelectedDate }: CalendarProps) => {
         parseInt(day, 10)
       );
 
-      const result = new Intl.DateTimeFormat("kr")
-        .format(selectedDay)
-        .replaceAll(". ", "-")
-        .slice(0, -1);
+      const result = format(selectedDay, "yyyy-MM-dd");
 
       setSelectedDate(result);
     }
