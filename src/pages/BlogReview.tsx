@@ -9,7 +9,7 @@ import SimpleInput from "../components/atom/SimpleInput";
 import blogReviewApis from "../apis/blogReviewApis";
 import Pagination from "../components/Pagination";
 
-const BlogReviewPage = () => {
+const BlogReview = () => {
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
@@ -78,7 +78,7 @@ const BlogReviewPage = () => {
   );
 };
 
-export default BlogReviewPage;
+export default BlogReview;
 
 const Container = styled.div`
   width: 62.5vw;
@@ -95,7 +95,7 @@ const Title = styled.h2`
 
 const Divider = styled.div`
   border-radius: 0px;
-  border-bottom: 1px solid ${theme.colors.greys90};
+  border-bottom: 1px solid ${theme.colors.greys40};
   margin-bottom: 14px;
 `;
 
