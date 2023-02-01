@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import ArrowButton from "../assets/icons/arrowRight.svg";
+import arrowRight from "../../assets/icons/arrowRight.svg";
 import { theme } from "../../styles/theme";
 
 const MainArticle = () => (
@@ -14,7 +14,7 @@ const MainArticle = () => (
       </div>
       <StyledLink to="/exhibition-list">
         <span>자세히 보기</span>
-        <img src={ArrowButton} alt="" />
+        <img src={arrowRight} alt="" />
       </StyledLink>
     </Article>
     <Article>
@@ -25,7 +25,7 @@ const MainArticle = () => (
       </div>
       <StyledLink to="">
         <span>자세히 보기</span>
-        <img src={ArrowButton} alt="" />
+        <img src={arrowRight} alt="" />
       </StyledLink>
     </Article>
     <Article>
@@ -36,7 +36,7 @@ const MainArticle = () => (
       </div>
       <StyledLink to="/mate-list">
         <span>자세히 보기</span>
-        <img src={ArrowButton} alt="" />
+        <img src={arrowRight} alt="" />
       </StyledLink>
     </Article>
   </ArticleContainer>
