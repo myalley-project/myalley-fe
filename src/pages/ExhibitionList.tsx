@@ -20,9 +20,6 @@ const ExhibitionList = () => {
     started: 1,
     selected: 1,
   });
-
-  const getExhbInfo = (imgUrl: string, exhbId: number) => {};
-
   // 전시회 목록 요청 api_박예선_23.01.18
   const getExhbList = useCallback(
     async (status: StatusType, type: FilterType, page: number) => {

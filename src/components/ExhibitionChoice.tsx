@@ -11,11 +11,11 @@ import { StatusType } from "./exhibitionList/Filters";
 
 interface ChoiceProps {
   getExhbInfo: (
-    imgUrl: string,
-    exhbId: number,
-    exhbtitle: string,
+    url: string,
+    id: number,
+    title: string,
     duration: string,
-    exhbstatus: string
+    status: string
   ) => void;
 }
 
@@ -39,7 +39,7 @@ const ExhibitionChoice = ({ getExhbInfo }: ChoiceProps) => {
     type: FilterType,
     page: number
   ) => {
-    if (type === "전체") {
+    if (type === "전체 전시") {
       const res: AxiosResponse<ExhbListRes> = await axios.get(
         "/data/exhbList.json"
       ); // 테스트용 목데이터
@@ -59,7 +59,7 @@ const ExhibitionChoice = ({ getExhbInfo }: ChoiceProps) => {
 
   const { isLoading, isError, error, data } = useQuery<ExhbListRes, Error>({
     queryKey: ["exhbList", { pageInfo, exhbStatus }],
-    queryFn: () => getexhbListApi(exhbStatus, "전체", pageInfo),
+    queryFn: () => getexhbListApi(exhbStatus, "전체 전시", pageInfo),
   });
 
   if (isLoading) return <div>...loading</div>;

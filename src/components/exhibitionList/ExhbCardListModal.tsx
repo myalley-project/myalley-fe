@@ -10,11 +10,11 @@ interface ExhbCardListType {
   exhbList: Exhibition[]; // 전시회 목록 데이터
   type: "myPage" | "exhbList";
   getExhbInfo: (
-    imgUrl: string,
-    exhbId: number,
-    exhbtitle: string,
+    url: string,
+    id: number,
+    title: string,
     duration: string,
-    exhbstatus: string
+    status: string
   ) => void;
 }
 const ExhbCardListModal = ({
@@ -25,16 +25,16 @@ const ExhbCardListModal = ({
   const navigate = useNavigate();
 
   const HandleClick = (
-    imgUrl: string,
-    exhbId: number,
-    exhbtitle: string,
+    url: string,
+    id: number,
+    title: string,
     duration: string,
-    exhbstatus: string
+    status: string
   ) => {
     if (type === "myPage") {
-      navigate(`/exhibition/${exhbId}`);
+      navigate(`/exhibition/${id}`);
     } else {
-      getExhbInfo(imgUrl, exhbId, exhbtitle, duration, exhbstatus);
+      getExhbInfo(url, id, title, duration, status);
     }
   };
 
