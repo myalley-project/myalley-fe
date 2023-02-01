@@ -1,26 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import { ExhbTypeFilters, FilterType } from "../../types/exhbList";
+import { FilterType } from "../../types/exhbList";
 import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
 
 // 전시글 목록 상단 필터 컴포넌트_박예선_23.01.18
 const Filters = (props: FiltersType) => {
-  const {
-    setPages,
-    selectedStatus,
-    setSelectedStatus,
-    exhbTypeFilters,
-    setExhbTypeFilters,
-    getExhbList,
-  } = props;
+  const { setPages, selectedStatus, setSelectedStatus, setSelectedFilter } =
+    props;
 
   // 전시상황 버튼 클릭 함수_박예선_23.01.18
   const handleStatusBtn = (status: StatusType) => {
-    if (exhbTypeFilters.applied !== exhbTypeFilters.selected) {
-      alert("필터 적용버튼을 먼저 클릭하세요.");
-      return;
-    }
     setPages({ started: 1, selected: 1 });
     setSelectedStatus(status);
   };
@@ -35,19 +25,9 @@ const Filters = (props: FiltersType) => {
     }
     for (let i = 0; i < EXHB_TYPE_ARRAY.length; i += 1) {
       if (value === EXHB_TYPE_ARRAY[i]) {
-        setExhbTypeFilters({ ...exhbTypeFilters, selected: value });
+        setSelectedFilter(value);
       }
     }
-  };
-
-  // 필터 적용버튼 클릭 함수_박예선_23.01.18
-  const clickFilterApplyBtn = () => {
-    getExhbList(selectedStatus, exhbTypeFilters.selected, 1);
-    setExhbTypeFilters({
-      ...exhbTypeFilters,
-      applied: exhbTypeFilters.selected,
-    });
-    setPages({ started: 1, selected: 1 });
   };
 
   return (
@@ -80,13 +60,6 @@ const Filters = (props: FiltersType) => {
             name="type"
             onClick={handleFilters}
           />
-          <button
-            type="button"
-            className="apply-btn"
-            onClick={clickFilterApplyBtn}
-          >
-            적용
-          </button>
         </div>
         <input placeholder="검색" className="search-input border" />
       </div>
@@ -111,13 +84,7 @@ interface FiltersType {
   setPages: React.Dispatch<React.SetStateAction<PagesState>>;
   selectedStatus: StatusType;
   setSelectedStatus: React.Dispatch<React.SetStateAction<StatusType>>;
-  exhbTypeFilters: ExhbTypeFilters;
-  setExhbTypeFilters: React.Dispatch<React.SetStateAction<ExhbTypeFilters>>;
-  getExhbList: (
-    status: StatusType,
-    type: FilterType,
-    page: number
-  ) => Promise<void>;
+  setSelectedFilter: React.Dispatch<React.SetStateAction<FilterType>>;
 }
 export type StatusType = "현재" | "예정" | "지난";
 
