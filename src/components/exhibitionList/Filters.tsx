@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { ExhbTypeFilters, FilterType } from "../../types/exhbList";
+import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
 
+// 전시글 목록 상단 필터 컴포넌트_박예선_23.01.18
 const Filters = (props: FiltersType) => {
   const {
     setPages,
@@ -16,18 +18,19 @@ const Filters = (props: FiltersType) => {
   // 전시상황 버튼 클릭 함수_박예선_23.01.18
   const handleStatusBtn = (status: StatusType) => {
     if (exhbTypeFilters.applied !== exhbTypeFilters.selected) {
-      alert("필터 적용버튼을 먼저 클릭하세요");
+      alert("필터 적용버튼을 먼저 클릭하세요.");
       return;
     }
     setPages({ started: 1, selected: 1 });
     setSelectedStatus(status);
   };
 
-  // 필터 조건 핸들 함수_박예선_23.01.17
-  const handleFilters = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
+  // 필터 조건 핸들 함수_박예선_23.02.01
+  const handleFilters = (e: React.MouseEvent<HTMLLIElement>) => {
+    const value = e.currentTarget.textContent;
+    if (!value) return;
     if (value === "인기순") {
-      alert("준비 중인 기능입니다.");
+      alert("준비중인 기능입니다.");
       return;
     }
     for (let i = 0; i < EXHB_TYPE_ARRAY.length; i += 1) {
@@ -63,24 +66,20 @@ const Filters = (props: FiltersType) => {
       </div>
       <div className="filter-search-line flex space-between">
         <div>
-          <select className="sort border" onChange={handleFilters}>
-            {EXHB_SORT_ARRAY.map((sort) => (
-              <option key={sort} value={sort}>
-                {sort}
-              </option>
-            ))}
-          </select>
-          <select
-            value={exhbTypeFilters.selected}
-            className="type border"
-            onChange={handleFilters}
-          >
-            {EXHB_TYPE_ARRAY.map((type) => (
-              <option key={type} value={type}>
-                {type} 전시
-              </option>
-            ))}
-          </select>
+          <Selectbox
+            options={EXHB_SORT_ARRAY}
+            placeholder="최신순"
+            width="130px"
+            name="sort"
+            onClick={handleFilters}
+          />
+          <Selectbox
+            options={EXHB_TYPE_ARRAY}
+            placeholder="전체 전시"
+            width="130px"
+            name="type"
+            onClick={handleFilters}
+          />
           <button
             type="button"
             className="apply-btn"
@@ -100,12 +99,12 @@ export default Filters;
 const EXHB_STATUS_ARRAY: StatusType[] = ["현재", "예정", "지난"];
 const EXHB_SORT_ARRAY = ["최신순", "인기순"];
 export const EXHB_TYPE_ARRAY: FilterType[] = [
-  "전체",
-  "영상",
-  "특별",
-  "기획",
-  "상설",
-  "소장품",
+  "전체 전시",
+  "영상 전시",
+  "특별 전시",
+  "기획 전시",
+  "상설 전시",
+  "소장품 전시",
 ];
 
 interface FiltersType {
@@ -127,6 +126,7 @@ const FiltersContainer = styled.div`
   align-items: center;
   flex-direction: column;
   width: inherit;
+  margin-bottom: 30px;
   .status-filter {
     width: 300px;
     height: 36px;

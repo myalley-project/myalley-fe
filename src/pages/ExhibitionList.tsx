@@ -13,8 +13,8 @@ const ExhibitionList = () => {
   const [totalPage, setTotalPage] = useState<number>(0);
   const [selectedStatus, setSelectedStatus] = useState<StatusType>("현재");
   const [exhbTypeFilters, setExhbTypeFilters] = useState<ExhbTypeFilters>({
-    selected: "전체",
-    applied: "전체",
+    selected: "전체 전시",
+    applied: "전체 전시",
   });
   const [pages, setPages] = useState({
     started: 1,
@@ -30,6 +30,7 @@ const ExhibitionList = () => {
           type,
           page
         );
+        console.log(res);
         const { exhibitions, pageInfo } = res.data;
         setExhbList(exhibitions);
         setTotalPage(pageInfo.totalPage);
@@ -44,6 +45,7 @@ const ExhibitionList = () => {
 
   // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.01.18
   useEffect(() => {
+    // console.log("바뀜");
     getExhbList(selectedStatus, exhbTypeFilters.applied, pages.selected);
   }, [getExhbList, selectedStatus, exhbTypeFilters.applied, pages.selected]);
 
