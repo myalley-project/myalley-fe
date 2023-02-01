@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import { theme } from "../styles/theme";
-import ExhbCardListModal from "./exhibitionList/ExhbCardListModal";
+import ExhbCardListModal from "./exhbChoiceModal/ExhbCardListModal";
 import Button from "./atom/Button";
 import { FilterType, Exhibition } from "../types/exhbList";
 import { StatusType } from "./exhibitionList/Filters";
