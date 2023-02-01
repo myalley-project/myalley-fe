@@ -151,6 +151,7 @@ const Card = styled.div`
 const Thumbnail = styled.img`
   width: 175px;
   height: 100%;
+  object-fit: cover;
 `;
 
 const FindMateDetail = styled.div`
