@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import ProfileImg from "../../assets/icons/profileImg.svg";
 import StarIcon from "../../assets/icons/starIcon.svg";
-import { OnelineReviewCardType } from "../../types/OnelineReview";
+import { OnelineReviewCardType } from "../../types/oneLineReview";
 import Modal from "../../Modal";
 import Button from "../atom/Button";
-import OnelineReviewApis from "../../apis/onelineReviewapis";
+import oneLineReviewApis from "../../apis/oneLineReviewApis";
 import OnelineWrapper from "../../pages/OnelineWrapper";
 
 const OnelineCard = ({
@@ -31,7 +31,7 @@ const OnelineCard = ({
   };
 
   const deleteMutation = useMutation({
-    mutationFn: () => OnelineReviewApis.deleteReview(id),
+    mutationFn: () => oneLineReviewApis.deleteReview(id),
   });
 
   return (

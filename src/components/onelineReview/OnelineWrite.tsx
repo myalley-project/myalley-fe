@@ -9,7 +9,7 @@ import {
   getDayArray,
 } from "../../utils/dateSelector";
 import SimpleInput from "../atom/SimpleInput";
-import { OnelineReviewPostType } from "../../types/OnelineReview";
+import { OnelineReviewPostType } from "../../types/oneLineReview";
 
 interface HandlerProps {
   state: OnelineReviewPostType;
