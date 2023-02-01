@@ -42,7 +42,6 @@ const Filters = (props: FiltersType) => {
 
   // 필터 적용버튼 클릭 함수_박예선_23.01.18
   const clickFilterApplyBtn = () => {
-    return alert("준비중인 기능입니다."); // 백엔드 코드 수정되면 삭제
     getExhbList(selectedStatus, exhbTypeFilters.selected, 1);
     setExhbTypeFilters({
       ...exhbTypeFilters,
