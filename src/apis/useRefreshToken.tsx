@@ -41,7 +41,7 @@ const useRefreshTokenApi = () => {
 
 export default useRefreshTokenApi;
 
-interface RefreshTokenRes {
+export interface RefreshTokenRes {
   accessToken?: string;
   refreshToken?: string;
   errorCode?: 403;
