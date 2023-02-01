@@ -27,7 +27,6 @@ const App = () => (
         path="/exhibition/:id/edit"
         element={<ExhibitionWrite mode="edit" />}
       />
-
       <Route
         path="/exhibition-write"
         element={<ExhibitionWrite mode="create" />}

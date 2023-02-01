@@ -50,7 +50,7 @@ const Nav = () => {
         >
           <UserMenuIcon src={toggleMenuIcon} alt="menu-icon" id="user-menu" />
         </MenuButton>
-        {isShowMenu && <HamburgerMenu />}
+        {isShowMenu && <HamburgerMenu setIsShowMenu={setIsShowMenu} />}
       </NavbarWrapper>
     </NavbarContaniner>
   );
