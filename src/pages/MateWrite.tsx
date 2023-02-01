@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,6 +16,7 @@ import { MateRes, MateWriteType } from "../types/mate";
 import { mateApi, mateWriteApi, MateWriteRes } from "../apis/mate";
 import useRefreshTokenApi from "../apis/useRefreshToken";
 import isApiError, { errorAlert } from "../utils/isApiError";
+import ExhibitionChoice from "../components/ExhibitionChoice";
 
 // 메이트글 작성/수정 페이지_박예선_23.01.31
 const MateWrite = () => {
@@ -35,7 +37,7 @@ const MateWrite = () => {
     availableDate: "",
     content: "",
     contact: "",
-    exhibitionId: 1,
+    exhibitionId: 0,
   });
   const [ageRange, setAgeRange] = useState({
     minimum: "",
@@ -44,11 +46,10 @@ const MateWrite = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [openExhbModal, setOpenExhbModal] = useState(false);
   const [selectedExhb, setSelectedExhb] = useState({
-    thumbnail:
-      "https://cdn.pixabay.com/photo/2023/01/01/05/31/bride-7689627_640.jpg",
-    status: "현재 전시",
-    title: "제목",
-    duration: "0000-00-00 ~ 0000-00-00",
+    thumbnail: "",
+    status: "",
+    title: "",
+    duration: "",
   });
   const [isThumbnailHovered, setIsThumbnailHovered] = useState(false);
   const [openCancleModal, setOpenCancleModal] = useState(false);
@@ -176,7 +177,7 @@ const MateWrite = () => {
 
   // 테스트용 useEffect
   useEffect(() => {
-    console.log("writeData :", writeData);
+    // console.log("writeData :", writeData);
   }, [writeData]);
 
   // 제목, 내용, 연락망 input/textArea 상태관리_박예선_23.01.29
@@ -246,21 +247,22 @@ const MateWrite = () => {
       setWriteData({ ...writeData, availableDate: date });
   };
 
-  // 전시회 모달 선택 함수_박예선_23.01.31
+  // 전시회 선택 함수_박예선_23.01.31
   const handleExhbModal = (
+    url: string,
     id: number,
-    thumbnail: string,
-    exhbTitle: string,
+    title: string,
     duration: string,
-    exhbStatus: string
+    status: string
   ) => {
     setWriteData({ ...writeData, exhibitionId: id });
     setSelectedExhb({
-      title: exhbTitle,
-      thumbnail,
-      status: exhbStatus,
+      title,
+      thumbnail: url,
+      status,
       duration,
     });
+    setOpenExhbModal(false);
   };
 
   return (
@@ -326,7 +328,9 @@ const MateWrite = () => {
           <div className="exhb-choice">
             <SubTitle text="전시회" />
             <ExhbChoiceBtn
-              onClick={() => setOpenExhbModal(true)}
+              onClick={() => {
+                if (writeData.exhibitionId === 0) setOpenExhbModal(true);
+              }}
               onMouseOver={() => setIsThumbnailHovered(true)}
               onMouseOut={() => setIsThumbnailHovered(false)}
             >
@@ -358,11 +362,7 @@ const MateWrite = () => {
               )}
             </ExhbChoiceBtn>
             {openExhbModal && (
-              // <button type="button" onClick={handleExhbModal}>
-              <button type="button" onClick={() => console.log("전시회 선택")}>
-                모달
-              </button>
-              // 전시회 선택모달 자리 (완성되면 연결하기)
+              <ExhibitionChoice getExhbInfo={handleExhbModal} />
             )}
           </div>
           <div>
