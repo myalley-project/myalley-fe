@@ -22,8 +22,6 @@ const BookMarkedExhb = () => {
     selected: 1,
   });
 
-  const getImgAndId = (imgUrl: string, exhbId: number) => {};
-
   const getBookMarkedExhb = useCallback(
     async (pageNo: number) => {
       try {
@@ -50,11 +48,7 @@ const BookMarkedExhb = () => {
       {exhibitionList.length === 0 ? (
         <NoList />
       ) : (
-        <ExhbCardList
-          exhbList={exhibitionList}
-          type="myPage"
-          getImgAndId={getImgAndId}
-        />
+        <ExhbCardList exhbList={exhibitionList} type="myPage" />
       )}
       {pageInfoList.totalPage > 0 && (
         <Pagination

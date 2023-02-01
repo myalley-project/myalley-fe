@@ -9,7 +9,7 @@ import "swiper/css";
 interface ExhbCardListType {
   exhbList: Exhibition[]; // 전시회 목록 데이터
   type: "myPage" | "exhbList";
-  getImgAndId: (
+  getExhbInfo: (
     imgUrl: string,
     exhbId: number,
     exhbtitle: string,
@@ -20,7 +20,7 @@ interface ExhbCardListType {
 const ExhbCardListModal = ({
   exhbList,
   type,
-  getImgAndId,
+  getExhbInfo,
 }: ExhbCardListType) => {
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ const ExhbCardListModal = ({
     if (type === "myPage") {
       navigate(`/exhibition/${exhbId}`);
     } else {
-      getImgAndId(imgUrl, exhbId, exhbtitle, duration, exhbstatus);
+      getExhbInfo(imgUrl, exhbId, exhbtitle, duration, exhbstatus);
     }
   };
 

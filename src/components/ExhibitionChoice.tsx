@@ -10,7 +10,7 @@ import { FilterType, Exhibition } from "../types/exhbList";
 import { StatusType } from "./exhibitionList/Filters";
 
 interface ChoiceProps {
-  getImgAndId: (
+  getExhbInfo: (
     imgUrl: string,
     exhbId: number,
     exhbtitle: string,
@@ -26,11 +26,11 @@ interface ChoiceProps {
 // });
 
 // 이런 형식의 함수를 상위 컴포넌트에서 내려주는걸로 생각하고 있습니다.
-// const getImgAndId = (imgUrl: string, exhbId: number) => {
+// const getExhbInfo = (imgUrl: string, exhbId: number) => {
 //   setSelectedExhb({ imageUrl: imgUrl, exhbitionId: exhbId });
 // };
 
-const ExhibitionChoice = ({ getImgAndId }: ChoiceProps) => {
+const ExhibitionChoice = ({ getExhbInfo }: ChoiceProps) => {
   const [exhbStatus, setExhbStatus] = useState<StatusType>("현재");
   const [pageInfo, setPageInfo] = useState(1);
 
@@ -92,7 +92,7 @@ const ExhibitionChoice = ({ getImgAndId }: ChoiceProps) => {
         <ExhbCardListModal
           exhbList={data.exhibitions}
           type="exhbList"
-          getImgAndId={getImgAndId}
+          getExhbInfo={getExhbInfo}
         />
       ) : null}
     </Container>
