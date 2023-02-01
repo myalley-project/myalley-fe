@@ -46,6 +46,7 @@ interface InfosType {
   month: string;
   day: string;
   imageFile: File | null;
+  imageFileName: string;
 }
 
 const MyProfileEdit = (props: MyInfoType) => {
@@ -78,6 +79,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     month: "",
     day: "",
     imageFile: null,
+    imageFileName: "",
   });
   const [isPwType, setIsPwType] = useState(true);
   const [isPwCheckType, setIsCheckPwType] = useState(true);
@@ -171,6 +173,7 @@ const MyProfileEdit = (props: MyInfoType) => {
       setInfos({
         ...infos,
         imageFile: e.target.files[0],
+        imageFileName: URL.createObjectURL(e.target.files[0]),
       });
       reader.onload = () => {
         if (e.target.files !== null) {
@@ -200,13 +203,27 @@ const MyProfileEdit = (props: MyInfoType) => {
       return;
     }
 
+    // 아무것도 변경하지 않았을때 api 타지 않도록
+    if (
+      infos.imageFile === null &&
+      infos.nickname === "" &&
+      infos.gender === "" &&
+      infos.year === "" &&
+      infos.month === "" &&
+      infos.day === "" &&
+      infos.password === null
+    ) {
+      alert("변경을 원하는 항목을 입력해주세요.");
+      return;
+    }
+
     const editMyInfo: EditMyInfoType = {
-      password: infos.password,
       nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
       gender: `${infos.gender === "" ? gender : infos.gender}`,
       birth: `${infos.year === "" ? `${birth.substring(0, 4)}` : infos.year}-${
         infos.month === "" ? `${birth.substring(5, 7)}` : infos.month
       }-${infos.day === "" ? `${birth.substring(8)}` : infos.day}`,
+      password: infos.password,
     };
     if (infos.imageFile !== null) {
       formData.append("imageFile", infos.imageFile);
@@ -280,10 +297,20 @@ const MyProfileEdit = (props: MyInfoType) => {
 
       <EditProtileWrapper>
         <ImgWrapper>
-          <ProfileImg
-            src={memberImage === "" ? profileImage : memberImage}
-            alt="base-img"
-          />
+          {memberImage === "" ? (
+            <ProfileImg
+              src={
+                infos.imageFile === null ? profileImage : infos.imageFileName
+              }
+              alt="base-img"
+            />
+          ) : (
+            <ProfileImg
+              src={infos.imageFile === null ? memberImage : infos.imageFileName}
+              alt="base-img"
+            />
+          )}
+
           <label htmlFor="exhibition-posterUrl">
             <UploadImg src={cameraCircle} alt="upload-btn" />
           </label>
