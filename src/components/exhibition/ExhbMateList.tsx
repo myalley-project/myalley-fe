@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { exhbMateApi } from "../../apis/exhibition";
 import { MateRes } from "../../apis/member";
@@ -12,6 +13,8 @@ import NoList from "../NoList";
 import Pagination from "../Pagination";
 
 const ExhbMateList = () => {
+  const params = useParams();
+  const id = Number(params.id);
   const [mateList, setMateList] = useState<Mate[] | []>([]);
   const [pageInfoData, setPageInfoData] = useState({
     page: 0,
@@ -27,14 +30,14 @@ const ExhbMateList = () => {
   // 상세페이지 메이트 목록 api 호출
   const getMateList = useCallback(async () => {
     try {
-      const res: AxiosResponse<MateRes> = await exhbMateApi(1, 1);
+      const res: AxiosResponse<MateRes> = await exhbMateApi(id, pages.selected);
       const { mates, pageInfo } = res.data;
       setMateList(mates);
       setPageInfoData(pageInfo);
     } catch (err) {
       isApiError(err);
     }
-  }, []);
+  }, [id, pages]);
 
   useEffect(() => {
     getMateList();
