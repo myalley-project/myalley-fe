@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { ExhbTypeFilters, FilterType } from "../../types/exhbList";
+import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
 
+// 전시글 목록 상단 필터 컴포넌트_박예선_23.01.18
 const Filters = (props: FiltersType) => {
   const {
     setPages,
@@ -16,18 +18,19 @@ const Filters = (props: FiltersType) => {
   // 전시상황 버튼 클릭 함수_박예선_23.01.18
   const handleStatusBtn = (status: StatusType) => {
     if (exhbTypeFilters.applied !== exhbTypeFilters.selected) {
-      alert("필터 적용버튼을 먼저 클릭하세요");
+      alert("필터 적용버튼을 먼저 클릭하세요.");
       return;
     }
     setPages({ started: 1, selected: 1 });
     setSelectedStatus(status);
   };
 
-  // 필터 조건 핸들 함수_박예선_23.01.17
-  const handleFilters = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
+  // 필터 조건 핸들 함수_박예선_23.02.01
+  const handleFilters = (e: React.MouseEvent<HTMLLIElement>) => {
+    const value = e.currentTarget.textContent;
+    if (!value) return;
     if (value === "인기순") {
-      alert("준비 중인 기능입니다.");
+      alert("준비중인 기능입니다.");
       return;
     }
     for (let i = 0; i < EXHB_TYPE_ARRAY.length; i += 1) {
@@ -62,25 +65,21 @@ const Filters = (props: FiltersType) => {
         ))}
       </div>
       <div className="filter-search-line flex space-between">
-        <div>
-          <select className="sort border" onChange={handleFilters}>
-            {EXHB_SORT_ARRAY.map((sort) => (
-              <option key={sort} value={sort}>
-                {sort}
-              </option>
-            ))}
-          </select>
-          <select
-            value={exhbTypeFilters.selected}
-            className="type border"
-            onChange={handleFilters}
-          >
-            {EXHB_TYPE_ARRAY.map((type) => (
-              <option key={type} value={type}>
-                {type} 전시
-              </option>
-            ))}
-          </select>
+        <div className="flex select-container">
+          <Selectbox
+            options={EXHB_SORT_ARRAY}
+            placeholder="최신순"
+            width="130px"
+            name="sort"
+            onClick={handleFilters}
+          />
+          <Selectbox
+            options={EXHB_TYPE_ARRAY}
+            placeholder="전체 전시"
+            width="130px"
+            name="type"
+            onClick={handleFilters}
+          />
           <button
             type="button"
             className="apply-btn"
@@ -100,12 +99,12 @@ export default Filters;
 const EXHB_STATUS_ARRAY: StatusType[] = ["현재", "예정", "지난"];
 const EXHB_SORT_ARRAY = ["최신순", "인기순"];
 export const EXHB_TYPE_ARRAY: FilterType[] = [
-  "전체",
-  "영상",
-  "특별",
-  "기획",
-  "상설",
-  "소장품",
+  "전체 전시",
+  "영상 전시",
+  "특별 전시",
+  "기획 전시",
+  "상설 전시",
+  "소장품 전시",
 ];
 
 interface FiltersType {
@@ -127,6 +126,7 @@ const FiltersContainer = styled.div`
   align-items: center;
   flex-direction: column;
   width: inherit;
+  margin-bottom: 30px;
   .status-filter {
     width: 300px;
     height: 36px;
@@ -151,7 +151,6 @@ const FiltersContainer = styled.div`
     padding-top: 14px;
     border-top: 1px solid ${(props) => props.theme.colors.greys40};
     border-radius: 0%;
-    select,
     input,
     button {
       height: 36px;
@@ -159,26 +158,9 @@ const FiltersContainer = styled.div`
       padding-left: 20px;
       cursor: pointer;
     }
-    select {
-      margin-right: 10px;
-      border-radius: 30px;
-      color: ${(props) => props.theme.colors.greys60};
-      background: url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.2998 1.69995L6.6998 6.29995C6.5998 6.39995 6.49147 6.47062 6.3748 6.51195C6.25814 6.55395 6.13314 6.57495 5.9998 6.57495C5.86647 6.57495 5.74147 6.55395 5.6248 6.51195C5.50814 6.47062 5.3998 6.39995 5.2998 6.29995L0.699804 1.69995C0.516471 1.51662 0.424804 1.28328 0.424804 0.999951C0.424804 0.716618 0.516471 0.483285 0.699804 0.299952C0.883137 0.116618 1.11647 0.024951 1.3998 0.0249509C1.68314 0.0249509 1.91647 0.116618 2.0998 0.299951L5.9998 4.19995L9.8998 0.299951C10.0831 0.116618 10.3165 0.0249505 10.5998 0.0249505C10.8831 0.0249505 11.1165 0.116618 11.2998 0.299951C11.4831 0.483284 11.5748 0.716618 11.5748 0.999951C11.5748 1.28328 11.4831 1.51662 11.2998 1.69995Z' fill='%239C9C9C'/%3E%3C/svg%3E%0A")
-        no-repeat;
-      background-size: 11.15px 6.55px;
-      background-position: right 16px center;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      &.sort {
-        width: 102px;
-      }
-      &.type {
-        width: 117px;
-      }
-      &:focus {
-        border: 1px solid #7f67be;
-        outline: none;
+    .select-container {
+      div {
+        margin-right: 10px;
       }
     }
     .apply-btn {

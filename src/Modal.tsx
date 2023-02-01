@@ -5,7 +5,7 @@ import styled from "styled-components";
 interface ModalProps {
   open: boolean;
   children: React.ReactNode;
-  setIsOpen: () => void;
+  setIsOpen: (event: React.MouseEvent) => void;
 }
 
 const Modal = ({ open = false, setIsOpen, children }: ModalProps) => {

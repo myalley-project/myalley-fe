@@ -13,14 +13,13 @@ const ExhibitionList = () => {
   const [totalPage, setTotalPage] = useState<number>(0);
   const [selectedStatus, setSelectedStatus] = useState<StatusType>("현재");
   const [exhbTypeFilters, setExhbTypeFilters] = useState<ExhbTypeFilters>({
-    selected: "전체",
-    applied: "전체",
+    selected: "전체 전시",
+    applied: "전체 전시",
   });
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
   });
-
   // 전시회 목록 요청 api_박예선_23.01.18
   const getExhbList = useCallback(
     async (status: StatusType, type: FilterType, page: number) => {

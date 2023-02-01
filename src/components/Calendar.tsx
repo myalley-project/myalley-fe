@@ -51,10 +51,7 @@ const Calender = ({ handleSelectedDate }: CalendarProps) => {
         parseInt(day, 10)
       );
 
-      const result = new Intl.DateTimeFormat("kr")
-        .format(selectedDay)
-        .replaceAll(". ", "-")
-        .slice(0, -1);
+      const result = format(selectedDay, "yyyy-MM-dd");
 
       handleSelectedDate(result);
     }
