@@ -4,12 +4,12 @@ import { FilterType } from "../../types/exhbList";
 import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
 
-// 전시글 목록 상단 필터 컴포넌트_박예선_23.01.18
+// 전시글 목록 상단 필터 컴포넌트_박예선_23.02.01
 const Filters = (props: FiltersType) => {
   const { setPages, selectedStatus, setSelectedStatus, setSelectedFilter } =
     props;
 
-  // 전시상황 버튼 클릭 함수_박예선_23.01.18
+  // 전시상황 버튼 클릭 함수_박예선_23.02.01
   const handleStatusBtn = (status: StatusType) => {
     setPages({ started: 1, selected: 1 });
     setSelectedStatus(status);

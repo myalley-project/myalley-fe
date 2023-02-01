@@ -7,7 +7,7 @@ import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
-// 전시회 목록 페이지 컴포넌트_박예선_23.01.21
+// 전시회 목록 페이지 컴포넌트_박예선_23.02.01
 const ExhibitionList = () => {
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -17,6 +17,7 @@ const ExhibitionList = () => {
     started: 1,
     selected: 1,
   });
+
   // 전시회 목록 요청 api_박예선_23.01.18
   const getExhbList = useCallback(
     async (status: StatusType, type: FilterType, page: number) => {
@@ -38,7 +39,7 @@ const ExhibitionList = () => {
     []
   );
 
-  // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.01.18
+  // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.02.01
   useEffect(() => {
     getExhbList(selectedStatus, selectedFilter, pages.selected);
   }, [getExhbList, selectedStatus, selectedFilter, pages.selected]);
