@@ -22,6 +22,8 @@ const BlogReview = () => {
   });
   const totalPageNumber = data?.pageInfo.totalPage ?? 0;
 
+  console.log(data);
+
   if (isLoading) return <div>...loading</div>;
 
   if (isError) return <div>에러가 발생했습니다.</div>;
