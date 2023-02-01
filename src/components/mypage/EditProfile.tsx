@@ -160,7 +160,6 @@ const MyProfileEdit = (props: MyInfoType) => {
   // 비밀번호 체크 유효성 검사
   const handlePwCheckValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-
     if (value !== "" && value === infos.password) {
       setErrorClass({ ...errorClass, password: "" });
     }
@@ -186,18 +185,23 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   // 회원정보 수정 api
   const editBtn = async () => {
-    // 프론트 유효성 검사
     if (!valids.nickname && infos.nickname !== "") {
       // 별명 형식 체크
       setErrorClass({ ...errorClass, nickname: "error" });
       setErrorType({ ...errorType, nickname: "form" });
     } else if (!valids.password) {
       // 비밀번호 형식 체크
-      setErrorClass({ ...errorClass, password: "error" });
-      setErrorType({ ...errorType, password: "form" });
+      if (infos.password !== null) {
+        setErrorClass({ ...errorClass, password: "error" });
+        setErrorType({ ...errorType, password: "form" });
+        return;
+      }
     } else if (passwordCheck !== "" && passwordCheck !== infos.password) {
       // 비밀번호 일치 체크
-      setErrorClass({ ...errorClass, password: "error" });
+      if (infos.password !== null && passwordCheck !== "") {
+        setErrorClass({ ...errorClass, password: "error" });
+      }
+      return;
     } else if (passwordCheck === "" && infos.password !== "") {
       setErrorClass({ ...errorClass, password: "error" });
       return;
@@ -252,7 +256,6 @@ const MyProfileEdit = (props: MyInfoType) => {
         setErrorClass({ ...errorClass, nickname: "error" });
         setErrorType({ ...errorType, nickname: "duplicate" });
       } else if (errorCode === 400 && errorMsg === "닉네임 형식 오류") {
-        console.log(infos.nickname);
         setErrorType({ ...errorType, nickname: "form" });
       } else if (errorCode === 400 && errorMsg === "비밀번호 형식 오류") {
         setErrorClass({ ...errorClass, password: "error" });
@@ -262,7 +265,6 @@ const MyProfileEdit = (props: MyInfoType) => {
         errorMsg === "올바른 형식의 이미지 파일이 아닙니다."
       )
         alert("이미지 형식을 다시 확인해주세요.");
-      // TODO: 토큰 에러 로직 추가
     }
   };
 
@@ -456,10 +458,13 @@ const MyProfileEdit = (props: MyInfoType) => {
               <img src={isPwCheckType ? eyeOff : eyeOn} alt="eye-icon" />
             </EyeIconbtn>
           </PasswordWrapper>
-          {(passwordCheck !== "" && passwordCheck !== infos.password) ||
+          {passwordCheck !== infos.password && (
+            <Notice color={colors.error}>비밀번호가 일치하지 않습니다!</Notice>
+          )}
+          {/* {(passwordCheck !== "" && passwordCheck !== infos.password) ||
             (passwordCheck === "" && infos.password !== "" && (
               <Notice color={colors.error}>비밀번호가 일치하지 않습니다</Notice>
-            ))}
+            ))} */}
         </InputWrapper>
         <EditBtn type="submit" onClick={editBtn}>
           수정하기
