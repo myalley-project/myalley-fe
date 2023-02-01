@@ -4,13 +4,19 @@ import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import { theme } from "../styles/theme";
-import ExhbCardList from "./exhibitionList/ExhbCardList";
+import ExhbCardListModal from "./exhibitionList/ExhbCardListModal";
 import Button from "./atom/Button";
 import { FilterType, Exhibition } from "../types/exhbList";
 import { StatusType } from "./exhibitionList/Filters";
 
 interface ChoiceProps {
-  getImgAndId: (imgUrl: string, exhbId: number) => void;
+  getImgAndId: (
+    imgUrl: string,
+    exhbId: number,
+    exhbtitle: string,
+    duration: string,
+    exhbstatus: string
+  ) => void;
 }
 
 // 이런 형태의 state와
@@ -81,8 +87,9 @@ const ExhibitionChoice = ({ getImgAndId }: ChoiceProps) => {
           </Button>
         </ButtonGroup>
       </Infowrapper>
+
       {data ? (
-        <ExhbCardList
+        <ExhbCardListModal
           exhbList={data.exhibitions}
           type="exhbList"
           getImgAndId={getImgAndId}
@@ -95,8 +102,14 @@ const ExhibitionChoice = ({ getImgAndId }: ChoiceProps) => {
 export default ExhibitionChoice;
 
 const Container = styled.div`
-  width: 80vw;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 30px;
+  background-color: #fff;
+  z-index: 1000;
+  width: 1507px;
   margin-inline: auto;
 `;
 
