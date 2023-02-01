@@ -79,7 +79,7 @@ const ExhibitionCard = styled.div`
   width: 338px;
   height: fit-content;
   border: 2px solid ${theme.colors.greys40};
-  /* border-radius: 30px; */
+  border-radius: 32px;
   cursor: pointer;
   :hover {
     border: 2px solid ${theme.colors.primry60};
