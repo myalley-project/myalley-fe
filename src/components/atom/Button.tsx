@@ -65,6 +65,7 @@ const Button = styled.button<ButtonProps>`
   :disabled {
     background-color: ${(props) => disabledBackgroundColor[props.variant]};
     color: ${(props) => disabledFontColor[props.variant]};
+    cursor: default;
   }
 `;
 

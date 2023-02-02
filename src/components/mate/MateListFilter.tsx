@@ -4,36 +4,24 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
 import Selectbox from "../atom/Selectbox";
-import { PagesState } from "../Pagination";
 
 interface MateListFilterType {
-  mateStatusFilter: MateStatusSelect;
-  setMateStatusFilter: React.Dispatch<React.SetStateAction<MateStatusSelect>>;
-  setPages: React.Dispatch<React.SetStateAction<PagesState>>;
+  setMateStatusFilter: React.Dispatch<React.SetStateAction<MateStatusType>>;
 }
 
-// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.01.26
+// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.02.01
 const MateListFilter = (props: MateListFilterType) => {
-  const { mateStatusFilter, setMateStatusFilter, setPages } = props;
+  const { setMateStatusFilter } = props;
   const navigate = useNavigate();
 
-  // 필터 조건 핸들 함수_박예선_23.01.26
+  // 필터 조건 핸들 함수_박예선_23.02.01
   const handleFilters = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const value = e.currentTarget.textContent;
     for (let i = 0; i < MATE_STATUS_ARRAY.length; i += 1) {
       if (value === MATE_STATUS_ARRAY[i]) {
-        setMateStatusFilter({ ...mateStatusFilter, selected: value });
+        setMateStatusFilter(value);
       }
     }
-  };
-
-  // 필터 적용버튼 클릭 함수_박예선_23.01.27
-  const clickFilterApplyBtn = () => {
-    setMateStatusFilter({
-      ...mateStatusFilter,
-      applied: mateStatusFilter.selected,
-    });
-    setPages({ started: 1, selected: 1 });
   };
 
   return (
@@ -46,14 +34,6 @@ const MateListFilter = (props: MateListFilterType) => {
           name="filters"
           onClick={handleFilters}
         />
-        <Button
-          variant="primary"
-          size="small"
-          className="filter-apply-btn"
-          onClick={clickFilterApplyBtn}
-        >
-          적용
-        </Button>
       </div>
       <div>
         <SearchInput
@@ -68,6 +48,10 @@ const MateListFilter = (props: MateListFilterType) => {
           size="small"
           className="mate-write-btn"
           onClick={() => {
+            if (!localStorage.getItem("accessToken")) {
+              alert("로그인이 필요합니다.");
+              return;
+            }
             navigate("/mate-write");
           }}
         >
@@ -79,11 +63,6 @@ const MateListFilter = (props: MateListFilterType) => {
 };
 
 export default MateListFilter;
-
-export interface MateStatusSelect {
-  selected: MateStatusType;
-  applied: MateStatusType;
-}
 
 export type MateStatusType = "전체" | "모집 중" | "모집 완료";
 

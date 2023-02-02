@@ -16,10 +16,10 @@ import arrowLeft from "../assets/icons/arrowLeft.svg";
 import arrowRight from "../assets/icons/arrowRight.svg";
 
 interface CalendarProps {
-  setSelectedDate: (date: string) => void;
+  handleSelectedDate: (date: string) => void;
 }
 
-const Calender = ({ setSelectedDate }: CalendarProps) => {
+const Calender = ({ handleSelectedDate }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedNumber, setSelectedNumber] = useState(new Date().getDate());
 
@@ -53,7 +53,7 @@ const Calender = ({ setSelectedDate }: CalendarProps) => {
 
       const result = format(selectedDay, "yyyy-MM-dd");
 
-      setSelectedDate(result);
+      handleSelectedDate(result);
     }
   };
 
@@ -173,7 +173,7 @@ const CalendarWrapper = styled.div`
   width: 318px;
   height: fit-content;
   border: 1px solid ${theme.colors.greys40};
-  padding: 30px;
+  padding: 30px 30px 14px;
 `;
 
 const Header = styled.div`
@@ -214,12 +214,13 @@ const Day = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
   margin-bottom: 1rem;
-  text-align: center;
+  line-height: calc(100% / 7);
   &:is(:hover, :focus, :focus-within) {
     background-color: ${theme.colors.primry70};
     border-radius: 100vmax;
+    color: ${theme.colors.white100};
+    cursor: pointer;
   }
   &:nth-child(7n + 1) {
     color: red;
