@@ -346,7 +346,7 @@ const MateWrite = () => {
             </ExhbChoiceBtn>
             <Modal
               open={openExhbModal}
-              setIsOpen={() => setOpenExhbModal(!openExhbModal)}
+              handleModal={() => setOpenExhbModal(!openExhbModal)}
             >
               <ExhibitionChoice getExhbInfo={handleExhbModal} />
             </Modal>
