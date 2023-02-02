@@ -214,12 +214,13 @@ const Day = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
   margin-bottom: 1rem;
-  text-align: center;
+  line-height: calc(100% / 7);
   &:is(:hover, :focus, :focus-within) {
     background-color: ${theme.colors.primry70};
     border-radius: 100vmax;
+    color: ${theme.colors.white100};
+    cursor: pointer;
   }
   &:nth-child(7n + 1) {
     color: red;

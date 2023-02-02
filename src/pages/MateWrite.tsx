@@ -143,43 +143,25 @@ const MateWrite = () => {
     }
   }, [getMate, mateId]);
 
-  // 작성/등록 버튼 활성화 여부_박예선_23.01.31
+  // 작성/등록 버튼 활성화 여부_박예선_23.02.02
   useEffect(() => {
     const { minimum, maximum } = ageRange;
-    if (mateAge !== "연령 무관") {
-      if (
-        title &&
-        availableDate &&
-        mateAge &&
-        minimum &&
-        maximum &&
-        content &&
-        contact &&
-        exhibitionId
-      ) {
-        setIsDisabledApplyBtn(false);
-        return;
+    if (
+      title &&
+      availableDate &&
+      mateAge &&
+      content &&
+      contact &&
+      exhibitionId
+    ) {
+      setIsDisabledApplyBtn(false);
+      if (mateAge !== "연령 무관") {
+        if (minimum && maximum) setIsDisabledApplyBtn(false);
       }
-    }
-    if (mateAge === "연령 무관") {
-      if (
-        title &&
-        availableDate &&
-        mateAge &&
-        content &&
-        contact &&
-        exhibitionId
-      )
-        setIsDisabledApplyBtn(false);
       return;
     }
     setIsDisabledApplyBtn(true);
   }, [ageRange, availableDate, contact, content, exhibitionId, mateAge, title]);
-
-  // 테스트용 useEffect
-  useEffect(() => {
-    // console.log("writeData :", writeData);
-  }, [writeData]);
 
   // 제목, 내용, 연락망 input/textArea 상태관리_박예선_23.01.29
   const handleInputAndTextArea = (
