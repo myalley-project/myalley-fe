@@ -5,16 +5,16 @@ import styled from "styled-components";
 interface ModalProps {
   open: boolean;
   children: React.ReactNode;
-  modalHandler: () => void;
+  handleModal: () => void;
 }
 
-const Modal = ({ open = false, modalHandler, children }: ModalProps) => {
+const Modal = ({ open = false, handleModal, children }: ModalProps) => {
   const domElement = document.getElementById("portal");
 
   return open
     ? ReactDOM.createPortal(
         <div>
-          <OverLay onClick={modalHandler} />
+          <OverLay onClick={handleModal} />
           {children}
         </div>,
         domElement as HTMLElement

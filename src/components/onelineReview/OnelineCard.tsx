@@ -89,10 +89,10 @@ const OnelineCard = ({
           삭제
         </button>
       </ButtonItems>
-      <Modal open={modifyModalIsopen} modalHandler={modifyModalHandler}>
+      <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
         <OnelineWrapper writeType="modify" simpleId={id} />
       </Modal>
-      <Modal open={deleteModalIsopen} modalHandler={deleteModalHandler}>
+      <Modal open={deleteModalIsopen} handleModal={deleteModalHandler}>
         <Dialog>
           <Message>
             <Title>작성하신 내용을 정말 삭제하시겠습니까?</Title>
