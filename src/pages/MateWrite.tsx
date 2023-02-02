@@ -17,8 +17,9 @@ import { mateApi, mateWriteApi, MateWriteRes } from "../apis/mate";
 import useRefreshTokenApi from "../apis/useRefreshToken";
 import isApiError, { errorAlert } from "../utils/isApiError";
 import ExhibitionChoice from "../components/ExhibitionChoice";
+import Modal from "../Modal";
 
-// 메이트글 작성/수정 페이지_박예선_23.01.31
+// 메이트글 작성/수정 페이지_박예선_23.02.02
 const MateWrite = () => {
   const refreshTokenApi = useRefreshTokenApi();
   const location = useLocation();
@@ -361,9 +362,12 @@ const MateWrite = () => {
                 </ThumbnailHover>
               )}
             </ExhbChoiceBtn>
-            {openExhbModal && (
+            <Modal
+              open={openExhbModal}
+              setIsOpen={() => setOpenExhbModal(!openExhbModal)}
+            >
               <ExhibitionChoice getExhbInfo={handleExhbModal} />
-            )}
+            </Modal>
           </div>
           <div>
             <SubTitle text="관람일" />
