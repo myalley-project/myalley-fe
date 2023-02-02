@@ -9,11 +9,6 @@ export interface Exhibition {
   viewCount: number;
 }
 
-export interface ExhbTypeFilters {
-  selected: FilterType;
-  applied: FilterType;
-}
-
 export type FilterType =
   | "전체 전시"
   | "영상 전시"

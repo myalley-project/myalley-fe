@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer } from "react";
 import { useMutation } from "react-query";
 import OnelineWrite from "../components/onelineReview/OnelineWrite";
-import { OnelineReviewPostType } from "../types/OnelineReview";
-import oneLineReviewApis from "../apis/onelineReviewapis";
+import { OnelineReviewPostType } from "../types/oneLineReview";
+import oneLineReviewApis from "../apis/oneLineReviewApis";
 
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,

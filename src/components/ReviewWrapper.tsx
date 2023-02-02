@@ -8,8 +8,8 @@ import OnelineCard from "./onelineReview/OnelineCard";
 import {
   OnelineReviewCardType,
   OnelineReviewReadType,
-} from "../types/OnelineReview";
-import onelineReviewApis from "../apis/onelineReviewapis";
+} from "../types/oneLineReview";
+import oneLineReviewApis from "../apis/oneLineReviewApis";
 import Pagination from "./Pagination";
 
 type ReviewFilter = "oneline" | "blog";
@@ -30,7 +30,7 @@ const ReviewWrapper = () => {
     data,
   }: UseQueryResult<OnelineReviewReadType, Error> = useQuery({
     queryKey: ["simpleReviews", { page: pages.selected, orderType }],
-    queryFn: () => onelineReviewApis.getReviews(id, pages.selected, orderType),
+    queryFn: () => oneLineReviewApis.getReviews(id, pages.selected, orderType),
   });
 
   if (isLoading) return <div>...loading</div>;

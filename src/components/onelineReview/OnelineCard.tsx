@@ -4,10 +4,11 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import ProfileImg from "../../assets/icons/profileImg.svg";
 import StarIcon from "../../assets/icons/starIcon.svg";
-import { OnelineReviewCardType } from "../../types/OnelineReview";
+import { OnelineReviewCardType } from "../../types/oneLineReview";
 import Modal from "../../Modal";
 import Button from "../atom/Button";
-import OnelineReviewApis from "../../apis/onelineReviewapis";
+import oneLineReviewApis from "../../apis/oneLineReviewApis";
+
 import OnelineWrapper from "../../pages/OnelineWrapper";
 
 const OnelineCard = ({
@@ -31,7 +32,7 @@ const OnelineCard = ({
   };
 
   const deleteMutation = useMutation({
-    mutationFn: () => OnelineReviewApis.deleteReview(id),
+    mutationFn: () => oneLineReviewApis.deleteReview(id),
   });
 
   return (
@@ -88,10 +89,10 @@ const OnelineCard = ({
           삭제
         </button>
       </ButtonItems>
-      <Modal open={modifyModalIsopen} setIsOpen={modifyModalHandler}>
+      <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
         <OnelineWrapper writeType="modify" simpleId={id} />
       </Modal>
-      <Modal open={deleteModalIsopen} setIsOpen={deleteModalHandler}>
+      <Modal open={deleteModalIsopen} handleModal={deleteModalHandler}>
         <Dialog>
           <Message>
             <Title>작성하신 내용을 정말 삭제하시겠습니까?</Title>

@@ -23,7 +23,7 @@ const MainArticle = () => (
         <h3>전시 리뷰</h3>
         <p>다양한 전시 리뷰 를 찾아보세요</p>
       </div>
-      <StyledLink to="">
+      <StyledLink to="/blogreview-list">
         <span>자세히 보기</span>
         <img src={arrowRight} alt="" />
       </StyledLink>
