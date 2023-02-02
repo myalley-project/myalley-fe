@@ -115,6 +115,7 @@ const FiltersContainer = styled.div`
   }
   .filter-search-line {
     width: inherit;
+    max-width: 1440px;
     padding-top: 14px;
     border-top: 1px solid ${(props) => props.theme.colors.greys40};
     border-radius: 0%;
