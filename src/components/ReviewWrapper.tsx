@@ -26,6 +26,8 @@ const ReviewWrapper = () => {
   const [orderType, setOrderType] = useState("Recent");
   const { id } = useParams();
 
+  console.log("여기", id);
+
   const handleOneLineReview = () => {
     setSimpleReviewModal((prev) => !prev);
   };
@@ -37,12 +39,13 @@ const ReviewWrapper = () => {
     data,
   }: UseQueryResult<OnelineReviewReadType, Error> = useQuery({
     queryKey: ["simpleReviews", { page: pages.selected, orderType }],
-    queryFn: () => oneLineReviewApis.getReviews(id, pages.selected, orderType),
+    queryFn: () =>
+      oneLineReviewApis.getReviews(Number(id), pages.selected, orderType),
   });
 
-  // if (isLoading) return <div>...loading</div>;
+  if (isLoading) return <div>...loading</div>;
 
-  // if (isError) return <div>{error.message}</div>;
+  if (isError) return <div>{error.message}</div>;
 
   return (
     <Container>
