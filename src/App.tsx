@@ -36,7 +36,7 @@ const App = () => (
       <Route path="/mate-list" element={<MateList />} />
       <Route path="/mate/:id" element={<Mate />} />
       <Route path="/blogreview-list" element={<BlogReview />} />
-      <Route path="/blog-write" element={<BlogReviewWrite />} />
+      <Route path="/blogreview-write" element={<BlogReviewWrite />} />
     </Routes>
     <ReactQueryDevtools />
     <Footer />
