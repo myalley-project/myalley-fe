@@ -27,3 +27,14 @@ export interface MateRes {
     memberAge: string; // yyyy
   };
 }
+
+export interface MateWriteType {
+  title: string;
+  status: "모집 중" | "모집 완료";
+  mateGender: "성별 무관" | "남성" | "여성";
+  mateAge: "연령 무관" | string; // n0대 x반 ~ n0대 x반
+  availableDate: "미정" | string; // YYYY-MM-DD
+  content: string;
+  contact: string;
+  exhibitionId: number;
+}

@@ -2,7 +2,6 @@ import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import MateListFilter, {
-  MateStatusSelect,
   MateStatusType,
 } from "../components/mate/MateListFilter";
 import MateCard from "../components/mate/MateCard";
@@ -11,14 +10,13 @@ import { Mate, MateListType } from "../types/mateList";
 import { theme } from "../styles/theme";
 import { mateListApi } from "../apis/mate";
 import { errorAlert } from "../utils/isApiError";
+import NoList from "../components/NoList";
 
-// 메이트글 목록 페이지_박예선_23.01.26
+// 메이트글 목록 페이지_박예선_23.02.01
 const MateList = () => {
   const [mateList, setMateList] = useState<Mate[] | null>(null);
-  const [mateStatusFilter, setMateStatusFilter] = useState<MateStatusSelect>({
-    selected: "전체",
-    applied: "전체",
-  });
+  const [mateStatusFilter, setMateStatusFilter] =
+    useState<MateStatusType>("전체");
   const [pages, setPages] = useState<PagesState>({ started: 1, selected: 1 });
   const [totalPage, setTotalPage] = useState(1);
 
@@ -40,19 +38,16 @@ const MateList = () => {
     []
   );
 
-  // 메이트글 목록 조회_박예선_23.01.26
+  // 메이트글 목록 조회_박예선_23.02.01
   useEffect(() => {
-    getMateList(mateStatusFilter.applied, pages.selected);
-  }, [getMateList, mateStatusFilter.applied, pages.selected]);
+    getMateList(mateStatusFilter, pages.selected);
+  }, [getMateList, mateStatusFilter, pages.selected]);
 
   return (
     <MateListContainer>
       <Title className="page-title">메이트 찾기</Title>
-      <MateListFilter
-        mateStatusFilter={mateStatusFilter}
-        setMateStatusFilter={setMateStatusFilter}
-        setPages={setPages}
-      />
+      <MateListFilter setMateStatusFilter={setMateStatusFilter} />
+      {mateList?.length === 0 && <NoList notice="작성된 메이트글이 없습니다" />}
       {mateList?.map((mate) => (
         <MateCard key={mate.mateId} mate={mate} />
       ))}

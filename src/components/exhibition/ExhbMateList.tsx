@@ -56,7 +56,7 @@ const ExhbMateList = () => {
         </a>
       </Header>
       {mateList.length === 0 ? (
-        <NoList />
+        <NoList notice="아직 작성한 글이 없습니다" />
       ) : (
         mateList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}

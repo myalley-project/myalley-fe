@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { StatusType } from "../components/exhibitionList/Filters";
 import { Exhibition, FilterType } from "../types/exhbList";
 import apiInstance from "../utils/apiInstance";
@@ -18,19 +18,15 @@ const exhbListApi = async (
   type: FilterType,
   page: number
 ) => {
-  if (type === "전체") {
-    const res: AxiosResponse<ExhbListRes> =
-      //   await apiInstance.get(
-      //   `/main/exhibitions/?status=${status}전시&page=${page}`
-      // );
-      await axios.get("/data/exhbList.json"); // 테스트용 목데이터
+  if (type === "전체 전시") {
+    const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
+      `/main/exhibitions/?status=${status} 전시&page=${page}`
+    );
     return res;
   }
-  const res: AxiosResponse<ExhbListRes> =
-    //   await apiInstance.get(
-    //   `/exhibitions/?status=${status}전시&type=${type}전시&page=${page}`
-    // );
-    await axios.get("/data/exhbListFiltered.json"); // 테스트용 목데이터
+  const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
+    `/exhibitions/?status=${status} 전시&type=${type}&page=${page}`
+  );
   return res;
 };
 
