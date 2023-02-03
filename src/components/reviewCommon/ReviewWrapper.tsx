@@ -3,16 +3,16 @@ import { AxiosResponse } from "axios";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery, UseQueryResult } from "react-query";
-import ReviewSearchbar from "./ReviewSearchbar";
-import OnelineCard from "./onelineReview/OnelineCard";
+import ReviewSearchBar from "./ReviewSearchBar";
+import OnelineCard from "../onelineReview/presentation/OnelineCard";
 import {
   OnelineReviewCardType,
   OnelineReviewReadType,
-} from "../types/oneLineReview";
-import oneLineReviewApis from "../apis/oneLineReviewApis";
-import Pagination from "./Pagination";
-import OnelineWrapper from "../pages/OnelineWrapper";
-import Modal from "../Modal";
+} from "../../types/oneLineReview";
+import oneLineReviewApis from "../../apis/oneLineReviewApis";
+import Pagination from "../Pagination";
+import OnelineContainer from "../onelineReview/container/OnelineContainer";
+import Modal from "../../Modal";
 
 type ReviewFilter = "oneline" | "blog";
 
@@ -20,8 +20,8 @@ const ReviewWrapper = () => {
   const [simpleReviewModal, setSimpleReviewModal] = useState<boolean>(false);
   const [filter, setFilter] = useState<ReviewFilter>("oneline");
   const [pages, setPages] = useState({
-    started: 1,
-    selected: 1,
+    started: 0,
+    selected: 0,
   });
   const [orderType, setOrderType] = useState("Recent");
   const { id } = useParams();
@@ -47,7 +47,7 @@ const ReviewWrapper = () => {
 
   return (
     <Container>
-      <ReviewSearchbar
+      <ReviewSearchBar
         totalElement={data ? data?.pageInfo.totalElement : 0}
         filter={filter}
         setFilter={setFilter}
@@ -55,7 +55,7 @@ const ReviewWrapper = () => {
         handleReviewModal={handleOneLineReview}
       />
       {filter === "oneline" ? (
-        <OnelineContainer>
+        <OnelineDisplay>
           {data &&
             data.simpleInfo.map((each) => (
               <div key={each.id}>
@@ -70,7 +70,7 @@ const ReviewWrapper = () => {
                 />
               </div>
             ))}
-        </OnelineContainer>
+        </OnelineDisplay>
       ) : null}
       {filter === "blog" ? <div>블로그 작업영역!</div> : null}
       {data ? (
@@ -81,7 +81,11 @@ const ReviewWrapper = () => {
         />
       ) : null}
       <Modal open={simpleReviewModal} handleModal={handleOneLineReview}>
-        <OnelineWrapper writeType="create" simpleId={0} />
+        <OnelineContainer
+          handleModal={handleOneLineReview}
+          writeType="create"
+          simpleId={0}
+        />
       </Modal>
     </Container>
   );
@@ -94,7 +98,7 @@ const Container = styled.div`
   margin-inline: auto;
 `;
 
-const OnelineContainer = styled.div`
+const OnelineDisplay = styled.div`
   display: flex;
   flex-flow: column;
 `;
