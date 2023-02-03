@@ -225,6 +225,7 @@ const ShareBtn = styled.button`
   padding: 0px;
   margin-top: 5px;
   border-radius: 0px;
+  cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='5' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='6' cy='12' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='18' cy='19' r='3' stroke='%236750A4' stroke-width='2'/%3E%3Cpath d='M9 10L15 6' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M9 14L15 18' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E%0A");
   &:hover {
     background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='5' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='6' cy='12' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Ccircle cx='18' cy='19' r='3' fill='%236750A4' stroke='%236750A4' stroke-width='2'/%3E%3Cpath d='M9 10L15 6' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M9 14L15 18' stroke='%236750A4' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");

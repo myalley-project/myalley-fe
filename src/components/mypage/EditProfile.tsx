@@ -21,8 +21,9 @@ import { theme } from "../../styles/theme";
 import isApiError from "../../utils/isApiError";
 import eyeOff from "../../assets/icons/eyeOff.svg";
 import eyeOn from "../../assets/icons/eyeOn.svg";
-import error from "../../assets/icons/error.svg";
+import alertCircle from "../../assets/icons/alertCircle.svg";
 import SimpleDialog from "../SimpleDialog";
+import removeLocalStorageItem from "../../utils/removeLocalStorageItem";
 
 interface MyInfoType {
   infoData: {
@@ -45,6 +46,7 @@ interface InfosType {
   month: string;
   day: string;
   imageFile: File | null;
+  imageFileName: string;
 }
 
 const MyProfileEdit = (props: MyInfoType) => {
@@ -77,6 +79,7 @@ const MyProfileEdit = (props: MyInfoType) => {
     month: "",
     day: "",
     imageFile: null,
+    imageFileName: "",
   });
   const [isPwType, setIsPwType] = useState(true);
   const [isPwCheckType, setIsCheckPwType] = useState(true);
@@ -157,7 +160,6 @@ const MyProfileEdit = (props: MyInfoType) => {
   // 비밀번호 체크 유효성 검사
   const handlePwCheckValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-
     if (value !== "" && value === infos.password) {
       setErrorClass({ ...errorClass, password: "" });
     }
@@ -170,6 +172,7 @@ const MyProfileEdit = (props: MyInfoType) => {
       setInfos({
         ...infos,
         imageFile: e.target.files[0],
+        imageFileName: URL.createObjectURL(e.target.files[0]),
       });
       reader.onload = () => {
         if (e.target.files !== null) {
@@ -182,30 +185,49 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   // 회원정보 수정 api
   const editBtn = async () => {
-    // 프론트 유효성 검사
     if (!valids.nickname && infos.nickname !== "") {
       // 별명 형식 체크
       setErrorClass({ ...errorClass, nickname: "error" });
       setErrorType({ ...errorType, nickname: "form" });
     } else if (!valids.password) {
       // 비밀번호 형식 체크
-      setErrorClass({ ...errorClass, password: "error" });
-      setErrorType({ ...errorType, password: "form" });
+      if (infos.password !== null) {
+        setErrorClass({ ...errorClass, password: "error" });
+        setErrorType({ ...errorType, password: "form" });
+        return;
+      }
     } else if (passwordCheck !== "" && passwordCheck !== infos.password) {
       // 비밀번호 일치 체크
-      setErrorClass({ ...errorClass, password: "error" });
+      if (infos.password !== null && passwordCheck !== "") {
+        setErrorClass({ ...errorClass, password: "error" });
+      }
+      return;
     } else if (passwordCheck === "" && infos.password !== "") {
       setErrorClass({ ...errorClass, password: "error" });
       return;
     }
 
+    // 아무것도 변경하지 않았을때 api 타지 않도록
+    if (
+      infos.imageFile === null &&
+      infos.nickname === "" &&
+      infos.gender === "" &&
+      infos.year === "" &&
+      infos.month === "" &&
+      infos.day === "" &&
+      infos.password === null
+    ) {
+      alert("변경을 원하는 항목을 입력해주세요.");
+      return;
+    }
+
     const editMyInfo: EditMyInfoType = {
-      password: infos.password,
       nickname: `${infos.nickname === "" ? nickname : infos.nickname}`,
       gender: `${infos.gender === "" ? gender : infos.gender}`,
       birth: `${infos.year === "" ? `${birth.substring(0, 4)}` : infos.year}-${
         infos.month === "" ? `${birth.substring(5, 7)}` : infos.month
       }-${infos.day === "" ? `${birth.substring(8)}` : infos.day}`,
+      password: infos.password,
     };
     if (infos.imageFile !== null) {
       formData.append("imageFile", infos.imageFile);
@@ -234,7 +256,6 @@ const MyProfileEdit = (props: MyInfoType) => {
         setErrorClass({ ...errorClass, nickname: "error" });
         setErrorType({ ...errorType, nickname: "duplicate" });
       } else if (errorCode === 400 && errorMsg === "닉네임 형식 오류") {
-        console.log(infos.nickname);
         setErrorType({ ...errorType, nickname: "form" });
       } else if (errorCode === 400 && errorMsg === "비밀번호 형식 오류") {
         setErrorClass({ ...errorClass, password: "error" });
@@ -244,7 +265,6 @@ const MyProfileEdit = (props: MyInfoType) => {
         errorMsg === "올바른 형식의 이미지 파일이 아닙니다."
       )
         alert("이미지 형식을 다시 확인해주세요.");
-      // TODO: 토큰 에러 로직 추가
     }
   };
 
@@ -255,13 +275,7 @@ const MyProfileEdit = (props: MyInfoType) => {
       const { resultCode } = res.data;
       if (resultCode === 200) {
         alert("탈퇴가 완료되었습니다.");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("memberId");
-        localStorage.removeItem("email");
-        localStorage.removeItem("nickname");
-        localStorage.removeItem("memberImage");
-        localStorage.removeItem("authority");
+        removeLocalStorageItem();
         navigate("/");
       } else {
         alert("알 수 없는 오류입니다. 관리자에게 문의하세요.");
@@ -285,10 +299,20 @@ const MyProfileEdit = (props: MyInfoType) => {
 
       <EditProtileWrapper>
         <ImgWrapper>
-          <ProfileImg
-            src={memberImage === "" ? profileImage : memberImage}
-            alt="base-img"
-          />
+          {memberImage === "" ? (
+            <ProfileImg
+              src={
+                infos.imageFile === null ? profileImage : infos.imageFileName
+              }
+              alt="base-img"
+            />
+          ) : (
+            <ProfileImg
+              src={infos.imageFile === null ? memberImage : infos.imageFileName}
+              alt="base-img"
+            />
+          )}
+
           <label htmlFor="exhibition-posterUrl">
             <UploadImg src={cameraCircle} alt="upload-btn" />
           </label>
@@ -323,7 +347,9 @@ const MyProfileEdit = (props: MyInfoType) => {
             }}
           />
           <ErrorIcon>
-            {errorType.nickname !== "" && <img src={error} alt="error-icon" />}
+            {errorType.nickname !== "" && (
+              <img src={alertCircle} alt="error-icon" />
+            )}
           </ErrorIcon>
           {!valids.nickname && errorType.nickname === "" && (
             <Notice color={colors.default}>
@@ -432,10 +458,9 @@ const MyProfileEdit = (props: MyInfoType) => {
               <img src={isPwCheckType ? eyeOff : eyeOn} alt="eye-icon" />
             </EyeIconbtn>
           </PasswordWrapper>
-          {(passwordCheck !== "" && passwordCheck !== infos.password) ||
-            (passwordCheck === "" && infos.password !== "" && (
-              <Notice color={colors.error}>비밀번호가 일치하지 않습니다</Notice>
-            ))}
+          {passwordCheck !== infos.password && (
+            <Notice color={colors.error}>비밀번호가 일치하지 않습니다!</Notice>
+          )}
         </InputWrapper>
         <EditBtn type="submit" onClick={editBtn}>
           수정하기
