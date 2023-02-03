@@ -9,7 +9,7 @@ import Modal from "../../Modal";
 import Button from "../atom/Button";
 import oneLineReviewApis from "../../apis/oneLineReviewApis";
 
-import OnelineWrapper from "../../pages/OnelineWrapper";
+import OnelineContainer from "../../pages/OnelineContainer";
 import isApiError from "../../utils/isApiError";
 import useRefreshTokenApi from "../../apis/useRefreshToken";
 
@@ -107,7 +107,7 @@ const OnelineCard = ({
         </button>
       </ButtonItems>
       <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
-        <OnelineWrapper
+        <OnelineContainer
           handleModal={modifyModalHandler}
           writeType="modify"
           simpleId={id}

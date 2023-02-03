@@ -12,7 +12,7 @@ interface ReviewSearchbarProps {
   totalElement: number;
 }
 
-const ReviewSearchbar = ({
+const ReviewSearchBar = ({
   setFilter,
   setOrderType,
   filter,
@@ -67,7 +67,7 @@ const ReviewSearchbar = ({
   </Container>
 );
 
-export default ReviewSearchbar;
+export default ReviewSearchBar;
 
 const Container = styled.div`
   margin-bottom: 30px;

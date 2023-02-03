@@ -92,17 +92,17 @@ type Payload = {
 
 type WriteType = "create" | "modify";
 
-interface OnelineWrapperProps {
+interface OnelineContainerProps {
   handleModal: () => void;
   writeType: WriteType;
   simpleId: number;
 }
 
-const OnelineWrapper = ({
+const OnelineContainer = ({
   writeType,
   simpleId = 0,
   handleModal,
-}: OnelineWrapperProps) => {
+}: OnelineContainerProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { id } = useParams();
   const refreshTokenApi = useRefreshTokenApi();
@@ -242,7 +242,7 @@ const OnelineWrapper = ({
   );
 };
 
-export default OnelineWrapper;
+export default OnelineContainer;
 
 function getPayload(
   exhibitionId: string,
