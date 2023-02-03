@@ -107,7 +107,7 @@ const OnelineCard = ({
               취소하기
             </Button>
             <Button
-              onClick={() => deleteMutation.mutate}
+              onClick={() => deleteMutation.mutate()}
               variant="primary"
               size="large"
               type="button"
