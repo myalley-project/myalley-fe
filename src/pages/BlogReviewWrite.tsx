@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent, useReducer, useEffect } from "react";
 import styled from "styled-components";
+import { useMutation } from "react-query";
+import { useLocation } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
@@ -136,6 +138,12 @@ import Modal from "../Modal";
 //   }
 // };
 
+type LocationState = {
+  state: {
+    name: string;
+  };
+};
+
 const BlogReviewWrite = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const [title, setTitle] = useState("");
@@ -154,6 +162,11 @@ const BlogReviewWrite = () => {
     title: "",
     duration: "",
     status: "",
+  });
+  const { state } = useLocation() as LocationState;
+
+  const blogPostMutation = useMutation({
+    mutationFn: (formData: FormData) => blogReviewApis.createReview(formData),
   });
 
   const getExhibitionInfo = (
@@ -246,9 +259,16 @@ const BlogReviewWrite = () => {
       new Blob([JSON.stringify(postData)], { type: "application/json" })
     );
 
+    formData.append(
+      "exhibitionId",
+      new Blob([JSON.stringify(state)], { type: "application/json" })
+    );
+
     if (imageFiles !== null) {
       Array.from(imageFiles).forEach((file) => formData.append("images", file));
     }
+
+    blogPostMutation.mutate(formData);
   };
 
   return (

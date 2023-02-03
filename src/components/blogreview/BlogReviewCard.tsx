@@ -1,29 +1,35 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { BlogReviewInfo } from "../../types/blogReview";
 
 const BlogReviewCard = ({
+  id,
   title,
   writer,
   viewDate,
   viewCount,
   imageInfo,
-}: BlogReviewInfo) => (
-  <Container>
-    <Image>
-      <img src={imageInfo.url} alt="블로그 리뷰 이미지" />
-    </Image>
-    <Review>
-      <h2>{title}</h2>
-      <p>{writer}</p>
-      <div>
-        <div>{viewDate}</div>
-        <div>조회수 {viewCount}</div>
-      </div>
-    </Review>
-  </Container>
-);
+}: BlogReviewInfo) => {
+  const navigate = useNavigate();
+
+  return (
+    <Container onClick={() => navigate("/blogreview-write", { state: id })}>
+      <Image>
+        <img src={imageInfo.url} alt="블로그 리뷰 이미지" />
+      </Image>
+      <Review>
+        <h2>{title}</h2>
+        <p>{writer}</p>
+        <div>
+          <div>{viewDate}</div>
+          <div>조회수 {viewCount}</div>
+        </div>
+      </Review>
+    </Container>
+  );
+};
 
 export default BlogReviewCard;
 
