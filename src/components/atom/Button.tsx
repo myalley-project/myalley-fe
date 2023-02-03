@@ -60,12 +60,21 @@ const Button = styled.button<ButtonProps>`
   cursor: pointer;
   &:is(:hover, :focus) {
     color: ${(props) => hoverFontColor[props.variant]};
+  }
+  :hover {
     background-color: ${(props) => hoverBackgroundColor[props.variant]};
+  }
+  :focus {
+    background-color: transparent;
   }
   :disabled {
     background-color: ${(props) => disabledBackgroundColor[props.variant]};
     color: ${(props) => disabledFontColor[props.variant]};
     cursor: default;
+  }
+  :focus-visible {
+    border: 1px solid ${theme.colors.greys100};
+    background-color: transparent;
   }
 `;
 

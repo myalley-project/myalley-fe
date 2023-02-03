@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { theme } from "../../styles/theme";
 import { FilterType } from "../../types/exhbList";
+import Button from "../atom/Button";
 import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
 
@@ -34,14 +36,15 @@ const Filters = (props: FiltersType) => {
     <FiltersContainer>
       <div className="status-filter flex space-between">
         {EXHB_STATUS_ARRAY.map((status) => (
-          <button
+          <Button
             key={status}
-            type="button"
-            className={selectedStatus === status ? "selected" : ""}
+            variant="text"
+            size="small"
             onClick={() => handleStatusBtn(status)}
+            className={selectedStatus === status ? "selected" : ""}
           >
             {status} 전시
-          </button>
+          </Button>
         ))}
       </div>
       <div className="filter-search-line flex space-between">
@@ -100,16 +103,12 @@ const FiltersContainer = styled.div`
     margin-bottom: 14px;
     font-size: 14px;
     button {
-      justify-content: center;
+      display: flex;
       align-items: center;
-      width: 93px;
-      height: inherit;
-      color: ${(props) => props.theme.colors.greys60};
       font-size: 14px;
-      font-weight: 700;
       cursor: pointer;
       &.selected {
-        color: #1c1c1c;
+        color: ${theme.colors.greys100};
       }
     }
   }
