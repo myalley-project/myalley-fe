@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
+// default, Tab focus 시(피그마 state=focus) 공통
 const backgroundColor = {
   primary: `${theme.colors.primry70}`,
   secondary: `${theme.colors.greys60}`,
@@ -11,6 +12,13 @@ const hoverBackgroundColor = {
   primary: `${theme.colors.primry80}`,
   secondary: `${theme.colors.greys90}`,
   text: `${theme.colors.greys10}`,
+};
+
+// 피그마 state = active
+const focusBackgroundColor = {
+  primary: `${theme.colors.primry80}`,
+  secondary: `${theme.colors.greys90}`,
+  text: `${theme.colors.white100}`,
 };
 
 const disabledBackgroundColor = {
@@ -37,7 +45,7 @@ const disabledFontColor = {
   text: `${theme.colors.greys40}`,
 };
 
-const buttonsize = {
+const buttonSize = {
   small: "20px",
   large: "40px",
 };
@@ -50,7 +58,7 @@ interface ButtonProps {
 const Button = styled.button<ButtonProps>`
   padding-top: 10px;
   padding-bottom: 10px;
-  padding-inline: ${(props) => buttonsize[props.size]};
+  padding-inline: ${(props) => buttonSize[props.size]};
   border: 0;
   border-radius: 30px;
   font-weight: bold;
@@ -65,7 +73,7 @@ const Button = styled.button<ButtonProps>`
     background-color: ${(props) => hoverBackgroundColor[props.variant]};
   }
   :focus {
-    background-color: transparent;
+    background-color: ${(props) => focusBackgroundColor[props.variant]};
   }
   :disabled {
     background-color: ${(props) => disabledBackgroundColor[props.variant]};
@@ -73,8 +81,8 @@ const Button = styled.button<ButtonProps>`
     cursor: default;
   }
   :focus-visible {
-    border: 1px solid ${theme.colors.greys100};
-    background-color: transparent;
+    border: 2px solid ${theme.colors.greys100};
+    background-color: ${(props) => backgroundColor[props.variant]};
   }
 `;
 
