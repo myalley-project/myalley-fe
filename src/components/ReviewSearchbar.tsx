@@ -70,6 +70,7 @@ const ReviewSearchbar = ({
 export default ReviewSearchbar;
 
 const Container = styled.div`
+  margin-bottom: 30px;
   & button.clicked {
     color: ${theme.colors.greys100};
   }

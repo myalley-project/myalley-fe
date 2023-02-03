@@ -1,8 +1,11 @@
 import React, { useEffect, useReducer } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
 import OnelineWrite from "../components/onelineReview/OnelineWrite";
 import { OnelineReviewPostType } from "../types/oneLineReview";
 import oneLineReviewApis from "../apis/oneLineReviewApis";
+import isApiError from "../utils/isApiError";
+import useRefreshTokenApi from "../apis/useRefreshToken";
 
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
@@ -90,12 +93,20 @@ type Payload = {
 type WriteType = "create" | "modify";
 
 interface OnelineWrapperProps {
+  handleModal: () => void;
   writeType: WriteType;
   simpleId: number;
 }
 
-const OnelineWrapper = ({ writeType, simpleId = 0 }: OnelineWrapperProps) => {
+const OnelineWrapper = ({
+  writeType,
+  simpleId = 0,
+  handleModal,
+}: OnelineWrapperProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { id } = useParams();
+  const refreshTokenApi = useRefreshTokenApi();
+  const queryClient = useQueryClient();
 
   const yearHandler = (e: React.MouseEvent) => {
     if (e !== undefined) {
@@ -178,6 +189,9 @@ const OnelineWrapper = ({ writeType, simpleId = 0 }: OnelineWrapperProps) => {
 
   const newReviewMutation = useMutation({
     mutationFn: (payload: Payload) => oneLineReviewApis.createReview(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["simpleReviews"]);
+    },
   });
 
   const modifyMutation = useMutation({
@@ -186,21 +200,36 @@ const OnelineWrapper = ({ writeType, simpleId = 0 }: OnelineWrapperProps) => {
   });
 
   const SubmitHandler = () => {
-    const body = getPayload(state);
-    // if (Object.values(body).includes("") || Object.values(body).includes(0)) {
-    //   throw Error("빈 칸으로 남겨진 값이 있습니다.");
-    // }
+    const body = getPayload(id as string, state);
+
+    if (Object.values(body).includes("") || Object.values(body).includes(0)) {
+      throw Error("빈 칸으로 남겨진 값이 있습니다.");
+    }
+    if (body.content.length < 10) alert("본문 내용이 너무 짧습니다");
 
     if (writeType === "create") {
-      newReviewMutation.mutate(body);
+      try {
+        newReviewMutation.mutate(body);
+        handleModal();
+      } catch (err) {
+        const errResponese = isApiError(err);
+        if (errResponese === "accessToken 만료") refreshTokenApi();
+      }
     } else if (writeType === "modify") {
-      modifyMutation.mutate(body);
+      try {
+        modifyMutation.mutate(body);
+        handleModal();
+      } catch (err) {
+        const errResponese = isApiError(err);
+        if (errResponese === "accessToken 만료") refreshTokenApi();
+      }
     }
   };
 
   return (
     <OnelineWrite
       state={state}
+      handleModal={handleModal}
       yearHandler={yearHandler}
       monthHandler={monthHandler}
       dayHandler={dayHandler}
@@ -215,11 +244,15 @@ const OnelineWrapper = ({ writeType, simpleId = 0 }: OnelineWrapperProps) => {
 
 export default OnelineWrapper;
 
-function getPayload(state: OnelineReviewPostType): Payload {
+function getPayload(
+  exhibitionId: string,
+  state: OnelineReviewPostType
+): Payload {
   const BIRTHDAY = `${state.date.year}-${state.date.month}-${state.date.day}`;
+  const ID = Number(exhibitionId);
 
   return {
-    exhibitionId: state.exhibitionId,
+    exhibitionId: ID,
     viewDate: BIRTHDAY,
     time: state.time,
     congestion: state.congestion,

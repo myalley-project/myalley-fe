@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import ProfileImg from "../../assets/icons/profileImg.svg";
@@ -10,6 +10,8 @@ import Button from "../atom/Button";
 import oneLineReviewApis from "../../apis/oneLineReviewApis";
 
 import OnelineWrapper from "../../pages/OnelineWrapper";
+import isApiError from "../../utils/isApiError";
+import useRefreshTokenApi from "../../apis/useRefreshToken";
 
 const OnelineCard = ({
   id,
@@ -22,6 +24,8 @@ const OnelineCard = ({
 }: OnelineReviewCardType) => {
   const [modifyModalIsopen, setModifyModalIsopen] = useState<boolean>(false);
   const [deleteModalIsopen, setDeleteModalIsopen] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const refreshTokenApi = useRefreshTokenApi();
 
   const modifyModalHandler = () => {
     setModifyModalIsopen((prev) => !prev);
@@ -33,7 +37,18 @@ const OnelineCard = ({
 
   const deleteMutation = useMutation({
     mutationFn: () => oneLineReviewApis.deleteReview(id),
+    onSuccess: () => queryClient.invalidateQueries(["simpleReviews"]),
   });
+
+  const handleDelete = () => {
+    try {
+      deleteMutation.mutate();
+      deleteModalHandler();
+    } catch (err) {
+      const errResponese = isApiError(err);
+      if (errResponese === "accessToken 만료") refreshTokenApi();
+    }
+  };
 
   return (
     <Container>
@@ -83,14 +98,20 @@ const OnelineCard = ({
         </ReviewInfo>
       </Review>
       <ButtonItems>
-        <button type="button">수정</button>
+        <button onClick={modifyModalHandler} type="button">
+          수정
+        </button>
         <Spliter />
         <button onClick={deleteModalHandler} type="button">
           삭제
         </button>
       </ButtonItems>
       <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
-        <OnelineWrapper writeType="modify" simpleId={id} />
+        <OnelineWrapper
+          handleModal={modifyModalHandler}
+          writeType="modify"
+          simpleId={id}
+        />
       </Modal>
       <Modal open={deleteModalIsopen} handleModal={deleteModalHandler}>
         <Dialog>
@@ -107,7 +128,7 @@ const OnelineCard = ({
               취소하기
             </Button>
             <Button
-              onClick={() => deleteMutation.mutate()}
+              onClick={handleDelete}
               variant="primary"
               size="large"
               type="button"
@@ -151,6 +172,7 @@ const ReviewInfo = styled.div`
     text-align: start;
   }
   & > p {
+    text-align: start;
     color: ${theme.colors.greys90};
     font-weight: 700;
     font-size: 14px;
@@ -163,6 +185,7 @@ const ButtonItems = styled.div`
   align-items: first baseline;
   padding: 0px;
   & > button {
+    cursor: pointer;
     color: ${theme.colors.greys60};
     border: 0;
   }
@@ -201,6 +224,9 @@ const DialogContainer = styled.div`
   gap: 30px;
   padding: 0px;
   margin-bottom: 30px;
+  & > button {
+    cursor: pointer;
+  }
 `;
 
 const Title = styled.h1`

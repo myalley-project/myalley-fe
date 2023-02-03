@@ -13,6 +13,7 @@ import { OnelineReviewPostType } from "../../types/oneLineReview";
 
 interface HandlerProps {
   state: OnelineReviewPostType;
+  handleModal: () => void;
   yearHandler: (e: React.MouseEvent) => void;
   monthHandler: (e: React.MouseEvent) => void;
   dayHandler: (e: React.MouseEvent) => void;
@@ -25,6 +26,7 @@ interface HandlerProps {
 
 const OnelineWrite = ({
   state,
+  handleModal,
   yearHandler,
   monthHandler,
   dayHandler,
@@ -113,7 +115,7 @@ const OnelineWrite = ({
       </SelectForm>
     </SelectContainer>
     <ButtonContainer>
-      <Button variant="text" size="large">
+      <Button onClick={handleModal} variant="text" size="large">
         취소하기
       </Button>
       <Button onClick={submitHandler} variant="primary" size="large">

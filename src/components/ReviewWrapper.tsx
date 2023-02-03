@@ -20,8 +20,8 @@ const ReviewWrapper = () => {
   const [simpleReviewModal, setSimpleReviewModal] = useState<boolean>(false);
   const [filter, setFilter] = useState<ReviewFilter>("oneline");
   const [pages, setPages] = useState({
-    started: 1,
-    selected: 1,
+    started: 0,
+    selected: 0,
   });
   const [orderType, setOrderType] = useState("Recent");
   const { id } = useParams();
@@ -81,7 +81,11 @@ const ReviewWrapper = () => {
         />
       ) : null}
       <Modal open={simpleReviewModal} handleModal={handleOneLineReview}>
-        <OnelineWrapper writeType="create" simpleId={0} />
+        <OnelineWrapper
+          handleModal={handleOneLineReview}
+          writeType="create"
+          simpleId={0}
+        />
       </Modal>
     </Container>
   );
