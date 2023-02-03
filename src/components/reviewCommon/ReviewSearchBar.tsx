@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { theme } from "../styles/theme";
-import Button from "./atom/Button";
-import SearchBar from "./atom/Searchbar";
+import { theme } from "../../styles/theme";
+import Button from "../atom/Button";
+import SearchBar from "../atom/Searchbar";
 
 interface ReviewSearchbarProps {
   setFilter: (state: "oneline" | "blog") => void;
@@ -12,7 +12,7 @@ interface ReviewSearchbarProps {
   totalElement: number;
 }
 
-const ReviewSearchbar = ({
+const ReviewSearchBar = ({
   setFilter,
   setOrderType,
   filter,
@@ -67,9 +67,10 @@ const ReviewSearchbar = ({
   </Container>
 );
 
-export default ReviewSearchbar;
+export default ReviewSearchBar;
 
 const Container = styled.div`
+  margin-bottom: 30px;
   & button.clicked {
     color: ${theme.colors.greys100};
   }
