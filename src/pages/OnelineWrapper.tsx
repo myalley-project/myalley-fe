@@ -97,10 +97,6 @@ interface OnelineWrapperProps {
 const OnelineWrapper = ({ writeType, simpleId = 0 }: OnelineWrapperProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // useEffect(() => {
-  //   console.log(state);
-  // }, [state]);
-
   const yearHandler = (e: React.MouseEvent) => {
     if (e !== undefined) {
       if (e.currentTarget.textContent !== null) {

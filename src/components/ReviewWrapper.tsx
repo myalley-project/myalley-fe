@@ -26,8 +26,6 @@ const ReviewWrapper = () => {
   const [orderType, setOrderType] = useState("Recent");
   const { id } = useParams();
 
-  console.log("여기", id);
-
   const handleOneLineReview = () => {
     setSimpleReviewModal((prev) => !prev);
   };
