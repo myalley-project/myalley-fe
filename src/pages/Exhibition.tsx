@@ -13,8 +13,10 @@ import ReviewWrapper from "../components/ReviewWrapper";
 const Exhibition = () => {
   const params = useParams();
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
+  const [state, setState] = useState("info");
   const navigate = useNavigate();
   const id = Number(params.id);
+
   const getExhbDetail = useCallback(async () => {
     try {
       const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
@@ -35,7 +37,10 @@ const Exhibition = () => {
     getExhbDetail();
   }, [getExhbDetail]);
 
-  const [state, setState] = useState("info");
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <ExhibitionContainer>
       <MainCard
