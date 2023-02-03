@@ -4,15 +4,15 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery, UseQueryResult } from "react-query";
 import ReviewSearchBar from "./ReviewSearchBar";
-import OnelineCard from "./onelineReview/presentation/OnelineCard";
+import OnelineCard from "../onelineReview/presentation/OnelineCard";
 import {
   OnelineReviewCardType,
   OnelineReviewReadType,
-} from "../types/oneLineReview";
-import oneLineReviewApis from "../apis/oneLineReviewApis";
-import Pagination from "./Pagination";
-import OnelineContainer from "./onelineReview/container/OnelineContainer";
-import Modal from "../Modal";
+} from "../../types/oneLineReview";
+import oneLineReviewApis from "../../apis/oneLineReviewApis";
+import Pagination from "../Pagination";
+import OnelineContainer from "../onelineReview/container/OnelineContainer";
+import Modal from "../../Modal";
 
 type ReviewFilter = "oneline" | "blog";
 

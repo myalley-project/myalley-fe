@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { theme } from "../styles/theme";
-import Button from "./atom/Button";
-import SearchBar from "./atom/Searchbar";
+import { theme } from "../../styles/theme";
+import Button from "../atom/Button";
+import SearchBar from "../atom/Searchbar";
 
 interface ReviewSearchbarProps {
   setFilter: (state: "oneline" | "blog") => void;
