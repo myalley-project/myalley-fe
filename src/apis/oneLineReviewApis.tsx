@@ -2,7 +2,6 @@ import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
 import { OnelineReviewCardType } from "../types/oneLineReview";
 
-
 interface CreateReviewBody {
   exhibitionId: number;
   viewDate: string;
@@ -28,7 +27,7 @@ const oneLineReviewApis = {
     );
     return response;
   },
-  getReviews: async (exhibitionId = "", pageNo = 0, Type = "Recent") => {
+  getReviews: async (exhibitionId = 0, pageNo = 0, Type = "Recent") => {
     const response: AxiosResponse<OnelineReviewCardType> =
       await apiInstance.get(
         `simple-reviews/exhibitions/${exhibitionId}?page=${pageNo}&order=${Type}`
