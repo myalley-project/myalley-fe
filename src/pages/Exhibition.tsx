@@ -37,10 +37,6 @@ const Exhibition = () => {
     getExhbDetail();
   }, [getExhbDetail]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <ExhibitionContainer>
       <MainCard
