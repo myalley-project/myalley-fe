@@ -9,7 +9,9 @@ import Selectbox from "../components/atom/Selectbox";
 import { theme } from "../styles/theme";
 import getTimeOptions from "../utils/timeSelector";
 import Button from "../components/atom/Button";
+import ExhibitionChoice from "../components/ExhibitionChoice";
 import blogReviewApis from "../apis/blogReviewApis";
+import Modal from "../Modal";
 
 // 차후 reducer로 일괄 조절예정
 // interface BlogReviewPost {a
@@ -134,7 +136,7 @@ import blogReviewApis from "../apis/blogReviewApis";
 //   }
 // };
 
-const BlogReviewUpdate = () => {
+const BlogReviewWrite = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const [title, setTitle] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -145,6 +147,35 @@ const BlogReviewUpdate = () => {
   const [revisit, setRevisit] = useState("");
   const [contents, setContents] = useState("");
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedExhb, setSelectedExhb] = useState({
+    url: "",
+    id: 0,
+    title: "",
+    duration: "",
+    status: "",
+  });
+
+  const getExhibitionInfo = (
+    imgUrl: string,
+    exhibitionId: number,
+    exhibitionTitle: string,
+    exhibitionDuration: string,
+    exhibitionStatus: string
+  ) => {
+    const newState = {
+      url: imgUrl,
+      id: exhibitionId,
+      title: exhibitionTitle,
+      duration: exhibitionDuration,
+      status: exhibitionStatus,
+    };
+    setSelectedExhb(newState);
+  };
+
+  const handleSelectorModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
 
   const handleTitleInput = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -225,7 +256,7 @@ const BlogReviewUpdate = () => {
       <div style={{ marginBottom: "30px" }}>
         <ReviewTitle handleTitleInput={handleTitleInput} />
         <ExhibitionPicker>
-          <ExhibitionSelect />
+          <ExhibitionSelect handleSelecterModal={handleSelectorModal} />
           <div>
             <SubTitle text="관람일" />
             <Calender handleSelectedDate={setSelectedDate} />
@@ -308,6 +339,7 @@ const BlogReviewUpdate = () => {
               setImageFiles={setImageFiles}
             />
             <Editor.TextInputArea
+              value={contents}
               name="텍스트 에어리어"
               textChangeHandler={HandlerContents}
             />
@@ -322,11 +354,17 @@ const BlogReviewUpdate = () => {
           등록하기
         </Button>
       </ButtonContainer>
+      <Modal open={isModalOpen} handleModal={handleSelectorModal}>
+        <ExhibitionChoice
+          getExhbInfo={getExhibitionInfo}
+          handleModal={handleSelectorModal}
+        />
+      </Modal>
     </Container>
   );
 };
 
-export default BlogReviewUpdate;
+export default BlogReviewWrite;
 
 const Container = styled.div`
   width: 75vw;

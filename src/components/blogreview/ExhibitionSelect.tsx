@@ -4,8 +4,12 @@ import SubTitle from "../SubTitle";
 import { theme } from "../../styles/theme";
 import PlusLarge from "../../assets/icons/plus.svg";
 
-const ExhibitionSelect = () => (
-  <Container>
+interface SelectProps {
+  handleSelecterModal: () => void;
+}
+
+const ExhibitionSelect = ({ handleSelecterModal }: SelectProps) => (
+  <Container onClick={handleSelecterModal}>
     <SubTitle text="전시회" />
     <ExhibitionButton>
       <img src={PlusLarge} alt="전시회 선택 버튼" />

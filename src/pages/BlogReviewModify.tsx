@@ -144,7 +144,7 @@ import xBtn from "../assets/icons/xBtn.svg";
 //   }
 // };
 
-const BlogReviewWrite = () => {
+const BlogReviewUpdate = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const [title, setTitle] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -157,6 +157,8 @@ const BlogReviewWrite = () => {
   const [deleteimages, setDeleteImages] = useState<string[] | []>([]);
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const { id } = useParams();
+
+  const handleSelectorModal = () => {};
 
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogDetail"],
@@ -267,10 +269,10 @@ const BlogReviewWrite = () => {
       <div style={{ marginBottom: "30px" }}>
         <ReviewTitle handleTitleInput={handleTitleInput} />
         <ExhibitionPicker>
-          <ExhibitionSelect />
+          <ExhibitionSelect handleSelecterModal={handleSelectorModal} />
           <div>
             <SubTitle text="관람일" />
-            <Calender setSelectedDate={setSelectedDate} />
+            <Calender handleSelectedDate={setSelectedDate} />
           </div>
         </ExhibitionPicker>
         <SelectorConatiner>
@@ -363,6 +365,7 @@ const BlogReviewWrite = () => {
               setImageFiles={setImageFiles}
             />
             <Editor.TextInputArea
+              value={contents}
               name="텍스트 에어리어"
               textChangeHandler={HandlerContents}
             />
@@ -381,7 +384,7 @@ const BlogReviewWrite = () => {
   );
 };
 
-export default BlogReviewWrite;
+export default BlogReviewUpdate;
 
 const Container = styled.div`
   width: 75vw;
