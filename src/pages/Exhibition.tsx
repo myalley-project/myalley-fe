@@ -8,7 +8,7 @@ import ToggleSwitch from "../components/exhibition/ToggleSwitch";
 import { exhbApi, ExhibitionRes } from "../apis/exhibition";
 import isApiError from "../utils/isApiError";
 import ExhbMateList from "../components/exhibition/ExhbMateList";
-import ReviewWrapper from "../components/ReviewWrapper";
+import ReviewWrapper from "../components/reviewCommon/ReviewWrapper";
 
 const Exhibition = () => {
   const params = useParams();
