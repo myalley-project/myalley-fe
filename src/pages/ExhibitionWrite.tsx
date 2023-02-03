@@ -70,7 +70,12 @@ const ExhibitionWrite = (props: ModeType) => {
 
   useEffect(() => {
     getEditExhb();
-  }, [getEditExhb]);
+    // 일반 회원 접근 못하도록
+    if (localStorage.getItem("authority") === "ROLE_USER") {
+      alert("관리자만 접근 가능한 페이지입니다.");
+      navigate("/");
+    }
+  }, [getEditExhb, navigate]);
 
   // 인풋 입력값 핸들링 함수
   const handleInputAndTextArea = (
@@ -143,7 +148,16 @@ const ExhibitionWrite = (props: ModeType) => {
       });
     } catch (err) {
       const errorRes = isApiError(err);
-      if (errorRes === "accessToken 만료") refreshTokenApi(); // 토큰 필요한 요청에서는 필수
+      if (errorRes === "accessToken 만료") {
+        await refreshTokenApi();
+        const reRes = await exhbUploadImgApi(imgfile);
+        const { data } = reRes;
+        setDetail({
+          ...detail,
+          fileName: data.filename,
+          posterUrl: data.s3Url,
+        });
+      }
     }
   };
 
@@ -193,6 +207,8 @@ const ExhibitionWrite = (props: ModeType) => {
 
   // 등록 api 호출
   const clickSubmitBtn = async () => {
+    const regDetail = /^https:\/\//;
+    console.log(regDetail.test(detail.webLink));
     if (detail.title === "") {
       alert("제목을 입력해주세요.");
     } else if (detail.type === "") {
@@ -211,6 +227,8 @@ const ExhibitionWrite = (props: ModeType) => {
       alert("작가정보를 작성해주세요.");
     } else if (detail.webLink === "") {
       alert("전시회 웹페이지 주소를 작성해주세요.");
+    } else if (!regDetail.test(detail.webLink)) {
+      alert("웹페이지 주소는 'https://'로 시작해야합니다.");
     } else
       try {
         const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
@@ -219,7 +237,20 @@ const ExhibitionWrite = (props: ModeType) => {
           navigate("/");
         }
       } catch (err) {
-        isApiError(err);
+        const errorRes = isApiError(err);
+        if (errorRes === "accessToken 만료") {
+          await refreshTokenApi();
+          const reRes = await exhbCreateApi(detail);
+          if (reRes.status === 200) {
+            alert("전시글 등록이 완료되었습니다. 메인 페이지로 돌아갑니다.");
+            navigate("/");
+          }
+        }
+        if (typeof errorRes !== "object") return;
+        const { errorCode } = errorRes;
+        if (errorCode === 400) {
+          alert("빈칸을 다시 확인해주세요");
+        }
       }
   };
 
@@ -252,7 +283,7 @@ const ExhibitionWrite = (props: ModeType) => {
         <OptionWrapper>
           <Label htmlFor="exhibition-type">전시 타입</Label>
           <Selectbox
-            placeholder={detail.type === "" ? "전체 전시" : detail.type}
+            placeholder={detail.type === "" ? "선택하기" : detail.type}
             options={getExhbTypeArray()}
             width="130px"
             name="type"
@@ -262,7 +293,7 @@ const ExhibitionWrite = (props: ModeType) => {
         <OptionWrapper>
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
-            placeholder={detail.status === "" ? "전체 전시" : detail.status}
+            placeholder={detail.status === "" ? "선택하기" : detail.status}
             options={["지난 전시", "현재 전시", "예정 전시"]}
             width="130px"
             name="status"
@@ -369,7 +400,7 @@ const ExhibitionWrite = (props: ModeType) => {
           <InputLink
             type="text"
             name="webLink"
-            placeholder="반드시 https:// 부터 입력해주세요."
+            placeholder="https://"
             value={detail.webLink}
             onChange={(e) => handleInputAndTextArea(e)}
             style={{ width: "100%" }}
