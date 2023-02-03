@@ -11,10 +11,13 @@ import {
 } from "../types/oneLineReview";
 import oneLineReviewApis from "../apis/oneLineReviewApis";
 import Pagination from "./Pagination";
+import OnelineWrapper from "../pages/OnelineWrapper";
+import Modal from "../Modal";
 
 type ReviewFilter = "oneline" | "blog";
 
 const ReviewWrapper = () => {
+  const [simpleReviewModal, setSimpleReviewModal] = useState<boolean>(false);
   const [filter, setFilter] = useState<ReviewFilter>("oneline");
   const [pages, setPages] = useState({
     started: 1,
@@ -22,6 +25,10 @@ const ReviewWrapper = () => {
   });
   const [orderType, setOrderType] = useState("Recent");
   const { id } = useParams();
+
+  const handleOneLineReview = () => {
+    setSimpleReviewModal((prev) => !prev);
+  };
 
   const {
     isLoading,
@@ -33,16 +40,18 @@ const ReviewWrapper = () => {
     queryFn: () => oneLineReviewApis.getReviews(id, pages.selected, orderType),
   });
 
-  if (isLoading) return <div>...loading</div>;
+  // if (isLoading) return <div>...loading</div>;
 
-  if (isError) return <div>{error.message}</div>;
+  // if (isError) return <div>{error.message}</div>;
 
   return (
     <Container>
       <ReviewSearchbar
-        totalElement={data?.pageInfo.totalElement as number}
+        totalElement={data ? data?.pageInfo.totalElement : 0}
+        filter={filter}
         setFilter={setFilter}
         setOrderType={setOrderType}
+        handleReviewModal={handleOneLineReview}
       />
       {filter === "oneline" ? (
         <OnelineContainer>
@@ -70,6 +79,9 @@ const ReviewWrapper = () => {
           totalPage={data.pageInfo.totalElement}
         />
       ) : null}
+      <Modal open={simpleReviewModal} handleModal={handleOneLineReview}>
+        <OnelineWrapper writeType="create" simpleId={0} />
+      </Modal>
     </Container>
   );
 };
