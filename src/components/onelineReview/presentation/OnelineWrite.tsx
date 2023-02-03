@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
-import Button from "../atom/Button";
-import Selectbox from "../atom/Selectbox";
+import { theme } from "../../../styles/theme";
+import Button from "../../atom/Button";
+import Selectbox from "../../atom/Selectbox";
 import {
   getYearArray,
   getMonthArray,
   getDayArray,
-} from "../../utils/dateSelector";
-import SimpleInput from "../atom/SimpleInput";
-import { OnelineReviewPostType } from "../../types/oneLineReview";
+} from "../../../utils/dateSelector";
+import SimpleInput from "../../atom/SimpleInput";
+import { OnelineReviewPostType } from "../../../types/oneLineReview";
 
 interface HandlerProps {
   state: OnelineReviewPostType;

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
+import { theme } from "../../../styles/theme";
 import ProfileImg from "../../assets/icons/profileImg.svg";
 import StarIcon from "../../assets/icons/starIcon.svg";
-import { OnelineReviewCardType } from "../../types/oneLineReview";
-import Modal from "../../Modal";
-import Button from "../atom/Button";
-import oneLineReviewApis from "../../apis/oneLineReviewApis";
+import { OnelineReviewCardType } from "../../../types/oneLineReview";
+import Modal from "../../../Modal";
+import Button from "../../atom/Button";
+import oneLineReviewApis from "../../../apis/oneLineReviewApis";
 
-import OnelineContainer from "../../pages/OnelineContainer";
-import isApiError from "../../utils/isApiError";
-import useRefreshTokenApi from "../../apis/useRefreshToken";
+import OnelineContainer from "../container/OnelineContainer";
+import isApiError from "../../../utils/isApiError";
+import useRefreshTokenApi from "../../../apis/useRefreshToken";
 
 const OnelineCard = ({
   id,

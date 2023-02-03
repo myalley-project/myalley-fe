@@ -1,11 +1,11 @@
 import React, { useEffect, useReducer } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
-import OnelineWrite from "../components/onelineReview/OnelineWrite";
-import { OnelineReviewPostType } from "../types/oneLineReview";
-import oneLineReviewApis from "../apis/oneLineReviewApis";
-import isApiError from "../utils/isApiError";
-import useRefreshTokenApi from "../apis/useRefreshToken";
+import OnelineWrite from "../presentation/OnelineWrite";
+import { OnelineReviewPostType } from "../../../types/oneLineReview";
+import oneLineReviewApis from "../../../apis/oneLineReviewApis";
+import isApiError from "../../../utils/isApiError";
+import useRefreshTokenApi from "../../../apis/useRefreshToken";
 
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
