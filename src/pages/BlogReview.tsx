@@ -53,7 +53,7 @@ const BlogReview = () => {
           </Button>
         </Flex>
         <Flex style={{ gap: "10px" }}>
-          <SimpleInput placeholder="검색" width="277px" />
+          {/* <SimpleInput placeholder="검색" width="277px" /> */}
           <Button
             style={{ padding: "8px 20px" }}
             size="large"
