@@ -138,12 +138,6 @@ import Modal from "../Modal";
 //   }
 // };
 
-type LocationState = {
-  state: {
-    name: string;
-  };
-};
-
 const BlogReviewWrite = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const [title, setTitle] = useState("");
@@ -163,7 +157,6 @@ const BlogReviewWrite = () => {
     duration: "",
     status: "",
   });
-  const { state } = useLocation() as LocationState;
 
   const blogPostMutation = useMutation({
     mutationFn: (formData: FormData) => blogReviewApis.createReview(formData),
@@ -250,6 +243,9 @@ const BlogReviewWrite = () => {
     };
     const formData = new FormData();
 
+    console.log("postDate", postData);
+    console.log("전시회 id", selectedExhb.id);
+
     if (imageFiles === null && Object.values(postData).includes("")) {
       alert("이미지 또는 수정할 데이터를 입력해주세요.");
     }
@@ -261,7 +257,7 @@ const BlogReviewWrite = () => {
 
     formData.append(
       "exhibitionId",
-      new Blob([JSON.stringify(state)], { type: "application/json" })
+      new Blob([JSON.stringify(selectedExhb.id)], { type: "application/json" })
     );
 
     if (imageFiles !== null) {
@@ -394,11 +390,8 @@ const Container = styled.div`
 
 const ExhibitionPicker = styled.div`
   display: grid;
-  /* justify-content: flex-start;
-  align-items: stretch; */
   grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
   align-content: start;
-  /* gap: 30px; */
   padding: 0px;
   margin-bottom: 30px;
 `;

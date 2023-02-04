@@ -11,8 +11,9 @@ import {
 } from "../../types/oneLineReview";
 import oneLineReviewApis from "../../apis/oneLineReviewApis";
 import Pagination from "../Pagination";
-import OnelineContainer from "../onelineReview/container/OnelineContainer";
+import OnelineWriteContainer from "../onelineReview/container/OnelineWriteContainer";
 import Modal from "../../Modal";
+import BlogReviewListWrapper from "../blogreview/container/BlogReviewList";
 
 type ReviewFilter = "oneline" | "blog";
 
@@ -23,7 +24,7 @@ const ReviewWrapper = () => {
     started: 0,
     selected: 0,
   });
-  const [orderType, setOrderType] = useState("Recent");
+  const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
   const { id } = useParams();
 
   const handleOneLineReview = () => {
@@ -72,7 +73,9 @@ const ReviewWrapper = () => {
             ))}
         </OnelineDisplay>
       ) : null}
-      {filter === "blog" ? <div>블로그 작업영역!</div> : null}
+      {/* {filter === "blog" ? (
+        <BlogReviewListWrapper orderType={orderType} />
+      ) : null} */}
       {data ? (
         <Pagination
           pages={pages}
@@ -81,7 +84,7 @@ const ReviewWrapper = () => {
         />
       ) : null}
       <Modal open={simpleReviewModal} handleModal={handleOneLineReview}>
-        <OnelineContainer
+        <OnelineWriteContainer
           handleModal={handleOneLineReview}
           writeType="create"
           simpleId={0}

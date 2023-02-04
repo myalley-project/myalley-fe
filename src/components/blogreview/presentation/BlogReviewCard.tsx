@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
-import { BlogReviewInfo } from "../../types/blogReview";
+import { theme } from "../../../styles/theme";
+import { BlogReviewInfo } from "../../../types/blogReview";
 
 const BlogReviewCard = ({
   id,
@@ -15,7 +15,7 @@ const BlogReviewCard = ({
   const navigate = useNavigate();
 
   return (
-    <Container onClick={() => navigate("/blogreview-write", { state: id })}>
+    <Container onClick={() => navigate("/blogreview-write")}>
       <Image>
         <img src={imageInfo.url} alt="블로그 리뷰 이미지" />
       </Image>

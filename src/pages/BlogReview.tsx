@@ -4,10 +4,11 @@ import styled from "styled-components";
 import { useQuery } from "react-query";
 import { theme } from "../styles/theme";
 import Selectbox from "../components/atom/Selectbox";
-import BlogReviewListWrapper from "../components/blogreview/BlogReviewList";
+import BlogReviewListWrapper from "../components/blogreview/container/BlogReviewList";
 import Button from "../components/atom/Button";
 import blogReviewApis from "../apis/blogReviewApis";
 import Pagination from "../components/Pagination";
+import { BlogReviewResponse } from "../types/blogReview";
 
 const BlogReview = () => {
   const navigate = useNavigate();
@@ -33,7 +34,10 @@ const BlogReview = () => {
     setInputLength(event.target.value.length);
   };
 
-  const { isLoading, isError, error, data } = useQuery({
+  const { isLoading, isError, error, data } = useQuery<
+    BlogReviewResponse,
+    Error
+  >({
     queryKey: ["blogReviews", { page: pages.selected, orderType }],
     queryFn: () => blogReviewApis.readBlogReviews(pages.selected, orderType),
   });
@@ -76,8 +80,8 @@ const BlogReview = () => {
       </SelectContainer>
       {data ? (
         <BlogReviewListWrapper
-          blogInfo={data?.blogInfo}
-          pageInfo={data?.pageInfo}
+          blogInfo={data.blogInfo}
+          pageInfo={data.pageInfo}
         />
       ) : null}
       {totalPageNumber > 0 ? (

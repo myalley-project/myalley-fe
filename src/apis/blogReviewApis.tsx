@@ -15,8 +15,8 @@ const blogReviewApis = {
     return response;
   },
   readBlogReviews: async (
-    pageNo: number,
-    orderType: "Recent" | "ViewCount"
+    pageNo = 0,
+    orderType: "Recent" | "ViewCount" = "Recent"
   ) => {
     const response: AxiosResponse<BlogReviewResponse> = await apiInstance.get(
       `/blogs?page=${pageNo}&order=${orderType}`
@@ -61,7 +61,7 @@ const blogReviewApis = {
     return response;
   },
   deleteReview: async (blogId: string) => {
-    const response = await apiInstance.patch(`/api/blogs/${blogId}`);
+    const response = await apiInstance.delete(`/api/blogs/${blogId}`);
     return response;
   },
 };

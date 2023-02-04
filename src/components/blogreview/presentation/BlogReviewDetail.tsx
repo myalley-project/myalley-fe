@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { theme } from "../../styles/theme";
+import { theme } from "../../../styles/theme";
 import ProfileImage from "../../assets/icons/profileImg.svg";
-import Button from "../atom/Button";
-import { BlogReviewDetailResponse } from "../../types/blogReview";
+import Button from "../../atom/Button";
+import { BlogReviewDetailResponse } from "../../../types/blogReview";
 
 const BlogReviewDetail = ({
   createdAt,

@@ -1,7 +1,9 @@
 import React from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
-import { BlogReviewResponse } from "../../types/blogReview";
-import BlogReviewCard from "./BlogReviewCard";
+import blogReviewApis from "../../../apis/blogReviewApis";
+import { BlogReviewInfo, BlogReviewResponse } from "../../../types/blogReview";
+import BlogReviewCard from "../presentation/BlogReviewCard";
 
 const BlogReviewListWrapper = ({ blogInfo }: BlogReviewResponse) => (
   <Container>
