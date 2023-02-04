@@ -15,6 +15,7 @@ const Exhibition = () => {
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
   const navigate = useNavigate();
   const id = Number(params.id);
+
   const getExhbDetail = useCallback(async () => {
     try {
       const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
