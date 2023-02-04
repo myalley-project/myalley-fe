@@ -187,8 +187,8 @@ const LogoutButton = styled.button`
   text-align: left;
   cursor: pointer;
   &:hover {
-    color: #6750a4;
-    background-color: #f6f3fe;
+    color: ${theme.colors.primry70};
+    background-color: ${theme.colors.secondary5};
     border-radius: 10px;
   }
   &:focus-visible {
