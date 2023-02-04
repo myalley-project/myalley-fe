@@ -64,7 +64,7 @@ const MainCard = ({
 
   // 공유하기 버튼
   const copyLink = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/${location.pathname}`);
+    navigator.clipboard.writeText(window.location.href);
     alert("주소가 복사되었습니다.");
   };
 
