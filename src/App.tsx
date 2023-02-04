@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ReactQueryDevtools } from "react-query/devtools";
+import ScrollTop from "./components/ScrollTop";
 import Nav from "./components/Nav";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
@@ -20,6 +21,7 @@ import BlogReviewDetail from "./pages/BlogReviewDetail";
 
 const App = () => (
   <BrowserRouter>
+    <ScrollTop />
     <Nav />
     <Routes>
       <Route path="/" element={<Main />} />
