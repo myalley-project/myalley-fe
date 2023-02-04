@@ -91,7 +91,7 @@ const ReviewSelector = styled.div`
       color: ${theme.colors.greys100};
     }
   }
-  &.selected {
+  & > button.selected {
     color: ${theme.colors.greys100};
   }
 `;

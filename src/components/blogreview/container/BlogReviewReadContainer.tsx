@@ -50,7 +50,7 @@ const BlogReviewReadContainer = ({
   if (isError) return <div>에러가 발생했습니다. {error.message}</div>;
 
   return (
-    <Container>
+    <>
       <ReviewSearchBar
         totalElement={data ? data?.pageInfo.totalElement : 0}
         filter={filter}
@@ -58,27 +58,29 @@ const BlogReviewReadContainer = ({
         setOrderType={setOrderType}
         handleReviewModal={handleReviewModal}
       />
-      <CardWrapper>
-        {data?.blogInfo.map((each) => (
-          <BlogReviewCard
-            key={each.id}
-            id={each.id}
-            title={each.title}
-            writer={each.writer}
-            viewDate={each.viewDate}
-            viewCount={each.viewCount}
-            imageInfo={each.imageInfo}
+      <Container>
+        <CardWrapper>
+          {data?.blogInfo.map((each) => (
+            <BlogReviewCard
+              key={each.id}
+              id={each.id}
+              title={each.title}
+              writer={each.writer}
+              viewDate={each.viewDate}
+              viewCount={each.viewCount}
+              imageInfo={each.imageInfo}
+            />
+          ))}
+        </CardWrapper>
+        {data?.pageInfo ? (
+          <Pagination
+            pages={pages}
+            setPages={setPages}
+            totalPage={data.pageInfo.totalElement}
           />
-        ))}
-      </CardWrapper>
-      {data?.pageInfo ? (
-        <Pagination
-          pages={pages}
-          setPages={setPages}
-          totalPage={data.pageInfo.totalElement}
-        />
-      ) : null}
-    </Container>
+        ) : null}
+      </Container>
+    </>
   );
 };
 
