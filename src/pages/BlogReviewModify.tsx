@@ -305,7 +305,10 @@ const BlogReviewUpdate = () => {
       <div style={{ marginBottom: "30px" }}>
         <ReviewTitle handleTitleInput={handleTitleInput} />
         <ExhibitionPicker>
-          <ExhibitionSelect handleSelecterModal={handleSelectorModal} />
+          <ExhibitionSelect
+            selectedExhibitonInfo={selectedExhb}
+            handleSelecterModal={handleSelectorModal}
+          />
           <div>
             <SubTitle text="관람일" />
             <Calender handleSelectedDate={setSelectedDate} />
