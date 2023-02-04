@@ -9,7 +9,6 @@ import {
 } from "../types/blogReview";
 
 const blogReviewApis = {
-  // createReview: async (body: BlogReviewPost) => {
   createReview: async (body: FormData) => {
     const response = await apiMultipartInstance.post(`api/blogs`, body);
     return response;

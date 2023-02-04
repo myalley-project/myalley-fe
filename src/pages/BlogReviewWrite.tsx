@@ -232,7 +232,7 @@ const BlogReviewWrite = () => {
   };
 
   const HandleSubmit = () => {
-    const postData = {
+    const blogInfo = {
       title,
       viewDate: selectedDate,
       time: `${enterTime}-${exitTime}`,
@@ -243,16 +243,13 @@ const BlogReviewWrite = () => {
     };
     const formData = new FormData();
 
-    console.log("postDate", postData);
-    console.log("전시회 id", selectedExhb.id);
-
-    if (imageFiles === null && Object.values(postData).includes("")) {
+    if (imageFiles === null && Object.values(blogInfo).includes("")) {
       alert("이미지 또는 수정할 데이터를 입력해주세요.");
     }
 
     formData.append(
       "blogInfo",
-      new Blob([JSON.stringify(postData)], { type: "application/json" })
+      new Blob([JSON.stringify(blogInfo)], { type: "application/json" })
     );
 
     formData.append(
