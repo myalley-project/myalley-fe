@@ -195,6 +195,16 @@ const BlogReviewUpdate = () => {
     setSelectedExhb(newState);
   };
 
+  const deleteExhibitionInfo = () => {
+    setSelectedExhb({
+      url: "",
+      id: 0,
+      title: "",
+      duration: "",
+      status: "",
+    });
+  };
+
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogDetail"],
     queryFn: () => blogReviewApis.readDetailBlogReview(location.state.id),
@@ -308,6 +318,7 @@ const BlogReviewUpdate = () => {
           <ExhibitionSelect
             selectedExhibitonInfo={selectedExhb}
             handleSelecterModal={handleSelectorModal}
+            deleteExhibitionInfo={deleteExhibitionInfo}
           />
           <div>
             <SubTitle text="관람일" />

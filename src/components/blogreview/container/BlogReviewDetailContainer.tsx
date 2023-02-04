@@ -1,19 +1,18 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import { exhbApi } from "../../../apis/exhibition";
 import MainCard from "../../exhibition/MainCard";
 
-interface LocationProps {
-  state: number;
+interface BlogReviewDetailContainerProps {
+  id: number;
 }
 
-const BlogReviewDetailContainer = () => {
-  const location: LocationProps = useLocation();
-
+const BlogReviewDetailContainer = ({ id }: BlogReviewDetailContainerProps) => {
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogCard"],
-    queryFn: () => exhbApi(location.state),
+    queryFn: () => exhbApi(id),
   });
 
   if (isLoading) return <div>...loading</div>;

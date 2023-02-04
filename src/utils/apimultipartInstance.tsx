@@ -3,7 +3,8 @@ import axios, { AxiosHeaders } from "axios";
 const apiMultipartInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
-    "Content-Type": "multipart/form-data",
+    // "Content-Type": "multipart/form-data",
+    "Content-Type": "image/png",
   },
 });
 

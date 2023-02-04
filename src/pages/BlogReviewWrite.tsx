@@ -14,6 +14,8 @@ import Button from "../components/atom/Button";
 import ExhibitionChoice from "../components/ExhibitionChoice";
 import blogReviewApis from "../apis/blogReviewApis";
 import Modal from "../Modal";
+import isApiError from "../utils/isApiError";
+import useRefreshTokenApi from "../apis/useRefreshToken";
 
 // 차후 reducer로 일괄 조절예정
 // interface BlogReviewPost {a
@@ -157,6 +159,7 @@ const BlogReviewWrite = () => {
     duration: "",
     status: "",
   });
+  const refreshTokenApi = useRefreshTokenApi();
 
   const blogPostMutation = useMutation({
     mutationFn: (formData: FormData) => blogReviewApis.createReview(formData),
@@ -177,6 +180,16 @@ const BlogReviewWrite = () => {
       status: exhibitionStatus,
     };
     setSelectedExhb(newState);
+  };
+
+  const deleteExhibitionInfo = () => {
+    setSelectedExhb({
+      url: "",
+      id: 0,
+      title: "",
+      duration: "",
+      status: "",
+    });
   };
 
   const handleSelectorModal = () => {
@@ -243,6 +256,8 @@ const BlogReviewWrite = () => {
     };
     const formData = new FormData();
 
+    console.log(blogInfo);
+
     if (imageFiles === null && Object.values(blogInfo).includes("")) {
       alert("이미지 또는 수정할 데이터를 입력해주세요.");
     }
@@ -260,8 +275,12 @@ const BlogReviewWrite = () => {
     if (imageFiles !== null) {
       Array.from(imageFiles).forEach((file) => formData.append("images", file));
     }
-
-    blogPostMutation.mutate(formData);
+    try {
+      blogPostMutation.mutate(formData);
+    } catch (err) {
+      const errResponese = isApiError(err);
+      if (errResponese === "accessToken 만료") refreshTokenApi();
+    }
   };
 
   return (
@@ -272,6 +291,7 @@ const BlogReviewWrite = () => {
           <ExhibitionSelect
             selectedExhibitonInfo={selectedExhb}
             handleSelecterModal={handleSelectorModal}
+            deleteExhibitionInfo={deleteExhibitionInfo}
           />
           <div>
             <SubTitle text="관람일" />
