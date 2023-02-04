@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { theme } from "../../../styles/theme";
-import ProfileImage from "../../../assets/icons/profileImg.svg";
+import profileImage from "../../../assets/icons/profileImg.svg";
 import Button from "../../atom/Button";
 import { BlogReviewDetailResponse } from "../../../types/blogReview";
 
@@ -57,7 +57,7 @@ const BlogReviewDetailPresentation = ({
       <p>{content}</p>
     </MainPart>
     <UserInfo>
-      <img src={ProfileImage} alt="프로필 이미지" />
+      <img src={profileImage} alt="프로필 이미지" />
       <h3>{memberInfo.nickname}</h3>
       <DateandView>
         <p>

@@ -53,8 +53,6 @@ function usePreviewImages(imageFiles: FileList) {
 }
 
 const ImageArea = ({ imageFiles, setImageFiles }: ImageProps) => {
-  // const [imageFiles, setImageFiles] = useState<FileList | null>(null);
-
   const imageRef = useRef<HTMLInputElement | null>(null);
   const { previewImages } = usePreviewImages(imageFiles as FileList);
   const previewIds = returnkeys(previewImages.length);
