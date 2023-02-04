@@ -75,7 +75,7 @@ const MainCard = ({
         <InfoContainer>
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
-              <Button onClick={() => navigate("/edit")}>수정</Button>
+              <Button onClick={() => navigate("edit")}>수정</Button>
               <Button onClick={handleDelete}>삭제</Button>
             </EditButtons>
           )}
