@@ -7,16 +7,7 @@ import BlogReviewDetailPresentation from "../components/blogreview/presentation/
 import BlogReviewDetailContainer from "../components/blogreview/container/BlogReviewDetailContainer";
 
 interface LocationState {
-  state: {
-    posterUrl: string;
-    title: string;
-    duration: string;
-    space: string;
-    adultPrice: number;
-    webLink: string;
-    id: number;
-    bookmarked: boolean;
-  };
+  state: number;
 }
 
 const BlogReviewDetail = () => {
@@ -24,7 +15,7 @@ const BlogReviewDetail = () => {
 
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogReviewDetail"],
-    queryFn: () => blogReviewApis.readDetailBlogReview(location?.state.id),
+    queryFn: () => blogReviewApis.readDetailBlogReview(location?.state),
   });
 
   if (isLoading) return <div>...loading</div>;
@@ -33,28 +24,30 @@ const BlogReviewDetail = () => {
 
   return (
     <Container>
-      <BlogReviewDetailContainer />
-      {data ? (
-        <BlogReviewDetailPresentation
-          id={data.id}
-          title={data.title}
-          content={data.content}
-          congestion={data.congestion}
-          transportation={data.transportation}
-          revisit={data.revisit}
-          memberInfo={data.memberInfo}
-          createdAt={data.createdAt}
-          time={data.time}
-          viewCount={data.viewCount}
-          viewDate={data.viewDate}
-          likeCount={data.likeCount}
-          bookmarkCount={data.bookmarkCount}
-          bookmarkStatus={data.bookmarkStatus}
-          likeStatus={data.likeStatus}
-          imageInfo={data.imageInfo}
-          exhibitionInfo={data.exhibitionInfo}
-        />
-      ) : null}
+      <BlogReviewDetailContainer id={data?.exhibitionInfo.id as number} />
+      <div>
+        {data ? (
+          <BlogReviewDetailPresentation
+            id={data.id}
+            title={data.title}
+            content={data.content}
+            congestion={data.congestion}
+            transportation={data.transportation}
+            revisit={data.revisit}
+            memberInfo={data.memberInfo}
+            createdAt={data.createdAt}
+            time={data.time}
+            viewCount={data.viewCount}
+            viewDate={data.viewDate}
+            likeCount={data.likeCount}
+            bookmarkCount={data.bookmarkCount}
+            bookmarkStatus={data.bookmarkStatus}
+            likeStatus={data.likeStatus}
+            imageInfo={data.imageInfo}
+            exhibitionInfo={data.exhibitionInfo}
+          />
+        ) : null}
+      </div>
     </Container>
   );
 };

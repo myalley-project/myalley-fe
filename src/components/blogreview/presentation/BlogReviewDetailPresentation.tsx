@@ -18,6 +18,8 @@ const BlogReviewDetailPresentation = ({
   time,
   imageInfo,
   memberInfo,
+  likeCount,
+  bookmarkCount,
 }: BlogReviewDetailResponse) => (
   <Container>
     <DetailTitle>{title}</DetailTitle>
@@ -70,10 +72,10 @@ const BlogReviewDetailPresentation = ({
     </UserInfo>
     <ButtonGroup>
       <Button size="small" variant="text" type="button">
-        유익해요
+        유익해요 {likeCount}
       </Button>
       <Button size="small" variant="text" type="button">
-        저장하기
+        저장하기 {bookmarkCount}
       </Button>
     </ButtonGroup>
   </Container>
@@ -82,7 +84,7 @@ const BlogReviewDetailPresentation = ({
 export default BlogReviewDetailPresentation;
 
 const Container = styled.div`
-  width: 1095px;
+  width: 1240px;
   padding: 30px;
   margin-inline: auto;
 `;
@@ -126,7 +128,7 @@ const MainPart = styled.div`
 `;
 
 const StyledSWiper = styled(Swiper)`
-  width: 1140px;
+  width: 100%;
   height: 383px;
   background-color: ${theme.colors.primry60};
   margin-bottom: 30px;
