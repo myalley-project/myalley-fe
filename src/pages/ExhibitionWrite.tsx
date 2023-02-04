@@ -208,7 +208,6 @@ const ExhibitionWrite = (props: ModeType) => {
   // 등록 api 호출
   const clickSubmitBtn = async () => {
     const regDetail = /^https:\/\//;
-    console.log(regDetail.test(detail.webLink));
     if (detail.title === "") {
       alert("제목을 입력해주세요.");
     } else if (detail.type === "") {
