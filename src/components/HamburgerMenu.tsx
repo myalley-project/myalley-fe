@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import useLogOut from "../apis/logOut";
-import ProfileImg from "../assets/icons/profileImg.svg";
+import profileImg from "../assets/icons/profileImg.svg";
 import { theme } from "../styles/theme";
 
 interface PropsType {
@@ -39,7 +39,7 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
                   <ProfileWrapper>
                     <img
                       src={
-                        info.memberImage === "" ? ProfileImg : info.memberImage
+                        info.memberImage === "" ? profileImg : info.memberImage
                       }
                       alt="profile-img"
                       style={{ width: "40px" }}

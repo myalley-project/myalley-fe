@@ -14,6 +14,8 @@ import Button from "../components/atom/Button";
 import ExhibitionChoice from "../components/ExhibitionChoice";
 import blogReviewApis from "../apis/blogReviewApis";
 import Modal from "../Modal";
+import isApiError from "../utils/isApiError";
+import useRefreshTokenApi from "../apis/useRefreshToken";
 
 // 차후 reducer로 일괄 조절예정
 // interface BlogReviewPost {a
@@ -157,6 +159,7 @@ const BlogReviewWrite = () => {
     duration: "",
     status: "",
   });
+  const refreshTokenApi = useRefreshTokenApi();
 
   const blogPostMutation = useMutation({
     mutationFn: (formData: FormData) => blogReviewApis.createReview(formData),
@@ -260,8 +263,12 @@ const BlogReviewWrite = () => {
     if (imageFiles !== null) {
       Array.from(imageFiles).forEach((file) => formData.append("images", file));
     }
-
-    blogPostMutation.mutate(formData);
+    try {
+      blogPostMutation.mutate(formData);
+    } catch (err) {
+      const errResponese = isApiError(err);
+      if (errResponese === "accessToken 만료") refreshTokenApi();
+    }
   };
 
   return (
