@@ -348,7 +348,10 @@ const MateWrite = () => {
               open={openExhbModal}
               handleModal={() => setOpenExhbModal(!openExhbModal)}
             >
-              <ExhibitionChoice getExhbInfo={handleExhbModal} />
+              <ExhibitionChoice
+                getExhbInfo={handleExhbModal}
+                handleModal={() => setOpenExhbModal(!openExhbModal)}
+              />
             </Modal>
           </div>
           <div>

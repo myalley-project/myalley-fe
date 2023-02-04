@@ -1,7 +1,13 @@
-import React, { useState, ChangeEvent, useReducer, useEffect } from "react";
+import React, {
+  useState,
+  ChangeEvent,
+  useReducer,
+  useEffect,
+  useMemo,
+} from "react";
 import styled from "styled-components";
-import { useMutation } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useQuery } from "react-query";
+import { useLocation, useParams } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
@@ -11,9 +17,11 @@ import Selectbox from "../components/atom/Selectbox";
 import { theme } from "../styles/theme";
 import getTimeOptions from "../utils/timeSelector";
 import Button from "../components/atom/Button";
-import ExhibitionChoice from "../components/ExhibitionChoice";
 import blogReviewApis from "../apis/blogReviewApis";
+import returnkeys from "../utils/returnkeys";
+import xBtn from "../assets/icons/xBtn.svg";
 import Modal from "../Modal";
+import ExhibitionChoice from "../components/ExhibitionChoice";
 
 // 차후 reducer로 일괄 조절예정
 // interface BlogReviewPost {a
@@ -138,7 +146,13 @@ import Modal from "../Modal";
 //   }
 // };
 
-const BlogReviewWrite = () => {
+interface LocationState {
+  state: {
+    id: number;
+  };
+}
+
+const BlogReviewUpdate = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const [title, setTitle] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -148,6 +162,7 @@ const BlogReviewWrite = () => {
   const [transportation, setTransportation] = useState("");
   const [revisit, setRevisit] = useState("");
   const [contents, setContents] = useState("");
+  const [deleteimages, setDeleteImages] = useState<string[] | []>([]);
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedExhb, setSelectedExhb] = useState({
@@ -157,10 +172,11 @@ const BlogReviewWrite = () => {
     duration: "",
     status: "",
   });
+  const location: LocationState = useLocation();
 
-  const blogPostMutation = useMutation({
-    mutationFn: (formData: FormData) => blogReviewApis.createReview(formData),
-  });
+  const handleSelectorModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
 
   const getExhibitionInfo = (
     imgUrl: string,
@@ -179,9 +195,13 @@ const BlogReviewWrite = () => {
     setSelectedExhb(newState);
   };
 
-  const handleSelectorModal = () => {
-    setIsModalOpen((prev) => !prev);
-  };
+  const { isLoading, isError, error, data } = useQuery({
+    queryKey: ["blogDetail"],
+    queryFn: () => blogReviewApis.readDetailBlogReview(location.state.id),
+  });
+  const keys = returnkeys(data?.imageInfo.length as number);
+  const imagesArray = data?.imageInfo ?? [];
+  const times: string[] = data?.time.split("-") ?? ["00시", "24시"];
 
   const handleTitleInput = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -232,7 +252,13 @@ const BlogReviewWrite = () => {
   };
 
   const HandleSubmit = () => {
-    const blogInfo = {
+    if (deleteimages) {
+      deleteimages.forEach((each) =>
+        blogReviewApis.deleteImage(location.state.id, each)
+      );
+    }
+
+    const postData = {
       title,
       viewDate: selectedDate,
       time: `${enterTime}-${exitTime}`,
@@ -241,28 +267,38 @@ const BlogReviewWrite = () => {
       congestion,
       content: contents,
     };
+
     const formData = new FormData();
-
-    if (imageFiles === null && Object.values(blogInfo).includes("")) {
-      alert("이미지 또는 수정할 데이터를 입력해주세요.");
-    }
-
     formData.append(
       "blogInfo",
-      new Blob([JSON.stringify(blogInfo)], { type: "application/json" })
+      new Blob([JSON.stringify(postData)], { type: "application/json" })
     );
 
-    formData.append(
-      "exhibitionId",
-      new Blob([JSON.stringify(selectedExhb.id)], { type: "application/json" })
-    );
+    blogReviewApis.updateReviewText(location.state.id, postData);
 
     if (imageFiles !== null) {
-      Array.from(imageFiles).forEach((file) => formData.append("images", file));
-    }
+      const imageFormData = new FormData();
+      Array.from(imageFiles).forEach((file) =>
+        imageFormData.append("images", file)
+      );
 
-    blogPostMutation.mutate(formData);
+      blogReviewApis.updateReviewImage(location.state.id, imageFormData);
+    }
   };
+
+  function deleteExistingImg(imgInfo: { id: string; url: string }) {
+    if (data?.imageInfo) {
+      for (let index = 0; index < data.imageInfo.length; index += 1) {
+        if (data.imageInfo[index].url === imgInfo.url) {
+          setDeleteImages([...deleteimages, imagesArray[index].id]);
+        }
+      }
+    }
+  }
+
+  if (isLoading) return <div>...loading</div>;
+
+  if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
     <Container>
@@ -286,7 +322,7 @@ const BlogReviewWrite = () => {
               <Selectbox
                 onClick={onCilckEnterTime}
                 options={getTimeOptions()}
-                placeholder="00시"
+                placeholder={times[0]}
                 name="입장시간"
                 width="130px"
               />
@@ -296,7 +332,7 @@ const BlogReviewWrite = () => {
               <Selectbox
                 onClick={onCilckExitTime}
                 options={getTimeOptions()}
-                placeholder="24시"
+                placeholder={times[1]}
                 name="퇴장시간"
                 width="130px"
               />
@@ -312,7 +348,7 @@ const BlogReviewWrite = () => {
                 <Selectbox
                   onClick={onCilckCongestion}
                   options={["한산", "보통", "북적거림", "매우혼잡"]}
-                  placeholder="한산"
+                  placeholder={data?.congestion as string}
                   name="혼잡도"
                   width="130px"
                 />
@@ -326,7 +362,7 @@ const BlogReviewWrite = () => {
                 <Selectbox
                   onClick={onClickTransportation}
                   options={["도보", "버스", "지하철", "차"]}
-                  placeholder="도보"
+                  placeholder={data?.transportation as string}
                   name="교통 수단"
                   width="130px"
                 />
@@ -340,7 +376,7 @@ const BlogReviewWrite = () => {
                 <Selectbox
                   onClick={onClickRevisit}
                   options={["모르겠다", "전혀 없다", "조금 있다", "재방문예정"]}
-                  placeholder="모르겠다"
+                  placeholder={data?.transportation as string}
                   name="재방문 의향"
                   width="130px"
                 />
@@ -350,6 +386,19 @@ const BlogReviewWrite = () => {
         </ConvinenceSelector>
         <Editor>
           <div>
+            <SubTitle text="현재 저장된 이미지" />
+            <PreviewContainer>
+              {data
+                ? data.imageInfo.map((each, index) => (
+                    <Preview key={keys[index]}>
+                      <PreviewImage src={each.url} alt="현재 투고된 이미지" />
+                      <XButton onClick={() => deleteExistingImg(each)}>
+                        <img src={xBtn} alt="기존 이미지 삭제버튼" />
+                      </XButton>
+                    </Preview>
+                  ))
+                : null}
+            </PreviewContainer>
             <Editor.ImageArea
               imageFiles={imageFiles}
               setImageFiles={setImageFiles}
@@ -380,7 +429,7 @@ const BlogReviewWrite = () => {
   );
 };
 
-export default BlogReviewWrite;
+export default BlogReviewUpdate;
 
 const Container = styled.div`
   width: 75vw;
@@ -390,8 +439,11 @@ const Container = styled.div`
 
 const ExhibitionPicker = styled.div`
   display: grid;
+  /* justify-content: flex-start;
+  align-items: stretch; */
   grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
   align-content: start;
+  /* gap: 30px; */
   padding: 0px;
   margin-bottom: 30px;
 `;
@@ -427,4 +479,40 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const PreviewContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  flex-flow: row wrap;
+`;
+
+const Preview = styled.div`
+  display: inline-block;
+  position: relative;
+  width: 250px;
+  aspect-ratio: 1 /1;
+  margin-inline: 1rem;
+  margin-bottom: 2rem;
+  object-fit: cover;
+`;
+
+const PreviewImage = styled.img`
+  border: 1px solid ${theme.colors.greys40};
+  border-radius: 4px;
+  padding: 5px;
+  width: 250px;
+  aspect-ratio: 1 / 1;
+  object-fit: fill;
+  &:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+  }
+`;
+
+const XButton = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 5px;
 `;

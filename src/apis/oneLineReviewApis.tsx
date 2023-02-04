@@ -42,7 +42,9 @@ const oneLineReviewApis = {
     return response;
   },
   deleteReview: async (simpleId: number) => {
-    const response = await apiInstance.patch(`/api/simple-reviews/${simpleId}`);
+    const response = await apiInstance.delete(
+      `/api/simple-reviews/${simpleId}`
+    );
     return response;
   },
 };

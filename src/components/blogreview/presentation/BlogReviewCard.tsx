@@ -1,20 +1,35 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
+import { theme } from "../../../styles/theme";
+import { BlogReviewInfo } from "../../../types/blogReview";
 
-const BlogReviewCard = () => (
-  <Container>
-    <Image />
-    <Review>
-      <h2>리뷰 제목</h2>
-      <p>별명</p>
-      <div>
-        <div>2022-12-14</div>
-        <div>조회수 999</div>
-      </div>
-    </Review>
-  </Container>
-);
+const BlogReviewCard = ({
+  id,
+  title,
+  writer,
+  viewDate,
+  viewCount,
+  imageInfo,
+}: BlogReviewInfo) => {
+  const navigate = useNavigate();
+
+  return (
+    <Container onClick={() => navigate("/blogreview-detail", { state: id })}>
+      <Image>
+        <img src={imageInfo.url} alt="블로그 리뷰 이미지" />
+      </Image>
+      <Review>
+        <h2>{title}</h2>
+        <p>{writer}</p>
+        <div>
+          <div>{viewDate}</div>
+          <div>조회수 {viewCount}</div>
+        </div>
+      </Review>
+    </Container>
+  );
+};
 
 export default BlogReviewCard;
 
@@ -24,7 +39,6 @@ const Container = styled.div`
 
 const Image = styled.div`
   height: 244px;
-  background-color: brown;
 `;
 
 const Review = styled.div`

@@ -98,7 +98,7 @@ interface OnelineContainerProps {
   simpleId: number;
 }
 
-const OnelineContainer = ({
+const OnelineWriteContainer = ({
   writeType,
   simpleId = 0,
   handleModal,
@@ -195,8 +195,22 @@ const OnelineContainer = ({
   });
 
   const modifyMutation = useMutation({
-    mutationFn: (payload: Payload) =>
-      oneLineReviewApis.updateReview(simpleId, payload),
+    mutationFn: ({
+      reviewId,
+      payload,
+    }: {
+      reviewId: number;
+      payload: {
+        viewDate: string;
+        time: string;
+        congestion: string;
+        rate: number;
+        content: string;
+      };
+    }) => oneLineReviewApis.updateReview(reviewId, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["simpleReviews"]);
+    },
   });
 
   const SubmitHandler = () => {
@@ -217,7 +231,15 @@ const OnelineContainer = ({
       }
     } else if (writeType === "modify") {
       try {
-        modifyMutation.mutate(body);
+        const reviewId = simpleId;
+        const payload = {
+          viewDate: body.viewDate,
+          time: body.time,
+          congestion: body.congestion,
+          rate: body.rate,
+          content: body.content,
+        };
+        modifyMutation.mutate({ reviewId, payload });
         handleModal();
       } catch (err) {
         const errResponese = isApiError(err);
@@ -242,7 +264,7 @@ const OnelineContainer = ({
   );
 };
 
-export default OnelineContainer;
+export default OnelineWriteContainer;
 
 function getPayload(
   exhibitionId: string,
