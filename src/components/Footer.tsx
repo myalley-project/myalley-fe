@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import logo from "../assets/icons/logo.svg";
+import { theme } from "../styles/theme";
 
 const Footer = () => {
   const developers = [
@@ -38,7 +39,15 @@ const Footer = () => {
           </Copyright>
           <Terms>
             <span>이용약관</span> | <span>개인정보처리방침</span> |
-            <span> 청소년보호정책</span> | <span>문의하기</span>
+            <span> 청소년보호정책</span> |
+            <span>
+              <Link
+                href="https://docs.google.com/forms/d/1UX8MuID74mg9afbzWdIfKU1CagQMA_FoXoDqvORx50w/edit"
+                target="_blank"
+              >
+                문의하기
+              </Link>
+            </span>
           </Terms>
         </BottomArea>
       </FooterWrapper>
@@ -86,25 +95,25 @@ const JobTitle = styled.p`
   font-weight: 500;
   line-height: 20px;
   letter-spacing: 1px;
-  color: #6750a4;
+  color: ${theme.colors.primry70};
 `;
 
 const People = styled.p`
   font-weight: 300;
   font-size: 18px;
   line-height: 24px;
-  color: #958da5;
+  color: ${theme.colors.secondary50};
 `;
 
 const BottomArea = styled.div`
   display: flex;
   justify-content: space-between;
   padding-top: 30px;
-  border-top: 1px solid #b0a7c0;
+  border-top: 1px solid ${theme.colors.secondary40};
   border-radius: 0px;
   font-size: 14px;
   line-height: 16px;
-  color: #b0a7c0;
+  color: ${theme.colors.secondary40};
 `;
 
 const Copyright = styled.div`
@@ -113,4 +122,9 @@ const Copyright = styled.div`
 
 const Terms = styled.div`
   font-weight: 400;
+`;
+
+const Link = styled.a`
+  text-decoration: none;
+  color: ${theme.colors.secondary40};
 `;
