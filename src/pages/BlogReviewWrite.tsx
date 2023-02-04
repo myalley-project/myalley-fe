@@ -182,6 +182,16 @@ const BlogReviewWrite = () => {
     setSelectedExhb(newState);
   };
 
+  const deleteExhibitionInfo = () => {
+    setSelectedExhb({
+      url: "",
+      id: 0,
+      title: "",
+      duration: "",
+      status: "",
+    });
+  };
+
   const handleSelectorModal = () => {
     setIsModalOpen((prev) => !prev);
   };
@@ -246,6 +256,8 @@ const BlogReviewWrite = () => {
     };
     const formData = new FormData();
 
+    console.log(blogInfo);
+
     if (imageFiles === null && Object.values(blogInfo).includes("")) {
       alert("이미지 또는 수정할 데이터를 입력해주세요.");
     }
@@ -279,6 +291,7 @@ const BlogReviewWrite = () => {
           <ExhibitionSelect
             selectedExhibitonInfo={selectedExhb}
             handleSelecterModal={handleSelectorModal}
+            deleteExhibitionInfo={deleteExhibitionInfo}
           />
           <div>
             <SubTitle text="관람일" />
