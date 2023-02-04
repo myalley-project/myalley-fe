@@ -8,6 +8,7 @@ import ToggleSwitch from "../components/exhibition/ToggleSwitch";
 import { exhbApi, ExhibitionRes } from "../apis/exhibition";
 import isApiError from "../utils/isApiError";
 import ExhbMateList from "../components/exhibition/ExhbMateList";
+import ReviewWrapper from "../components/reviewCommon/ReviewWrapper";
 
 const Exhibition = () => {
   const params = useParams();
@@ -55,6 +56,7 @@ const Exhibition = () => {
           <ContentCard title="작가 정보" content={exhbDetail?.author ?? ""} />
         </>
       )}
+      {state === "review" && <ReviewWrapper />}
       {state === "mate" && <ExhbMateList />}
     </ExhibitionContainer>
   );
