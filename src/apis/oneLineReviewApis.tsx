@@ -35,7 +35,7 @@ const oneLineReviewApis = {
     return response.data;
   },
   updateReview: async (simpleId: number, body: PatchOnelineReviewBody) => {
-    const response = await apiInstance.put(
+    const response = await apiInstance.patch(
       `/api/simple-reviews/${simpleId}`,
       body
     );

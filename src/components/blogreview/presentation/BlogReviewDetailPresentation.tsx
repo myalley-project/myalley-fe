@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { theme } from "../../../styles/theme";
-import ProfileImage from "../../assets/icons/profileImg.svg";
+import ProfileImage from "../../../assets/icons/profileImg.svg";
 import Button from "../../atom/Button";
 import { BlogReviewDetailResponse } from "../../../types/blogReview";
 
-const BlogReviewDetail = ({
+const BlogReviewDetailPresentation = ({
   createdAt,
   viewCount,
   title,
@@ -15,6 +15,8 @@ const BlogReviewDetail = ({
   transportation,
   revisit,
   content,
+  time,
+  imageInfo,
   memberInfo,
 }: BlogReviewDetailResponse) => (
   <Container>
@@ -44,9 +46,13 @@ const BlogReviewDetail = ({
     </DetailInformation>
     <MainPart>
       <StyledSWiper>
-        <SwiperSlide>그림 1</SwiperSlide>
-        <SwiperSlide>그림 2</SwiperSlide>
-        <SwiperSlide>그림 3</SwiperSlide>
+        {imageInfo
+          ? imageInfo.map((each) => (
+              <SwiperSlide key={each.id}>
+                <img src={each.url} alt="전시회 상세조회 포스터" />
+              </SwiperSlide>
+            ))
+          : null}
       </StyledSWiper>
       <p>{content}</p>
     </MainPart>
@@ -73,7 +79,7 @@ const BlogReviewDetail = ({
   </Container>
 );
 
-export default BlogReviewDetail;
+export default BlogReviewDetailPresentation;
 
 const Container = styled.div`
   width: 1095px;
@@ -120,7 +126,7 @@ const MainPart = styled.div`
 `;
 
 const StyledSWiper = styled(Swiper)`
-  width: 100%;
+  width: 1140px;
   height: 383px;
   background-color: ${theme.colors.primry60};
   margin-bottom: 30px;

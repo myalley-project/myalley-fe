@@ -69,6 +69,7 @@ export interface BlogReviewDetailResponse {
   createdAt: string;
   title: string;
   content: string;
+  time: string;
   likeCount: number;
   viewCount: number;
   bookmarkCount: number;

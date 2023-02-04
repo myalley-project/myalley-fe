@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
@@ -20,6 +20,8 @@ import Button from "../components/atom/Button";
 import blogReviewApis from "../apis/blogReviewApis";
 import returnkeys from "../utils/returnkeys";
 import xBtn from "../assets/icons/xBtn.svg";
+import Modal from "../Modal";
+import ExhibitionChoice from "../components/ExhibitionChoice";
 
 // 차후 reducer로 일괄 조절예정
 // interface BlogReviewPost {a
@@ -144,6 +146,12 @@ import xBtn from "../assets/icons/xBtn.svg";
 //   }
 // };
 
+interface LocationState {
+  state: {
+    id: number;
+  };
+}
+
 const BlogReviewUpdate = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const [title, setTitle] = useState("");
@@ -156,16 +164,44 @@ const BlogReviewUpdate = () => {
   const [contents, setContents] = useState("");
   const [deleteimages, setDeleteImages] = useState<string[] | []>([]);
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
-  const { id } = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedExhb, setSelectedExhb] = useState({
+    url: "",
+    id: 0,
+    title: "",
+    duration: "",
+    status: "",
+  });
+  const location: LocationState = useLocation();
 
-  const handleSelectorModal = () => {};
+  const handleSelectorModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
+  const getExhibitionInfo = (
+    imgUrl: string,
+    exhibitionId: number,
+    exhibitionTitle: string,
+    exhibitionDuration: string,
+    exhibitionStatus: string
+  ) => {
+    const newState = {
+      url: imgUrl,
+      id: exhibitionId,
+      title: exhibitionTitle,
+      duration: exhibitionDuration,
+      status: exhibitionStatus,
+    };
+    setSelectedExhb(newState);
+  };
 
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogDetail"],
-    queryFn: () => blogReviewApis.readDetailBlogReview(id as string),
+    queryFn: () => blogReviewApis.readDetailBlogReview(location.state.id),
   });
   const keys = returnkeys(data?.imageInfo.length as number);
   const imagesArray = data?.imageInfo ?? [];
+  const times: string[] = data?.time.split("-") ?? ["00시", "24시"];
 
   const handleTitleInput = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -218,7 +254,7 @@ const BlogReviewUpdate = () => {
   const HandleSubmit = () => {
     if (deleteimages) {
       deleteimages.forEach((each) =>
-        blogReviewApis.deleteImage(id as string, each)
+        blogReviewApis.deleteImage(location.state.id, each)
       );
     }
 
@@ -238,7 +274,7 @@ const BlogReviewUpdate = () => {
       new Blob([JSON.stringify(postData)], { type: "application/json" })
     );
 
-    blogReviewApis.updateReviewText(id as string, postData);
+    blogReviewApis.updateReviewText(location.state.id, postData);
 
     if (imageFiles !== null) {
       const imageFormData = new FormData();
@@ -246,7 +282,7 @@ const BlogReviewUpdate = () => {
         imageFormData.append("images", file)
       );
 
-      blogReviewApis.updateReviewImage(id as string, imageFormData);
+      blogReviewApis.updateReviewImage(location.state.id, imageFormData);
     }
   };
 
@@ -283,7 +319,7 @@ const BlogReviewUpdate = () => {
               <Selectbox
                 onClick={onCilckEnterTime}
                 options={getTimeOptions()}
-                placeholder="00시"
+                placeholder={times[0]}
                 name="입장시간"
                 width="130px"
               />
@@ -293,7 +329,7 @@ const BlogReviewUpdate = () => {
               <Selectbox
                 onClick={onCilckExitTime}
                 options={getTimeOptions()}
-                placeholder="24시"
+                placeholder={times[1]}
                 name="퇴장시간"
                 width="130px"
               />
@@ -309,7 +345,7 @@ const BlogReviewUpdate = () => {
                 <Selectbox
                   onClick={onCilckCongestion}
                   options={["한산", "보통", "북적거림", "매우혼잡"]}
-                  placeholder="한산"
+                  placeholder={data?.congestion as string}
                   name="혼잡도"
                   width="130px"
                 />
@@ -323,7 +359,7 @@ const BlogReviewUpdate = () => {
                 <Selectbox
                   onClick={onClickTransportation}
                   options={["도보", "버스", "지하철", "차"]}
-                  placeholder="도보"
+                  placeholder={data?.transportation as string}
                   name="교통 수단"
                   width="130px"
                 />
@@ -337,7 +373,7 @@ const BlogReviewUpdate = () => {
                 <Selectbox
                   onClick={onClickRevisit}
                   options={["모르겠다", "전혀 없다", "조금 있다", "재방문예정"]}
-                  placeholder="모르겠다"
+                  placeholder={data?.transportation as string}
                   name="재방문 의향"
                   width="130px"
                 />
@@ -380,6 +416,12 @@ const BlogReviewUpdate = () => {
           등록하기
         </Button>
       </ButtonContainer>
+      <Modal open={isModalOpen} handleModal={handleSelectorModal}>
+        <ExhibitionChoice
+          getExhbInfo={getExhibitionInfo}
+          handleModal={handleSelectorModal}
+        />
+      </Modal>
     </Container>
   );
 };

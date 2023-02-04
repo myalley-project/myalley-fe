@@ -22,7 +22,7 @@ const blogReviewApis = {
     );
     return response.data;
   },
-  readDetailBlogReview: async (blogId: string) => {
+  readDetailBlogReview: async (blogId: number) => {
     const response: AxiosResponse<BlogReviewDetailResponse> =
       await apiInstance.get(`/blogs/${blogId}`, {
         headers: {
@@ -41,11 +41,11 @@ const blogReviewApis = {
     );
     return response.data;
   },
-  updateReviewText: async (blogId: string, body: BlogReviewPatch) => {
+  updateReviewText: async (blogId: number, body: BlogReviewPatch) => {
     const response = await apiInstance.patch(`/api/blogs/${blogId}`, body);
     return response;
   },
-  updateReviewImage: async (blogId: string, images: FormData) => {
+  updateReviewImage: async (blogId: number, images: FormData) => {
     const response = await apiMultipartInstance.post(
       `/api/blogs/images/${blogId}`,
       images
@@ -53,13 +53,13 @@ const blogReviewApis = {
     return response;
   },
   updateReviewImageDelete: async () => {},
-  deleteImage: async (blogId: string, imageId: string) => {
+  deleteImage: async (blogId: number, imageId: string) => {
     const response = await apiInstance.delete(
       `api/blogs/images/${blogId}/${imageId}`
     );
     return response;
   },
-  deleteReview: async (blogId: string) => {
+  deleteReview: async (blogId: number) => {
     const response = await apiInstance.delete(`/api/blogs/${blogId}`);
     return response;
   },
