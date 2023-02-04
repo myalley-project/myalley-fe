@@ -1,6 +1,9 @@
 import React, {
+  ChangeEvent,
   Children,
+  Dispatch,
   ReactElement,
+  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -12,6 +15,11 @@ import SubTitle from "./SubTitle";
 
 interface EditorProps {
   children: ReactElement;
+}
+
+interface ImageProps {
+  imageFiles: FileList | null;
+  setImageFiles: Dispatch<SetStateAction<FileList | null>>;
 }
 
 interface TextInputAreaProps {
@@ -44,15 +52,16 @@ function usePreviewImages(imageFiles: FileList) {
   return { previewImages };
 }
 
-const ImageArea = () => {
-  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
-
+const ImageArea = ({ imageFiles, setImageFiles }: ImageProps) => {
   const imageRef = useRef<HTMLInputElement | null>(null);
   const { previewImages } = usePreviewImages(imageFiles as FileList);
   const previewIds = returnkeys(previewImages.length);
 
-  const ChangePictureHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImageFiles(() => event.target.files);
+  const ChangePictureHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files !== null) {
+      const targetFiles = event.target.files;
+      setImageFiles(targetFiles);
+    }
   };
 
   return (
