@@ -11,7 +11,7 @@ import loginApi, { LoginRes } from "../apis/login";
 import { myInfoApi, MyInfoRes } from "../apis/member";
 import isApiError from "../utils/isApiError";
 
-// 로그인 컴포넌트_박예선_23.01.23
+// 로그인 컴포넌트_박예선_23.02.01
 const Login = () => {
   const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
@@ -146,9 +146,13 @@ const Login = () => {
           회원가입
         </Button>
         <div className="find-account">
-          <Link to="/">비밀번호 찾기</Link>
+          <Link to="/login" onClick={() => alert("준비중인 기능입니다.")}>
+            비밀번호 찾기
+          </Link>
           <div className="line" />
-          <Link to="/">아이디 찾기</Link>
+          <Link to="/login" onClick={() => alert("준비중인 기능입니다.")}>
+            이메일 찾기
+          </Link>
         </div>
       </BtnContainer>
     </LoginSignUp>
