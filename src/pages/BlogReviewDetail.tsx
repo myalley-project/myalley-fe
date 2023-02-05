@@ -5,6 +5,7 @@ import styled from "styled-components";
 import blogReviewApis from "../apis/blogReviewApis";
 import BlogReviewDetailPresentation from "../components/blogreview/presentation/BlogReviewDetailPresentation";
 import BlogReviewDetailContainer from "../components/blogreview/container/BlogReviewDetailContainer";
+import Button from "../components/atom/Button";
 
 interface LocationState {
   state: number;
@@ -17,6 +18,11 @@ const BlogReviewDetail = () => {
     queryKey: ["blogReviewDetail"],
     queryFn: () => blogReviewApis.readDetailBlogReview(location?.state),
   });
+  const memberInfo = data?.memberInfo ?? {
+    memberId: 0,
+    memberImage: "",
+    nickname: "",
+  };
 
   if (isLoading) return <div>...loading</div>;
 
@@ -24,7 +30,11 @@ const BlogReviewDetail = () => {
 
   return (
     <Container>
-      <BlogReviewDetailContainer id={data?.exhibitionInfo.id as number} />
+      <BlogReviewDetailContainer
+        id={data?.exhibitionInfo.id as number}
+        memberInfo={memberInfo}
+        blogReviewId={data?.id as number}
+      />
       <div>
         {data ? (
           <BlogReviewDetailPresentation
@@ -59,4 +69,14 @@ const Container = styled.div`
   width: 100vw;
   text-align: center;
   border-radius: 0px;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  & > div {
+    gap: 10px;
+  }
 `;
