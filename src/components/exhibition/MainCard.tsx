@@ -55,11 +55,14 @@ const MainCard = ({
 
   // 북마크 버튼
   const toggleBookMark = async () => {
+    // 비로그인시 404 에러 중복 호출 방지
+    if (!localStorage.getItem("accessToken")) return;
     try {
       const res: AxiosResponse<BookMarkRes> = await exhbBookMarkApi(id);
       const { msg } = res.data;
       alert(msg);
     } catch (err) {
+      console.log(err);
       isApiError(err);
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
@@ -71,15 +74,23 @@ const MainCard = ({
       if (typeof errorRes !== "object") return;
       const { errorCode, errorMsg } = errorRes;
       if (errorCode === 404 && errorMsg === "회원 정보 없음") {
-        alert("북마크 추가는 로그인 후 가능합니다.");
+        alert("유효하지 않은 토큰입니다. 다시 로그인해주세요.");
       }
     }
   };
 
   // 공유하기 버튼
   const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert("주소가 복사되었습니다. (현재 os에선 사용할 수 없는 기능입니다.)");
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => {
+        alert("주소가 복사되었습니다.");
+      })
+      .catch(() => {
+        alert(
+          "주소 복사에 실패했습니다. 다시 시도해주세요. (해당 기능은 현재 크롬에서만 가능합니다.)"
+        );
+      });
   };
 
   return (
