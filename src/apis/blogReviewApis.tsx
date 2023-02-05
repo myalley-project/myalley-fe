@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
-import apiMultipartInstance from "../utils/apimultipartInstance";
+// import apiMultipartInstance from "../utils/apimultipartInstance";
 import {
   BlogReviewPost,
   BlogReviewResponse,
@@ -10,7 +10,7 @@ import {
 
 const blogReviewApis = {
   createReview: async (body: FormData) => {
-    const response = await apiMultipartInstance.post(`api/blogs`, body);
+    const response = await apiInstance.post(`api/blogs`, body);
     return response;
   },
   readBlogReviews: async (
@@ -42,11 +42,11 @@ const blogReviewApis = {
     return response.data;
   },
   updateReviewText: async (blogId: number, body: BlogReviewPatch) => {
-    const response = await apiInstance.patch(`/api/blogs/${blogId}`, body);
+    const response = await apiInstance.put(`/api/blogs/${blogId}`, body);
     return response;
   },
   updateReviewImage: async (blogId: number, images: FormData) => {
-    const response = await apiMultipartInstance.post(
+    const response = await apiInstance.post(
       `/api/blogs/images/${blogId}`,
       images
     );

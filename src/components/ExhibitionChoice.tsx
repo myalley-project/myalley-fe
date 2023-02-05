@@ -36,27 +36,12 @@ const ExhibitionChoice = ({ getExhbInfo, handleModal }: ChoiceProps) => {
   const [exhbStatus, setExhbStatus] = useState<StatusType>("현재");
   const [pageInfo, setPageInfo] = useState(1);
 
-  const getexhbListApi = async (
-    status: StatusType,
-    type: FilterType,
-    page: number
-  ) => {
-    if (type === "전체 전시") {
-      const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
-        `/main/exhibitions/?status=${status}전시&page=${page}`
-      );
-      return res.data;
-    }
-    const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
-      `/exhibitions/?status=${status}전시&type=${type}전시&page=${page}`
-    );
-    return res.data;
-  };
-
   const { isLoading, isError, error, data } = useQuery<ExhbListRes, Error>({
     queryKey: ["exhbList", { pageInfo, exhbStatus }],
-    queryFn: () => getexhbListApi(exhbStatus, "전체 전시", pageInfo),
+    queryFn: () =>
+      exhbListApi(exhbStatus, "전체 전시", pageInfo).then((res) => res.data),
   });
+  // 파일 체인지를 확인하기 위한 쓸데없는 주석입니다
 
   if (isLoading) return <div>...loading</div>;
 

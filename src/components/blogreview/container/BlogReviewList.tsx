@@ -8,17 +8,18 @@ import BlogReviewCard from "../presentation/BlogReviewCard";
 const BlogReviewListWrapper = ({ blogInfo }: BlogReviewResponse) => (
   <Container>
     <CardWrapper>
-      {blogInfo.map((each) => (
-        <BlogReviewCard
-          key={each.id}
-          id={each.id}
-          title={each.title}
-          writer={each.writer}
-          viewDate={each.viewDate}
-          viewCount={each.viewCount}
-          imageInfo={each.imageInfo}
-        />
-      ))}
+      {blogInfo &&
+        blogInfo.map((each) => (
+          <BlogReviewCard
+            key={each.id}
+            id={each.id}
+            title={each.title}
+            writer={each.writer}
+            viewDate={each.viewDate}
+            viewCount={each.viewCount}
+            imageInfo={each.imageInfo}
+          />
+        ))}
     </CardWrapper>
   </Container>
 );
@@ -26,7 +27,6 @@ const BlogReviewListWrapper = ({ blogInfo }: BlogReviewResponse) => (
 export default BlogReviewListWrapper;
 
 const Container = styled.div`
-  width: 62.5vw;
   margin-inline: auto;
 `;
 

@@ -13,11 +13,12 @@ const BlogReviewCard = ({
   imageInfo,
 }: BlogReviewInfo) => {
   const navigate = useNavigate();
+  const imageUrl = imageInfo?.url ?? null;
 
   return (
     <Container onClick={() => navigate("/blogreview-detail", { state: id })}>
       <Image>
-        <img src={imageInfo.url} alt="블로그 리뷰 이미지" />
+        <img src={imageUrl ? imageInfo.url : ""} alt="블로그 리뷰 이미지" />
       </Image>
       <Review>
         <h2>{title}</h2>
@@ -38,7 +39,11 @@ const Container = styled.div`
 `;
 
 const Image = styled.div`
-  height: 244px;
+  width: inherit;
+  height: fit-content;
+  & > img {
+    width: 100%;
+  }
 `;
 
 const Review = styled.div`
