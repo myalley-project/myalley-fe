@@ -79,7 +79,7 @@ const MainCard = ({
   // 공유하기 버튼
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
-    alert("주소가 복사되었습니다.");
+    alert("주소가 복사되었습니다. (현재 os에선 사용할 수 없는 기능입니다.)");
   };
 
   return (
