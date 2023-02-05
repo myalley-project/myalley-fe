@@ -18,37 +18,42 @@ import BlogReview from "./pages/BlogReview";
 import BlogReviewWrite from "./pages/BlogReviewWrite";
 import BlogReviewUpdate from "./pages/BlogReviewModify";
 import BlogReviewDetail from "./pages/BlogReviewDetail";
+import useSilentRefresh from "./hooks/useSilentRefresh";
 
-const App = () => (
-  <BrowserRouter>
-    <ScrollTop />
-    <Nav />
-    <Routes>
-      <Route path="/" element={<Main />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup?" element={<SignUp />} />
-      <Route path="/exhibition-list" element={<ExhibitionList />} />
-      <Route path="/exhibition/:id" element={<Exhibition />} />
-      <Route
-        path="/exhibition/:id/edit"
-        element={<ExhibitionWrite mode="edit" />}
-      />
-      <Route
-        path="/exhibition-write"
-        element={<ExhibitionWrite mode="create" />}
-      />
-      <Route path="/mypage/:subpages" element={<Mypage />} />
-      <Route path="/mate-list" element={<MateList />} />
-      <Route path="/mate/:id" element={<Mate />} />
-      <Route path="/blogreview-list" element={<BlogReview />} />
-      <Route path="/blogreview-write" element={<BlogReviewWrite />} />
-      <Route path="/blogreview-edit" element={<BlogReviewUpdate />} />
-      <Route path="/blogreview-detail" element={<BlogReviewDetail />} />
-      <Route path="/mate-write" element={<MateWrite />} />
-    </Routes>
-    <ReactQueryDevtools />
-    <Footer />
-  </BrowserRouter>
-);
+const App = () => {
+  useSilentRefresh();
+
+  return (
+    <BrowserRouter>
+      <ScrollTop />
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup?" element={<SignUp />} />
+        <Route path="/exhibition-list" element={<ExhibitionList />} />
+        <Route path="/exhibition/:id" element={<Exhibition />} />
+        <Route
+          path="/exhibition/:id/edit"
+          element={<ExhibitionWrite mode="edit" />}
+        />
+        <Route
+          path="/exhibition-write"
+          element={<ExhibitionWrite mode="create" />}
+        />
+        <Route path="/mypage/:subpages" element={<Mypage />} />
+        <Route path="/mate-list" element={<MateList />} />
+        <Route path="/mate/:id" element={<Mate />} />
+        <Route path="/blogreview-list" element={<BlogReview />} />
+        <Route path="/blogreview-write" element={<BlogReviewWrite />} />
+        <Route path="/blogreview-edit" element={<BlogReviewUpdate />} />
+        <Route path="/blogreview-detail" element={<BlogReviewDetail />} />
+        <Route path="/mate-write" element={<MateWrite />} />
+      </Routes>
+      <ReactQueryDevtools />
+      <Footer />
+    </BrowserRouter>
+  );
+};
 
 export default App;
