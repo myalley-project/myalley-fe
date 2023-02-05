@@ -86,6 +86,7 @@ const Icon = styled.div`
 
 const StyledLink = styled(Link)`
   display: flex;
+  z-index: 99;
   justify-content: center;
   align-items: center;
   gap: 4px;
