@@ -27,7 +27,6 @@ const BlogReviewListWrapper = ({ blogInfo }: BlogReviewResponse) => (
 export default BlogReviewListWrapper;
 
 const Container = styled.div`
-  width: 62.5vw;
   margin-inline: auto;
 `;
 
