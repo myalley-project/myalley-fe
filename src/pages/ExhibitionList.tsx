@@ -65,6 +65,8 @@ const ExhibitionListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100vw;
+  max-width: 1440px;
+  margin: auto;
   font-size: 14px;
   h1 {
     margin: 50px 0;

@@ -201,11 +201,6 @@ const Week = styled.div`
   display: flexbox;
   flex-wrap: wrap;
   position: relative;
-  /* &::after {
-    content: "";
-    display: block;
-    padding: 0.1rem;
-  } */
 `;
 
 const Day = styled.div`
@@ -228,7 +223,7 @@ const Day = styled.div`
   &[data-valid="false"] {
     opacity: 0.65;
   }
-  &.selected {
+  &.selected[data-valid="true"] {
     background-color: ${theme.colors.primry70};
     color: ${theme.colors.white100};
   }

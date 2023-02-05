@@ -1,6 +1,6 @@
 import React from "react";
 import { AxiosResponse } from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   BookMarkRes,
@@ -10,6 +10,7 @@ import {
 import { theme } from "../../styles/theme";
 import isApiError from "../../utils/isApiError";
 import BookMark from "../atom/BookMark";
+import useRefreshTokenApi from "../../apis/useRefreshToken";
 
 export interface MainCardType {
   posterUrl: string;
@@ -32,16 +33,23 @@ const MainCard = ({
   bookmarked,
 }: MainCardType) => {
   const auth = localStorage.getItem("authority");
-  const location = useLocation();
   const navigate = useNavigate();
+  const refreshTokenApi = useRefreshTokenApi();
 
+  // 전시글 삭제
   const handleDelete = async () => {
     try {
       await exhbDeleteApi(id);
       alert("전시글 삭제가 완료되었습니다.");
       navigate("/");
     } catch (err) {
-      isApiError(err);
+      const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") {
+        await refreshTokenApi();
+        await exhbDeleteApi(id);
+        alert("전시글 삭제가 완료되었습니다.");
+        navigate("/");
+      }
     }
   };
 
@@ -54,6 +62,12 @@ const MainCard = ({
     } catch (err) {
       isApiError(err);
       const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") {
+        await refreshTokenApi();
+        const reRes = await exhbBookMarkApi(id);
+        const { msg } = reRes.data;
+        alert(msg);
+      }
       if (typeof errorRes !== "object") return;
       const { errorCode, errorMsg } = errorRes;
       if (errorCode === 404 && errorMsg === "회원 정보 없음") {
@@ -64,7 +78,7 @@ const MainCard = ({
 
   // 공유하기 버튼
   const copyLink = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/${location.pathname}`);
+    navigator.clipboard.writeText(window.location.href);
     alert("주소가 복사되었습니다.");
   };
 

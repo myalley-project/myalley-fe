@@ -9,7 +9,7 @@ import Modal from "../../../Modal";
 import Button from "../../atom/Button";
 import oneLineReviewApis from "../../../apis/oneLineReviewApis";
 
-import OnelineContainer from "../container/OnelineContainer";
+import OnelineWriteContainer from "../container/OnelineWriteContainer";
 import isApiError from "../../../utils/isApiError";
 import useRefreshTokenApi from "../../../apis/useRefreshToken";
 
@@ -107,10 +107,10 @@ const OnelineCard = ({
         </button>
       </ButtonItems>
       <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
-        <OnelineContainer
+        <OnelineWriteContainer
+          simpleId={id}
           handleModal={modifyModalHandler}
           writeType="modify"
-          simpleId={id}
         />
       </Modal>
       <Modal open={deleteModalIsopen} handleModal={deleteModalHandler}>
