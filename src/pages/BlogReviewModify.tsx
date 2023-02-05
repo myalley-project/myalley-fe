@@ -147,9 +147,7 @@ import ExhibitionChoice from "../components/ExhibitionChoice";
 // };
 
 interface LocationState {
-  state: {
-    id: number;
-  };
+  state: number;
 }
 
 const BlogReviewUpdate = () => {
@@ -207,7 +205,7 @@ const BlogReviewUpdate = () => {
 
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogDetail"],
-    queryFn: () => blogReviewApis.readDetailBlogReview(location.state.id),
+    queryFn: () => blogReviewApis.readDetailBlogReview(location.state),
   });
   const keys = returnkeys(data?.imageInfo.length as number);
   const imagesArray = data?.imageInfo ?? [];
@@ -262,11 +260,9 @@ const BlogReviewUpdate = () => {
   };
 
   const HandleSubmit = () => {
-    if (deleteimages) {
-      deleteimages.forEach((each) =>
-        blogReviewApis.deleteImage(location.state.id, each)
-      );
-    }
+    deleteimages.forEach((each) => {
+      blogReviewApis.deleteImage(location.state, each);
+    });
 
     const postData = {
       title,
@@ -284,7 +280,7 @@ const BlogReviewUpdate = () => {
       new Blob([JSON.stringify(postData)], { type: "application/json" })
     );
 
-    blogReviewApis.updateReviewText(location.state.id, postData);
+    blogReviewApis.updateReviewText(location.state, postData);
 
     if (imageFiles !== null) {
       const imageFormData = new FormData();
@@ -292,7 +288,7 @@ const BlogReviewUpdate = () => {
         imageFormData.append("images", file)
       );
 
-      blogReviewApis.updateReviewImage(location.state.id, imageFormData);
+      blogReviewApis.updateReviewImage(location.state, imageFormData);
     }
   };
 
@@ -300,7 +296,7 @@ const BlogReviewUpdate = () => {
     if (data?.imageInfo) {
       for (let index = 0; index < data.imageInfo.length; index += 1) {
         if (data.imageInfo[index].url === imgInfo.url) {
-          setDeleteImages([...deleteimages, imagesArray[index].id]);
+          setDeleteImages([...deleteimages, imgInfo.id]);
         }
       }
     }
@@ -387,7 +383,7 @@ const BlogReviewUpdate = () => {
                 <Selectbox
                   onClick={onClickRevisit}
                   options={["모르겠다", "전혀 없다", "조금 있다", "재방문예정"]}
-                  placeholder={data?.transportation as string}
+                  placeholder={data?.revisit as string}
                   name="재방문 의향"
                   width="130px"
                 />

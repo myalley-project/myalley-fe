@@ -98,7 +98,7 @@ const BlogReview = () => {
 export default BlogReview;
 
 const Container = styled.div`
-  width: 62.5vw;
+  max-width: 1200px;
   margin-inline: auto;
 `;
 

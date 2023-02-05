@@ -41,6 +41,7 @@ const ExhibitionChoice = ({ getExhbInfo, handleModal }: ChoiceProps) => {
     queryFn: () =>
       exhbListApi(exhbStatus, "전체 전시", pageInfo).then((res) => res.data),
   });
+  // 파일 체인지를 확인하기 위한 쓸데없는 주석입니다
 
   if (isLoading) return <div>...loading</div>;
 
