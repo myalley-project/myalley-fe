@@ -27,8 +27,8 @@ const OneLineReadContainer = ({
   handleReviewModal,
 }: OneLineReadProps) => {
   const [pages, setPages] = useState({
-    started: 0,
-    selected: 0,
+    started: 1,
+    selected: 1,
   });
 
   const {

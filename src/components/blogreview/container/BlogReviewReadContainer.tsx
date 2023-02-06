@@ -28,8 +28,8 @@ const BlogReviewReadContainer = ({
   handleReviewModal,
 }: BlogReadProps) => {
   const [pages, setPages] = useState({
-    started: 0,
-    selected: 0,
+    started: 1,
+    selected: 1,
   });
 
   const { isLoading, isError, error, data } = useQuery<
