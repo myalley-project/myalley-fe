@@ -105,9 +105,7 @@ const TextInputArea = ({
 Editor.ImageArea = ImageArea;
 Editor.TextInputArea = TextInputArea;
 
-const Container = styled.div`
-  /* max-width: 1200px; */
-`;
+const Container = styled.div``;
 
 const PreviewContainer = styled.div`
   display: flex;
