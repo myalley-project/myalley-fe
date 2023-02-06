@@ -123,7 +123,6 @@ const BlogReviewDetailPresentation = ({
 export default BlogReviewDetailPresentation;
 
 const Container = styled.div`
-  width: 100%;
   padding: 30px;
   border: 1px solid ${theme.colors.greys40};
 `;
