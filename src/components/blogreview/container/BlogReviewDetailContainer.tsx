@@ -83,12 +83,7 @@ const BlogReviewDetailContainer = ({
               >
                 수정
               </Button>
-              <Button
-                onClick={handleDeleteReview}
-                variant="text"
-                size="small"
-                className="deleteBtn"
-              >
+              <Button onClick={handleDeleteReview} variant="text" size="small">
                 삭제
               </Button>
             </>
