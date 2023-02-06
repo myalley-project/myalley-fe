@@ -37,7 +37,7 @@ const OneLineReadContainer = ({
     error,
     data,
   }: UseQueryResult<OnelineReviewReadType, Error> = useQuery({
-    queryKey: ["simpleReviews", { page: pages.selected, orderType }],
+    queryKey: ["simpleReviews", { page: pages, orderType }],
     queryFn: () =>
       oneLineReviewApis.getReviews(Number(id), pages.selected, orderType),
   });
@@ -73,7 +73,7 @@ const OneLineReadContainer = ({
         <Pagination
           pages={pages}
           setPages={setPages}
-          totalPage={data.pageInfo.totalElement}
+          totalPage={data.pageInfo.totalPage}
         />
       ) : null}
     </>
