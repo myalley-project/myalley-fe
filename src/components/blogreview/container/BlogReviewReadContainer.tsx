@@ -28,15 +28,15 @@ const BlogReviewReadContainer = ({
   handleReviewModal,
 }: BlogReadProps) => {
   const [pages, setPages] = useState({
-    started: 0,
-    selected: 0,
+    started: 1,
+    selected: 1,
   });
 
   const { isLoading, isError, error, data } = useQuery<
     BlogReviewResponse,
     Error
   >({
-    queryKey: ["blogReviews"],
+    queryKey: ["blogReviews", { pages, orderType }],
     queryFn: () =>
       blogReviewApis.readExhibitionReviews(
         Number(id),
