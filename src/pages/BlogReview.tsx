@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "react-query";
@@ -14,7 +14,7 @@ const BlogReview = () => {
   const navigate = useNavigate();
   const [pages, setPages] = useState({
     started: 0,
-    selected: 0,
+    selected: 1,
   });
   const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
   const [inputLength, setInputLength] = useState(0);

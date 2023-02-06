@@ -5,7 +5,6 @@ import styled from "styled-components";
 import blogReviewApis from "../apis/blogReviewApis";
 import BlogReviewDetailPresentation from "../components/blogreview/presentation/BlogReviewDetailPresentation";
 import BlogReviewDetailContainer from "../components/blogreview/container/BlogReviewDetailContainer";
-import Button from "../components/atom/Button";
 
 interface LocationState {
   state: number;
@@ -65,18 +64,8 @@ const BlogReviewDetail = () => {
 export default BlogReviewDetail;
 
 const Container = styled.div`
-  width: 100dvw;
-  width: 100vw;
+  width: 83vw;
+  max-width: 1200px;
+  margin: 50px auto;
   text-align: center;
-  border-radius: 0px;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  align-items: center;
-  & > div {
-    gap: 10px;
-  }
 `;
