@@ -125,7 +125,6 @@ export default BlogReviewDetailPresentation;
 const Container = styled.div`
   width: 100%;
   padding: 30px;
-  margin-inline: auto;
   border: 1px solid ${theme.colors.greys40};
 `;
 
@@ -142,6 +141,7 @@ const Divider = styled.div`
 
 const DetailInformation = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 30px;
   margin-bottom: 50px;
   font-weight: 500;

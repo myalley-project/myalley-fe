@@ -2,11 +2,11 @@ import React from "react";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { exhbApi } from "../../../apis/exhibition";
-import MainCard from "../../exhibition/MainCard";
-import Button from "../../atom/Button";
-import blogReviewApis from "../../../apis/blogReviewApis";
 import { theme } from "../../../styles/theme";
+import { exhbApi } from "../../../apis/exhibition";
+import blogReviewApis from "../../../apis/blogReviewApis";
+import Button from "../../atom/Button";
+import ExhbCard from "../../mate/ExhbCard";
 
 interface BlogReviewDetailContainerProps {
   id: number;
@@ -28,6 +28,7 @@ const BlogReviewDetailContainer = ({
     queryKey: ["blogCard"],
     queryFn: () => exhbApi(id),
   });
+  const exhbData = data?.data;
   const memeberId = localStorage.getItem("memberId") ?? "";
 
   const deleteReviewMutation = useMutation({
@@ -100,28 +101,26 @@ const BlogReviewDetailContainer = ({
           )}
         </div>
       </ButtonGroup>
-      {data ? (
-        <MainCard
-          id={data?.data.id}
-          posterUrl={data?.data.posterUrl}
-          title={data?.data.title}
-          duration={data?.data.duration}
-          place={data?.data.space}
-          charge={data?.data.adultPrice}
-          webLink={data?.data.webLink}
-          bookmarked={data?.data.bookmarked as boolean}
+      {exhbData && (
+        <ExhbCard
+          exhbData={{
+            exhibitionId: exhbData.id,
+            exhibitionTitle: exhbData.title,
+            exhibitionSpace: exhbData.space,
+            posterUrl: exhbData.posterUrl,
+            exhibitionDuration: exhbData.duration,
+            status: exhbData.status,
+          }}
         />
-      ) : null}
+      )}
     </Container>
   );
 };
 export default BlogReviewDetailContainer;
 
 const Container = styled.div`
-  position: relative;
   width: 100%;
   max-width: 1200px;
-  margin-inline: auto;
 `;
 
 const ButtonGroup = styled.div`

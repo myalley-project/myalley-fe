@@ -53,6 +53,9 @@ const ExhbCardContainer = styled.div`
   margin: 14px 0 30px;
   border: 1px solid ${theme.colors.greys40};
   cursor: pointer;
+  .flex {
+    display: flex;
+  }
 `;
 
 const Thumbnail = styled.img`

@@ -35,7 +35,7 @@ const BlogReviewDetail = () => {
         blogReviewId={data?.id as number}
       />
       <div>
-        {data ? (
+        {data && (
           <BlogReviewDetailPresentation
             id={data.id}
             title={data.title}
@@ -55,7 +55,7 @@ const BlogReviewDetail = () => {
             imageInfo={data.imageInfo}
             exhibitionInfo={data.exhibitionInfo}
           />
-        ) : null}
+        )}
       </div>
     </Container>
   );
@@ -67,5 +67,4 @@ const Container = styled.div`
   width: 83vw;
   max-width: 1200px;
   margin: 50px auto;
-  text-align: center;
 `;
