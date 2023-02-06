@@ -10,7 +10,6 @@ interface ExhbCardType {
     exhibitionSpace: string;
     posterUrl: string;
     exhibitionDuration: string; // yyyy-mm-dd ~ yyyy-mm-dd
-    status: "현재 전시" | "예정 전시" | "지난 전시";
   };
 }
 

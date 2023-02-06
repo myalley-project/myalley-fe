@@ -78,7 +78,7 @@ export const exhbMateApi = async (id: number, pageNo: number) => {
 export interface ExhibitionRes {
   id: number;
   title: string;
-  status: "현재 전시" | "예정 전시" | "지난 전시";
+  status: string;
   type: string;
   space: string;
   adultPrice: number;
