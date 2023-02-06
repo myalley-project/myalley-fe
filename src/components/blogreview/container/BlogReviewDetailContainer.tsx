@@ -88,7 +88,12 @@ const BlogReviewDetailContainer = ({
               >
                 수정
               </Button>
-              <Button onClick={handleDeleteReview} variant="text" size="small">
+              <Button
+                onClick={handleDeleteReview}
+                variant="text"
+                size="small"
+                className="deleteBtn"
+              >
                 삭제
               </Button>
             </>
@@ -123,11 +128,12 @@ const ButtonGroup = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
   button {
     margin-right: 10px;
     border: 1px solid ${theme.colors.greys40};
+    &.deleteBtn {
+      margin-right: 0;
+    }
   }
   & > div {
     gap: 10px;
