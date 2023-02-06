@@ -13,8 +13,8 @@ import { BlogReviewResponse } from "../types/blogReview";
 const BlogReview = () => {
   const navigate = useNavigate();
   const [pages, setPages] = useState({
-    started: 0,
-    selected: 0,
+    started: 1,
+    selected: 1,
   });
   const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
   const [inputLength, setInputLength] = useState(0);
