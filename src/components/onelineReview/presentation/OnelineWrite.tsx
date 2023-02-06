@@ -39,7 +39,7 @@ const OnelineWrite = ({
   <Container>
     <SelectContainer>
       <SelectForm>
-        <p>생년 월일</p>
+        <p>관람일</p>
         <SelectboxContainer>
           <Selectbox
             placeholder="1950"
