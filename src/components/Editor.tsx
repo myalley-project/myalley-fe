@@ -1,6 +1,5 @@
 import React, {
   ChangeEvent,
-  Children,
   Dispatch,
   ReactElement,
   SetStateAction,
@@ -95,16 +94,19 @@ const TextInputArea = ({
   value,
   textChangeHandler,
 }: TextInputAreaProps) => (
-  <TextArea name={name} value={value} onChange={textChangeHandler} />
+  <TextArea
+    name={name}
+    value={value}
+    onChange={textChangeHandler}
+    placeholder="내용을 입력해주세요."
+  />
 );
 
 Editor.ImageArea = ImageArea;
 Editor.TextInputArea = TextInputArea;
 
 const Container = styled.div`
-  max-width: 1200px;
-  /* padding: 30px; */
-  /* margin-inline: auto; */
+  /* max-width: 1200px; */
 `;
 
 const PreviewContainer = styled.div`
@@ -159,10 +161,31 @@ const FormBox = styled.div`
 
 const TextArea = styled.textarea`
   width: 100%;
-  aspect-ratio: 1 / 0.7;
+  height: 300px;
+  /* aspect-ratio: 1 / 0.7; */
   border-radius: 1rem;
-  padding-top: 1rem;
+  padding: 20px;
   border-color: ${theme.colors.greys40};
-  outline-color: ${theme.colors.greys60};
+  outline: none;
+  /* outline-color: ${theme.colors.greys60}; */
   resize: none;
+  :hover {
+    border: 1px solid ${theme.colors.primry60};
+    box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
+  }
+  ::-webkit-scrollbar {
+    display: block;
+    width: 14px;
+  }
+  ::-webkit-scrollbar-thumb {
+    display: block;
+    width: 14px;
+    background-color: #d9d9d9;
+    border-radius: 1000px;
+    background-clip: padding-box;
+    border: 5px solid transparent;
+  }
+  :focus-visible {
+    outline: none;
+  }
 `;
