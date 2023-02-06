@@ -36,7 +36,7 @@ const BlogReviewReadContainer = ({
     BlogReviewResponse,
     Error
   >({
-    queryKey: ["blogReviews"],
+    queryKey: ["blogReviews", { pages, orderType }],
     queryFn: () =>
       blogReviewApis.readExhibitionReviews(
         Number(id),
