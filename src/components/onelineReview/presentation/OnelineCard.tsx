@@ -8,7 +8,6 @@ import { OnelineReviewCardType } from "../../../types/oneLineReview";
 import Modal from "../../../Modal";
 import Button from "../../atom/Button";
 import oneLineReviewApis from "../../../apis/oneLineReviewApis";
-
 import OnelineWriteContainer from "../container/OnelineWriteContainer";
 import isApiError from "../../../utils/isApiError";
 import useRefreshTokenApi from "../../../apis/useRefreshToken";
@@ -21,6 +20,7 @@ const OnelineCard = ({
   time,
   congestion,
   memberInfo,
+  exhibitionInfo,
 }: OnelineReviewCardType) => {
   const [modifyModalIsopen, setModifyModalIsopen] = useState<boolean>(false);
   const [deleteModalIsopen, setDeleteModalIsopen] = useState<boolean>(false);
@@ -50,11 +50,19 @@ const OnelineCard = ({
     }
   };
 
+  /* eslint-disable */
   return (
     <Container>
       <Review>
-        <img src={ProfileImg} alt="사람 이미지" />
+        {memberInfo ? (
+          <img src={memberInfo.userImage} alt="사람 이미지" />
+        ) : exhibitionInfo ? null : (
+          <img src={ProfileImg} alt="사람 이미지" />
+        )}
         <ReviewInfo>
+          {exhibitionInfo?.title && (
+            <ExhibitionTitle>{exhibitionInfo.title}</ExhibitionTitle>
+          )}
           {rate === 1 ? (
             <div>
               <img src={StarIcon} alt="별점" />
@@ -91,8 +99,9 @@ const OnelineCard = ({
             </div>
           ) : null}
           <div>
-            <span>{memberInfo.nickname}</span> | <span>{viewDate}</span> |
-            <span>{time}</span> | <span>{congestion}</span>
+            {memberInfo && <span>{memberInfo.nickname}</span>} |{" "}
+            <span>{viewDate}</span> |<span>{time}</span> |{" "}
+            <span>{congestion}</span>
           </div>
           <p>{content}</p>
         </ReviewInfo>
@@ -177,6 +186,12 @@ const ReviewInfo = styled.div`
     font-weight: 700;
     font-size: 14px;
   }
+`;
+
+const ExhibitionTitle = styled.div`
+  color: ${theme.colors.greys90};
+  font-weight: 500;
+  font-size: 14px;
 `;
 
 const ButtonItems = styled.div`

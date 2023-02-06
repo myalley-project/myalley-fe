@@ -18,10 +18,14 @@ export type OnelineReviewCardType = {
   content: string;
   time: string;
   congestion: string;
-  memberInfo: {
+  memberInfo?: {
     memberId: number;
     nickname: string;
-    userImage: null;
+    userImage: string;
+  };
+  exhibitionInfo?: {
+    id: number;
+    title: string;
   };
 };
 
