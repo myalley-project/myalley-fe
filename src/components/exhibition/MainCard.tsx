@@ -21,6 +21,8 @@ export interface MainCardType {
   webLink: string;
   id: number;
   bookmarked: boolean;
+  type: string;
+  viewCount: number;
 }
 const MainCard = ({
   posterUrl,
@@ -31,6 +33,8 @@ const MainCard = ({
   webLink,
   id,
   bookmarked,
+  type,
+  viewCount,
 }: MainCardType) => {
   const auth = localStorage.getItem("authority");
   const navigate = useNavigate();
@@ -114,11 +118,19 @@ const MainCard = ({
               <dt>장소</dt>
               <dd>{place}</dd>
             </InfoDetail>
-            <InfoDetail style={{ marginBottom: "0px" }}>
+            <InfoDetail>
               <dt>관람비용</dt>
               <dd>
                 {charge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
               </dd>
+            </InfoDetail>
+            <InfoDetail>
+              <dt>전시 유형</dt>
+              <dd>{type}</dd>
+            </InfoDetail>
+            <InfoDetail style={{ marginBottom: "0px" }}>
+              <dt>조회수</dt>
+              <dd>{viewCount}</dd>
             </InfoDetail>
           </div>
           <Footer>

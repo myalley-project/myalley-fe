@@ -85,6 +85,8 @@ const BlogReviewDetailContainer = ({
           charge={data?.data.adultPrice}
           webLink={data?.data.webLink}
           bookmarked={data?.data.bookmarked as boolean}
+          type={data?.data.type}
+          viewCount={data?.data.viewCount}
         />
       ) : null}
     </Container>
