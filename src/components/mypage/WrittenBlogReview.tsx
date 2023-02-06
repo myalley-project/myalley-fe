@@ -1,44 +1,76 @@
 import { AxiosResponse } from "axios";
-import React, { useCallback, useEffect } from "react";
+import styled from "styled-components";
+import React, { useCallback, useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { BlogReviewListRes, myBlogReviewsApi } from "../../apis/member";
 import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 import isApiError from "../../utils/isApiError";
+import BlogReviewCard from "../blogreview/presentation/BlogReviewCard";
+import Pagination from "../Pagination";
 
 const WrittenBlogReview = () => {
   const getNewTokenApi = useGetNewTokenApi;
-
-  // 블로그 리뷰 목록 조회 컴포넌트 붙여야함
-  // 페이지네이션과 연결하는 로직 짜야함
-  const testPageNo = 1;
+  const [pages, setPages] = useState({
+    started: 1,
+    selected: 1,
+  });
 
   // 내가 쓴 블로그 리뷰 목록 조회
-  const getBlogReview = useCallback(
-    async (pageNo: number) => {
-      const refreshToken = localStorage.getItem("refreshToken");
+  const getBlogReview = async (pageNo: number) => {
+    const res: AxiosResponse<BlogReviewListRes> = await myBlogReviewsApi(
+      pageNo
+    );
+    return res.data;
+  };
 
-      try {
-        const res: AxiosResponse<BlogReviewListRes> = await myBlogReviewsApi(
-          pageNo
-        );
-        console.log(res);
-      } catch (err) {
-        const errorRes = isApiError(err);
-        if (errorRes === "accessToken 만료") {
-          await getNewTokenApi(refreshToken);
-          const reRes: AxiosResponse<BlogReviewListRes> =
-            await myBlogReviewsApi(pageNo);
-          if (!reRes) return;
-          const refreshData = reRes.data;
-        }
-      }
-    },
-    [getNewTokenApi]
+  const { isError, isLoading, error, data } = useQuery({
+    queryKey: ["mypage", { pages }],
+    queryFn: () => getBlogReview(pages.selected),
+  });
+
+  if (isLoading) return <div />;
+
+  return (
+    <Container>
+      <CardWrapper>
+        {data &&
+          data?.blogInfo.map((each) => (
+            <BlogReviewCard
+              key={each.id}
+              id={each.id}
+              title={each.title}
+              writer={each.writer}
+              viewCount={each.viewCount}
+              viewDate={each.date}
+              imageInfo={each.imageInfo}
+            />
+          ))}
+      </CardWrapper>
+      {data?.pageInfo && (
+        <Pagination
+          pages={pages}
+          setPages={setPages}
+          totalPage={data.pageInfo.totalPage}
+        />
+      )}
+    </Container>
   );
-
-  useEffect(() => {
-    getBlogReview(testPageNo);
-  }, [getBlogReview, testPageNo]);
-  return <div>블로그 리뷰 목록 조회</div>;
 };
 
 export default WrittenBlogReview;
+
+const Container = styled.div`
+  margin-inline: auto;
+`;
+
+const CardWrapper = styled.div`
+  display: grid;
+  /* grid-template-columns: repeat(auto-fill, minmax(250px, 380px)); */
+  grid-template-columns: repeat(auto-fit, 380px);
+
+  grid-template-rows: auto;
+  /* align-content:; */
+  /* flex-flow: row wrap; */
+  gap: 30px;
+  margin-bottom: 120px;
+`;
