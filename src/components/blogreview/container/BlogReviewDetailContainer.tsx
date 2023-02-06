@@ -46,7 +46,7 @@ const BlogReviewDetailContainer = ({
   if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
-    <Container>
+    <>
       <ButtonGroup>
         <div>
           <Button
@@ -106,28 +106,20 @@ const BlogReviewDetailContainer = ({
           }}
         />
       )}
-    </Container>
+    </>
   );
 };
 export default BlogReviewDetailContainer;
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 1200px;
-`;
 
 const ButtonGroup = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   button {
-    margin-right: 10px;
     border: 1px solid ${theme.colors.greys40};
-    &.deleteBtn {
-      margin-right: 0;
-    }
   }
   & > div {
+    display: flex;
     gap: 10px;
   }
 `;
