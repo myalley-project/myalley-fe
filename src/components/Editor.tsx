@@ -164,7 +164,6 @@ const TextArea = styled.textarea`
   border-radius: 1rem;
   padding: 20px;
   border-color: ${theme.colors.greys40};
-  outline: none;
   /* outline-color: ${theme.colors.greys60}; */
   resize: none;
   :hover {
@@ -183,7 +182,7 @@ const TextArea = styled.textarea`
     background-clip: padding-box;
     border: 5px solid transparent;
   }
-  :focus-visible {
+  &:focus-visible {
     outline: none;
   }
 `;
