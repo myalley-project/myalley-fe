@@ -121,7 +121,7 @@ const Background = styled.div`
 `;
 
 const MenuOutSide = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 98;
   width: 100vw;
   height: 100vh;
@@ -132,9 +132,7 @@ const MenuOutSideWrapper = styled.div`
   position: relative;
   width: 100vw;
   max-width: 1440px;
-  height: 1100px;
   margin-inline: auto;
-  /* background-color: #eee; */
 `;
 
 const MenuContainer = styled.div`
