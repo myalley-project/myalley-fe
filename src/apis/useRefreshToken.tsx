@@ -24,6 +24,7 @@ const useRefreshTokenApi = () => {
         }
       } catch (err) {
         const errorRes = isApiError(err, "refreshToken 만료");
+        console.log("refresh-token-errorRes", errorRes);
         if (typeof errorRes !== "object") return undefined;
         const { errorMsg } = errorRes;
         if (errorMsg === "Forbidden") {

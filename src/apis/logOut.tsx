@@ -27,12 +27,17 @@ const useLogOut = () => {
     } catch (err) {
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
-        refreshTokenApi();
+        console.log("리프레시토큰 메세지 받음");
+        await refreshTokenApi();
+        console.log("토큰 잘 받음");
         const res: AxiosResponse<LogOutRes> = await apiInstance.post(
           "/api/me/logout"
         );
+        console.log("다시 로그아웃 실행");
+        console.log("다시 실행한 로그아웃 응답", res);
         const { resultCode } = res.data;
         if (resultCode === 200) {
+          console.log("다시 로그아웃 성공");
           removeLocalStorageItem();
           alert("로그아웃되었습니다.");
           navigate("/");
