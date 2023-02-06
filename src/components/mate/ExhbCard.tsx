@@ -58,6 +58,7 @@ const ExhbCardContainer = styled.div`
 const Thumbnail = styled.img`
   width: 175px;
   height: inherit;
+  object-fit: cover;
 `;
 
 const InfoContainer = styled.div`
