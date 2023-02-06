@@ -52,27 +52,21 @@ const BlogReviewDetailContainer = ({
           <Button
             variant="text"
             size="small"
-            onClick={() => {
-              navigate("/blogreview-list");
-            }}
+            onClick={() => navigate("/blogreview-list")}
           >
             목록
           </Button>
           <Button
             variant="text"
             size="small"
-            onClick={() => {
-              alert("준비 중인 기능입니다.");
-            }}
+            onClick={() => alert("준비 중인 기능입니다.")}
           >
             이전글
           </Button>
           <Button
             variant="text"
             size="small"
-            onClick={() => {
-              alert("준비 중인 기능입니다.");
-            }}
+            onClick={() => alert("준비 중인 기능입니다.")}
           >
             다음글
           </Button>
