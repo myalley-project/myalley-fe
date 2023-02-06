@@ -66,7 +66,6 @@ const MainCard = ({
       const { msg } = res.data;
       alert(msg);
     } catch (err) {
-      console.log(err);
       isApiError(err);
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
