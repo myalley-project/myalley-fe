@@ -4,7 +4,7 @@ import { isEditable } from "@testing-library/user-event/dist/utils";
 import { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import Pagination from "../Pagination";
-import OnelineCard from "../onelineReview/presentation/OnelineCard";
+import MypageOnelineCard from "../onelineReview/presentation/MypageOnelineCard";
 import { MySimpleReviewRes, mySimpleReviewsApi } from "../../apis/member";
 import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 import isApiError from "../../utils/isApiError";
@@ -39,7 +39,7 @@ const WrittenSimpleReview = () => {
     <>
       <OnelineDisplay>
         {data?.simpleInfo.map((each) => (
-          <OnelineCard
+          <MypageOnelineCard
             key={each.id}
             id={each.id}
             viewDate={each.viewDate}
@@ -47,6 +47,7 @@ const WrittenSimpleReview = () => {
             congestion={each.congestion}
             rate={each.rate}
             content={each.content}
+            exhibitionInfo={each.exhibitionInfo}
           />
         ))}
       </OnelineDisplay>

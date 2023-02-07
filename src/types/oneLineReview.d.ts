@@ -25,6 +25,19 @@ export type OnelineReviewCardType = {
   };
 };
 
+export type MypageOnelineReviewCardType = {
+  id: number;
+  viewDate: string;
+  rate: number;
+  content: string;
+  time: string;
+  congestion: string;
+  exhibitionInfo?: {
+    id: number;
+    title: string;
+  };
+};
+
 export interface OnelineReviewReadType {
   simpleInfo: OnelineReviewCardType[];
   pageInfo: {
