@@ -1,11 +1,12 @@
 import React from "react";
 import { useMutation, useQuery } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { theme } from "../../../styles/theme";
 import { exhbApi } from "../../../apis/exhibition";
-import MainCard from "../../exhibition/MainCard";
-import Button from "../../atom/Button";
 import blogReviewApis from "../../../apis/blogReviewApis";
+import Button from "../../atom/Button";
+import ExhbCard from "../../mate/ExhbCard";
 
 interface BlogReviewDetailContainerProps {
   id: number;
@@ -27,6 +28,7 @@ const BlogReviewDetailContainer = ({
     queryKey: ["blogCard"],
     queryFn: () => exhbApi(id),
   });
+  const exhbData = data?.data;
   const memeberId = localStorage.getItem("memberId") ?? "";
 
   const deleteReviewMutation = useMutation({
@@ -35,7 +37,8 @@ const BlogReviewDetailContainer = ({
 
   const handleDeleteReview = () => {
     deleteReviewMutation.mutate();
-    navigate("/");
+    alert("삭제되었습니다.");
+    navigate("/blogreview-list");
   };
 
   if (isLoading) return <div>...loading</div>;
@@ -43,16 +46,28 @@ const BlogReviewDetailContainer = ({
   if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
-    <Container>
+    <>
       <ButtonGroup>
         <div>
-          <Button variant="text" size="small">
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => navigate("/blogreview-list")}
+          >
             목록
           </Button>
-          <Button variant="text" size="small">
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => alert("준비 중인 기능입니다.")}
+          >
             이전글
           </Button>
-          <Button variant="text" size="small">
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => alert("준비 중인 기능입니다.")}
+          >
             다음글
           </Button>
         </div>
@@ -75,37 +90,31 @@ const BlogReviewDetailContainer = ({
           )}
         </div>
       </ButtonGroup>
-      {data ? (
-        <MainCard
-          id={data?.data.id}
-          posterUrl={data?.data.posterUrl}
-          title={data?.data.title}
-          duration={data?.data.duration}
-          place={data?.data.space}
-          charge={data?.data.adultPrice}
-          webLink={data?.data.webLink}
-          bookmarked={data?.data.bookmarked as boolean}
-          type={data?.data.type}
-          viewCount={data?.data.viewCount}
+      {exhbData && (
+        <ExhbCard
+          exhbData={{
+            exhibitionId: exhbData.id,
+            exhibitionTitle: exhbData.title,
+            exhibitionSpace: exhbData.space,
+            posterUrl: exhbData.posterUrl,
+            exhibitionDuration: exhbData.duration,
+          }}
         />
-      ) : null}
-    </Container>
+      )}
+    </>
   );
 };
 export default BlogReviewDetailContainer;
-
-const Container = styled.div`
-  position: relative;
-  width: 1240px;
-  margin-inline: auto;
-`;
 
 const ButtonGroup = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
-  align-items: center;
+  button {
+    border: 1px solid ${theme.colors.greys40};
+  }
   & > div {
+    display: flex;
     gap: 10px;
   }
 `;

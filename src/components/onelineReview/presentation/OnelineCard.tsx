@@ -53,7 +53,11 @@ const OnelineCard = ({
   return (
     <Container>
       <Review>
-        <img src={ProfileImg} alt="사람 이미지" />
+        {memberInfo.userImage ? (
+          <img src={memberInfo.userImage} alt="사람 이미지" />
+        ) : (
+          <img src={ProfileImg} alt="사람 이미지" />
+        )}
         <ReviewInfo>
           {rate === 1 ? (
             <div>
