@@ -395,17 +395,20 @@ const MateWrite = () => {
         >
           취소하기
         </Button>
-        {openCancleModal && (
+        <Modal
+          open={openCancleModal}
+          handleModal={() => setOpenCancleModal(!openCancleModal)}
+        >
           <SimpleDialog
-            message={`${mateId ? "수정" : "등록"}을 취소하시겠습니까?`}
-            cancelMessage="계속하기"
-            confirmMessage="확인"
+            message={`${mateId ? "수정" : "작성"}을 취소하시겠습니까?`}
+            cancelMessage={`계속 ${mateId ? "수정" : "작성"}하기`}
+            confirmMessage={`${mateId ? "수정" : "작성"} 취소하기`}
             clickCancleBtn={() => setOpenCancleModal(false)}
             clickConfirmBtn={() => {
               navigate("/mate-list", { replace: true });
             }}
           />
-        )}
+        </Modal>
         <Button
           variant="primary"
           size="small"
@@ -568,6 +571,7 @@ const BtnContainer = styled.div`
   text-align: center;
   button {
     width: 153px;
+    padding: 10px 0;
     :nth-child(1) {
       margin-right: 30px;
     }
