@@ -14,7 +14,7 @@ const blogReviewApis = {
     return response;
   },
   readBlogReviews: async (
-    pageNo = 0,
+    pageNo = 1,
     orderType: "Recent" | "ViewCount" = "Recent"
   ) => {
     const response: AxiosResponse<BlogReviewResponse> = await apiInstance.get(
