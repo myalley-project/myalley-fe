@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, useReducer, useEffect } from "react";
 import styled from "styled-components";
 import { useMutation } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
@@ -160,6 +160,7 @@ const BlogReviewWrite = () => {
     status: "",
   });
   const refreshTokenApi = useRefreshTokenApi();
+  const navigate = useNavigate();
 
   const blogPostMutation = useMutation({
     mutationFn: (formData: FormData) => blogReviewApis.createReview(formData),
@@ -275,6 +276,7 @@ const BlogReviewWrite = () => {
     }
     try {
       blogPostMutation.mutate(formData);
+      navigate("/blogreview-list");
     } catch (err) {
       const errResponese = isApiError(err);
       if (errResponese === "accessToken 만료") refreshTokenApi();
