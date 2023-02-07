@@ -14,7 +14,7 @@ const EmailAndPw = (props: EmailAndPwType) => {
   const { infos, valids, setValids, isOnly, handleInput } = props;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
-  // 이메일 유효성 상태관리_박예선_23.01.09
+  // 이메일 유효성 상태관리_박예선_23.02.07
   const handleEmailValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const rEmail = /^[a-zA-Z0-9+.]+@[a-z]+\.[a-z]{2,3}$/;
@@ -26,13 +26,13 @@ const EmailAndPw = (props: EmailAndPwType) => {
       const isEmailValid = rEmail.test(value);
       setValids({
         ...valids,
-        email: isEmailValid,
+        email: value === "" ? null : isEmailValid,
       });
     }, 800);
     setTimer(newTimer);
   };
 
-  // 비밀번호 유효성 상태관리_박예선_23.01.09
+  // 비밀번호 유효성 상태관리_박예선_23.02.07
   const handlePwValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const rPassword =
@@ -46,14 +46,14 @@ const EmailAndPw = (props: EmailAndPwType) => {
       const isPwCheckValid = infos.pwCheck === value;
       setValids({
         ...valids,
-        password: isPwValid,
-        pwCheck: isPwCheckValid,
+        password: value === "" ? null : isPwValid,
+        pwCheck: infos.pwCheck ? isPwCheckValid : null,
       });
     }, 800);
     setTimer(newTimer);
   };
 
-  // 비밀번호 확인 상태관리_박예선_23.01.08
+  // 비밀번호 확인 상태관리_박예선_23.02.07
   const handlePwCheckValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (timer) {
@@ -61,7 +61,10 @@ const EmailAndPw = (props: EmailAndPwType) => {
     }
     const newTimer = setTimeout(() => {
       const isPwCheckValid = infos.password === value;
-      setValids({ ...valids, pwCheck: isPwCheckValid });
+      setValids({
+        ...valids,
+        pwCheck: value === "" ? null : isPwCheckValid,
+      });
     }, 800);
     setTimer(newTimer);
   };
