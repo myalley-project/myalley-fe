@@ -13,6 +13,7 @@ import ReviewWrapper from "../components/reviewCommon/ReviewWrapper";
 const Exhibition = () => {
   const params = useParams();
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
+  const [state, setState] = useState("info");
   const navigate = useNavigate();
   const id = Number(params.id);
 
@@ -36,7 +37,6 @@ const Exhibition = () => {
     getExhbDetail();
   }, [getExhbDetail]);
 
-  const [state, setState] = useState("info");
   return (
     <ExhibitionContainer>
       <MainCard

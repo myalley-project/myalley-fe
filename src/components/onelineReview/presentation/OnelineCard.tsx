@@ -9,7 +9,7 @@ import Modal from "../../../Modal";
 import Button from "../../atom/Button";
 import oneLineReviewApis from "../../../apis/oneLineReviewApis";
 
-import OnelineContainer from "../container/OnelineContainer";
+import OnelineWriteContainer from "../container/OnelineWriteContainer";
 import isApiError from "../../../utils/isApiError";
 import useRefreshTokenApi from "../../../apis/useRefreshToken";
 
@@ -53,7 +53,11 @@ const OnelineCard = ({
   return (
     <Container>
       <Review>
-        <img src={ProfileImg} alt="사람 이미지" />
+        {memberInfo.userImage ? (
+          <img src={memberInfo.userImage} alt="사람 이미지" />
+        ) : (
+          <img src={ProfileImg} alt="사람 이미지" />
+        )}
         <ReviewInfo>
           {rate === 1 ? (
             <div>
@@ -107,10 +111,10 @@ const OnelineCard = ({
         </button>
       </ButtonItems>
       <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
-        <OnelineContainer
+        <OnelineWriteContainer
+          simpleId={id}
           handleModal={modifyModalHandler}
           writeType="modify"
-          simpleId={id}
         />
       </Modal>
       <Modal open={deleteModalIsopen} handleModal={deleteModalHandler}>
