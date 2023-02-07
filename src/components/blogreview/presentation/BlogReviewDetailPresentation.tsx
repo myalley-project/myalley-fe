@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useMutation, useQueryClient } from "react-query";
 import { theme } from "../../../styles/theme";
 import profileImage from "../../../assets/icons/profileImg.svg";
 import Button from "../../atom/Button";
 import { BlogReviewDetailResponse } from "../../../types/blogReview";
+import bloglikeApis from "../../../apis/bloglikeApis";
+import bookmarkApis from "../../../apis/bookMarkApis";
 
 const BlogReviewDetailPresentation = ({
+  id,
   createdAt,
   viewCount,
   title,
@@ -22,30 +26,57 @@ const BlogReviewDetailPresentation = ({
   likeStatus,
   bookmarkCount,
   bookmarkStatus,
+  exhibitionInfo,
 }: BlogReviewDetailResponse) => {
   const token = localStorage.getItem("accessToken");
+  const queryClient = useQueryClient();
 
-  // 유익해요, 북마크 버튼 클릭해서 저장되면 그에 따라 디자인 변경되도록 했습니다.
-  // api만 연결하시면 됩니다.
+  const bookmarkMutation = useMutation({
+    mutationFn: () => bookmarkApis.toggle(exhibitionInfo.id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogReviewDetail"]);
+      console.log("북마크 여부", bookmarkStatus);
+      console.log("북마크 카운트", bookmarkCount);
+    },
+  });
 
-  // 유익해요 버튼 클릭 함수_박예선_23.02.07
+  const bolglikeMutation = useMutation({
+    mutationFn: () => bloglikeApis.like(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogReviewDetail"]);
+    },
+  });
+
+  const bolgDislikeMutation = useMutation({
+    mutationFn: () => bloglikeApis.dislike(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogReviewDetail"]);
+    },
+  });
+  console.log("좋아요 여부", bookmarkStatus);
+  console.log("좋아요 카운트", bookmarkCount);
+
   const clickLikeBtn = () => {
     if (!token) {
       alert("로그인이 필요한 기능입니다.");
     }
-    // 블로그리뷰 좋아요 api 붙이셔야합니다. 필요하시면 수정하셔도 됩니다 - 예선
-    // 블로그리뷰 좋아요 api 성공하면 다시 정보 받아오기
-    // -> 그래야 likeCount, likeStatus 반영됨
+
+    if (memberInfo.memberId === Number(localStorage.getItem("memberId"))) {
+      alert("자신의 글에는 좋아요를 누를 수 없습니다.");
+    }
+
+    if (likeStatus) {
+      bolgDislikeMutation.mutate();
+    } else {
+      bolglikeMutation.mutate();
+    }
   };
 
-  // 북마크 버튼 클릭 함수_박예선_23.02.07
   const clickBookmarkBtn = () => {
     if (!token) {
       alert("로그인이 필요한 기능입니다.");
     }
-    // 블로그리뷰 북마크 api 붙이셔야합니다. 필요하시면 수정하셔도 됩니다 - 예선
-    // 블로그리뷰 북마크 api 성공하면 다시 정보 받아오기
-    // -> 그래야 bookmarkCount, bookmarkStatus 반영됨
+    bookmarkMutation.mutate();
   };
 
   return (
