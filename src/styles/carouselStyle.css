@@ -1,0 +1,42 @@
+.slick-prev {
+  left: 0;
+  z-index: 90;
+}
+
+.slick-next {
+  right: 0;
+}
+
+.slick-prev,
+.slick-next {
+  width: 90px;
+  height: 90px;
+  padding: 20px 30px;
+
+  background: none;
+}
+
+.slick-prev::before {
+  content: url("data:image/svg+xml,%3Csvg width='34' height='54' viewBox='0 0 34 54' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M32 2L2 27L32 52' stroke='%239C9C9C' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.slick-next:before {
+  content: url("data:image/svg+xml,%3Csvg width='34' height='54' viewBox='0 0 34 54' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 52L32 27L2 2' stroke='%239C9C9C' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: #9c9c9c;
+}
+
+.slick-dots {
+  width: fit-content;
+  left: 46vw;
+  bottom: 36px;
+}
+
+@media (min-width: 1440px) {
+  .slick-dots {
+    left: 674px;
+  }
+}
