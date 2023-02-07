@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import useLogOut from "../apis/logOut";
 import ProfileImg from "../assets/icons/profileImg.svg";
@@ -10,6 +11,8 @@ interface PropsType {
 
 const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
+  const location = useLocation();
+  const [isLocationKey, setIsLocationKey] = useState(location.key);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const [info, setInfo] = useState({
@@ -26,6 +29,13 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
     setIsShowMenu(false);
     setIsMenuOpen(false);
   };
+
+  useEffect(() => {
+    if (isLocationKey !== location.key) {
+      setIsShowMenu(false);
+      setIsMenuOpen(false);
+    }
+  }, [location, isLocationKey, setIsShowMenu]);
 
   return (
     <Background>
@@ -111,8 +121,8 @@ const Background = styled.div`
 `;
 
 const MenuOutSide = styled.div`
-  position: absolute;
-  z-index: 99;
+  position: fixed;
+  z-index: 98;
   width: 100vw;
   height: 100vh;
 `;
@@ -122,7 +132,6 @@ const MenuOutSideWrapper = styled.div`
   position: relative;
   width: 100vw;
   max-width: 1440px;
-  height: 100vh;
   margin-inline: auto;
 `;
 
