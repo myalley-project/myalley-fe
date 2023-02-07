@@ -46,7 +46,7 @@ export interface BlogReviewInfo {
   viewDate: string;
   viewCount: number;
   imageInfo: {
-    id: string;
+    id: number;
     url: string;
   };
 }

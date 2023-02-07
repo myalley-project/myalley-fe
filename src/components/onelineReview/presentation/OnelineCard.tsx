@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
-import ProfileImg from "../../../assets/icons/profileImg.svg";
+import profileImg from "../../../assets/icons/profileImg.svg";
 import StarIcon from "../../../assets/icons/starIcon.svg";
 import { OnelineReviewCardType } from "../../../types/oneLineReview";
 import Modal from "../../../Modal";
@@ -20,7 +20,6 @@ const OnelineCard = ({
   time,
   congestion,
   memberInfo,
-  exhibitionInfo,
 }: OnelineReviewCardType) => {
   const [modifyModalIsopen, setModifyModalIsopen] = useState<boolean>(false);
   const [deleteModalIsopen, setDeleteModalIsopen] = useState<boolean>(false);
@@ -54,15 +53,11 @@ const OnelineCard = ({
   return (
     <Container>
       <Review>
-        {memberInfo ? (
-          <img src={memberInfo.userImage} alt="사람 이미지" />
-        ) : exhibitionInfo ? null : (
-          <img src={ProfileImg} alt="사람 이미지" />
-        )}
+        <img
+          src={memberInfo?.memberImage ? memberInfo.memberImage : profileImg}
+          alt="사람 이미지"
+        />
         <ReviewInfo>
-          {exhibitionInfo?.title && (
-            <ExhibitionTitle>{exhibitionInfo.title}</ExhibitionTitle>
-          )}
           {rate === 1 ? (
             <div>
               <img src={StarIcon} alt="별점" />

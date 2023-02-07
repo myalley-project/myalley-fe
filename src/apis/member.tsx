@@ -171,7 +171,7 @@ export interface BlogInfo {
   writer: string;
   viewCount: number;
   imageInfo: {
-    id: string;
+    id: number;
     url: string;
   };
 }

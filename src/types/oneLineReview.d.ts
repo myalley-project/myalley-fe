@@ -21,11 +21,7 @@ export type OnelineReviewCardType = {
   memberInfo?: {
     memberId: number;
     nickname: string;
-    userImage: string;
-  };
-  exhibitionInfo?: {
-    id: number;
-    title: string;
+    memberImage: string;
   };
 };
 

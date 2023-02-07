@@ -42,7 +42,6 @@ const WrittenSimpleReview = () => {
           <OnelineCard
             key={each.id}
             id={each.id}
-            exhibitionInfo={each.exhibitionInfo}
             viewDate={each.viewDate}
             time={each.time}
             congestion={each.congestion}
