@@ -367,7 +367,7 @@ const MateWrite = () => {
           </div>
         </Section>
         <Section>
-          <SubTitle text="메이트 설명글" />
+          <SubTitle text="본문 내용" />
           <Editor>
             <Editor.TextInputArea
               value={content}
