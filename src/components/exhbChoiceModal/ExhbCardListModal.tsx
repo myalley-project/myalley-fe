@@ -16,11 +16,13 @@ interface ExhbCardListType {
     duration: string,
     status: string
   ) => void;
+  handleModal: () => void;
 }
 const ExhbCardListModal = ({
   exhbList,
   type,
   getExhbInfo,
+  handleModal,
 }: ExhbCardListType) => {
   const navigate = useNavigate();
 
@@ -47,9 +49,10 @@ const ExhbCardListModal = ({
           return (
             <SwiperSlide key={exhb.id}>
               <ExhibitionCard
-                onClick={() =>
-                  HandleClick(posterUrl, id, title, duration, status)
-                }
+                onClick={() => {
+                  HandleClick(posterUrl, id, title, duration, status);
+                  handleModal();
+                }}
               >
                 <Thumbnail>
                   <img alt="thumbnail" src={posterUrl} />

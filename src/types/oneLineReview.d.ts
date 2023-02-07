@@ -21,7 +21,7 @@ export type OnelineReviewCardType = {
   memberInfo: {
     memberId: number;
     nickname: string;
-    userImage: null;
+    userImage: string;
   };
 };
 

@@ -44,6 +44,7 @@ const CardListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: inherit;
+  max-width: 1440px;
 `;
 
 const ExhibitionCard = styled.div<{
