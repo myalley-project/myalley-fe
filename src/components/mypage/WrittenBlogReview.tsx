@@ -65,12 +65,8 @@ const Container = styled.div`
 
 const CardWrapper = styled.div`
   display: grid;
-  /* grid-template-columns: repeat(auto-fill, minmax(250px, 380px)); */
   grid-template-columns: repeat(auto-fit, 380px);
-
   grid-template-rows: auto;
-  /* align-content:; */
-  /* flex-flow: row wrap; */
   gap: 30px;
   margin-bottom: 120px;
 `;
