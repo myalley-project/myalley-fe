@@ -21,6 +21,8 @@ export interface MainCardType {
   webLink: string;
   id: number;
   bookmarked: boolean;
+  type: string;
+  viewCount: number;
 }
 const MainCard = ({
   posterUrl,
@@ -31,6 +33,8 @@ const MainCard = ({
   webLink,
   id,
   bookmarked,
+  type,
+  viewCount,
 }: MainCardType) => {
   const auth = localStorage.getItem("authority");
   const navigate = useNavigate();
@@ -55,6 +59,8 @@ const MainCard = ({
 
   // 북마크 버튼
   const toggleBookMark = async () => {
+    // 비로그인시 404 에러 중복 호출 방지
+    if (!localStorage.getItem("accessToken")) return;
     try {
       const res: AxiosResponse<BookMarkRes> = await exhbBookMarkApi(id);
       const { msg } = res.data;
@@ -71,15 +77,23 @@ const MainCard = ({
       if (typeof errorRes !== "object") return;
       const { errorCode, errorMsg } = errorRes;
       if (errorCode === 404 && errorMsg === "회원 정보 없음") {
-        alert("북마크 추가는 로그인 후 가능합니다.");
+        alert("유효하지 않은 토큰입니다. 다시 로그인해주세요.");
       }
     }
   };
 
   // 공유하기 버튼
   const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert("주소가 복사되었습니다.");
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => {
+        alert("주소가 복사되었습니다.");
+      })
+      .catch(() => {
+        alert(
+          "주소 복사에 실패했습니다. 다시 시도해주세요. (해당 기능은 현재 크롬에서만 가능합니다.)"
+        );
+      });
   };
 
   return (
@@ -103,11 +117,19 @@ const MainCard = ({
               <dt>장소</dt>
               <dd>{place}</dd>
             </InfoDetail>
-            <InfoDetail style={{ marginBottom: "0px" }}>
+            <InfoDetail>
               <dt>관람비용</dt>
               <dd>
                 {charge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
               </dd>
+            </InfoDetail>
+            <InfoDetail>
+              <dt>전시 유형</dt>
+              <dd>{type}</dd>
+            </InfoDetail>
+            <InfoDetail style={{ marginBottom: "0px" }}>
+              <dt>조회수</dt>
+              <dd>{viewCount}</dd>
             </InfoDetail>
           </div>
           <Footer>
