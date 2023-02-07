@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
 import profileImg from "../../../assets/icons/profileImg.svg";
@@ -11,6 +11,7 @@ import oneLineReviewApis from "../../../apis/oneLineReviewApis";
 import OnelineWriteContainer from "../container/OnelineWriteContainer";
 import isApiError from "../../../utils/isApiError";
 import useRefreshTokenApi from "../../../apis/useRefreshToken";
+import OnelineModifyContainer from "../container/OnelineModifyContainer";
 
 const OnelineCard = ({
   id,
@@ -26,12 +27,30 @@ const OnelineCard = ({
   const queryClient = useQueryClient();
   const refreshTokenApi = useRefreshTokenApi();
 
+  const placeHolder = {
+    id,
+    viewDate,
+    rate,
+    content,
+    time,
+    congestion,
+    memberInfo,
+  };
+
   const modifyModalHandler = () => {
-    setModifyModalIsopen((prev) => !prev);
+    if (memberInfo?.memberId === Number(localStorage.getItem("memberId"))) {
+      setModifyModalIsopen((prev) => !prev);
+    } else {
+      alert("리뷰를 작성한 본인이 아니면 수정할 수 없습니다.");
+    }
   };
 
   const deleteModalHandler = () => {
-    setDeleteModalIsopen((prev) => !prev);
+    if (memberInfo?.memberId === Number(localStorage.getItem("memberId"))) {
+      setDeleteModalIsopen((prev) => !prev);
+    } else {
+      alert("리뷰를 작성한 본인이 아니면 삭제할 수 없습니다.");
+    }
   };
 
   const deleteMutation = useMutation({
@@ -111,10 +130,10 @@ const OnelineCard = ({
         </button>
       </ButtonItems>
       <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
-        <OnelineWriteContainer
+        <OnelineModifyContainer
           simpleId={id}
           handleModal={modifyModalHandler}
-          writeType="modify"
+          modifyInfo={placeHolder}
         />
       </Modal>
       <Modal open={deleteModalIsopen} handleModal={deleteModalHandler}>
