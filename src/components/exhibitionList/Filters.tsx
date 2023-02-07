@@ -1,4 +1,5 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { FilterType } from "../../types/exhbList";
@@ -10,19 +11,22 @@ import { PagesState } from "../Pagination";
 const Filters = (props: FiltersType) => {
   const { setPages, selectedStatus, setSelectedStatus, setSelectedFilter } =
     props;
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // 전시상황 버튼 클릭 함수_박예선_23.02.01
+  // 전시상황 버튼 클릭 함수_박예선_23.02.07
   const handleStatusBtn = (status: StatusType) => {
     setPages({ started: 1, selected: 1 });
     setSelectedStatus(status);
+    searchParams.set("status", status);
+    setSearchParams(searchParams);
   };
 
-  // 필터 조건 핸들 함수_박예선_23.02.01
+  // 필터 조건 핸들 함수_박예선_23.02.07
   const handleFilters = (e: React.MouseEvent<HTMLLIElement>) => {
     const value = e.currentTarget.textContent;
     if (!value) return;
     if (value === "인기순") {
-      alert("준비중인 기능입니다.");
+      alert("준비 중인 기능입니다.");
       return;
     }
     for (let i = 0; i < EXHB_TYPE_ARRAY.length; i += 1) {

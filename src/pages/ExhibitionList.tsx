@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { Exhibition, FilterType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import Pagination from "../components/Pagination";
@@ -9,6 +10,7 @@ import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
 // 전시회 목록 페이지 컴포넌트_박예선_23.02.01
 const ExhibitionList = () => {
+  const [searchParams] = useSearchParams();
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [selectedStatus, setSelectedStatus] = useState<StatusType>("현재");
@@ -17,6 +19,22 @@ const ExhibitionList = () => {
     started: 1,
     selected: 1,
   });
+
+  // 필요한 쿼리스트링 - type, status-완료 , page
+
+  // 쿼리스트링에 따라 status 변경_박예선_23.02.07
+  useEffect(() => {
+    const searchStatus = searchParams.get("status");
+    if (!searchStatus) return;
+    if (
+      searchStatus === "현재" ||
+      searchStatus === "예정" ||
+      searchStatus === "지난"
+    )
+      setSelectedStatus(searchStatus);
+
+    // console.log(searchParams.get("type"));
+  }, [searchParams]);
 
   // 전시회 목록 요청 api_박예선_23.01.18
   const getExhbList = useCallback(
