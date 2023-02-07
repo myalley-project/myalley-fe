@@ -48,6 +48,8 @@ const Exhibition = () => {
         webLink={exhbDetail?.webLink ?? ""}
         id={exhbDetail?.id ?? 0}
         bookmarked={exhbDetail?.bookmarked ?? false}
+        type={exhbDetail?.type ?? ""}
+        viewCount={exhbDetail?.viewCount ?? 0}
       />
       <ToggleSwitch setState={setState} />
       {state === "info" && (
