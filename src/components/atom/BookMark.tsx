@@ -14,12 +14,11 @@ const BookMark = ({ onClick, marked }: BookMarkType) => {
 
   useEffect(() => {
     setIsChecked(marked);
-  }, [marked]);
+  }, [marked, isChecked]);
 
   const handleCheck = () => {
     if (!localStorage.getItem("accessToken")) {
       alert("해당 기능은 로그인 후 이용 가능합니다.");
-      return;
     }
     setIsChecked((prev) => !prev);
   };

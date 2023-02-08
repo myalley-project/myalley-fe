@@ -24,7 +24,9 @@ const MateCard = ({ mate }: MateListType) => {
   return (
     <Link to={`/mate/${mateId}`} style={{ textDecoration: "none" }}>
       <Card>
-        <Thumbnail src={exhibition.posterUrl} alt="exhibition-img" />
+        {exhibition.posterUrl && (
+          <Thumbnail src={exhibition.posterUrl} alt="exhibition-img" />
+        )}
         <FindMateDetail>
           <TitleAndEdit>
             <Title className="title">{title}</Title>
@@ -129,7 +131,7 @@ const Card = styled.div`
   }
 
   &:hover {
-    border: 2px solid ${theme.colors.primry60};
+    border: 1px solid ${theme.colors.primry60};
     .title {
       color: ${theme.colors.primry80};
     }

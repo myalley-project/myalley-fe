@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -39,6 +39,7 @@ const MainCard = ({
   const auth = localStorage.getItem("authority");
   const navigate = useNavigate();
   const refreshTokenApi = useRefreshTokenApi();
+  const [isBookmarked, setIsBookmarkted] = useState(bookmarked);
 
   // 전시글 삭제
   const handleDelete = async () => {
@@ -59,14 +60,18 @@ const MainCard = ({
 
   // 북마크 버튼
   const toggleBookMark = async () => {
-    // 비로그인시 404 에러 중복 호출 방지
     if (!localStorage.getItem("accessToken")) return;
+    if (localStorage.getItem("authority") === "ROLE_ADMIN") {
+      alert("관리자는 북마크를 할 수 없습니다.");
+      return;
+    }
     try {
       const res: AxiosResponse<BookMarkRes> = await exhbBookMarkApi(id);
       const { msg } = res.data;
       alert(msg);
     } catch (err) {
       isApiError(err);
+      setIsBookmarkted(false);
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
         await refreshTokenApi();
@@ -97,9 +102,13 @@ const MainCard = ({
   };
 
   return (
-    <CardContainer>
+    <CardContainer height={auth === "ROLE_ADMIN" ? "520px" : "462px"}>
       <Card>
-        <PosterImg src={posterUrl} alt="poster-img" />
+        <PosterImg
+          src={posterUrl}
+          alt="poster-img"
+          height={auth === "ROLE_ADMIN" ? "420px" : "362px"}
+        />
         <InfoContainer>
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
@@ -137,7 +146,7 @@ const MainCard = ({
               사이트 방문
             </WebLink>
             <BookMarkBtn>
-              <BookMark onClick={toggleBookMark} marked={bookmarked} />
+              <BookMark onClick={toggleBookMark} marked={isBookmarked} />
             </BookMarkBtn>
             <ShareBtn type="button" onClick={copyLink} />
           </Footer>
@@ -149,10 +158,10 @@ const MainCard = ({
 
 export default MainCard;
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ height: string }>`
   display: flex;
   width: 100%;
-  height: 458px;
+  height: ${(props) => props.height};
   align-items: center;
   justify-content: center;
   border-radius: 0px;
@@ -165,10 +174,14 @@ const Card = styled.div`
   width: 83vw;
   border: 1px solid rgba(127, 103, 190, 0.3);
   background-color: ${theme.colors.white100};
+  box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
-const PosterImg = styled.img`
-  width: 278px;
+const PosterImg = styled.img<{ height: string }>`
+  width: 380px;
+  height: ${(props) => props.height};
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 `;
 
 const InfoContainer = styled.div`
