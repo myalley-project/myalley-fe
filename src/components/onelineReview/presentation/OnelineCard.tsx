@@ -26,14 +26,8 @@ const OnelineCard = ({
   const [deleteModalIsopen, setDeleteModalIsopen] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const refreshTokenApi = useRefreshTokenApi();
-
-  const [userconfirm, setUserconfirm] = useState<boolean>(false);
-  useEffect(() => {
-    const boolean =
-      memberInfo?.memberId === Number(localStorage.getItem("memberId"));
-    setUserconfirm(boolean);
-    console.log(boolean);
-  }, [memberInfo?.memberId]);
+  const userconfirm =
+    memberInfo?.memberId === Number(localStorage.getItem("memberId"));
 
   const placeHolder = {
     id,

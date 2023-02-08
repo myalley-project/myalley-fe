@@ -6,7 +6,7 @@ import SearchBar from "../atom/Searchbar";
 
 interface ReviewSearchbarProps {
   setFilter: (state: "oneline" | "blog") => void;
-  setOrderType: (state: "Recent" | "ViewCount") => void;
+  setOrderType: (state: "Recent" | "StarScore" | "ViewCount") => void;
   handleReviewModal: () => void;
   filter: "oneline" | "blog";
   totalElement: number;
@@ -60,9 +60,15 @@ const ReviewSearchBar = ({
         최근순
       </button>
       <Spliter />
-      <button onClick={() => setOrderType("ViewCount")} type="button">
-        별점순
-      </button>
+      {filter === "oneline" ? (
+        <button onClick={() => setOrderType("StarScore")} type="button">
+          별점순
+        </button>
+      ) : (
+        <button onClick={() => setOrderType("ViewCount")} type="button">
+          조회수순
+        </button>
+      )}
     </ButtonItems>
   </Container>
 );
