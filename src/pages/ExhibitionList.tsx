@@ -22,19 +22,22 @@ const ExhibitionList = () => {
 
   // 필요한 쿼리스트링 - type, status-완료 , page
 
-  // 쿼리스트링에 따라 status 변경_박예선_23.02.07
+  // 접속한 url의 쿼리스트링에 따라 필터, 페이지번호 변경_박예선_23.02.07
   useEffect(() => {
-    const searchStatus = searchParams.get("status");
-    if (!searchStatus) return;
+    const statusSearch = searchParams.get("status");
+    const typeSearch = searchParams.get("type");
+    const pageSearch = searchParams.get("page");
     if (
-      searchStatus === "현재" ||
-      searchStatus === "예정" ||
-      searchStatus === "지난"
+      statusSearch === "현재" ||
+      statusSearch === "예정" ||
+      statusSearch === "지난"
     )
-      setSelectedStatus(searchStatus);
-
+      setSelectedStatus(statusSearch);
+    if (typeSearch === "전체 전시") setSelectedFilter(typeSearch);
+    setPages({ ...pages, selected: Number(pageSearch) });
+    console.log(typeof typeSearch);
     // console.log(searchParams.get("type"));
-  }, [searchParams]);
+  }, [pages, searchParams]);
 
   // 전시회 목록 요청 api_박예선_23.01.18
   const getExhbList = useCallback(
