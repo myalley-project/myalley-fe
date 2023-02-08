@@ -9,10 +9,11 @@ interface MateListFilterType {
   setMateStatusFilter: React.Dispatch<React.SetStateAction<MateStatusType>>;
 }
 
-// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.02.01
+// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.02.08
 const MateListFilter = (props: MateListFilterType) => {
   const { setMateStatusFilter } = props;
   const navigate = useNavigate();
+  const isAdmin = localStorage.getItem("authority") === "ROLE_ADMIN";
 
   // 필터 조건 핸들 함수_박예선_23.02.01
   const handleFilters = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
@@ -43,20 +44,22 @@ const MateListFilter = (props: MateListFilterType) => {
             if (e.key === "Enter") alert("준비 중인 기능입니다.");
           }}
         />
-        <Button
-          variant="primary"
-          size="small"
-          className="mate-write-btn"
-          onClick={() => {
-            if (!localStorage.getItem("accessToken")) {
-              alert("로그인이 필요합니다.");
-              return;
-            }
-            navigate("/mate-write");
-          }}
-        >
-          메이트 모집하기
-        </Button>
+        {!isAdmin && (
+          <Button
+            variant="primary"
+            size="small"
+            className="mate-write-btn"
+            onClick={() => {
+              if (!localStorage.getItem("accessToken")) {
+                alert("로그인이 필요합니다.");
+                return;
+              }
+              navigate("/mate-write");
+            }}
+          >
+            메이트 모집하기
+          </Button>
+        )}
       </div>
     </FilterContainer>
   );
