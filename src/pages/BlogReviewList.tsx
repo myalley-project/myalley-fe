@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useQuery } from "react-query";
 import { theme } from "../styles/theme";
 import Selectbox from "../components/atom/Selectbox";
-import BlogReviewListWrapper from "../components/blogreview/container/BlogReviewList";
+import ReviewCardList from "../components/blogreview/container/ReviewCardList";
 import Button from "../components/atom/Button";
 import blogReviewApis from "../apis/blogReviewApis";
 import Pagination from "../components/Pagination";
@@ -78,19 +78,14 @@ const BlogReviewList = () => {
           </Button>
         </Flex>
       </SelectContainer>
-      {data ? (
-        <BlogReviewListWrapper
-          blogInfo={data.blogInfo}
-          pageInfo={data.pageInfo}
-        />
-      ) : null}
-      {totalPageNumber > 0 ? (
-        <Pagination
-          pages={pages}
-          setPages={setPages}
-          totalPage={totalPageNumber}
-        />
-      ) : null}
+      {data && (
+        <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
+      )}
+      <Pagination
+        pages={pages}
+        setPages={setPages}
+        totalPage={totalPageNumber}
+      />
     </Container>
   );
 };

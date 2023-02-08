@@ -5,7 +5,7 @@ import blogReviewApis from "../../../apis/blogReviewApis";
 import { BlogReviewInfo, BlogReviewResponse } from "../../../types/blogReview";
 import BlogReviewCard from "../presentation/BlogReviewCard";
 
-const BlogReviewListWrapper = ({ blogInfo }: BlogReviewResponse) => (
+const ReviewCardList = ({ blogInfo }: BlogReviewResponse) => (
   <Container>
     <CardWrapper>
       {blogInfo &&
@@ -24,7 +24,7 @@ const BlogReviewListWrapper = ({ blogInfo }: BlogReviewResponse) => (
   </Container>
 );
 
-export default BlogReviewListWrapper;
+export default ReviewCardList;
 
 const Container = styled.div`
   margin-inline: auto;
