@@ -1,22 +1,11 @@
 import React, { useEffect, useReducer } from "react";
-import OnelineWrite from "../components/onelineReview/OnelineWrite";
-import { OnelineReviewPostType } from "../types/OnelineReview";
-
-// interface OnelineReviewPost {
-//   exhibitionId: number;
-//   date: {
-//     year: string;
-//     month: string;
-//     day: string;
-//   };
-//   time: {
-//     enterence: string;
-//     exit: string;
-//   };
-//   congestion: string;
-//   rate: number;
-//   content: string;
-// }
+import { useMutation, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
+import OnelineWrite from "../presentation/OnelineWrite";
+import { OnelineReviewPostType } from "../../../types/oneLineReview";
+import oneLineReviewApis from "../../../apis/oneLineReviewApis";
+import isApiError from "../../../utils/isApiError";
+import useRefreshTokenApi from "../../../apis/useRefreshToken";
 
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
@@ -25,10 +14,7 @@ const initialState: OnelineReviewPostType = {
     month: "",
     day: "",
   },
-  time: {
-    enterence: "",
-    exit: "",
-  },
+  time: "",
   congestion: "",
   rate: 0,
   content: "",
@@ -38,8 +24,7 @@ const ReducerActionType = {
   YEAR: "YEAR",
   MONTH: "MONTH",
   DAY: "DAY",
-  ENTERANCETIME: "ENTERANCETIME",
-  EXITTIME: "EXITTIME",
+  TIME: "TIME",
   CONGESTION: "CONGESTION",
   RATE: "RATE",
   CONTENT: "CONTENT",
@@ -71,15 +56,10 @@ const reducer = (
         ...state,
         date: { ...state.date, day: action.payload ?? "" },
       };
-    case ReducerActionType.ENTERANCETIME:
+    case ReducerActionType.TIME:
       return {
         ...state,
-        time: { ...state.time, enterence: action.payload ?? "" },
-      };
-    case ReducerActionType.EXITTIME:
-      return {
-        ...state,
-        time: { ...state.time, exit: action.payload ?? "" },
+        time: action.payload ?? "",
       };
     case ReducerActionType.CONGESTION:
       return {
@@ -101,8 +81,32 @@ const reducer = (
   }
 };
 
-const OnelineWrapper = () => {
+type Payload = {
+  exhibitionId: number;
+  viewDate: string;
+  time: string;
+  congestion: string;
+  rate: number;
+  content: string;
+};
+
+type WriteType = "create" | "modify";
+
+interface OnelineContainerProps {
+  handleModal: () => void;
+  writeType: WriteType;
+  simpleId: number;
+}
+
+const OnelineWriteContainer = ({
+  writeType,
+  simpleId = 0,
+  handleModal,
+}: OnelineContainerProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { id } = useParams();
+  const refreshTokenApi = useRefreshTokenApi();
+  const queryClient = useQueryClient();
 
   const yearHandler = (e: React.MouseEvent) => {
     if (e !== undefined) {
@@ -137,22 +141,11 @@ const OnelineWrapper = () => {
     }
   };
 
-  const enteranceHandler = (e: React.MouseEvent) => {
+  const timeHandler = (e: React.MouseEvent) => {
     if (e !== undefined) {
       if (e.currentTarget.textContent !== null) {
         dispatch({
-          type: ReducerActionType.ENTERANCETIME,
-          payload: e.currentTarget.textContent,
-        });
-      }
-    }
-  };
-
-  const exitHandler = (e: React.MouseEvent) => {
-    if (e !== undefined) {
-      if (e.currentTarget.textContent !== null) {
-        dispatch({
-          type: ReducerActionType.EXITTIME,
+          type: ReducerActionType.TIME,
           payload: e.currentTarget.textContent,
         });
       }
@@ -183,13 +176,74 @@ const OnelineWrapper = () => {
     }
   };
 
-  const contentHandler = (e: React.MouseEvent) => {
+  const contentHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e !== undefined) {
-      if (e.currentTarget.textContent !== null) {
+      if (e.target.value !== null) {
         dispatch({
           type: ReducerActionType.CONTENT,
-          payload: e.currentTarget.textContent,
+          payload: e.target.value,
         });
+      }
+    }
+  };
+
+  const newReviewMutation = useMutation({
+    mutationFn: (payload: Payload) => oneLineReviewApis.createReview(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["simpleReviews"]);
+    },
+  });
+
+  const modifyMutation = useMutation({
+    mutationFn: ({
+      reviewId,
+      payload,
+    }: {
+      reviewId: number;
+      payload: {
+        viewDate: string;
+        time: string;
+        congestion: string;
+        rate: number;
+        content: string;
+      };
+    }) => oneLineReviewApis.updateReview(reviewId, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["simpleReviews"]);
+    },
+  });
+
+  const SubmitHandler = () => {
+    const body = getPayload(id as string, state);
+
+    if (Object.values(body).includes("") || Object.values(body).includes(0)) {
+      throw Error("빈 칸으로 남겨진 값이 있습니다.");
+    }
+    if (body.content.length < 10) alert("본문 내용이 너무 짧습니다");
+
+    if (writeType === "create") {
+      try {
+        newReviewMutation.mutate(body);
+        handleModal();
+      } catch (err) {
+        const errResponese = isApiError(err);
+        if (errResponese === "accessToken 만료") refreshTokenApi();
+      }
+    } else if (writeType === "modify") {
+      try {
+        const reviewId = simpleId;
+        const payload = {
+          viewDate: body.viewDate,
+          time: body.time,
+          congestion: body.congestion,
+          rate: body.rate,
+          content: body.content,
+        };
+        modifyMutation.mutate({ reviewId, payload });
+        handleModal();
+      } catch (err) {
+        const errResponese = isApiError(err);
+        if (errResponese === "accessToken 만료") refreshTokenApi();
       }
     }
   };
@@ -197,16 +251,34 @@ const OnelineWrapper = () => {
   return (
     <OnelineWrite
       state={state}
+      handleModal={handleModal}
       yearHandler={yearHandler}
       monthHandler={monthHandler}
       dayHandler={dayHandler}
-      enteranceHandler={enteranceHandler}
-      exitHandler={exitHandler}
+      timeHandler={timeHandler}
       congestionHandler={congestionHandler}
       rateHandler={rateHandler}
       contentHandler={contentHandler}
+      submitHandler={SubmitHandler}
     />
   );
 };
 
-export default OnelineWrapper;
+export default OnelineWriteContainer;
+
+function getPayload(
+  exhibitionId: string,
+  state: OnelineReviewPostType
+): Payload {
+  const BIRTHDAY = `${state.date.year}-${state.date.month}-${state.date.day}`;
+  const ID = Number(exhibitionId);
+
+  return {
+    exhibitionId: ID,
+    viewDate: BIRTHDAY,
+    time: state.time,
+    congestion: state.congestion,
+    rate: state.rate,
+    content: state.content,
+  };
+}

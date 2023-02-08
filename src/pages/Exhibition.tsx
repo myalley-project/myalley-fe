@@ -8,12 +8,15 @@ import ToggleSwitch from "../components/exhibition/ToggleSwitch";
 import { exhbApi, ExhibitionRes } from "../apis/exhibition";
 import isApiError from "../utils/isApiError";
 import ExhbMateList from "../components/exhibition/ExhbMateList";
+import ReviewWrapper from "../components/reviewCommon/ReviewWrapper";
 
 const Exhibition = () => {
   const params = useParams();
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
+  const [state, setState] = useState("info");
   const navigate = useNavigate();
   const id = Number(params.id);
+
   const getExhbDetail = useCallback(async () => {
     try {
       const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
@@ -34,7 +37,6 @@ const Exhibition = () => {
     getExhbDetail();
   }, [getExhbDetail]);
 
-  const [state, setState] = useState("info");
   return (
     <ExhibitionContainer>
       <MainCard
@@ -46,6 +48,8 @@ const Exhibition = () => {
         webLink={exhbDetail?.webLink ?? ""}
         id={exhbDetail?.id ?? 0}
         bookmarked={exhbDetail?.bookmarked ?? false}
+        type={exhbDetail?.type ?? ""}
+        viewCount={exhbDetail?.viewCount ?? 0}
       />
       <ToggleSwitch setState={setState} />
       {state === "info" && (
@@ -54,6 +58,7 @@ const Exhibition = () => {
           <ContentCard title="작가 정보" content={exhbDetail?.author ?? ""} />
         </>
       )}
+      {state === "review" && <ReviewWrapper />}
       {state === "mate" && <ExhbMateList />}
     </ExhibitionContainer>
   );

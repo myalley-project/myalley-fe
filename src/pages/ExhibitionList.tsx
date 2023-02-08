@@ -1,21 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import { ExhbTypeFilters, Exhibition, FilterType } from "../types/exhbList";
+import { Exhibition, FilterType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
-// 전시회 목록 페이지 컴포넌트_박예선_23.01.21
+// 전시회 목록 페이지 컴포넌트_박예선_23.02.01
 const ExhibitionList = () => {
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [selectedStatus, setSelectedStatus] = useState<StatusType>("현재");
-  const [exhbTypeFilters, setExhbTypeFilters] = useState<ExhbTypeFilters>({
-    selected: "전체",
-    applied: "전체",
-  });
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>("전체 전시");
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
@@ -42,10 +39,10 @@ const ExhibitionList = () => {
     []
   );
 
-  // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.01.18
+  // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.02.01
   useEffect(() => {
-    getExhbList(selectedStatus, exhbTypeFilters.applied, pages.selected);
-  }, [getExhbList, selectedStatus, exhbTypeFilters.applied, pages.selected]);
+    getExhbList(selectedStatus, selectedFilter, pages.selected);
+  }, [getExhbList, selectedStatus, selectedFilter, pages.selected]);
 
   return (
     <ExhibitionListContainer className="flex">
@@ -54,9 +51,7 @@ const ExhibitionList = () => {
         selectedStatus={selectedStatus}
         setSelectedStatus={setSelectedStatus}
         setPages={setPages}
-        exhbTypeFilters={exhbTypeFilters}
-        setExhbTypeFilters={setExhbTypeFilters}
-        getExhbList={getExhbList}
+        setSelectedFilter={setSelectedFilter}
       />
       <ExhbCardList exhbList={exhbList} type="exhbList" />
       <Pagination pages={pages} setPages={setPages} totalPage={totalPage} />
@@ -70,6 +65,8 @@ const ExhibitionListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100vw;
+  max-width: 1440px;
+  margin: auto;
   font-size: 14px;
   h1 {
     margin: 50px 0;

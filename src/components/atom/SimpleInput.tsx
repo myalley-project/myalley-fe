@@ -1,39 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
-const SimpleInput = () => {
-  const [inputlength, setInputlength] = useState(0);
+interface SimpleInputProps {
+  inputlength: number;
+  onChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  const lengthChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputlength(event.target.value.length);
-  };
-
-  return (
-    <Container>
-      <Input
-        type="text"
-        placeholder="내용을 입력해주세요"
-        onChange={lengthChangeHandler}
-      />
-      <InputLegnth inputlength={inputlength}>{inputlength}/60</InputLegnth>
-    </Container>
-  );
-};
+const SimpleInput = ({ onChangeHandler, inputlength }: SimpleInputProps) => (
+  <Container>
+    <input
+      type="text"
+      placeholder="내용을 입력해주세요"
+      onChange={onChangeHandler}
+    />
+    <InputLegnth inputlength={inputlength}>{inputlength}/60</InputLegnth>
+  </Container>
+);
 
 export default SimpleInput;
 
 const Container = styled.div`
   position: relative;
-`;
-
-const Input = styled.input`
-  width: 730px;
-  height: 36px;
-  margin: 10px auto;
-  padding-left: 10px;
-  border: 1px solid ${theme.colors.greys40};
-  border-radius: 30px;
+  & > input {
+    width: 730px;
+    height: 36px;
+    margin: 10px auto;
+    padding-left: 10px;
+    border: 1px solid ${theme.colors.greys40};
+    border-radius: 30px;
+  }
 `;
 
 interface InputProps {

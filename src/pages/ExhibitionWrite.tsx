@@ -21,6 +21,8 @@ import {
 } from "../apis/exhibition";
 import isApiError from "../utils/isApiError";
 import useRefreshTokenApi from "../apis/useRefreshToken";
+import { theme } from "../styles/theme";
+import SimpleDialog from "../components/SimpleDialog";
 
 interface ModeType {
   mode: string;
@@ -29,6 +31,7 @@ interface ModeType {
 const ExhibitionWrite = (props: ModeType) => {
   const formData = new FormData();
   const navigate = useNavigate();
+  const [isCancel, setIsCancel] = useState(false);
   const refreshTokenApi = useRefreshTokenApi();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -67,7 +70,12 @@ const ExhibitionWrite = (props: ModeType) => {
 
   useEffect(() => {
     getEditExhb();
-  }, [getEditExhb]);
+    // 일반 회원 접근 못하도록
+    if (localStorage.getItem("authority") === "ROLE_USER") {
+      alert("관리자만 접근 가능한 페이지입니다.");
+      navigate("/");
+    }
+  }, [getEditExhb, navigate]);
 
   // 인풋 입력값 핸들링 함수
   const handleInputAndTextArea = (
@@ -140,7 +148,16 @@ const ExhibitionWrite = (props: ModeType) => {
       });
     } catch (err) {
       const errorRes = isApiError(err);
-      if (errorRes === "accessToken 만료") refreshTokenApi(); // 토큰 필요한 요청에서는 필수
+      if (errorRes === "accessToken 만료") {
+        await refreshTokenApi();
+        const reRes = await exhbUploadImgApi(imgfile);
+        const { data } = reRes;
+        setDetail({
+          ...detail,
+          fileName: data.filename,
+          posterUrl: data.s3Url,
+        });
+      }
     }
   };
 
@@ -190,6 +207,7 @@ const ExhibitionWrite = (props: ModeType) => {
 
   // 등록 api 호출
   const clickSubmitBtn = async () => {
+    const regDetail = /^https:\/\//;
     if (detail.title === "") {
       alert("제목을 입력해주세요.");
     } else if (detail.type === "") {
@@ -208,6 +226,8 @@ const ExhibitionWrite = (props: ModeType) => {
       alert("작가정보를 작성해주세요.");
     } else if (detail.webLink === "") {
       alert("전시회 웹페이지 주소를 작성해주세요.");
+    } else if (!regDetail.test(detail.webLink)) {
+      alert("웹페이지 주소는 'https://'로 시작해야합니다.");
     } else
       try {
         const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
@@ -216,8 +236,20 @@ const ExhibitionWrite = (props: ModeType) => {
           navigate("/");
         }
       } catch (err) {
-        isApiError(err);
-        // if (errorRes === "accessToken 만료") refreshTokenApi();
+        const errorRes = isApiError(err);
+        if (errorRes === "accessToken 만료") {
+          await refreshTokenApi();
+          const reRes = await exhbCreateApi(detail);
+          if (reRes.status === 200) {
+            alert("전시글 등록이 완료되었습니다. 메인 페이지로 돌아갑니다.");
+            navigate("/");
+          }
+        }
+        if (typeof errorRes !== "object") return;
+        const { errorCode } = errorRes;
+        if (errorCode === 400) {
+          alert("빈칸을 다시 확인해주세요");
+        }
       }
   };
 
@@ -248,9 +280,9 @@ const ExhibitionWrite = (props: ModeType) => {
           />
         </TitleWrapper>
         <OptionWrapper>
-          <Label htmlFor="exhibition-type">전시타입</Label>
+          <Label htmlFor="exhibition-type">전시 타입</Label>
           <Selectbox
-            placeholder={detail.type === "" ? "전체 전시" : detail.type}
+            placeholder={detail.type === "" ? "선택하기" : detail.type}
             options={getExhbTypeArray()}
             width="130px"
             name="type"
@@ -260,7 +292,7 @@ const ExhibitionWrite = (props: ModeType) => {
         <OptionWrapper>
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
-            placeholder={detail.status === "" ? "전체 전시" : detail.status}
+            placeholder={detail.status === "" ? "선택하기" : detail.status}
             options={["지난 전시", "현재 전시", "예정 전시"]}
             width="130px"
             name="status"
@@ -287,25 +319,6 @@ const ExhibitionWrite = (props: ModeType) => {
             onChange={(date: Date) => handleEndDate(date)}
             value={detail.duration.substring(13, 23)}
           />
-        </OptionWrapper>
-        <OptionWrapper>
-          <Label htmlFor="exhibition-poster">전시 포스터 등록</Label>
-          <InputFileName type="text" value={detail.fileName} disabled />
-          <FileLabel htmlFor="exhibition-posterUrl">올리기</FileLabel>
-          <InputFile
-            type="file"
-            name="fileName"
-            id="exhibition-posterUrl"
-            onChange={uploadImgFile}
-            accept="image/jpeg,image/jpg,image/png"
-          />
-          {thumbnail && (
-            <img
-              src={thumbnail}
-              alt="thumbnail"
-              style={{ maxWidth: "500px", marginTop: "10px" }}
-            />
-          )}
         </OptionWrapper>
         <OptionWrapper>
           <Label htmlFor="exhibition-space">전시 장소</Label>
@@ -343,6 +356,25 @@ const ExhibitionWrite = (props: ModeType) => {
           </div>
         </OptionWrapper>
         <OptionWrapper>
+          <Label htmlFor="exhibition-poster">전시 포스터 등록</Label>
+          <InputFileName type="text" value={detail.fileName} disabled />
+          <FileLabel htmlFor="exhibition-posterUrl">올리기</FileLabel>
+          <InputFile
+            type="file"
+            name="fileName"
+            id="exhibition-posterUrl"
+            onChange={uploadImgFile}
+            accept="image/jpeg,image/jpg,image/png"
+          />
+          {thumbnail && (
+            <img
+              src={thumbnail}
+              alt="thumbnail"
+              style={{ maxWidth: "500px", marginTop: "10px" }}
+            />
+          )}
+        </OptionWrapper>
+        <OptionWrapper>
           <Label htmlFor="exhibition-content">전시내용</Label>
           <TextArea
             as="textarea"
@@ -367,7 +399,7 @@ const ExhibitionWrite = (props: ModeType) => {
           <InputLink
             type="text"
             name="webLink"
-            placeholder="내용을 입력해주세요."
+            placeholder="https://"
             value={detail.webLink}
             onChange={(e) => handleInputAndTextArea(e)}
             style={{ width: "100%" }}
@@ -375,14 +407,14 @@ const ExhibitionWrite = (props: ModeType) => {
         </OptionWrapper>
       </WriteExhibitionWrapper>
       <ButtonWrapper>
-        <SubmitBtn
+        <CancelBtn
           variant="primary"
           size="large"
           type="button"
-          onClick={() => navigate("/")}
+          onClick={() => setIsCancel(true)}
         >
           취소
-        </SubmitBtn>
+        </CancelBtn>
         {mode === "edit" ? (
           <SubmitBtn
             variant="primary"
@@ -403,6 +435,15 @@ const ExhibitionWrite = (props: ModeType) => {
           </SubmitBtn>
         )}
       </ButtonWrapper>
+      {isCancel && (
+        <SimpleDialog
+          message="전시글 작성을 정말 취소하시겠습니까? 작성중이던 내용은 저장되지 않습니다."
+          cancelMessage="취소"
+          confirmMessage="확인"
+          clickCancleBtn={() => setIsCancel(false)}
+          clickConfirmBtn={() => navigate("/")}
+        />
+      )}
     </WriteExhibitionContainer>
   );
 };
@@ -421,14 +462,14 @@ const WriteExhibitionWrapper = styled.div`
   max-width: 1200px;
   padding: 30px;
   margin: 50px 0 30px 0;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
+  background-color: ${theme.colors.white100};
+  border: 1px solid ${theme.colors.greys40};
 `;
 
 const TitleWrapper = styled.div`
   height: 66px;
   margin-bottom: 30px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid ${theme.colors.greys40};
   border-radius: 0px;
 `;
 
@@ -438,7 +479,7 @@ const InputTitle = styled.input`
   font-weight: 700;
   font-size: 28px;
   line-height: 36px;
-  color: ${(props) => props.theme.colors.greys90};
+  color: ${theme.colors.greys90};
 `;
 
 const OptionWrapper = styled.div`
@@ -446,7 +487,7 @@ const OptionWrapper = styled.div`
   span {
     font-weight: 500;
     font-size: 14px;
-    color: ${(props) => props.theme.colors.greys60};
+    color: ${theme.colors.greys60};
   }
 `;
 
@@ -456,17 +497,23 @@ const Label = styled.label`
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
-  color: ${(props) => props.theme.colors.greys90};
+  color: ${theme.colors.greys90};
 `;
 
 const Input = styled.input`
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 10000px;
   font-weight: 500;
   font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${theme.colors.greys90};
   &::placeholder {
-    color: ${(props) => props.theme.colors.greys60};
+    color: ${theme.colors.greys60};
+  }
+  &:hover {
+    border: 1px solid ${theme.colors.primry60};
+    &::placeholder {
+      color: ${theme.colors.greys90};
+    }
   }
 `;
 
@@ -475,19 +522,25 @@ const InputFileName = styled.input`
   max-width: 851px;
   height: 36px;
   padding: 8px 20px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 10000px;
   font-weight: 400;
   font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
+  color: ${theme.colors.greys60};
   margin-right: 10px;
+  &:hover {
+    border: 1px solid ${theme.colors.primry60};
+    &::placeholder {
+      color: ${theme.colors.greys90};
+    }
+  }
 `;
 
 const FileLabel = styled.label`
   display: inline-block;
   padding: 8px 20px;
   height: 36px;
-  background: ${(props) => props.theme.colors.primry70};
+  background: ${theme.colors.primry70};
   border-radius: 10000px;
   font-weight: 700;
   font-size: 14px;
@@ -527,7 +580,6 @@ const InputPrice = styled.input`
   height: 17px;
   font-weight: 400;
   font-size: 14px;
-  color: ${(props) => props.theme.colors.greys60};
   text-align: right;
 `;
 
@@ -573,6 +625,16 @@ const ButtonWrapper = styled.div`
   margin-bottom: 50px;
 `;
 
+const CancelBtn = styled(Button)`
+  width: 153px;
+  &:hover {
+    background-color: ${theme.colors.greys90};
+  }
+`;
+
 const SubmitBtn = styled(Button)`
   width: 153px;
+  & :hover {
+    background-color: ${theme.colors.primry90};
+  }
 `;
