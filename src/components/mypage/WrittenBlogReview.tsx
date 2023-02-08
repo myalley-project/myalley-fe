@@ -7,6 +7,7 @@ import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 import isApiError from "../../utils/isApiError";
 import BlogReviewCard from "../blogreview/presentation/BlogReviewCard";
 import Pagination from "../Pagination";
+import NoList from "../NoList";
 
 const WrittenBlogReview = () => {
   const getNewTokenApi = useGetNewTokenApi;
@@ -33,7 +34,9 @@ const WrittenBlogReview = () => {
   return (
     <Container>
       <CardWrapper>
-        {data &&
+        {data?.blogInfo.length === 0 ? (
+          <NoList notice="아직 작성한 블로그 리뷰 글이 없습니다." />
+        ) : (
           data?.blogInfo.map((each) => (
             <BlogReviewCard
               key={each.id}
@@ -44,7 +47,8 @@ const WrittenBlogReview = () => {
               viewDate={each.date}
               imageInfo={each.imageInfo}
             />
-          ))}
+          ))
+        )}
       </CardWrapper>
       {data?.pageInfo && (
         <Pagination

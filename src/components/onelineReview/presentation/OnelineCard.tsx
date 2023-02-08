@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
@@ -26,6 +26,8 @@ const OnelineCard = ({
   const [deleteModalIsopen, setDeleteModalIsopen] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const refreshTokenApi = useRefreshTokenApi();
+  const userconfirm =
+    memberInfo?.memberId === Number(localStorage.getItem("memberId"));
 
   const placeHolder = {
     id,
@@ -121,11 +123,19 @@ const OnelineCard = ({
         </ReviewInfo>
       </Review>
       <ButtonItems>
-        <button onClick={modifyModalHandler} type="button">
+        <button
+          data-visible={userconfirm}
+          onClick={modifyModalHandler}
+          type="button"
+        >
           수정
         </button>
         <Spliter />
-        <button onClick={deleteModalHandler} type="button">
+        <button
+          data-visible={userconfirm}
+          onClick={deleteModalHandler}
+          type="button"
+        >
           삭제
         </button>
       </ButtonItems>
@@ -217,6 +227,9 @@ const ButtonItems = styled.div`
     cursor: pointer;
     color: ${theme.colors.greys60};
     border: 0;
+  }
+  & > [data-visible="false"] {
+    display: none;
   }
 `;
 
