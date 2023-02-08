@@ -135,16 +135,15 @@ const MateWrite = () => {
             mateId
           );
           alert(res.data);
-          navigate(-1);
         } catch {
           errorAlert();
-          navigate("/mate-list");
         }
+        navigate(-1);
       }
       if (typeof errorRes !== "object") return;
       const { errorMsg } = errorRes;
       alert(errorMsg);
-      navigate("/mate-list");
+      navigate(-1);
     }
   };
 
