@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import MyAlleyLogo from "../assets/icons/logo.svg";
-import personOn from "../assets/icons/personOn.svg";
-import personOff from "../assets/icons/personOff.svg";
 import hamburger from "../assets/icons/hamburger.svg";
 import xBtn from "../assets/icons/xBtn.svg";
-
 import HamburgerMenu from "./HamburgerMenu";
 import { theme } from "../styles/theme";
 
@@ -14,7 +11,7 @@ const Nav = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [toggleMenuIcon, setToggleMenuIcon] = useState(hamburger);
   const userMenuHover = xBtn;
-  const userMenu = personOff;
+  const userMenu = hamburger;
   const menuImg = document.getElementById(
     "user-menu"
   ) as HTMLInputElement | null;
