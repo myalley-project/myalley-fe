@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { OnelineReviewReadType } from "../../../types/oneLineReview";
 import ReviewSearchBar from "../../reviewCommon/ReviewSearchBar";
 import Pagination from "../../Pagination";
-import BlogReviewCard from "../presentation/BlogReviewCard";
+import BlogReviewCard from "../../blogReviewList/ReviewCard";
 import blogReviewApis from "../../../apis/blogReviewApis";
 import { BlogReviewResponse } from "../../../types/blogReview";
 
