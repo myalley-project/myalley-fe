@@ -49,6 +49,13 @@ const Container = styled.div`
     border: 1px solid ${theme.colors.primry60};
     box-shadow: 0px 0px 20px rgba(56, 30, 114, 0.1);
     cursor: pointer;
+    h2 {
+      color: ${theme.colors.primry80};
+    }
+    p,
+    div > div {
+      color: ${theme.colors.primry60};
+    }
   }
 `;
 
