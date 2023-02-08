@@ -55,11 +55,11 @@ const ExhibitionCard = styled.div<{
   margin-right: ${(props) => (props.type === "exhbList" ? "2.093%" : "2.5%")};
   margin-bottom: ${(props) => (props.type === "exhbList" ? "2.093%" : "2.5%")};
   aspect-ratio: 1/1.48;
-  border: 2px solid ${theme.colors.greys40};
+  border: 1px solid ${theme.colors.greys40};
   border-radius: 33px;
   cursor: pointer;
   :hover {
-    border: 2px solid ${theme.colors.primry60};
+    border: 1px solid ${theme.colors.primry60};
     box-shadow: 0px 0px 20px #381e7218;
   }
   :nth-child(4n) {
