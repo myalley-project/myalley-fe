@@ -11,13 +11,19 @@ import CommentList, {
   TextArea,
 } from "../components/mate/CommentList";
 import ExhbCard from "../components/mate/ExhbCard";
-import { BookMarkRes, mateApi, useMateBookMarkApi } from "../apis/mate";
+import {
+  BookMarkRes,
+  mateApi,
+  useMateBookMarkApi,
+  useMateDeleteApi,
+} from "../apis/mate";
 import isApiError from "../utils/isApiError";
 
 // 메이트 모집글 상세페이지_박예선_23.01.27
 const Mate = () => {
   const navigate = useNavigate();
   const mateBookMarkApi = useMateBookMarkApi();
+  const mateDeleteApi = useMateDeleteApi();
   const mateId = Number(useParams().id);
   const memberId = Number(localStorage.getItem("memberId"));
   const [isMyPost, setIsMyPost] = useState(false);
@@ -60,6 +66,11 @@ const Mate = () => {
     if (mateAuthorId === memberId) setIsMyPost(true);
   }, [mateInfo, mateInfo?.member, memberId]);
 
+  // 메이트글 삭제 api 호출_박예선_23.01.31
+  const clickDeleteBtn = async () => {
+    await mateDeleteApi(mateId);
+  };
+
   // 메이트글 북마크 등록/해제 api 호출_박예선_23.01.26
   const clickBookmarkBtn = async () => {
     if (!memberId) {
@@ -79,13 +90,19 @@ const Mate = () => {
     mateInfo && (
       <MateContainer>
         <div className="top-buttons-container flex">
-          <BtnTransparent>목록</BtnTransparent>
+          <BtnTransparent onClick={() => navigate("/mate-list")}>
+            목록
+          </BtnTransparent>
           {/* <BtnTransparent>이전 글</BtnTransparent>
           <BtnTransparent>다음 글</BtnTransparent> */}
           {/* 일단 구현 중지 */}
           <div className={isMyPost ? "" : "none"}>
-            <BtnTransparent>수정</BtnTransparent>
-            <BtnTransparent>삭제</BtnTransparent>
+            <BtnTransparent
+              onClick={() => navigate(`/mate-write?mateId=${mateId}`)}
+            >
+              수정
+            </BtnTransparent>
+            <BtnTransparent onClick={clickDeleteBtn}>삭제</BtnTransparent>
           </div>
         </div>
         <ExhbCard exhbData={mateInfo.exhibition} />
@@ -129,7 +146,7 @@ const Mate = () => {
             <SubTitle type="greys90" marginTop={50}>
               관람예정일
             </SubTitle>
-            <Calender setSelectedDate={() => {}} />
+            <Calender handleSelectedDate={() => {}} />
           </div>
           <div>
             <SubTitle type="greys90" marginTop={50}>

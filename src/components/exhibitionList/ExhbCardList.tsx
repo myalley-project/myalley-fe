@@ -43,7 +43,8 @@ export default ExhbCardList;
 const CardListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: inherit;
+  width: 100%;
+  max-width: 1440px;
 `;
 
 const ExhibitionCard = styled.div<{

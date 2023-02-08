@@ -1,6 +1,8 @@
 import React, {
-  Children,
+  ChangeEvent,
+  Dispatch,
   ReactElement,
+  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -12,6 +14,11 @@ import SubTitle from "./SubTitle";
 
 interface EditorProps {
   children: ReactElement;
+}
+
+interface ImageProps {
+  imageFiles: FileList | null;
+  setImageFiles: Dispatch<SetStateAction<FileList | null>>;
 }
 
 interface TextInputAreaProps {
@@ -44,15 +51,16 @@ function usePreviewImages(imageFiles: FileList) {
   return { previewImages };
 }
 
-const ImageArea = () => {
-  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
-
+const ImageArea = ({ imageFiles, setImageFiles }: ImageProps) => {
   const imageRef = useRef<HTMLInputElement | null>(null);
   const { previewImages } = usePreviewImages(imageFiles as FileList);
   const previewIds = returnkeys(previewImages.length);
 
-  const ChangePictureHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImageFiles(() => event.target.files);
+  const ChangePictureHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files !== null) {
+      const targetFiles = event.target.files;
+      setImageFiles(targetFiles);
+    }
   };
 
   return (
@@ -86,17 +94,18 @@ const TextInputArea = ({
   value,
   textChangeHandler,
 }: TextInputAreaProps) => (
-  <TextArea name={name} value={value} onChange={textChangeHandler} />
+  <TextArea
+    name={name}
+    value={value}
+    onChange={textChangeHandler}
+    placeholder="내용을 입력해주세요."
+  />
 );
 
 Editor.ImageArea = ImageArea;
 Editor.TextInputArea = TextInputArea;
 
-const Container = styled.div`
-  max-width: 1200px;
-  /* padding: 30px; */
-  /* margin-inline: auto; */
-`;
+const Container = styled.div``;
 
 const PreviewContainer = styled.div`
   display: flex;
@@ -141,19 +150,30 @@ const FormBox = styled.div`
   }
 `;
 
-// const SubTitle = styled.h2`
-//   font-weight: bold;
-//   font-size: 14px;
-//   color: #333;
-//   margin-bottom: 10px;
-// `;
-
 const TextArea = styled.textarea`
   width: 100%;
-  aspect-ratio: 1 / 0.7;
+  height: 300px;
   border-radius: 1rem;
-  padding-top: 1rem;
+  padding: 20px;
   border-color: ${theme.colors.greys40};
-  outline-color: ${theme.colors.greys60};
   resize: none;
+  :hover {
+    border: 1px solid ${theme.colors.primry60};
+    box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
+  }
+  ::-webkit-scrollbar {
+    display: block;
+    width: 14px;
+  }
+  ::-webkit-scrollbar-thumb {
+    display: block;
+    width: 14px;
+    background-color: #d9d9d9;
+    border-radius: 1000px;
+    background-clip: padding-box;
+    border: 5px solid transparent;
+  }
+  &:focus-visible {
+    outline: none;
+  }
 `;

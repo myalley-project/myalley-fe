@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import useLogOut from "../apis/logOut";
 import ProfileImg from "../assets/icons/profileImg.svg";
@@ -10,14 +11,16 @@ interface PropsType {
 
 const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
+  const location = useLocation();
+  const isLocationKey = location.key;
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
-  const [info, setInfo] = useState({
+  const info = {
     nickname: localStorage.getItem("nickname"),
     memberImage: localStorage.getItem("memberImage")!,
     email: localStorage.getItem("email"),
     authority: localStorage.getItem("authority"),
-  });
+  };
 
   const toggleMenu = () => {
     if (!menuRef.current) {
@@ -27,71 +30,82 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
     setIsMenuOpen(false);
   };
 
+  useEffect(() => {
+    if (isLocationKey !== location.key) {
+      setIsShowMenu(false);
+      setIsMenuOpen(false);
+    }
+  }, [location, isLocationKey, setIsShowMenu]);
+
   return (
     <Background>
       {isMenuOpen && (
         <MenuOutSide onClick={toggleMenu}>
-          <MenuContainer ref={menuRef}>
-            {localStorage.getItem("accessToken") ? (
-              <MenuWrapper>
-                <Subtitle>계정</Subtitle>
-                <MypageArea href="/mypage/edit">
-                  <ProfileWrapper>
-                    <img
-                      src={
-                        info.memberImage === "" ? ProfileImg : info.memberImage
-                      }
-                      alt="profile-img"
-                      style={{ width: "40px" }}
-                    />
-                  </ProfileWrapper>
-                  <div>
-                    <Nickname>{info.nickname}</Nickname>
-                    <Email className="email">{info.email}</Email>
-                  </div>
-                </MypageArea>
-                <LogoutButton type="button" onClick={logOut}>
-                  로그아웃
-                </LogoutButton>
-              </MenuWrapper>
-            ) : (
-              <MenuWrapper>
-                <Subtitle>계정</Subtitle>
-                <List as="a" href="/login">
-                  로그인
-                </List>
-                <List as="a" href="/signup">
-                  회원가입
-                </List>
-              </MenuWrapper>
-            )}
+          <MenuOutSideWrapper>
+            <MenuContainer ref={menuRef}>
+              {localStorage.getItem("accessToken") ? (
+                <MenuWrapper>
+                  <Subtitle>계정</Subtitle>
+                  <MypageArea href="/mypage/edit">
+                    <ProfileWrapper>
+                      <img
+                        src={
+                          info.memberImage === ""
+                            ? ProfileImg
+                            : info.memberImage
+                        }
+                        alt="profile-img"
+                        style={{ width: "40px" }}
+                      />
+                    </ProfileWrapper>
+                    <div>
+                      <Nickname>{info.nickname}</Nickname>
+                      <Email className="email">{info.email}</Email>
+                    </div>
+                  </MypageArea>
+                  <LogoutButton type="button" onClick={logOut}>
+                    로그아웃
+                  </LogoutButton>
+                </MenuWrapper>
+              ) : (
+                <MenuWrapper>
+                  <Subtitle>계정</Subtitle>
+                  <List as="a" href="/login">
+                    로그인
+                  </List>
+                  <List as="a" href="/signup">
+                    회원가입
+                  </List>
+                </MenuWrapper>
+              )}
 
-            <MenuWrapper>
-              <Subtitle>메뉴</Subtitle>
-              <ul>
-                {info.authority !== "ROLE_ADMIN" && (
-                  <List as="a" href="/exhibition-list">
-                    전시회
-                  </List>
-                )}
-                {info.authority !== "ROLE_ADMIN" && (
-                  <List as="a" href="/">
-                    전시회 리뷰
-                  </List>
-                )}
-                {info.authority !== "ROLE_ADMIN" && (
-                  <List as="a" href="/mate-list">
-                    메이트 찾기
-                  </List>
-                )}
-                {info.authority === "ROLE_ADMIN" && (
-                  <List as="a" href="/exhibition-write">
-                    전시회 정보 등록하기
-                  </List>
-                )}
-              </ul>
-            </MenuWrapper>
-          </MenuContainer>
+              <MenuWrapper>
+                <Subtitle>메뉴</Subtitle>
+                <ul>
+                  {info.authority !== "ROLE_ADMIN" && (
+                    <List as="a" href="/exhibition-list">
+                      전시회
+                    </List>
+                  )}
+                  {info.authority !== "ROLE_ADMIN" && (
+                    <List as="a" href="/">
+                      전시회 리뷰
+                    </List>
+                  )}
+                  {info.authority !== "ROLE_ADMIN" && (
+                    <List as="a" href="/mate-list">
+                      메이트 찾기
+                    </List>
+                  )}
+                  {info.authority === "ROLE_ADMIN" && (
+                    <List as="a" href="/exhibition-write">
+                      전시회 정보 등록하기
+                    </List>
+                  )}
+                </ul>
+              </MenuWrapper>
+            </MenuContainer>
+          </MenuOutSideWrapper>
         </MenuOutSide>
       )}
     </Background>
@@ -107,21 +121,31 @@ const Background = styled.div`
 `;
 
 const MenuOutSide = styled.div`
-  position: absolute;
+  position: fixed;
+  z-index: 98;
   width: 100vw;
   height: 100vh;
+`;
+
+const MenuOutSideWrapper = styled.div`
+  justify-items: center;
+  position: relative;
+  width: 100vw;
+  max-width: 1440px;
+  margin-inline: auto;
 `;
 
 const MenuContainer = styled.div`
   position: absolute;
   z-index: 100; // 항상 최상단에 위치
-  left: 77%;
+  right: 0px;
   top: 57px;
   width: 215px;
   padding: 10px;
-  border: 1px solid ${theme.colors.greys40};
+  border: 1px solid ${theme.colors.secondary5};
   border-radius: 10px;
   background-color: ${theme.colors.white100};
+  box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
 const MenuWrapper = styled.div`
@@ -169,12 +193,12 @@ const LogoutButton = styled.button`
   padding-left: 10px;
   color: ${theme.colors.greys90};
   font-weight: 500;
-  font-size: 14px;
+  font-size: 15px;
   text-align: left;
   cursor: pointer;
   &:hover {
-    color: #6750a4;
-    background-color: #f6f3fe;
+    color: ${theme.colors.primry70};
+    background-color: ${theme.colors.secondary5};
     border-radius: 10px;
   }
   &:focus-visible {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
+import apiInstance from "../utils/apiInstance";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import { theme } from "../styles/theme";
 import ExhbCardListModal from "./exhbChoiceModal/ExhbCardListModal";
@@ -17,6 +18,7 @@ interface ChoiceProps {
     duration: string,
     status: string
   ) => void;
+  handleModal: () => void;
 }
 
 // 이런 형태의 state와
@@ -30,37 +32,16 @@ interface ChoiceProps {
 //   setSelectedExhb({ imageUrl: imgUrl, exhbitionId: exhbId });
 // };
 
-const ExhibitionChoice = ({ getExhbInfo }: ChoiceProps) => {
+const ExhibitionChoice = ({ getExhbInfo, handleModal }: ChoiceProps) => {
   const [exhbStatus, setExhbStatus] = useState<StatusType>("현재");
   const [pageInfo, setPageInfo] = useState(1);
 
-  const getexhbListApi = async (
-    status: StatusType,
-    type: FilterType,
-    page: number
-  ) => {
-    if (type === "전체 전시") {
-      const res: AxiosResponse<ExhbListRes> = await axios.get(
-        "/data/exhbList.json"
-      ); // 테스트용 목데이터
-      //   await apiInstance.get(
-      //   `/main/exhibitions/?status=${status}전시&page=${page}`
-      // );
-      return res.data;
-    }
-    const res: AxiosResponse<ExhbListRes> = await axios.get(
-      "/data/exhbListFiltered.json"
-    ); // 테스트용 목데이터
-    //   await apiInstance.get(
-    //   `/exhibitions/?status=${status}전시&type=${type}전시&page=${page}`
-    // );
-    return res.data;
-  };
-
   const { isLoading, isError, error, data } = useQuery<ExhbListRes, Error>({
     queryKey: ["exhbList", { pageInfo, exhbStatus }],
-    queryFn: () => getexhbListApi(exhbStatus, "전체 전시", pageInfo),
+    queryFn: () =>
+      exhbListApi(exhbStatus, "전체 전시", pageInfo).then((res) => res.data),
   });
+  // 파일 체인지를 확인하기 위한 쓸데없는 주석입니다
 
   if (isLoading) return <div>...loading</div>;
 
@@ -74,14 +55,14 @@ const ExhibitionChoice = ({ getExhbInfo }: ChoiceProps) => {
           <Button
             onClick={() => setExhbStatus("현재")}
             size="small"
-            variant="primary"
+            variant={exhbStatus === "현재" ? "primary" : "text"}
           >
             현재 전시
           </Button>
           <Button
             onClick={() => setExhbStatus("예정")}
             size="small"
-            variant="text"
+            variant={exhbStatus === "예정" ? "primary" : "text"}
           >
             예정 전시
           </Button>
@@ -90,6 +71,7 @@ const ExhibitionChoice = ({ getExhbInfo }: ChoiceProps) => {
 
       {data ? (
         <ExhbCardListModal
+          handleModal={handleModal}
           exhbList={data.exhibitions}
           type="exhbList"
           getExhbInfo={getExhbInfo}

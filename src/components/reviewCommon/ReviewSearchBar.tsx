@@ -1,27 +1,39 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { theme } from "../styles/theme";
-import Button from "./atom/Button";
-import SearchBar from "./atom/Searchbar";
+import { theme } from "../../styles/theme";
+import Button from "../atom/Button";
+import SearchBar from "../atom/Searchbar";
 
 interface ReviewSearchbarProps {
   setFilter: (state: "oneline" | "blog") => void;
-  setOrderType: (state: "Recent" | "StarScore") => void;
+  setOrderType: (state: "Recent" | "ViewCount") => void;
+  handleReviewModal: () => void;
+  filter: "oneline" | "blog";
   totalElement: number;
 }
 
-const ReviewSearchbar = ({
+const ReviewSearchBar = ({
   setFilter,
   setOrderType,
+  filter,
   totalElement,
+  handleReviewModal,
 }: ReviewSearchbarProps) => (
   <Container>
     <ReviewSelector>
-      <button onClick={() => setFilter("oneline")} type="button">
+      <button
+        className={filter === "oneline" ? "selected" : ""}
+        onClick={() => setFilter("oneline")}
+        type="button"
+      >
         한 줄 리뷰
       </button>
       <Spliter />
-      <button onClick={() => setFilter("blog")} type="button">
+      <button
+        className={filter === "blog" ? "selected" : ""}
+        onClick={() => setFilter("blog")}
+        type="button"
+      >
         블로그 리뷰
       </button>
     </ReviewSelector>
@@ -37,7 +49,7 @@ const ReviewSearchbar = ({
       )}
       <Searchbar>
         <SearchBar placeholder="검색" width="277px" />
-        <Button variant="primary" size="large">
+        <Button onClick={handleReviewModal} variant="primary" size="large">
           리뷰 등록
         </Button>
       </Searchbar>
@@ -48,16 +60,17 @@ const ReviewSearchbar = ({
         최근순
       </button>
       <Spliter />
-      <button onClick={() => setOrderType("StarScore")} type="button">
+      <button onClick={() => setOrderType("ViewCount")} type="button">
         별점순
       </button>
     </ButtonItems>
   </Container>
 );
 
-export default ReviewSearchbar;
+export default ReviewSearchBar;
 
 const Container = styled.div`
+  margin-bottom: 30px;
   & button.clicked {
     color: ${theme.colors.greys100};
   }
@@ -77,6 +90,9 @@ const ReviewSelector = styled.div`
     &:is(:hover, :focus) {
       color: ${theme.colors.greys100};
     }
+  }
+  & > button.selected {
+    color: ${theme.colors.greys100};
   }
 `;
 

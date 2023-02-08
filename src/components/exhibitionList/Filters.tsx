@@ -1,26 +1,18 @@
 import React from "react";
 import styled from "styled-components";
-import { ExhbTypeFilters, FilterType } from "../../types/exhbList";
+import { theme } from "../../styles/theme";
+import { FilterType } from "../../types/exhbList";
+import Button from "../atom/Button";
 import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
 
-// 전시글 목록 상단 필터 컴포넌트_박예선_23.01.18
+// 전시글 목록 상단 필터 컴포넌트_박예선_23.02.01
 const Filters = (props: FiltersType) => {
-  const {
-    setPages,
-    selectedStatus,
-    setSelectedStatus,
-    exhbTypeFilters,
-    setExhbTypeFilters,
-    getExhbList,
-  } = props;
+  const { setPages, selectedStatus, setSelectedStatus, setSelectedFilter } =
+    props;
 
-  // 전시상황 버튼 클릭 함수_박예선_23.01.18
+  // 전시상황 버튼 클릭 함수_박예선_23.02.01
   const handleStatusBtn = (status: StatusType) => {
-    if (exhbTypeFilters.applied !== exhbTypeFilters.selected) {
-      alert("필터 적용버튼을 먼저 클릭하세요.");
-      return;
-    }
     setPages({ started: 1, selected: 1 });
     setSelectedStatus(status);
   };
@@ -35,33 +27,24 @@ const Filters = (props: FiltersType) => {
     }
     for (let i = 0; i < EXHB_TYPE_ARRAY.length; i += 1) {
       if (value === EXHB_TYPE_ARRAY[i]) {
-        setExhbTypeFilters({ ...exhbTypeFilters, selected: value });
+        setSelectedFilter(value);
       }
     }
-  };
-
-  // 필터 적용버튼 클릭 함수_박예선_23.01.18
-  const clickFilterApplyBtn = () => {
-    getExhbList(selectedStatus, exhbTypeFilters.selected, 1);
-    setExhbTypeFilters({
-      ...exhbTypeFilters,
-      applied: exhbTypeFilters.selected,
-    });
-    setPages({ started: 1, selected: 1 });
   };
 
   return (
     <FiltersContainer>
       <div className="status-filter flex space-between">
         {EXHB_STATUS_ARRAY.map((status) => (
-          <button
+          <Button
             key={status}
-            type="button"
-            className={selectedStatus === status ? "selected" : ""}
+            variant="text"
+            size="small"
             onClick={() => handleStatusBtn(status)}
+            className={selectedStatus === status ? "selected" : ""}
           >
             {status} 전시
-          </button>
+          </Button>
         ))}
       </div>
       <div className="filter-search-line flex space-between">
@@ -80,13 +63,6 @@ const Filters = (props: FiltersType) => {
             name="type"
             onClick={handleFilters}
           />
-          <button
-            type="button"
-            className="apply-btn"
-            onClick={clickFilterApplyBtn}
-          >
-            적용
-          </button>
         </div>
         <input placeholder="검색" className="search-input border" />
       </div>
@@ -111,13 +87,7 @@ interface FiltersType {
   setPages: React.Dispatch<React.SetStateAction<PagesState>>;
   selectedStatus: StatusType;
   setSelectedStatus: React.Dispatch<React.SetStateAction<StatusType>>;
-  exhbTypeFilters: ExhbTypeFilters;
-  setExhbTypeFilters: React.Dispatch<React.SetStateAction<ExhbTypeFilters>>;
-  getExhbList: (
-    status: StatusType,
-    type: FilterType,
-    page: number
-  ) => Promise<void>;
+  setSelectedFilter: React.Dispatch<React.SetStateAction<FilterType>>;
 }
 export type StatusType = "현재" | "예정" | "지난";
 
@@ -125,7 +95,7 @@ const FiltersContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: inherit;
+  width: 100%;
   margin-bottom: 30px;
   .status-filter {
     width: 300px;
@@ -133,21 +103,18 @@ const FiltersContainer = styled.div`
     margin-bottom: 14px;
     font-size: 14px;
     button {
-      justify-content: center;
+      display: flex;
       align-items: center;
-      width: 93px;
-      height: inherit;
-      color: ${(props) => props.theme.colors.greys60};
       font-size: 14px;
-      font-weight: 700;
       cursor: pointer;
       &.selected {
-        color: #1c1c1c;
+        color: ${theme.colors.greys100};
       }
     }
   }
   .filter-search-line {
     width: inherit;
+    max-width: 1440px;
     padding-top: 14px;
     border-top: 1px solid ${(props) => props.theme.colors.greys40};
     border-radius: 0%;
