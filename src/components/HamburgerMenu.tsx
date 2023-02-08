@@ -12,15 +12,15 @@ interface PropsType {
 const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
   const location = useLocation();
-  const [isLocationKey, setIsLocationKey] = useState(location.key);
+  const isLocationKey = location.key;
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
-  const [info, setInfo] = useState({
+  const info = {
     nickname: localStorage.getItem("nickname"),
     memberImage: localStorage.getItem("memberImage")!,
     email: localStorage.getItem("email"),
     authority: localStorage.getItem("authority"),
-  });
+  };
 
   const toggleMenu = () => {
     if (!menuRef.current) {
