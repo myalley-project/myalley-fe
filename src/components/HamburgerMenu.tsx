@@ -47,29 +47,44 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
               {localStorage.getItem("accessToken") ? (
                 <MenuWrapper>
                   <Subtitle>계정</Subtitle>
-                  <MypageArea
-                    href={
-                      localStorage.getItem("authority") === "ROLE_USER"
-                        ? "/mypage/edit"
-                        : "#"
-                    }
-                  >
-                    <ProfileWrapper>
-                      <img
-                        src={
-                          info.memberImage === ""
-                            ? ProfileImg
-                            : info.memberImage
-                        }
-                        alt="profile-img"
-                        style={{ width: "40px" }}
-                      />
-                    </ProfileWrapper>
-                    <div>
-                      <Nickname>{info.nickname}</Nickname>
-                      <Email className="email">{info.email}</Email>
-                    </div>
-                  </MypageArea>
+                  {localStorage.getItem("authority") === "ROLE_USER" ? (
+                    <MypageArea href="/mypage/edit">
+                      <ProfileWrapper>
+                        <img
+                          src={
+                            info.memberImage === ""
+                              ? ProfileImg
+                              : info.memberImage
+                          }
+                          alt="profile-img"
+                          style={{ width: "40px" }}
+                        />
+                      </ProfileWrapper>
+                      <div>
+                        <Nickname>{info.nickname}</Nickname>
+                        <Email className="email">{info.email}</Email>
+                      </div>
+                    </MypageArea>
+                  ) : (
+                    <MypageArea as="div">
+                      <ProfileWrapper>
+                        <img
+                          src={
+                            info.memberImage === ""
+                              ? ProfileImg
+                              : info.memberImage
+                          }
+                          alt="profile-img"
+                          style={{ width: "40px" }}
+                        />
+                      </ProfileWrapper>
+                      <div>
+                        <Nickname>{info.nickname}</Nickname>
+                        <Email className="email">{info.email}</Email>
+                      </div>
+                    </MypageArea>
+                  )}
+
                   <LogoutButton type="button" onClick={logOut}>
                     로그아웃
                   </LogoutButton>
