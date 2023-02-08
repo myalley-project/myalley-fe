@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { useQuery, UseQueryResult } from "react-query";
 import styled from "styled-components";
 import OnelineCard from "../presentation/OnelineCard";
@@ -7,14 +7,14 @@ import { OnelineReviewReadType } from "../../../types/oneLineReview";
 import ReviewSearchBar from "../../reviewCommon/ReviewSearchBar";
 import Pagination from "../../Pagination";
 
-type OrderType = "Recent" | "ViewCount";
+type OrderType = "Recent" | "ViewCount" | "StarScore";
 
 interface OneLineReadProps {
   id: string;
   orderType: OrderType;
   filter: "oneline" | "blog";
   setFilter: Dispatch<SetStateAction<"oneline" | "blog">>;
-  setOrderType: Dispatch<SetStateAction<"Recent" | "ViewCount">>;
+  setOrderType: Dispatch<SetStateAction<"Recent" | "StarScore" | "ViewCount">>;
   handleReviewModal: () => void;
 }
 
@@ -29,6 +29,12 @@ const OneLineReadContainer = ({
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
+  });
+
+  useEffect(() => {
+    if (orderType === "ViewCount") {
+      setOrderType("Recent");
+    }
   });
 
   const {
@@ -85,4 +91,5 @@ export default OneLineReadContainer;
 const OnelineDisplay = styled.div`
   display: flex;
   flex-flow: column;
+  gap: 8px;
 `;
