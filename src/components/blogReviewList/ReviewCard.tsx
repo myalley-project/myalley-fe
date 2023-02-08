@@ -63,10 +63,15 @@ const ThumbnailContainer = styled.div`
   position: relative;
   width: inherit;
   height: 62%;
+  border-bottom: 1px solid ${theme.colors.greys40};
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
   .default-thumbnail {
     position: absolute;
