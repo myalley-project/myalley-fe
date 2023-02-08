@@ -19,7 +19,7 @@ import isApiError, { errorAlert } from "../utils/isApiError";
 import ExhibitionChoice from "../components/ExhibitionChoice";
 import Modal from "../Modal";
 
-// 메이트글 작성/수정 페이지_박예선_23.02.02
+// 메이트글 작성/수정 페이지_박예선_23.02.08
 const MateWrite = () => {
   const refreshTokenApi = useRefreshTokenApi();
   const location = useLocation();
@@ -46,7 +46,7 @@ const MateWrite = () => {
   });
   const [selectedDate, setSelectedDate] = useState("");
   const [openExhbModal, setOpenExhbModal] = useState(false);
-  const [selectedExhb, setSelectedExhb] = useState({
+  const [exhbData, setExhbData] = useState({
     thumbnail: "",
     status: "",
     title: "",
@@ -76,11 +76,12 @@ const MateWrite = () => {
     }
   }, [memberId, navigate]);
 
-  // 기존 메이트글 정보 조회 api 호출_박예선_23.01.28
+  // 기존 메이트글 정보 조회 api 호출_박예선_23.02.08
   const getMate = useCallback(async () => {
     try {
       const res: AxiosResponse<MateRes> = await mateApi(mateId, memberId);
       const { data } = res;
+      const { exhibition } = data;
       if (memberId !== data.member.memberId) {
         alert("본인이 작성한 메이트글만 수정할 수 있습니다.");
         navigate("/mate-list");
@@ -96,6 +97,12 @@ const MateWrite = () => {
         contact: data.contact,
         exhibitionId: data.exhibition.exhibitionId,
       });
+      setExhbData({
+        thumbnail: exhibition.posterUrl,
+        status: exhibition.status,
+        title: exhibition.exhibitionTitle,
+        duration: exhibition.exhibitionDuration,
+      });
       if (data.mateAge !== "연령 무관")
         setAgeRange({
           minimum: data.mateAge.split(" ~ ")[0],
@@ -107,7 +114,7 @@ const MateWrite = () => {
     }
   }, [mateId, memberId, navigate]);
 
-  // 메이트글 작성/수정 api 호출_박예선_23.01.29
+  // 메이트글 작성/수정 api 호출_박예선_23.02.08
   const clickApplyBtn = async (type: "post" | "put") => {
     try {
       const res: AxiosResponse<MateWriteRes> = await mateWriteApi(
@@ -120,19 +127,23 @@ const MateWrite = () => {
     } catch (err) {
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
-        refreshTokenApi();
-        const res: AxiosResponse<MateWriteRes> = await mateWriteApi(
-          type,
-          writeData,
-          mateId
-        );
-        alert(res.data);
+        try {
+          refreshTokenApi();
+          const res: AxiosResponse<MateWriteRes> = await mateWriteApi(
+            type,
+            writeData,
+            mateId
+          );
+          alert(res.data);
+        } catch {
+          errorAlert();
+        }
         navigate(-1);
       }
       if (typeof errorRes !== "object") return;
       const { errorMsg } = errorRes;
       alert(errorMsg);
-      navigate("/mate-list");
+      navigate(-1);
     }
   };
 
@@ -230,7 +241,7 @@ const MateWrite = () => {
       setWriteData({ ...writeData, availableDate: date });
   };
 
-  // 전시회 선택 함수_박예선_23.01.31
+  // 전시회 선택 함수_박예선_23.02.08
   const handleExhbModal = (
     url: string,
     id: number,
@@ -239,7 +250,7 @@ const MateWrite = () => {
     status: string
   ) => {
     setWriteData({ ...writeData, exhibitionId: id });
-    setSelectedExhb({
+    setExhbData({
       title,
       thumbnail: url,
       status,
@@ -321,14 +332,14 @@ const MateWrite = () => {
               {exhibitionId !== 0 && (
                 <img
                   className="thumbnail"
-                  src={selectedExhb.thumbnail}
+                  src={exhbData.thumbnail}
                   alt="선택된 전시회"
                 />
               )}
               {exhibitionId !== 0 && isThumbnailHovered && (
                 <ThumbnailHover>
                   <Button variant="primary" size="small" className="status">
-                    {selectedExhb.status}
+                    {exhbData.status}
                   </Button>
                   <button
                     type="button"
@@ -339,8 +350,8 @@ const MateWrite = () => {
                   >
                     X
                   </button>
-                  <div className="title">{selectedExhb.title}</div>
-                  <div className="duration">{selectedExhb.duration}</div>
+                  <div className="title">{exhbData.title}</div>
+                  <div className="duration">{exhbData.duration}</div>
                 </ThumbnailHover>
               )}
             </ExhbChoiceBtn>
