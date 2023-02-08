@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
@@ -15,10 +15,6 @@ const BlogReviewCard = ({
 }: BlogReviewInfo) => {
   const navigate = useNavigate();
   const imageUrl = imageInfo?.url;
-
-  useEffect(() => {
-    console.log(imageUrl);
-  }, [imageUrl]);
 
   return (
     <Container onClick={() => navigate("/blogreview-detail", { state: id })}>
@@ -49,6 +45,11 @@ export default BlogReviewCard;
 const Container = styled.div`
   border: 1px solid ${theme.colors.greys60};
   aspect-ratio: 1/1.05;
+  :hover {
+    border: 1px solid ${theme.colors.primry60};
+    box-shadow: 0px 0px 20px rgba(56, 30, 114, 0.1);
+    cursor: pointer;
+  }
 `;
 
 const ThumbnailContainer = styled.div`
