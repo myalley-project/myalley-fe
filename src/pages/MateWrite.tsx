@@ -15,7 +15,8 @@ import SimpleDialog from "../components/SimpleDialog";
 import { MateRes, MateWriteType } from "../types/mate";
 import { mateApi, mateWriteApi, MateWriteRes } from "../apis/mate";
 import useRefreshTokenApi from "../apis/useRefreshToken";
-import isApiError, { errorAlert } from "../utils/isApiError";
+import isApiError from "../utils/isApiError";
+import { alertError } from "../utils/alerts";
 import ExhibitionChoice from "../components/ExhibitionChoice";
 import Modal from "../Modal";
 
@@ -112,7 +113,7 @@ const MateWrite = () => {
           maximum: data.mateAge.split(" ~ ")[1],
         });
     } catch (err) {
-      errorAlert();
+      alertError();
       navigate("/");
     }
   }, [mateId, memberId, navigate]);
