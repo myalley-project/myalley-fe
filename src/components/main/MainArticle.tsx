@@ -90,6 +90,7 @@ const Article = styled.article`
   border-radius: 30px;
   gap: 30px;
   text-align: center;
+  z-index: 99;
   cursor: pointer;
   & h3 {
     margin-bottom: 1rem;
@@ -112,7 +113,6 @@ const Article = styled.article`
 
 const LinkContainer = styled.div`
   display: flex;
-  z-index: 99;
   justify-content: center;
   align-items: center;
   gap: 4px;
