@@ -61,6 +61,14 @@ const ExhibitionCard = styled.div<{
   :hover {
     border: 1px solid ${theme.colors.primry60};
     box-shadow: 0px 0px 20px #381e7218;
+    color: ${theme.colors.primry60};
+    div,
+    span {
+      color: ${theme.colors.primry60};
+    }
+    .title {
+      color: ${theme.colors.primry80};
+    }
   }
   :nth-child(4n) {
     margin-right: ${(props) => props.type === "exhbList" && 0};
