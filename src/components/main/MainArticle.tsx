@@ -112,6 +112,7 @@ const Article = styled.article`
 
 const LinkContainer = styled.div`
   display: flex;
+  z-index: 99;
   justify-content: center;
   align-items: center;
   gap: 4px;

@@ -10,7 +10,6 @@ interface ExhbCardType {
     exhibitionSpace: string;
     posterUrl: string;
     exhibitionDuration: string; // yyyy-mm-dd ~ yyyy-mm-dd
-    status: "현재 전시" | "예정 전시" | "지난 전시";
   };
 }
 
@@ -53,11 +52,15 @@ const ExhbCardContainer = styled.div`
   margin: 14px 0 30px;
   border: 1px solid ${theme.colors.greys40};
   cursor: pointer;
+  .flex {
+    display: flex;
+  }
 `;
 
 const Thumbnail = styled.img`
   width: 175px;
   height: inherit;
+  object-fit: cover;
 `;
 
 const InfoContainer = styled.div`
