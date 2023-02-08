@@ -67,6 +67,8 @@ const ExhbCardContainer = styled.div`
 const Thumbnail = styled.img`
   width: 31.6%;
   object-fit: cover;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 `;
 
 const InfoContainer = styled.div`
