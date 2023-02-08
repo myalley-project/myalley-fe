@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { BlogReviewResponse } from "../../../types/blogReview";
-import NoList from "../../NoList";
-import BlogReviewCard from "../presentation/BlogReviewCard";
+import { BlogReviewResponse } from "../../types/blogReview";
+import NoList from "../NoList";
+import ReviewCard from "./ReviewCard";
 
 const ReviewCardList = ({ blogInfo }: BlogReviewResponse) => (
   <ReviewCardListContainer>
     {blogInfo.length === 0 && <NoList notice="작성된 리뷰가 없습니다." />}
     {blogInfo.length !== 0 &&
       blogInfo.map((each) => (
-        <BlogReviewCard
+        <ReviewCard
           key={each.id}
           id={each.id}
           title={each.title}

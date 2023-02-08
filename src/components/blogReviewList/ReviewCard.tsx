@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { theme } from "../../../styles/theme";
-import logo from "../../../assets/icons/logo.svg";
-import { BlogReviewInfo } from "../../../types/blogReview";
+import { theme } from "../../styles/theme";
+import logo from "../../assets/icons/logo.svg";
+import { BlogReviewInfo } from "../../types/blogReview";
 
-const BlogReviewCard = ({
+const ReviewCard = ({
   id,
   title,
   writer,
@@ -40,7 +40,7 @@ const BlogReviewCard = ({
   );
 };
 
-export default BlogReviewCard;
+export default ReviewCard;
 
 const Container = styled.div`
   border: 1px solid ${theme.colors.greys60};

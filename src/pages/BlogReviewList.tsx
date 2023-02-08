@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useQuery } from "react-query";
 import { theme } from "../styles/theme";
 import Selectbox from "../components/atom/Selectbox";
-import ReviewCardList from "../components/blogreview/container/ReviewCardList";
+import ReviewCardList from "../components/blogReviewList/ReviewCardList";
 import Button from "../components/atom/Button";
 import blogReviewApis from "../apis/blogReviewApis";
 import Pagination from "../components/Pagination";
