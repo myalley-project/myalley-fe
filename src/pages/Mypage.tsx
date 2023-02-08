@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import { AxiosResponse } from "axios";
 import { useLocation } from "react-router-dom";
-import { myInfoApi, MyInfoRes } from "../apis/member";
+import { getMyInfoApi, MyInfoRes } from "../apis/member";
 import MyInfoCard from "../components/mypage/MyInfoCard";
 import EditProfile from "../components/mypage/EditProfile";
 import WrittenPosts from "../components/mypage/WrittenPosts";
@@ -29,8 +29,7 @@ const Mypage = () => {
   const getMyInfo = useCallback(async () => {
     const refreshToken = localStorage.getItem("refreshToken");
     try {
-      const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
-      if (!res) return;
+      const res: AxiosResponse<MyInfoRes> = await getMyInfoApi();
       const { data } = res;
       setInfoData(data);
       localStorage.setItem("memberImage", data.memberImage);
@@ -38,8 +37,7 @@ const Mypage = () => {
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
         await getNewTokenApi(refreshToken);
-        const reRes: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
-        if (!reRes) return;
+        const reRes: AxiosResponse<MyInfoRes> = await getMyInfoApi();
         const refreshData = reRes.data;
         setInfoData(refreshData);
       }
