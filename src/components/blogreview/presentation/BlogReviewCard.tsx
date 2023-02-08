@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
+import logo from "../../../assets/icons/logo.svg";
 import { BlogReviewInfo } from "../../../types/blogReview";
 
 const BlogReviewCard = ({
@@ -13,21 +14,32 @@ const BlogReviewCard = ({
   imageInfo,
 }: BlogReviewInfo) => {
   const navigate = useNavigate();
-  const imageUrl = imageInfo?.url ?? null;
+  const imageUrl = imageInfo?.url;
+
+  useEffect(() => {
+    console.log(imageUrl);
+  }, [imageUrl]);
 
   return (
     <Container onClick={() => navigate("/blogreview-detail", { state: id })}>
-      <Image>
-        <img src={imageUrl ? imageInfo.url : ""} alt="블로그 리뷰 이미지" />
-      </Image>
-      <Review>
+      <ThumbnailContainer>
+        {imageUrl && <img src={imageInfo.url} alt="블로그 리뷰 사진" />}
+        {!imageUrl && (
+          <img
+            src={logo}
+            alt="블로그 리뷰 사진"
+            className="default-thumbnail"
+          />
+        )}
+      </ThumbnailContainer>
+      <Content>
         <h2>{title}</h2>
         <p>{writer}</p>
         <div>
           <div>{viewDate}</div>
           <div>조회수 {viewCount}</div>
         </div>
-      </Review>
+      </Content>
     </Container>
   );
 };
@@ -36,31 +48,47 @@ export default BlogReviewCard;
 
 const Container = styled.div`
   border: 1px solid ${theme.colors.greys60};
+  aspect-ratio: 1/1.05;
 `;
 
-const Image = styled.div`
+const ThumbnailContainer = styled.div`
+  position: relative;
   width: inherit;
-  height: fit-content;
-  & > img {
+  height: 62%;
+  img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .default-thumbnail {
+    position: absolute;
+    width: 50%;
+    height: auto;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    border-radius: 0;
   }
 `;
 
-const Review = styled.div`
+const Content = styled.div`
+  height: 38%;
   padding: 30px;
-  & > h2 {
+  h2 {
+    margin-bottom: 4px;
+    color: ${theme.colors.greys90};
     font-weight: bold;
     font-size: 20px;
-    color: ${theme.colors.greys90};
-    margin-bottom: 4px;
+    line-height: 28px;
   }
-  & > p {
+  p {
+    margin-bottom: 20px;
+    color: ${theme.colors.greys60};
     font-weight: 500;
     font-size: 14px;
-    color: ${theme.colors.greys60};
-    margin-bottom: 20px;
+    line-height: 20px;
   }
-  & > div {
+  div {
     display: flex;
     justify-content: space-between;
     align-items: center;
