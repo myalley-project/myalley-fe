@@ -11,7 +11,9 @@ type ReviewFilter = "oneline" | "blog";
 const ReviewWrapper = () => {
   const [simpleReviewModal, setSimpleReviewModal] = useState<boolean>(false);
   const [filter, setFilter] = useState<ReviewFilter>("oneline");
-  const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
+  const [orderType, setOrderType] = useState<
+    "Recent" | "StarScore" | "ViewCount"
+  >("Recent");
   const navigate = useNavigate();
   const { id } = useParams();
 

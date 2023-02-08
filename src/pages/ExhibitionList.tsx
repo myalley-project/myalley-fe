@@ -7,7 +7,7 @@ import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
-// 전시회 목록 페이지 컴포넌트_박예선_23.02.01
+// 전시회 목록 페이지 컴포넌트_박예선_23.02.08
 const ExhibitionList = () => {
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -67,9 +67,10 @@ const ExhibitionListContainer = styled.div`
   width: 100vw;
   max-width: 1440px;
   margin: auto;
+  padding: 40px 40px 0;
   font-size: 14px;
   h1 {
-    margin: 50px 0;
+    margin-bottom: 50px;
     font-size: 28px;
     font-weight: 700;
   }
@@ -86,5 +87,11 @@ const ExhibitionListContainer = styled.div`
   }
   .none {
     display: none;
+  }
+  @media (max-width: 1280px) {
+    padding: 20px;
+  }
+  @media (max-width: 1064px) {
+    padding: 16px;
   }
 `;
