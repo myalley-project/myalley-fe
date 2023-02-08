@@ -102,7 +102,7 @@ const Title = styled.h2`
   font-size: 28px;
   color: ${theme.colors.greys90};
   text-align: center;
-  margin-bottom: 50px;
+  margin: 40px 0 50px;
 `;
 
 const Divider = styled.div`
