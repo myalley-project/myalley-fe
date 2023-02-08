@@ -87,7 +87,12 @@ const BlogReviewDetailPresentation = ({
         <p>{content}</p>
       </MainPart>
       <UserInfo>
-        <img src={profileImage} alt="프로필 이미지" />
+        <UserThumbnail>
+          <img
+            src={memberInfo.memberImage ? memberInfo.memberImage : profileImage}
+            alt="프로필 이미지"
+          />
+        </UserThumbnail>
         <h3>{memberInfo.nickname}</h3>
         <DateAndView>
           <p>
@@ -180,6 +185,21 @@ const UserInfo = styled.div`
   align-items: center;
   gap: 14px;
   margin-bottom: 50px;
+`;
+
+const UserThumbnail = styled.div`
+  position: relative;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  & > img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 const DateAndView = styled.div`
