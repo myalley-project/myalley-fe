@@ -55,17 +55,15 @@ const BookMarkedMate = () => {
   return (
     <div>
       {matesList.length === 0 ? (
-        <NoList notice="아직 작성한 글이 없습니다" />
+        <NoList notice="북마크한 메이트 모집글이 없습니다" />
       ) : (
         matesList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}
-      {pageInfoList.totalPage > 0 && (
-        <Pagination
-          pages={pages}
-          setPages={setPages}
-          totalPage={pageInfoList.totalPage}
-        />
-      )}
+      <Pagination
+        pages={pages}
+        setPages={setPages}
+        totalPage={pageInfoList.totalPage}
+      />
     </div>
   );
 };

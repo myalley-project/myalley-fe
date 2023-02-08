@@ -23,6 +23,7 @@ import eyeOff from "../../assets/icons/eyeOff.svg";
 import eyeOn from "../../assets/icons/eyeOn.svg";
 import alertCircle from "../../assets/icons/alertCircle.svg";
 import SimpleDialog from "../SimpleDialog";
+import Modal from "../../Modal";
 import removeLocalStorageItem from "../../utils/removeLocalStorageItem";
 
 interface MyInfoType {
@@ -53,12 +54,12 @@ const MyProfileEdit = (props: MyInfoType) => {
   const navigate = useNavigate();
   const formData = new FormData();
   const nicknameRef = useRef<HTMLInputElement>(null);
-  const [isWithdrawal, setIsWithdrawal] = useState(false);
   const { infoData } = props;
   const { birth, nickname, gender, memberImage } = infoData;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const [profileImage, setProfileImage] = useState(profileImg);
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
   const [errorType, setErrorType] = useState({
     nickname: "",
     password: "",
@@ -244,6 +245,7 @@ const MyProfileEdit = (props: MyInfoType) => {
         setErrorClass({ ...errorClass, nickname: "", password: "" });
         setErrorType({ ...errorType, nickname: "", password: "" });
         setValids({ ...valids, nickname: false, password: false });
+        window.location.reload();
       } else {
         alert("알 수 없는 오류입니다. 관리자에게 문의하세요.");
       }
@@ -287,16 +289,6 @@ const MyProfileEdit = (props: MyInfoType) => {
 
   return (
     <EditProfileContainer>
-      {isWithdrawal && (
-        <SimpleDialog
-          message="정말 탈퇴하시겠습니까?"
-          cancelMessage="취소"
-          confirmMessage="탈퇴하기"
-          clickCancleBtn={() => setIsWithdrawal(false)}
-          clickConfirmBtn={() => withdrawalsBtn()}
-        />
-      )}
-
       <EditProtileWrapper>
         <ImgWrapper>
           {memberImage === "" ? (
@@ -465,22 +457,27 @@ const MyProfileEdit = (props: MyInfoType) => {
         <EditBtn type="submit" onClick={editBtn}>
           수정하기
         </EditBtn>
-        <WithdrawalBtn
-          type="button"
-          onClick={() => setIsWithdrawal((prev) => !prev)}
-        >
-          탈퇴하기
-        </WithdrawalBtn>
+        <div style={{ textAlign: "center" }}>
+          <WithdrawalBtn
+            type="button"
+            onClick={() => setOpenWithdrawalModal(true)}
+          >
+            탈퇴하기
+          </WithdrawalBtn>
+          <Modal
+            open={openWithdrawalModal}
+            handleModal={() => setOpenWithdrawalModal(!openWithdrawalModal)}
+          >
+            <SimpleDialog
+              message="정말 탈퇴하시겠습니까?"
+              cancelMessage="취소하기"
+              confirmMessage="탈퇴하기"
+              clickCancleBtn={() => setOpenWithdrawalModal(false)}
+              clickConfirmBtn={() => withdrawalsBtn()}
+            />
+          </Modal>
+        </div>
       </EditProtileWrapper>
-      {isWithdrawal && (
-        <SimpleDialog
-          message="정말 탈퇴하시겠습니까?"
-          cancelMessage="취소"
-          confirmMessage="탈퇴하기"
-          clickCancleBtn={() => setIsWithdrawal(false)}
-          clickConfirmBtn={() => withdrawalsBtn()}
-        />
-      )}
     </EditProfileContainer>
   );
 };
@@ -609,6 +606,8 @@ const EditBtn = styled.button`
 `;
 
 const WithdrawalBtn = styled.button`
+  margin-top: 10px;
+  text-align: center;
   color: ${theme.colors.greys60};
   cursor: pointer;
   &:hover {
