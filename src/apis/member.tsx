@@ -166,12 +166,12 @@ export interface BlogReviewListRes {
 
 export interface BlogInfo {
   id: number;
+  title: string;
   date: string;
   writer: string;
-  title: string;
-  viewCount: 0;
+  viewCount: number;
   imageInfo: {
-    id: 3;
+    id: number;
     url: string;
   };
 }
