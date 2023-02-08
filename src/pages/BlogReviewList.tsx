@@ -10,7 +10,7 @@ import blogReviewApis from "../apis/blogReviewApis";
 import Pagination from "../components/Pagination";
 import { BlogReviewResponse } from "../types/blogReview";
 
-const BlogReview = () => {
+const BlogReviewList = () => {
   const navigate = useNavigate();
   const [pages, setPages] = useState({
     started: 1,
@@ -95,7 +95,7 @@ const BlogReview = () => {
   );
 };
 
-export default BlogReview;
+export default BlogReviewList;
 
 const Container = styled.div`
   max-width: 1200px;
