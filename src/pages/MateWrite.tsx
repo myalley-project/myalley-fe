@@ -12,12 +12,12 @@ import Calender from "../components/Calendar";
 import SubTitle from "../components/SubTitle";
 import Editor from "../components/Editor";
 import SimpleDialog from "../components/SimpleDialog";
+import ExhibitionChoice from "../components/ExhibitionChoice";
 import { MateRes, MateWriteType } from "../types/mate";
 import { mateApi, mateWriteApi, MateWriteRes } from "../apis/mate";
 import useRefreshTokenApi from "../apis/useRefreshToken";
 import isApiError from "../utils/isApiError";
 import { alertError } from "../utils/alerts";
-import ExhibitionChoice from "../components/ExhibitionChoice";
 import Modal from "../Modal";
 
 // 메이트글 작성/수정 페이지_박예선_23.02.08
@@ -140,7 +140,7 @@ const MateWrite = () => {
           );
           alert(res.data);
         } catch {
-          errorAlert();
+          alertError();
         }
         navigate(-1);
       }
