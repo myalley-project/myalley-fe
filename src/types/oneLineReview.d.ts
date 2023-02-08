@@ -18,10 +18,23 @@ export type OnelineReviewCardType = {
   content: string;
   time: string;
   congestion: string;
-  memberInfo: {
+  memberInfo?: {
     memberId: number;
     nickname: string;
-    userImage: string;
+    memberImage: string;
+  };
+};
+
+export type MypageOnelineReviewCardType = {
+  id: number;
+  viewDate: string;
+  rate: number;
+  content: string;
+  time: string;
+  congestion: string;
+  exhibitionInfo?: {
+    id: number;
+    title: string;
   };
 };
 
