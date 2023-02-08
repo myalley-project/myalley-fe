@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
-import { errorAlert } from "../utils/isApiError";
+import { alertError } from "../utils/alerts";
 import { Mate } from "../types/mateList";
 import { PageInfo } from "../types/pageInfo";
 import { Exhibition } from "../types/exhbList";
@@ -17,7 +17,7 @@ export const myInfoApi = async (type: "get" | "put") => {
       await axios.get("/data/member.json"); // 테스트용 목데이터
     return putRes;
   }
-  return errorAlert();
+  return alertError();
 };
 
 // 내 정보 수정
