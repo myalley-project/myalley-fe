@@ -1,3 +1,4 @@
+// eslint-disable-line no-script-url
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -46,7 +47,13 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
               {localStorage.getItem("accessToken") ? (
                 <MenuWrapper>
                   <Subtitle>계정</Subtitle>
-                  <MypageArea href="/mypage/edit">
+                  <MypageArea
+                    href={
+                      localStorage.getItem("authority") === "ROLE_USER"
+                        ? "/mypage/edit"
+                        : "#"
+                    }
+                  >
                     <ProfileWrapper>
                       <img
                         src={
