@@ -34,7 +34,7 @@ export interface BlogReviewCardProps {
   };
 }
 
-type ImageInfo = {
+export type ImageInfo = {
   id: string;
   url: string;
 };
