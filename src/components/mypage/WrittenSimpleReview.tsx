@@ -40,7 +40,7 @@ const WrittenSimpleReview = () => {
     <>
       <OnelineDisplay>
         {data?.simpleInfo.length === 0 ? (
-          <NoList notice="아직 작성한 글이 없습니다" />
+          <NoList notice="아직 작성한 한줄 리뷰가 없습니다" />
         ) : (
           data?.simpleInfo.map((each) => (
             <MypageOnelineCard
