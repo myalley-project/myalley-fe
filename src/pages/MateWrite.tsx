@@ -438,6 +438,7 @@ const MATE_AGE_ARRAY = [
 
 const MateWriteContainer = styled.div`
   width: 83vw;
+  max-width: 1200px;
   margin: 50px auto 30px;
   padding: 30px;
   border: 1px solid ${theme.colors.greys40};
