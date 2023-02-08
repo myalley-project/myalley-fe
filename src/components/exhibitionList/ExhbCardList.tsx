@@ -93,6 +93,9 @@ const Thumbnail = styled.img`
   position: absolute;
   width: 100%;
   height: 70%;
+  border-bottom: 1px solid ${theme.colors.greys40};
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   object-fit: cover;
 `;
 

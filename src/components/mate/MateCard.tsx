@@ -148,13 +148,15 @@ const Card = styled.div`
 `;
 
 const Thumbnail = styled.img`
-  width: 175px;
-  height: 100%;
+  width: 31.6%;
+  border-bottom: 1px solid ${theme.colors.greys40};
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   object-fit: cover;
 `;
 
 const FindMateDetail = styled.div`
-  width: 100%;
+  width: 68.4%;
   padding: 30px;
 `;
 
