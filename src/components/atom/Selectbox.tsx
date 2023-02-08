@@ -131,7 +131,7 @@ const SubTitle = styled.div`
   margin-bottom: 5px;
   font-weight: 500;
   font-size: 12px;
-  color: #b0a7c0;
+  color: ${theme.colors.secondary40};
 `;
 
 const SelectUl = styled.ul`
@@ -143,9 +143,10 @@ const SelectUl = styled.ul`
   overflow-x: hidden;
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid #f6f3fe;
+  border: 1px solid ${theme.colors.secondary5};
   border-radius: 10px;
   background-color: ${theme.colors.white100};
+  box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
   ::-webkit-scrollbar {
     display: block;
     width: 14px;
