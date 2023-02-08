@@ -7,7 +7,7 @@ import profileImage from "../../../assets/icons/profileImg.svg";
 import Button from "../../atom/Button";
 import { BlogReviewDetailResponse } from "../../../types/blogReview";
 import bloglikeApis from "../../../apis/bloglikeApis";
-import bookmarkApis from "../../../apis/bookMarkApis";
+import blogDetailbookmarkApis from "../../../apis/blogdetailbookMarkApis";
 
 const BlogReviewDetailPresentation = ({
   id,
@@ -31,12 +31,19 @@ const BlogReviewDetailPresentation = ({
   const token = localStorage.getItem("accessToken");
   const queryClient = useQueryClient();
 
-  const bookmarkMutation = useMutation({
-    mutationFn: () => bookmarkApis.toggle(exhibitionInfo.id),
+  const bookmarkAddMutation = useMutation({
+    mutationFn: () => blogDetailbookmarkApis.addbookmark(id),
     onSuccess: () => {
       queryClient.invalidateQueries(["blogReviewDetail"]);
       console.log("북마크 여부", bookmarkStatus);
       console.log("북마크 카운트", bookmarkCount);
+    },
+  });
+
+  const bookmarkDeleteMutation = useMutation({
+    mutationFn: () => blogDetailbookmarkApis.deletebookmark(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogReviewDetail"]);
     },
   });
 
@@ -76,7 +83,16 @@ const BlogReviewDetailPresentation = ({
     if (!token) {
       alert("로그인이 필요한 기능입니다.");
     }
-    bookmarkMutation.mutate();
+
+    if (memberInfo.memberId === Number(localStorage.getItem("memberId"))) {
+      alert("자신의 글에는 북마크를 누를 수 없습니다.");
+    }
+
+    if (bookmarkStatus) {
+      bookmarkDeleteMutation.mutate();
+    } else {
+      bookmarkAddMutation.mutate();
+    }
   };
 
   return (
