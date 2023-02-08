@@ -67,6 +67,7 @@ const Article = styled.article`
   border-radius: 30px;
   gap: 30px;
   text-align: center;
+  z-index: 99;
   & h3 {
     margin-bottom: 1rem;
     font-weight: bold;
@@ -86,7 +87,6 @@ const Icon = styled.div`
 
 const StyledLink = styled(Link)`
   display: flex;
-  z-index: 99;
   justify-content: center;
   align-items: center;
   gap: 4px;
