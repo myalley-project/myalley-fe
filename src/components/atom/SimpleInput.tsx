@@ -5,15 +5,16 @@ import { theme } from "../../styles/theme";
 interface SimpleInputProps {
   inputlength: number;
   onChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
 }
 
-const SimpleInput = ({ onChangeHandler, inputlength }: SimpleInputProps) => (
+const SimpleInput = ({
+  onChangeHandler,
+  inputlength,
+  placeholder = "내용을 입력해주세요",
+}: SimpleInputProps) => (
   <Container>
-    <input
-      type="text"
-      placeholder="내용을 입력해주세요"
-      onChange={onChangeHandler}
-    />
+    <input type="text" placeholder={placeholder} onChange={onChangeHandler} />
     <InputLegnth inputlength={inputlength}>{inputlength}/60</InputLegnth>
   </Container>
 );
