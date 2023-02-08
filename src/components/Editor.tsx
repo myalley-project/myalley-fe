@@ -150,21 +150,12 @@ const FormBox = styled.div`
   }
 `;
 
-// const SubTitle = styled.h2`
-//   font-weight: bold;
-//   font-size: 14px;
-//   color: #333;
-//   margin-bottom: 10px;
-// `;
-
 const TextArea = styled.textarea`
   width: 100%;
   height: 300px;
-  /* aspect-ratio: 1 / 0.7; */
   border-radius: 1rem;
   padding: 20px;
   border-color: ${theme.colors.greys40};
-  /* outline-color: ${theme.colors.greys60}; */
   resize: none;
   :hover {
     border: 1px solid ${theme.colors.primry60};
