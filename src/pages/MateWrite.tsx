@@ -367,7 +367,7 @@ const MateWrite = () => {
           </div>
         </Section>
         <Section>
-          <SubTitle text="메이트 설명글" />
+          <SubTitle text="본문 내용" />
           <Editor>
             <Editor.TextInputArea
               value={content}
@@ -395,17 +395,20 @@ const MateWrite = () => {
         >
           취소하기
         </Button>
-        {openCancleModal && (
+        <Modal
+          open={openCancleModal}
+          handleModal={() => setOpenCancleModal(!openCancleModal)}
+        >
           <SimpleDialog
-            message={`${mateId ? "수정" : "등록"}을 취소하시겠습니까?`}
-            cancelMessage="계속하기"
-            confirmMessage="확인"
+            message={`${mateId ? "수정" : "작성"}을 취소하시겠습니까?`}
+            cancelMessage={`계속 ${mateId ? "수정" : "작성"}하기`}
+            confirmMessage={`${mateId ? "수정" : "작성"} 취소하기`}
             clickCancleBtn={() => setOpenCancleModal(false)}
             clickConfirmBtn={() => {
               navigate("/mate-list", { replace: true });
             }}
           />
-        )}
+        </Modal>
         <Button
           variant="primary"
           size="small"
@@ -438,6 +441,7 @@ const MATE_AGE_ARRAY = [
 
 const MateWriteContainer = styled.div`
   width: 83vw;
+  max-width: 1200px;
   margin: 50px auto 30px;
   padding: 30px;
   border: 1px solid ${theme.colors.greys40};
@@ -568,6 +572,7 @@ const BtnContainer = styled.div`
   text-align: center;
   button {
     width: 153px;
+    padding: 10px 0;
     :nth-child(1) {
       margin-right: 30px;
     }

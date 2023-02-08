@@ -95,7 +95,7 @@ const FiltersContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: inherit;
+  width: 100%;
   margin-bottom: 30px;
   .status-filter {
     width: 300px;

@@ -67,6 +67,7 @@ const ExhibitionListContainer = styled.div`
   width: 100vw;
   max-width: 1440px;
   margin: auto;
+  padding: 40px;
   font-size: 14px;
   h1 {
     margin: 50px 0;
@@ -86,5 +87,11 @@ const ExhibitionListContainer = styled.div`
   }
   .none {
     display: none;
+  }
+  @media (max-width: 1280px) {
+    padding: 20px;
+  }
+  @media (max-width: 1064px) {
+    padding: 16px;
   }
 `;
