@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper";
 import { theme } from "../../../styles/theme";
 import profileImage from "../../../assets/icons/profileImg.svg";
 import Button from "../../atom/Button";
@@ -75,7 +76,14 @@ const BlogReviewDetailPresentation = ({
         </DetailDiv>
       </DetailInformation>
       <MainPart>
-        <StyledSWiper>
+        <StyledSWiper
+          slidesPerView={1.6}
+          spaceBetween={30}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Pagination]}
+        >
           {imageInfo
             ? imageInfo.map((each) => (
                 <SwiperSlide key={each.id}>
@@ -172,10 +180,20 @@ const MainPart = styled.div`
 `;
 
 const StyledSWiper = styled(Swiper)`
+  display: block;
   width: 100%;
   height: 383px;
-  background-color: ${theme.colors.primry60};
   margin-bottom: 30px;
+  .swiper-slide {
+    width: 100%;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const UserInfo = styled.div`
