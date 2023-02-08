@@ -1,27 +1,30 @@
 import React, { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
-import ProfileImg from "../../assets/icons/profileImg.svg";
-import StarIcon from "../../assets/icons/starIcon.svg";
-import { OnelineReviewCardType } from "../../types/oneLineReview";
-import Modal from "../../Modal";
-import Button from "../atom/Button";
-import oneLineReviewApis from "../../apis/oneLineReviewApis";
+import { theme } from "../../../styles/theme";
+import profileImg from "../../../assets/icons/profileImg.svg";
+import StarIcon from "../../../assets/icons/starIcon.svg";
+import { MypageOnelineReviewCardType } from "../../../types/oneLineReview";
+import Modal from "../../../Modal";
+import Button from "../../atom/Button";
+import oneLineReviewApis from "../../../apis/oneLineReviewApis";
+import OnelineWriteContainer from "../container/OnelineWriteContainer";
+import isApiError from "../../../utils/isApiError";
+import useRefreshTokenApi from "../../../apis/useRefreshToken";
 
-import OnelineWrapper from "../../pages/OnelineWrapper";
-
-const OnelineCard = ({
+const MypageOnelineCard = ({
   id,
   viewDate,
   rate,
   content,
   time,
   congestion,
-  memberInfo,
-}: OnelineReviewCardType) => {
+  exhibitionInfo,
+}: MypageOnelineReviewCardType) => {
   const [modifyModalIsopen, setModifyModalIsopen] = useState<boolean>(false);
   const [deleteModalIsopen, setDeleteModalIsopen] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const refreshTokenApi = useRefreshTokenApi();
 
   const modifyModalHandler = () => {
     setModifyModalIsopen((prev) => !prev);
@@ -33,13 +36,25 @@ const OnelineCard = ({
 
   const deleteMutation = useMutation({
     mutationFn: () => oneLineReviewApis.deleteReview(id),
+    onSuccess: () => queryClient.invalidateQueries(["simpleReviews"]),
   });
 
+  const handleDelete = () => {
+    try {
+      deleteMutation.mutate();
+      deleteModalHandler();
+    } catch (err) {
+      const errResponese = isApiError(err);
+      if (errResponese === "accessToken 만료") refreshTokenApi();
+    }
+  };
+
+  /* eslint-disable */
   return (
     <Container>
       <Review>
-        <img src={ProfileImg} alt="사람 이미지" />
         <ReviewInfo>
+          <div className="exhibition-title">{exhibitionInfo?.title}</div>
           {rate === 1 ? (
             <div>
               <img src={StarIcon} alt="별점" />
@@ -76,21 +91,27 @@ const OnelineCard = ({
             </div>
           ) : null}
           <div>
-            <span>{memberInfo.nickname}</span> | <span>{viewDate}</span> |
-            <span>{time}</span> | <span>{congestion}</span>
+            <span>{viewDate}</span> |<span>{time}</span> |{" "}
+            <span>{congestion}</span>
           </div>
           <p>{content}</p>
         </ReviewInfo>
       </Review>
       <ButtonItems>
-        <button type="button">수정</button>
+        <button onClick={modifyModalHandler} type="button">
+          수정
+        </button>
         <Spliter />
         <button onClick={deleteModalHandler} type="button">
           삭제
         </button>
       </ButtonItems>
       <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
-        <OnelineWrapper writeType="modify" simpleId={id} />
+        <OnelineWriteContainer
+          simpleId={id}
+          handleModal={modifyModalHandler}
+          writeType="modify"
+        />
       </Modal>
       <Modal open={deleteModalIsopen} handleModal={deleteModalHandler}>
         <Dialog>
@@ -107,7 +128,7 @@ const OnelineCard = ({
               취소하기
             </Button>
             <Button
-              onClick={() => deleteMutation.mutate()}
+              onClick={handleDelete}
               variant="primary"
               size="large"
               type="button"
@@ -120,7 +141,7 @@ const OnelineCard = ({
     </Container>
   );
 };
-export default OnelineCard;
+export default MypageOnelineCard;
 
 const Container = styled.div`
   display: flex;
@@ -141,6 +162,12 @@ const Review = styled.div`
 `;
 
 const ReviewInfo = styled.div`
+  & > .exhibition-title {
+    color: ${theme.colors.greys90};
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
   & > img {
     margin-bottom: 10px;
   }
@@ -151,6 +178,7 @@ const ReviewInfo = styled.div`
     text-align: start;
   }
   & > p {
+    text-align: start;
     color: ${theme.colors.greys90};
     font-weight: 700;
     font-size: 14px;
@@ -163,6 +191,7 @@ const ButtonItems = styled.div`
   align-items: first baseline;
   padding: 0px;
   & > button {
+    cursor: pointer;
     color: ${theme.colors.greys60};
     border: 0;
   }
@@ -201,6 +230,9 @@ const DialogContainer = styled.div`
   gap: 30px;
   padding: 0px;
   margin-bottom: 30px;
+  & > button {
+    cursor: pointer;
+  }
 `;
 
 const Title = styled.h1`

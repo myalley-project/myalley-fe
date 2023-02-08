@@ -43,7 +43,8 @@ export default ExhbCardList;
 const CardListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: inherit;
+  width: 100%;
+  max-width: 1440px;
 `;
 
 const ExhibitionCard = styled.div<{
@@ -53,7 +54,7 @@ const ExhibitionCard = styled.div<{
   width: ${(props) => (props.type === "exhbList" ? "23.43%" : "31.66%")};
   margin-right: ${(props) => (props.type === "exhbList" ? "2.093%" : "2.5%")};
   margin-bottom: ${(props) => (props.type === "exhbList" ? "2.093%" : "2.5%")};
-  padding-bottom: 42.99%;
+  aspect-ratio: 1/1.48;
   border: 2px solid ${theme.colors.greys40};
   border-radius: 33px;
   cursor: pointer;
@@ -75,7 +76,7 @@ const ExhibitionCard = styled.div<{
     transform: translate(-50%);
     align-items: center;
     width: 82.24%;
-    height: 24.5%;
+    height: 30%;
     text-decoration: none;
   }
 `;
@@ -83,14 +84,14 @@ const ExhibitionCard = styled.div<{
 const Thumbnail = styled.img`
   position: absolute;
   width: 100%;
-  height: 75.5%;
+  height: 70%;
   object-fit: cover;
 `;
 
 const Content = styled.div`
   position: relative;
   width: 100%;
-  height: 60.5%;
+  height: 60%;
 `;
 
 const ContentTop = styled.div`

@@ -63,6 +63,7 @@ const MateListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 83vw;
+  max-width: 1200px;
   margin: auto;
   .page-title {
     margin: 50px 0;

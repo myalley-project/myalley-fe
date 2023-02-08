@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { theme } from "../styles/theme";
-import Button from "./atom/Button";
-import SearchBar from "./atom/Searchbar";
+import { theme } from "../../styles/theme";
+import Button from "../atom/Button";
+import SearchBar from "../atom/Searchbar";
 
 interface ReviewSearchbarProps {
   setFilter: (state: "oneline" | "blog") => void;
-  setOrderType: (state: "Recent" | "StarScore") => void;
+  setOrderType: (state: "Recent" | "StarScore" | "ViewCount") => void;
   handleReviewModal: () => void;
   filter: "oneline" | "blog";
   totalElement: number;
 }
 
-const ReviewSearchbar = ({
+const ReviewSearchBar = ({
   setFilter,
   setOrderType,
   filter,
@@ -60,16 +60,23 @@ const ReviewSearchbar = ({
         최근순
       </button>
       <Spliter />
-      <button onClick={() => setOrderType("StarScore")} type="button">
-        별점순
-      </button>
+      {filter === "oneline" ? (
+        <button onClick={() => setOrderType("StarScore")} type="button">
+          별점순
+        </button>
+      ) : (
+        <button onClick={() => setOrderType("ViewCount")} type="button">
+          조회수순
+        </button>
+      )}
     </ButtonItems>
   </Container>
 );
 
-export default ReviewSearchbar;
+export default ReviewSearchBar;
 
 const Container = styled.div`
+  margin-bottom: 30px;
   & button.clicked {
     color: ${theme.colors.greys100};
   }
@@ -90,7 +97,7 @@ const ReviewSelector = styled.div`
       color: ${theme.colors.greys100};
     }
   }
-  &.selected {
+  & > button.selected {
     color: ${theme.colors.greys100};
   }
 `;

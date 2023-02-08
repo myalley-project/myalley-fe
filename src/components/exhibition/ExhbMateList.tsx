@@ -47,7 +47,8 @@ const ExhbMateList = () => {
     <ExhbMateContainer>
       <Header>
         <Text>
-          <span>{pageInfoData.size}</span> 개의 리뷰를 확인해보세요!
+          <span>{pageInfoData.totalElement}</span> 개의 메이트 모집글을
+          확인해보세요!
         </Text>
         <a href="/mate-write">
           <Button variant="primary" size="small">
