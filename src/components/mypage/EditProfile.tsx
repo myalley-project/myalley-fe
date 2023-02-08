@@ -245,6 +245,7 @@ const MyProfileEdit = (props: MyInfoType) => {
         setErrorClass({ ...errorClass, nickname: "", password: "" });
         setErrorType({ ...errorType, nickname: "", password: "" });
         setValids({ ...valids, nickname: false, password: false });
+        window.location.reload();
       } else {
         alert("알 수 없는 오류입니다. 관리자에게 문의하세요.");
       }
