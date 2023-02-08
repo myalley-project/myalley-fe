@@ -1,7 +1,4 @@
-// 에러 alert실행 함수_박예선_23.01.23
-export const errorAlert = () => {
-  alert("죄송합니다.\n네트워크 오류입니다. 다시 시도해주십시오.");
-};
+import { alertError } from "./alerts";
 
 // api 에러 응답형식 확인 후 리턴하는 함수_박예선_23.01.23
 // -----------[ 사용방법 ]-----------
@@ -18,10 +15,10 @@ export const errorAlert = () => {
 // }
 const isApiError = (err: unknown, type?: "refreshToken 만료") => {
   if (!(err && typeof err === "object" && "response" in err))
-    return errorAlert();
+    return alertError();
   const { response } = err;
   if (!(response && typeof response === "object" && "data" in response))
-    return errorAlert();
+    return alertError();
   const { data } = response;
   if (
     data &&
@@ -31,7 +28,7 @@ const isApiError = (err: unknown, type?: "refreshToken 만료") => {
   ) {
     const { errorCode, errorMsg } = data;
     if (!(typeof errorCode === "number" && typeof errorMsg === "string"))
-      return errorAlert();
+      return alertError();
     // 403 Forbidden 에러 자동 처리
     if (!type && errorCode === 403 && errorMsg === "Forbidden")
       return alert(
@@ -44,7 +41,7 @@ const isApiError = (err: unknown, type?: "refreshToken 만료") => {
     // 리턴받은 에러로 catch문에서 각자 필요한 에러 처리
     return { errorMsg, errorCode };
   }
-  return errorAlert();
+  return alertError();
 };
 
 export default isApiError;

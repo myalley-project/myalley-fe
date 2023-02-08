@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { useQuery, UseQueryResult } from "react-query";
 import styled from "styled-components";
 import { OnelineReviewReadType } from "../../../types/oneLineReview";
@@ -8,14 +8,14 @@ import BlogReviewCard from "../../blogReviewList/ReviewCard";
 import blogReviewApis from "../../../apis/blogReviewApis";
 import { BlogReviewResponse } from "../../../types/blogReview";
 
-type OrderType = "Recent" | "ViewCount";
+type OrderType = "Recent" | "ViewCount" | "StarScore";
 
 interface BlogReadProps {
   id: string;
   orderType: OrderType;
   filter: "oneline" | "blog";
   setFilter: Dispatch<SetStateAction<"oneline" | "blog">>;
-  setOrderType: Dispatch<SetStateAction<"Recent" | "ViewCount">>;
+  setOrderType: Dispatch<SetStateAction<"Recent" | "StarScore" | "ViewCount">>;
   handleReviewModal: () => void;
 }
 
@@ -30,6 +30,12 @@ const BlogReviewReadContainer = ({
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
+  });
+
+  useEffect(() => {
+    if (orderType === "StarScore") {
+      setOrderType("Recent");
+    }
   });
 
   const { isLoading, isError, error, data } = useQuery<

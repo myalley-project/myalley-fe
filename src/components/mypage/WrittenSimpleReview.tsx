@@ -8,6 +8,7 @@ import MypageOnelineCard from "../onelineReview/presentation/MypageOnelineCard";
 import { MySimpleReviewRes, mySimpleReviewsApi } from "../../apis/member";
 import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 import isApiError from "../../utils/isApiError";
+import NoList from "../NoList";
 
 const WrittenSimpleReview = () => {
   const getNewTokenApi = useGetNewTokenApi;
@@ -38,18 +39,22 @@ const WrittenSimpleReview = () => {
   return (
     <>
       <OnelineDisplay>
-        {data?.simpleInfo.map((each) => (
-          <MypageOnelineCard
-            key={each.id}
-            id={each.id}
-            viewDate={each.viewDate}
-            time={each.time}
-            congestion={each.congestion}
-            rate={each.rate}
-            content={each.content}
-            exhibitionInfo={each.exhibitionInfo}
-          />
-        ))}
+        {data?.simpleInfo.length === 0 ? (
+          <NoList notice="아직 작성한 한줄 리뷰가 없습니다" />
+        ) : (
+          data?.simpleInfo.map((each) => (
+            <MypageOnelineCard
+              key={each.id}
+              id={each.id}
+              viewDate={each.viewDate}
+              time={each.time}
+              congestion={each.congestion}
+              rate={each.rate}
+              content={each.content}
+              exhibitionInfo={each.exhibitionInfo}
+            />
+          ))
+        )}
       </OnelineDisplay>
       <Pagination
         pages={pages}
