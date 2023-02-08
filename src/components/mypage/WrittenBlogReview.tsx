@@ -35,7 +35,7 @@ const WrittenBlogReview = () => {
     <Container>
       <CardWrapper>
         {data?.blogInfo.length === 0 ? (
-          <NoList notice="아직 작성한 글이 없습니다" />
+          <NoList notice="아직 작성한 블로그 리뷰 글이 없습니다." />
         ) : (
           data?.blogInfo.map((each) => (
             <BlogReviewCard
