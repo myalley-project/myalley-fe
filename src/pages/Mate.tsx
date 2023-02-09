@@ -2,28 +2,25 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
-import profileImg from "../assets/icons/profileImg.svg";
-import Calender from "../components/Calendar";
-import { MateRes } from "../types/mate";
 import { theme } from "../styles/theme";
+import profileImg from "../assets/icons/profileImg.svg";
+import { MateRes } from "../types/mate";
+import { BookMarkRes, mateApi, useMateBookMarkApi } from "../apis/mate";
+import isApiError from "../utils/isApiError";
+import MateTop, {
+  BtnColored,
+  BtnTransparent,
+} from "../components/mate/MateTop";
+import Calender from "../components/Calendar";
 import CommentList, {
   SubTitle,
   TextArea,
 } from "../components/mate/CommentList";
-import ExhbCard from "../components/mate/ExhbCard";
-import {
-  BookMarkRes,
-  mateApi,
-  useMateBookMarkApi,
-  useMateDeleteApi,
-} from "../apis/mate";
-import isApiError from "../utils/isApiError";
 
-// 메이트 모집글 상세페이지_박예선_23.01.27
+// 메이트 모집글 상세페이지_박예선_23.02.08
 const Mate = () => {
   const navigate = useNavigate();
   const mateBookMarkApi = useMateBookMarkApi();
-  const mateDeleteApi = useMateDeleteApi();
   const mateId = Number(useParams().id);
   const memberId = Number(localStorage.getItem("memberId"));
   const [isMyPost, setIsMyPost] = useState(false);
@@ -66,11 +63,6 @@ const Mate = () => {
     if (mateAuthorId === memberId) setIsMyPost(true);
   }, [mateInfo, mateInfo?.member, memberId]);
 
-  // 메이트글 삭제 api 호출_박예선_23.01.31
-  const clickDeleteBtn = async () => {
-    await mateDeleteApi(mateId);
-  };
-
   // 메이트글 북마크 등록/해제 api 호출_박예선_23.01.26
   const clickBookmarkBtn = async () => {
     if (!memberId) {
@@ -89,23 +81,7 @@ const Mate = () => {
   return (
     mateInfo && (
       <MateContainer>
-        <div className="top-buttons-container flex">
-          <BtnTransparent onClick={() => navigate("/mate-list")}>
-            목록
-          </BtnTransparent>
-          {/* <BtnTransparent>이전 글</BtnTransparent>
-          <BtnTransparent>다음 글</BtnTransparent> */}
-          {/* 일단 구현 중지 */}
-          <div className={isMyPost ? "" : "none"}>
-            <BtnTransparent
-              onClick={() => navigate(`/mate-write?mateId=${mateId}`)}
-            >
-              수정
-            </BtnTransparent>
-            <BtnTransparent onClick={clickDeleteBtn}>삭제</BtnTransparent>
-          </div>
-        </div>
-        <ExhbCard exhbData={mateInfo.exhibition} />
+        <MateTop isMyPost={isMyPost} mateId={mateId} mateInfo={mateInfo} />
         <MateContentContainer>
           <div className="flex">
             <div className="title-container">
@@ -160,6 +136,12 @@ const Mate = () => {
               disabled
             />
           </div>
+          <div>
+            <SubTitle type="greys90" marginTop={50}>
+              연락가능 메신저
+            </SubTitle>
+            <Span size={14}>{mateInfo.contact}</Span>
+          </div>
           <MemberInfo className="flex">
             <MemberProfileImg
               alt="member profile img"
@@ -175,12 +157,6 @@ const Mate = () => {
               <span>{getMemberAgeForm(mateInfo.member.memberAge)}</span>
             </div>
           </MemberInfo>
-          <div>
-            <SubTitle type="greys90" marginTop={50}>
-              연락가능 메신저
-            </SubTitle>
-            <Span size={14}>{mateInfo.contact}</Span>
-          </div>
           <div className="bookmark-container">
             <BtnTransparent
               type="button"
@@ -220,13 +196,10 @@ function getMemberAgeForm(year: string) {
 }
 
 const MateContainer = styled.div`
-  width: 83vw;
-  max-width: 1200px;
-  margin: 50px auto;
-  .top-buttons-container {
-    height: 40px;
-    justify-content: space-between;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
   .flex {
     display: flex;
   }
@@ -236,9 +209,12 @@ const MateContainer = styled.div`
 `;
 
 const MateContentContainer = styled.div`
-  margin: 30px 0;
+  width: 83vw;
+  max-width: 1200px;
+  margin: 50px 0 30px;
   padding: 30px;
   border: 1px solid ${theme.colors.greys40};
+  background-color: ${theme.colors.white100};
   .title-container {
     width: 100%;
     padding-bottom: 15px;
@@ -309,50 +285,6 @@ const MemberProfileImg = styled.img`
   height: 78px;
   margin-right: 10px;
   border-radius: 50px;
-`;
-
-export const BtnColored = styled.button`
-  height: 36px;
-  padding: 0 20px;
-  background-color: ${theme.colors.primry60};
-  color: ${theme.colors.white100};
-  font-size: 14px;
-  cursor: pointer;
-  &:disabled {
-    cursor: default;
-  }
-`;
-
-const BtnTransparent = styled.button`
-  height: 40px;
-  padding: 0 20px;
-  border: 1px solid ${theme.colors.greys40};
-  font-size: 14px;
-  cursor: pointer;
-  &:disabled {
-    cursor: default;
-  }
-  &:nth-child(1) {
-    margin-right: 10px;
-  }
-  &.bookmark {
-    margin: auto;
-    align-items: center;
-    span {
-      margin-left: 10px;
-      font-weight: 700;
-    }
-    :hover {
-      background-color: ${theme.colors.greys10};
-    }
-    &:focus-visible {
-      border: 1px solid ${theme.colors.greys100};
-    }
-    &.bookmarked {
-      background-color: ${theme.colors.primry80};
-      color: ${theme.colors.white100};
-    }
-  }
 `;
 
 const Span = styled.span<{ size: number }>`
