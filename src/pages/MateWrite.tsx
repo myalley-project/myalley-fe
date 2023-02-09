@@ -3,6 +3,7 @@ import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import format from "date-fns/format";
 import { theme } from "../styles/theme";
 import plus from "../assets/icons/plus.svg";
 import Button from "../components/atom/Button";
@@ -20,7 +21,7 @@ import isApiError from "../utils/isApiError";
 import { alertError } from "../utils/alerts";
 import Modal from "../Modal";
 
-// 메이트글 작성/수정 페이지_박예선_23.02.08
+// 메이트글 작성/수정 페이지_박예선_23.02.09
 const MateWrite = () => {
   const refreshTokenApi = useRefreshTokenApi();
   const location = useLocation();
@@ -36,7 +37,7 @@ const MateWrite = () => {
     status: "모집 중",
     mateGender: "성별 무관",
     mateAge: "",
-    availableDate: "",
+    availableDate: format(new Date(), "yyyy-MM-dd"),
     content: "",
     contact: "",
     exhibitionId: 0,
@@ -45,7 +46,6 @@ const MateWrite = () => {
     minimum: "",
     maximum: "",
   });
-  const [selectedDate, setSelectedDate] = useState("");
   const [openExhbModal, setOpenExhbModal] = useState(false);
   const [exhbData, setExhbData] = useState({
     thumbnail: "",
@@ -230,19 +230,20 @@ const MateWrite = () => {
       setWriteData({ ...writeData, mateAge: `${minimum} ~ ${maximum}` });
   };
 
-  // 관람일 미정 체크박스 클릭함수_박예선_23.01.28
+  // 관람일 미정 체크박스 클릭함수_박예선_23.02.09
   const clickDateRegardless = () => {
     if (availableDate !== "미정")
       setWriteData({ ...writeData, availableDate: "미정" });
     if (availableDate === "미정")
-      setWriteData({ ...writeData, availableDate: selectedDate });
+      setWriteData({
+        ...writeData,
+        availableDate: format(new Date(), "yyyy-MM-dd"),
+      });
   };
 
-  // 달력 클릭 함수_박예선_23.01.31
+  // 달력 클릭 함수_박예선_23.02.09
   const clickCalendar = (date: string) => {
-    setSelectedDate(date);
-    if (availableDate !== "미정")
-      setWriteData({ ...writeData, availableDate: date });
+    setWriteData({ ...writeData, availableDate: date });
   };
 
   // 전시회 선택 함수_박예선_23.02.08
@@ -377,7 +378,26 @@ const MateWrite = () => {
               onClick={clickDateRegardless}
             />
             <CalenderContainer>
-              <Calender handleSelectedDate={clickCalendar} />
+              {mateId !== 0 && (
+                <Calender
+                  selectedDate={
+                    writeData.availableDate === "미정"
+                      ? new Date()
+                      : new Date(writeData.availableDate)
+                  }
+                  handleSelectedDate={clickCalendar}
+                />
+              )}
+              {!mateId && (
+                <Calender
+                  selectedDate={
+                    writeData.availableDate === "미정"
+                      ? new Date()
+                      : new Date(writeData.availableDate)
+                  }
+                  handleSelectedDate={clickCalendar}
+                />
+              )}
             </CalenderContainer>
           </div>
         </Section>

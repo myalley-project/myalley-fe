@@ -1,4 +1,3 @@
-// eslint-disable-line no-script-url
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -13,7 +12,7 @@ interface PropsType {
 const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
   const location = useLocation();
-  const isLocationKey = location.key;
+  const [isLocationKey, setIsLocationKey] = useState(location.key);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const info = {
@@ -23,12 +22,13 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
     authority: localStorage.getItem("authority"),
   };
 
-  const toggleMenu = () => {
-    if (!menuRef.current) {
-      return;
+  const toggleMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    if (!menuRef.current?.contains(target)) {
+      setIsLocationKey(location.key);
+      setIsShowMenu(false);
+      setIsMenuOpen(false);
     }
-    setIsShowMenu(false);
-    setIsMenuOpen(false);
   };
 
   useEffect(() => {
@@ -43,48 +43,27 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
       {isMenuOpen && (
         <MenuOutSide onClick={toggleMenu}>
           <MenuOutSideWrapper>
-            <MenuContainer ref={menuRef}>
+            <MenuContainer ref={menuRef} className="hamburgermenu">
               {localStorage.getItem("accessToken") ? (
                 <MenuWrapper>
                   <Subtitle>계정</Subtitle>
-                  {localStorage.getItem("authority") === "ROLE_USER" ? (
-                    <MypageArea href="/mypage/edit">
-                      <ProfileWrapper>
-                        <img
-                          src={
-                            info.memberImage === ""
-                              ? ProfileImg
-                              : info.memberImage
-                          }
-                          alt="profile-img"
-                          style={{ width: "40px" }}
-                        />
-                      </ProfileWrapper>
-                      <div>
-                        <Nickname>{info.nickname}</Nickname>
-                        <Email className="email">{info.email}</Email>
-                      </div>
-                    </MypageArea>
-                  ) : (
-                    <MypageArea as="div">
-                      <ProfileWrapper>
-                        <img
-                          src={
-                            info.memberImage === ""
-                              ? ProfileImg
-                              : info.memberImage
-                          }
-                          alt="profile-img"
-                          style={{ width: "40px" }}
-                        />
-                      </ProfileWrapper>
-                      <div>
-                        <Nickname>{info.nickname}</Nickname>
-                        <Email className="email">{info.email}</Email>
-                      </div>
-                    </MypageArea>
-                  )}
-
+                  <MypageArea href="/mypage/edit">
+                    <ProfileWrapper>
+                      <img
+                        src={
+                          info.memberImage === ""
+                            ? ProfileImg
+                            : info.memberImage
+                        }
+                        alt="profile-img"
+                        style={{ width: "40px" }}
+                      />
+                    </ProfileWrapper>
+                    <div>
+                      <Nickname>{info.nickname}</Nickname>
+                      <Email className="email">{info.email}</Email>
+                    </div>
+                  </MypageArea>
                   <LogoutButton type="button" onClick={logOut}>
                     로그아웃
                   </LogoutButton>
@@ -110,7 +89,7 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
                     </List>
                   )}
                   {info.authority !== "ROLE_ADMIN" && (
-                    <List as="a" href="/">
+                    <List as="a" href="/blogreview-list">
                       전시회 리뷰
                     </List>
                   )}
@@ -143,10 +122,10 @@ const Background = styled.div`
 `;
 
 const MenuOutSide = styled.div`
-  position: fixed;
+  position: relative;
   z-index: 98;
   width: 100vw;
-  height: 100vh;
+  height: 100vw;
 `;
 
 const MenuOutSideWrapper = styled.div`

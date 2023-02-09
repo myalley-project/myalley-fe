@@ -326,7 +326,10 @@ const BlogReviewUpdate = () => {
           />
           <div>
             <SubTitle text="관람일" />
-            <Calender handleSelectedDate={setSelectedDate} />
+            <Calender
+              selectedDate={new Date()}
+              handleSelectedDate={setSelectedDate}
+            />
           </div>
         </ExhibitionPicker>
         <SelectorConatiner>
