@@ -97,9 +97,7 @@ const Card = styled.div`
   margin-bottom: 10px;
   border: 1px solid ${theme.colors.greys40};
   border-radius: 32px;
-  box-shadow: 0px 0px 20px rgba(56, 30, 114, 0.1);
   cursor: pointer;
-
   .subscript-wrapper {
     font-weight: 500;
     font-size: 12px;
@@ -132,6 +130,7 @@ const Card = styled.div`
 
   &:hover {
     border: 1px solid ${theme.colors.primry60};
+    box-shadow: 0px 0px 20px rgba(56, 30, 114, 0.1);
     .title {
       color: ${theme.colors.primry80};
     }
@@ -151,13 +150,15 @@ const Card = styled.div`
 `;
 
 const Thumbnail = styled.img`
-  width: 175px;
-  height: 100%;
+  width: 31.6%;
+  border-bottom: 1px solid ${theme.colors.greys40};
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   object-fit: cover;
 `;
 
 const FindMateDetail = styled.div`
-  width: 100%;
+  width: 68.4%;
   padding: 30px;
 `;
 
