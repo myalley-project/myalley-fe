@@ -57,7 +57,7 @@ const CommentListContainer = styled.div`
   max-width: 1200px;
   margin-bottom: 50px;
   padding: 30px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid ${theme.colors.greys40};
   .comment-count {
     padding-bottom: 14px;
     border-bottom: 1px solid ${theme.colors.greys40};
