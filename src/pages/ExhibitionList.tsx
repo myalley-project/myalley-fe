@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
+import { theme } from "../styles/theme";
 import { Exhibition, FilterType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
-// 전시회 목록 페이지 컴포넌트_박예선_23.02.08
+// 전시회 목록 페이지 컴포넌트_박예선_23.02.10
 const ExhibitionList = () => {
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -65,14 +66,16 @@ const ExhibitionListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  max-width: 1440px;
+  max-width: 1520px;
   margin: auto;
   padding: 40px 40px 0;
   font-size: 14px;
   h1 {
     margin-bottom: 50px;
-    font-size: 28px;
+    color: ${theme.colors.primry70};
+    font-size: 42px;
     font-weight: 700;
+    line-height: 52px;
   }
   &.flex,
   .flex {
@@ -81,17 +84,10 @@ const ExhibitionListContainer = styled.div`
   .space-between {
     justify-content: space-between;
   }
-  .border {
-    border: 1px solid ${(props) => props.theme.colors.greys40};
-    border-radius: 30px;
-  }
-  .none {
-    display: none;
-  }
   @media (max-width: 1280px) {
-    padding: 20px;
+    padding: 40px 20px 0;
   }
   @media (max-width: 1064px) {
-    padding: 16px;
+    padding: 40px 16px 0;
   }
 `;
