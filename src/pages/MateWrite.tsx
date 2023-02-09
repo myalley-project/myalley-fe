@@ -579,6 +579,9 @@ const ContactInput = styled.input`
   :hover {
     border: 1px solid ${theme.colors.primry60};
     box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
+    ::placeholder {
+      color: ${theme.colors.greys90};
+    }
   }
 `;
 
