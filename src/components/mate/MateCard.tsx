@@ -24,7 +24,9 @@ const MateCard = ({ mate }: MateListType) => {
   return (
     <Link to={`/mate/${mateId}`} style={{ textDecoration: "none" }}>
       <Card>
-        <Thumbnail src={exhibition.posterUrl} alt="exhibition-img" />
+        {exhibition.posterUrl && (
+          <Thumbnail src={exhibition.posterUrl} alt="exhibition-img" />
+        )}
         <FindMateDetail>
           <TitleAndEdit>
             <Title className="title">{title}</Title>
