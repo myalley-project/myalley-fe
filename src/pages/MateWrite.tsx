@@ -475,9 +475,6 @@ const MATE_AGE_ARRAY = [
 ];
 
 const MateWriteContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   width: 83vw;
   max-width: 1200px;
   margin: 50px auto 30px;
@@ -487,7 +484,7 @@ const MateWriteContainer = styled.div`
     width: auto;
     margin: 3.4vw auto 2vw;
   }
-  @media (max-width: 1280px) {
+  @media (max-width: 1240px) {
     width: auto;
     margin: 3.4vw 20px 2vw;
   }
