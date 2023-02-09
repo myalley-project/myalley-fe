@@ -258,19 +258,37 @@ const ExhibitionWrite = (props: ModeType) => {
   // 수정 api 호출
   const clickEditBtn = async () => {
     const regDetail = /^https:\/\//;
-    if (!regDetail.test(detail.webLink)) {
+    if (detail.title === "") {
+      alert("제목을 입력해주세요.");
+    } else if (detail.type === "") {
+      alert("전시 타입을 선택해주세요.");
+    } else if (detail.status === "") {
+      alert("전시 관람여부를 선택해주세요.");
+    } else if (detail.duration === "") {
+      alert("전시 일정을 선택해주세요.");
+    } else if (thumbnail === "") {
+      alert("전시 포스터를 등록해주세요.");
+    } else if (detail.space === "") {
+      alert("전시 장소를 입력해주세요.");
+    } else if (detail.content === "") {
+      alert("전시 내용을 작성해주세요.");
+    } else if (detail.author === "") {
+      alert("작가정보를 작성해주세요.");
+    } else if (detail.webLink === "") {
+      alert("전시회 웹페이지 주소를 작성해주세요.");
+    } else if (!regDetail.test(detail.webLink)) {
       alert("웹페이지 주소는 'https://'로 시작해야합니다.");
-    }
-    try {
-      const res: AxiosResponse<string> = await exhbUpdateApi(id, detail);
-      const { data } = res;
-      if (data === "전시글 정보 수정이 완료되었습니다.") {
-        alert("수정이 완료되었습니다.");
-        navigate(`/exhibition/${id}`);
-      } else alert("예기치 못한 오류입니다. 관리자에게 문의하세요.");
-    } catch (err) {
-      isApiError(err);
-    }
+    } else
+      try {
+        const res: AxiosResponse<string> = await exhbUpdateApi(id, detail);
+        const { data } = res;
+        if (data === "전시글 정보 수정이 완료되었습니다.") {
+          alert("수정이 완료되었습니다.");
+          navigate(`/exhibition/${id}`);
+        } else alert("예기치 못한 오류입니다. 관리자에게 문의하세요.");
+      } catch (err) {
+        isApiError(err);
+      }
   };
 
   return (
