@@ -475,11 +475,26 @@ const MATE_AGE_ARRAY = [
 ];
 
 const MateWriteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 83vw;
   max-width: 1200px;
   margin: 50px auto 30px;
   padding: 30px;
   border: 1px solid ${theme.colors.greys40};
+  @media (max-width: 1440px) {
+    width: auto;
+    margin: 3.4vw auto 2vw;
+  }
+  @media (max-width: 1280px) {
+    width: auto;
+    margin: 3.4vw 20px 2vw;
+  }
+  @media (max-width: 1064px) {
+    width: auto;
+    margin: 3.4vw 16px 2vw;
+  }
 `;
 
 const TitleInput = styled.input`
