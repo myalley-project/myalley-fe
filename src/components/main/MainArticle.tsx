@@ -23,7 +23,9 @@ const MainArticle = () => {
         <Exhibition stroke={exhbStroke} />
         <div>
           <h3>전시회</h3>
-          <p>다양한 전시 정보를 찾아보세요</p>
+          <p className="card-discription">
+            <span>다양한 전시 정보를</span> 찾아보세요
+          </p>
         </div>
         <LinkContainer>
           <span className="linkContainer">자세히 보기</span>
@@ -38,7 +40,9 @@ const MainArticle = () => {
         <Review stroke={reviewStroke} />
         <div>
           <h3>전시 리뷰</h3>
-          <p>다양한 전시 리뷰 를 찾아보세요</p>
+          <p className="card-discription">
+            <span>다양한 전시 리뷰를</span> 찾아보세요
+          </p>
         </div>
         <LinkContainer>
           <span className="linkContainer">자세히 보기</span>
@@ -53,7 +57,10 @@ const MainArticle = () => {
         <Mate stroke={mateStroke} />
         <div>
           <h3>메이트</h3>
-          <p>전시회에 같이 갈 친구를 찾아보세요</p>
+          <p className="card-discription">
+            <span>전시회에 같이 갈</span>
+            <span>친구를</span> 찾아보세요
+          </p>
         </div>
         <LinkContainer className="linkContainer">
           <span>자세히 보기</span>
@@ -109,6 +116,22 @@ const Article = styled.article`
     p,
     .linkContainer {
       color: ${theme.colors.primry80};
+    }
+  }
+  .card-discription {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2.5px;
+  }
+  @media (max-width: 1439px) {
+    & h3 {
+      font-size: 1.9vw;
+    }
+  }
+  @media (max-width: 1064px) {
+    & h3 {
+      font-size: 21px;
     }
   }
 `;
