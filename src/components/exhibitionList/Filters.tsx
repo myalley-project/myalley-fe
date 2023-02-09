@@ -6,7 +6,7 @@ import Button from "../atom/Button";
 import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
 
-// 전시글 목록 상단 필터 컴포넌트_박예선_23.02.01
+// 전시글 목록 상단 필터 컴포넌트_박예선_23.02.08
 const Filters = (props: FiltersType) => {
   const { setPages, selectedStatus, setSelectedStatus, setSelectedFilter } =
     props;
@@ -64,7 +64,13 @@ const Filters = (props: FiltersType) => {
             onClick={handleFilters}
           />
         </div>
-        <input placeholder="검색" className="search-input border" />
+        <SearchInput
+          placeholder="검색"
+          onClick={() => alert("준비 중인 기능입니다.")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") alert("준비 중인 기능입니다.");
+          }}
+        />
       </div>
     </FiltersContainer>
   );
@@ -103,22 +109,21 @@ const FiltersContainer = styled.div`
     margin-bottom: 14px;
     font-size: 14px;
     button {
-      display: flex;
-      align-items: center;
       font-size: 14px;
-      cursor: pointer;
+      line-height: inherit;
       &.selected {
         color: ${theme.colors.greys100};
       }
     }
   }
   .filter-search-line {
+    flex-wrap: wrap;
+    gap: 10px;
     width: inherit;
     max-width: 1440px;
     padding-top: 14px;
     border-top: 1px solid ${(props) => props.theme.colors.greys40};
     border-radius: 0%;
-    input,
     button {
       height: 36px;
       font-size: 14px;
@@ -130,29 +135,19 @@ const FiltersContainer = styled.div`
         margin-right: 10px;
       }
     }
-    .apply-btn {
-      width: 66px;
-      padding: 0;
-      border-color: #6750a4;
-      background-color: #6750a4;
-      color: ${(props) => props.theme.colors.white100};
-      font-weight: 700;
-      &:active {
-        background-color: #483974;
-      }
-    }
   }
-  .search-input {
-    width: 277px;
-    padding-right: 54px;
-    background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='6' stroke='%239C9C9C' stroke-width='2'/%3E%3Cpath d='M16.2071 14.7929L15.5 14.0858L14.0858 15.5L14.7929 16.2071L16.2071 14.7929ZM18.2929 19.7071C18.6834 20.0976 19.3166 20.0976 19.7071 19.7071C20.0976 19.3166 20.0976 18.6834 19.7071 18.2929L18.2929 19.7071ZM14.7929 16.2071L18.2929 19.7071L19.7071 18.2929L16.2071 14.7929L14.7929 16.2071Z' fill='%239C9C9C'/%3E%3C/svg%3E%0A")
-      no-repeat;
-    background-position: right 25px center;
-    &::placeholder {
-      color: ${(props) => props.theme.colors.greys60};
-    }
-    &:hover {
-      cursor: text;
-    }
+`;
+
+const SearchInput = styled.input`
+  width: 277px;
+  height: 36px;
+  padding: 0 42px 0 20px;
+  border: 1px solid ${(props) => props.theme.colors.greys40};
+  background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='6' stroke='%239C9C9C' stroke-width='2'/%3E%3Cpath d='M16.2071 14.7929L15.5 14.0858L14.0858 15.5L14.7929 16.2071L16.2071 14.7929ZM18.2929 19.7071C18.6834 20.0976 19.3166 20.0976 19.7071 19.7071C20.0976 19.3166 20.0976 18.6834 19.7071 18.2929L18.2929 19.7071ZM14.7929 16.2071L18.2929 19.7071L19.7071 18.2929L16.2071 14.7929L14.7929 16.2071Z' fill='%239C9C9C'/%3E%3C/svg%3E%0A")
+    no-repeat;
+  background-position: right 14px center;
+  font-size: 14px;
+  &::placeholder {
+    color: ${(props) => props.theme.colors.greys60};
   }
 `;
