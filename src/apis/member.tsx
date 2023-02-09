@@ -167,7 +167,7 @@ export interface BlogReviewListRes {
 export interface BlogInfo {
   id: number;
   title: string;
-  date: string;
+  viewDate: string;
   writer: string;
   viewCount: number;
   imageInfo: {
