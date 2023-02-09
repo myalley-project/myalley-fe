@@ -92,6 +92,8 @@ const ExhibitionCard = styled.div<{
   }
   @media (max-width: 1440px) {
     width: 31.66%;
+    margin-right: 2.5%;
+    margin-bottom: 2.5%;
     :nth-child(3n) {
       margin-right: 0;
     }
