@@ -65,6 +65,9 @@ const FooterContainer = styled.div`
   min-height: 466px;
   border-radius: 0px;
   background-color: rgba(149, 141, 165, 0.05);
+  @media (max-width: 1440px) {
+    padding: 0 20px;
+  }
 `;
 
 const FooterWrapper = styled.div`
