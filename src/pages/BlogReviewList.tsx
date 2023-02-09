@@ -32,10 +32,6 @@ const BlogReviewList = () => {
     }
   };
 
-  const handleInputLength = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputLength(event.target.value.length);
-  };
-
   const { isLoading, isError, error, data } = useQuery<
     BlogReviewResponse,
     Error
