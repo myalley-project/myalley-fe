@@ -39,7 +39,6 @@ const MainCard = ({
   const auth = localStorage.getItem("authority");
   const navigate = useNavigate();
   const refreshTokenApi = useRefreshTokenApi();
-  const [isBookmarked, setIsBookmarkted] = useState(bookmarked);
 
   // 전시글 삭제
   const handleDelete = async () => {
@@ -71,7 +70,6 @@ const MainCard = ({
       alert(msg);
     } catch (err) {
       isApiError(err);
-      setIsBookmarkted(false);
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
         await refreshTokenApi();
@@ -146,7 +144,7 @@ const MainCard = ({
               사이트 방문
             </WebLink>
             <BookMarkBtn>
-              <BookMark onClick={toggleBookMark} marked={isBookmarked} />
+              <BookMark onClick={toggleBookMark} marked={bookmarked} />
             </BookMarkBtn>
             <ShareBtn type="button" onClick={copyLink} />
           </Footer>

@@ -14,7 +14,7 @@ const BookMark = ({ onClick, marked }: BookMarkType) => {
 
   useEffect(() => {
     setIsChecked(marked);
-  }, [marked, isChecked]);
+  }, [marked]);
 
   const handleCheck = () => {
     if (!localStorage.getItem("accessToken")) {
