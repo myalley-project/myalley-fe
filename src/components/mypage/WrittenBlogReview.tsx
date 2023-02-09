@@ -44,7 +44,7 @@ const WrittenBlogReview = () => {
               title={each.title}
               writer={each.writer}
               viewCount={each.viewCount}
-              viewDate={each.date}
+              viewDate={each.viewDate}
               imageInfo={each.imageInfo}
             />
           ))
