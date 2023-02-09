@@ -109,6 +109,7 @@ const OnelineWrite = ({
       <SelectForm>
         <p>한 줄 리뷰 작성</p>
         <SimpleInput
+          placeholder="내용을 입력해주세요"
           inputlength={state.content.length}
           onChangeHandler={contentHandler}
         />

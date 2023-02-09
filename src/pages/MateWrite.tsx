@@ -12,11 +12,12 @@ import Calender from "../components/Calendar";
 import SubTitle from "../components/SubTitle";
 import Editor from "../components/Editor";
 import SimpleDialog from "../components/SimpleDialog";
+import ExhibitionChoice from "../components/ExhibitionChoice";
 import { MateRes, MateWriteType } from "../types/mate";
 import { mateApi, mateWriteApi, MateWriteRes } from "../apis/mate";
 import useRefreshTokenApi from "../apis/useRefreshToken";
-import isApiError, { errorAlert } from "../utils/isApiError";
-import ExhibitionChoice from "../components/ExhibitionChoice";
+import isApiError from "../utils/isApiError";
+import { alertError } from "../utils/alerts";
 import Modal from "../Modal";
 
 // 메이트글 작성/수정 페이지_박예선_23.02.08
@@ -66,13 +67,16 @@ const MateWrite = () => {
     exhibitionId,
   } = writeData;
 
-  // 전시회 선택 모달 연결하기
-
-  // 토큰 없을 때 접속하면 로그인페이지로 리다이렉트_박예선_23.01.29
+  // 로그인을 안했거나, 관리자일 경우 리다이렉트_박예선_23.02.08
   useEffect(() => {
     if (!memberId) {
       alert("로그인이 필요한 기능입니다.");
       navigate("/login");
+      return;
+    }
+    if (localStorage.getItem("authority") === "ROLE_ADMIN") {
+      alert("관리자는 메이트글을 작성/수정할 수 없습니다.");
+      navigate("/mate-list", { replace: true });
     }
   }, [memberId, navigate]);
 
@@ -109,7 +113,7 @@ const MateWrite = () => {
           maximum: data.mateAge.split(" ~ ")[1],
         });
     } catch (err) {
-      errorAlert();
+      alertError();
       navigate("/");
     }
   }, [mateId, memberId, navigate]);
@@ -136,7 +140,7 @@ const MateWrite = () => {
           );
           alert(res.data);
         } catch {
-          errorAlert();
+          alertError();
         }
         navigate(-1);
       }
