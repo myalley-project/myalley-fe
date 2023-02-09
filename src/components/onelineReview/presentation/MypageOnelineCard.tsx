@@ -1,58 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import React, { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
 import profileImg from "../../../assets/icons/profileImg.svg";
 import StarIcon from "../../../assets/icons/starIcon.svg";
-import { OnelineReviewCardType } from "../../../types/oneLineReview";
+import { MypageOnelineReviewCardType } from "../../../types/oneLineReview";
 import Modal from "../../../Modal";
 import Button from "../../atom/Button";
 import oneLineReviewApis from "../../../apis/oneLineReviewApis";
 import OnelineWriteContainer from "../container/OnelineWriteContainer";
 import isApiError from "../../../utils/isApiError";
 import useRefreshTokenApi from "../../../apis/useRefreshToken";
-import OnelineModifyContainer from "../container/OnelineModifyContainer";
 
-const OnelineCard = ({
+const MypageOnelineCard = ({
   id,
   viewDate,
   rate,
   content,
   time,
   congestion,
-  memberInfo,
-}: OnelineReviewCardType) => {
+  exhibitionInfo,
+}: MypageOnelineReviewCardType) => {
   const [modifyModalIsopen, setModifyModalIsopen] = useState<boolean>(false);
   const [deleteModalIsopen, setDeleteModalIsopen] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const refreshTokenApi = useRefreshTokenApi();
-  const userconfirm =
-    memberInfo?.memberId === Number(localStorage.getItem("memberId"));
-
-  const placeHolder = {
-    id,
-    viewDate,
-    rate,
-    content,
-    time,
-    congestion,
-    memberInfo,
-  };
 
   const modifyModalHandler = () => {
-    if (memberInfo?.memberId === Number(localStorage.getItem("memberId"))) {
-      setModifyModalIsopen((prev) => !prev);
-    } else {
-      alert("리뷰를 작성한 본인이 아니면 수정할 수 없습니다.");
-    }
+    setModifyModalIsopen((prev) => !prev);
   };
 
   const deleteModalHandler = () => {
-    if (memberInfo?.memberId === Number(localStorage.getItem("memberId"))) {
-      setDeleteModalIsopen((prev) => !prev);
-    } else {
-      alert("리뷰를 작성한 본인이 아니면 삭제할 수 없습니다.");
-    }
+    setDeleteModalIsopen((prev) => !prev);
   };
 
   const deleteMutation = useMutation({
@@ -74,11 +53,8 @@ const OnelineCard = ({
   return (
     <Container>
       <Review>
-        <img
-          src={memberInfo?.memberImage ? memberInfo.memberImage : profileImg}
-          alt="사람 이미지"
-        />
         <ReviewInfo>
+          <div className="exhibition-title">{exhibitionInfo?.title}</div>
           {rate === 1 ? (
             <div>
               <img src={StarIcon} alt="별점" />
@@ -115,7 +91,6 @@ const OnelineCard = ({
             </div>
           ) : null}
           <div>
-            {memberInfo && <span>{memberInfo.nickname}</span>} |{" "}
             <span>{viewDate}</span> |<span>{time}</span> |{" "}
             <span>{congestion}</span>
           </div>
@@ -123,27 +98,19 @@ const OnelineCard = ({
         </ReviewInfo>
       </Review>
       <ButtonItems>
-        <button
-          data-visible={userconfirm}
-          onClick={modifyModalHandler}
-          type="button"
-        >
+        <button onClick={modifyModalHandler} type="button">
           수정
         </button>
         <Spliter />
-        <button
-          data-visible={userconfirm}
-          onClick={deleteModalHandler}
-          type="button"
-        >
+        <button onClick={deleteModalHandler} type="button">
           삭제
         </button>
       </ButtonItems>
       <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
-        <OnelineModifyContainer
+        <OnelineWriteContainer
           simpleId={id}
           handleModal={modifyModalHandler}
-          modifyInfo={placeHolder}
+          writeType="modify"
         />
       </Modal>
       <Modal open={deleteModalIsopen} handleModal={deleteModalHandler}>
@@ -174,7 +141,7 @@ const OnelineCard = ({
     </Container>
   );
 };
-export default OnelineCard;
+export default MypageOnelineCard;
 
 const Container = styled.div`
   display: flex;
@@ -195,6 +162,12 @@ const Review = styled.div`
 `;
 
 const ReviewInfo = styled.div`
+  & > .exhibition-title {
+    color: ${theme.colors.greys90};
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
   & > img {
     margin-bottom: 10px;
   }
@@ -212,12 +185,6 @@ const ReviewInfo = styled.div`
   }
 `;
 
-const ExhibitionTitle = styled.div`
-  color: ${theme.colors.greys90};
-  font-weight: 500;
-  font-size: 14px;
-`;
-
 const ButtonItems = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -227,9 +194,6 @@ const ButtonItems = styled.div`
     cursor: pointer;
     color: ${theme.colors.greys60};
     border: 0;
-  }
-  & > [data-visible="false"] {
-    display: none;
   }
 `;
 

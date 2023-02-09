@@ -6,7 +6,8 @@ import useRefreshTokenApi from "./useRefreshToken";
 import { MateRes, MateWriteType } from "../types/mate";
 import { MateStatusType } from "../components/mate/MateListFilter";
 import { MateListType } from "../types/mateList";
-import isApiError, { errorAlert } from "../utils/isApiError";
+import isApiError from "../utils/isApiError";
+import { alertError } from "../utils/alerts";
 
 // 메이트글 상세조회 api_박예선_2023.01.31
 export const mateApi = async (mateId: number, memberId: number) => {
@@ -74,7 +75,7 @@ export const useMateBookMarkApi = () => {
         );
         return res;
       }
-      if (typeof errorRes !== "object") return errorAlert();
+      if (typeof errorRes !== "object") return alertError();
       const { errorMsg } = errorRes;
       if (errorMsg === "회원 정보 없음") {
         logOut();
@@ -82,7 +83,7 @@ export const useMateBookMarkApi = () => {
       }
       if (errorMsg !== "회원 정보 없음") return alert(errorMsg);
     }
-    return errorAlert();
+    return alertError();
   };
 
   return mateBookMarkApi;
