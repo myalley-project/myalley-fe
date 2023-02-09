@@ -157,16 +157,18 @@ const Mate = () => {
               <span>{getMemberAgeForm(mateInfo.member.memberAge)}</span>
             </div>
           </MemberInfoContainer>
-          <div className="bookmark-container">
-            <BtnTransparent
-              type="button"
-              onClick={clickBookmarkBtn}
-              className={`bookmark ${isBookmarked ? "bookmarked" : ""}`}
-            >
-              {isBookmarked ? "저장됨" : "저장하기"}
-              <span>{mateInfo.bookmarkCount}</span>
-            </BtnTransparent>
-          </div>
+          {!isMyPost && (
+            <div className="bookmark-container">
+              <BtnTransparent
+                type="button"
+                onClick={clickBookmarkBtn}
+                className={`bookmark ${isBookmarked ? "bookmarked" : ""}`}
+              >
+                {isBookmarked ? "저장됨" : "저장하기"}
+                <span>{mateInfo.bookmarkCount}</span>
+              </BtnTransparent>
+            </div>
+          )}
         </MateContentContainer>
         <CommentList
           commentTextArea={commentTextArea}
