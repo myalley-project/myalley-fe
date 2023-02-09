@@ -148,10 +148,10 @@ const Mate = () => {
               src={mateInfo.member.memberProfileImg || profileImg}
             />
             <div>
-              <Title size={20} lineHight={28}>
+              <Title size={20} lineHight={28} className="nickname">
                 {mateInfo.member.memberNickname}
               </Title>
-              <span>
+              <span className="mate-gender">
                 {mateInfo.member.memberGender === "M" ? "남자" : "여자"}
               </span>
               <span>{getMemberAgeForm(mateInfo.member.memberAge)}</span>
@@ -317,10 +317,15 @@ const MemberInfoContainer = styled.div`
   align-items: center;
   margin: 50px auto 0;
   span {
-    margin-right: 10px;
     color: ${theme.colors.greys60};
     font-size: 16px;
     font-weight: 500;
+  }
+  .nickname {
+    text-align: center;
+  }
+  .mate-gender {
+    margin-right: 10px;
   }
 `;
 
