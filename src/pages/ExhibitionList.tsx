@@ -47,7 +47,9 @@ const ExhibitionList = () => {
 
   return (
     <ExhibitionListContainer className="flex">
-      <h1>전시회</h1>
+      <TitleContainer>
+        <h1>전시회</h1>
+      </TitleContainer>
       <Filters
         selectedStatus={selectedStatus}
         setSelectedStatus={setSelectedStatus}
@@ -67,15 +69,8 @@ const ExhibitionListContainer = styled.div`
   align-items: center;
   width: 100vw;
   margin: auto;
-  padding: 40px 40px 0;
+  padding: 0 40px;
   font-size: 14px;
-  h1 {
-    margin-bottom: 50px;
-    color: ${theme.colors.primry70};
-    font-size: 42px;
-    font-weight: 700;
-    line-height: 52px;
-  }
   &.flex,
   .flex {
     display: flex;
@@ -88,5 +83,20 @@ const ExhibitionListContainer = styled.div`
   }
   @media (max-width: 1064px) {
     padding: 40px 16px 0;
+  }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  margin-bottom: 50px;
+  border-radius: 0;
+  background-color: #958da50d;
+  h1 {
+    color: ${theme.colors.primry70};
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 52px;
   }
 `;
