@@ -505,9 +505,7 @@ const ExhbChoiceBtn = styled.div`
   justify-content: center;
   align-items: center;
   width: 280px;
-  height: 386px;
-  /* width: 19.3vw; 비율 맞춰 줄어들게 리팩토링하기 */
-  /* padding-bottom: 33.2%; */
+  aspect-ratio: 1/1.37;
   background-color: #f9f9f9;
   cursor: pointer;
   img {
@@ -519,15 +517,20 @@ const ExhbChoiceBtn = styled.div`
     height: 70px;
   }
   .thumbnail {
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    height: 100%;
+    border: 1px solid ${theme.colors.greys40};
     object-fit: cover;
+  }
+  @media (max-width: 1064px) {
+    width: 26.31vw;
+    min-width: 230px;
   }
 `;
 
 const ThumbnailHover = styled.div`
-  width: inherit;
-  height: inherit;
+  width: 100%;
+  height: 100%;
   background-color: #000000;
   color: ${theme.colors.white100};
   opacity: 80%;
