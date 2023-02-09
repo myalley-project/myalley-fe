@@ -71,11 +71,13 @@ const ArticleContainer = styled.section`
   align-items: center;
   justify-content: center;
   gap: 30px;
-  width: 75vw;
   margin-inline: auto;
   margin-bottom: 30px;
   & > * {
     flex: 1;
+  }
+  @media (max-width: 1440px) {
+    padding: 0 20px;
   }
 `;
 
@@ -101,7 +103,7 @@ const Article = styled.article`
     font-size: 14px;
   }
   &:hover {
-    border: 2px solid ${theme.colors.primry60};
+    border: 1px solid ${theme.colors.primry60};
     & h3,
     p,
     .linkContainer {

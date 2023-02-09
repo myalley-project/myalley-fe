@@ -3,11 +3,11 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { theme } from "../styles/theme";
-import "../styles/carouselStyle.css";
-import firstSlideImage from "../assets/images/firstSlideImage.jpg";
-import secondSlideImage from "../assets/images/secondSlideImage.jpg";
-import thirdSlideImage from "../assets/images/thirdSlideImage.jpg";
+import { theme } from "../../styles/theme";
+import "../../styles/carouselStyle.css";
+import firstSlideImage from "../../assets/images/firstSlideImage.jpg";
+import secondSlideImage from "../../assets/images/secondSlideImage.jpg";
+import thirdSlideImage from "../../assets/images/thirdSlideImage.jpg";
 
 const NewCarousel = () => (
   <CarousalContainer>
@@ -47,6 +47,9 @@ const CarousalContainer = styled.div`
   max-width: 1440px;
   height: 618px;
   margin: 40px auto 30px auto;
+  @media (max-width: 1440px) {
+    padding: 0 20px;
+  }
 `;
 
 const SlideCard = styled.div<{ image: string }>`
