@@ -24,11 +24,15 @@ const MainArticle = () => {
         <div>
           <h3>전시회</h3>
           <p className="card-discription">
-            <span>다양한 전시 정보를</span> 찾아보세요
+            <span>다양한</span>
+            <span>전시 정보를</span> 찾아보세요
           </p>
         </div>
-        <LinkContainer>
-          <span className="linkContainer">자세히 보기</span>
+        <LinkContainer className="linkContainer">
+          <p>
+            <span>자세히</span>
+            보기
+          </p>
           <img src={arrowRight} alt="" />
         </LinkContainer>
       </Article>
@@ -41,11 +45,15 @@ const MainArticle = () => {
         <div>
           <h3>전시 리뷰</h3>
           <p className="card-discription">
-            <span>다양한 전시 리뷰를</span> 찾아보세요
+            <span>다양한</span>
+            <span>전시 리뷰를</span> 찾아보세요
           </p>
         </div>
-        <LinkContainer>
-          <span className="linkContainer">자세히 보기</span>
+        <LinkContainer className="linkContainer">
+          <p>
+            <span>자세히</span>
+            보기
+          </p>
           <img src={arrowRight} alt="" />
         </LinkContainer>
       </Article>
@@ -58,12 +66,15 @@ const MainArticle = () => {
         <div>
           <h3>메이트</h3>
           <p className="card-discription">
-            <span>전시회에 같이 갈</span>
+            <span>전시회에</span>
+            <span>같이 갈</span>
             <span>친구를</span> 찾아보세요
           </p>
         </div>
         <LinkContainer className="linkContainer">
-          <span>자세히 보기</span>
+          <p>
+            <span>자세히</span> 보기
+          </p>
           <img src={arrowRight} alt="" />
         </LinkContainer>
       </Article>
@@ -145,4 +156,10 @@ const LinkContainer = styled.div`
   font-weight: 700;
   font-size: 14px;
   text-decoration: none;
+  p {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2.5px;
+  }
 `;
