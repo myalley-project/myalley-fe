@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useMutation, useQueryClient } from "react-query";
+import { Pagination } from "swiper";
 import { theme } from "../../../styles/theme";
 import profileImage from "../../../assets/icons/profileImg.svg";
 import Button from "../../atom/Button";
@@ -122,7 +123,14 @@ const BlogReviewDetailPresentation = ({
         </DetailDiv>
       </DetailInformation>
       <MainPart>
-        <StyledSWiper>
+        <StyledSWiper
+          slidesPerView={1.6}
+          spaceBetween={30}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Pagination]}
+        >
           {imageInfo
             ? imageInfo.map((each) => (
                 <SwiperSlide key={each.id}>
@@ -134,7 +142,12 @@ const BlogReviewDetailPresentation = ({
         <p>{content}</p>
       </MainPart>
       <UserInfo>
-        <img src={profileImage} alt="프로필 이미지" />
+        <UserThumbnail>
+          <img
+            src={memberInfo.memberImage ? memberInfo.memberImage : profileImage}
+            alt="프로필 이미지"
+          />
+        </UserThumbnail>
         <h3>{memberInfo.nickname}</h3>
         <DateAndView>
           <p>
@@ -214,10 +227,20 @@ const MainPart = styled.div`
 `;
 
 const StyledSWiper = styled(Swiper)`
+  display: block;
   width: 100%;
   height: 383px;
-  background-color: ${theme.colors.primry60};
   margin-bottom: 30px;
+  .swiper-slide {
+    width: 100%;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const UserInfo = styled.div`
@@ -227,6 +250,21 @@ const UserInfo = styled.div`
   align-items: center;
   gap: 14px;
   margin-bottom: 50px;
+`;
+
+const UserThumbnail = styled.div`
+  position: relative;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  & > img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 const DateAndView = styled.div`

@@ -1,17 +1,18 @@
 import React, { useCallback, useState, useEffect } from "react";
-import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
-import { useLocation } from "react-router-dom";
-import { myInfoApi, MyInfoRes } from "../apis/member";
+import styled from "styled-components";
 import MyInfoCard from "../components/mypage/MyInfoCard";
 import EditProfile from "../components/mypage/EditProfile";
 import WrittenPosts from "../components/mypage/WrittenPosts";
 import BookMarkedPosts from "../components/mypage/BookMarkedPosts";
-import isApiError from "../utils/isApiError";
+import { getMyInfoApi, MyInfoRes } from "../apis/member";
 import useGetNewTokenApi from "../apis/useGetRefreshToken";
+import isApiError from "../utils/isApiError";
 
 const Mypage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const getNewTokenApi = useGetNewTokenApi;
   const { pathname } = location;
   const [infoData, setInfoData] = useState<MyInfoRes>({
@@ -29,8 +30,7 @@ const Mypage = () => {
   const getMyInfo = useCallback(async () => {
     const refreshToken = localStorage.getItem("refreshToken");
     try {
-      const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
-      if (!res) return;
+      const res: AxiosResponse<MyInfoRes> = await getMyInfoApi();
       const { data } = res;
       setInfoData(data);
       localStorage.setItem("memberImage", data.memberImage);
@@ -38,8 +38,7 @@ const Mypage = () => {
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
         await getNewTokenApi(refreshToken);
-        const reRes: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
-        if (!reRes) return;
+        const reRes: AxiosResponse<MyInfoRes> = await getMyInfoApi();
         const refreshData = reRes.data;
         setInfoData(refreshData);
       }
@@ -48,7 +47,11 @@ const Mypage = () => {
 
   useEffect(() => {
     getMyInfo();
-  }, [getMyInfo]);
+    if (localStorage.getItem("authority") === "ROLE_ADMIN") {
+      alert("일반 회원만 접근이 가능한 페이지입니다.");
+      navigate("/");
+    }
+  }, [getMyInfo, navigate]);
 
   return (
     <MypageContainer>

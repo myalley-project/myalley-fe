@@ -10,12 +10,12 @@ interface AdminOnlyType {
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-// 관리자용 회원가입 UI 컴포넌트_박예선_23.01.08
+// 관리자용 회원가입 UI 컴포넌트_박예선_23.02.07
 const AdminOnly = (props: AdminOnlyType) => {
   const { infos, valids, setValids, isOnly, setIsOnly, handleInput } = props;
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
-  // 관리자번호 유효성검사_박예선_23.01.09
+  // 관리자번호 유효성검사_박예선_23.02.07
   const handleAdiminNoValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const rAdminNo = /^[0-9]+$/;
@@ -27,14 +27,14 @@ const AdminOnly = (props: AdminOnlyType) => {
       const isAdminNoValid = rAdminNo.test(value);
       setValids({
         ...valids,
-        adminNo: isAdminNoValid,
+        adminNo: value === "" ? null : isAdminNoValid,
       });
     }, 800);
     setTimer(newTimer);
     setIsOnly({ ...isOnly, adminNo: null });
   };
 
-  // 관리자본명 유효성검사_박예선_23.01.09
+  // 관리자본명 유효성검사_박예선_23.02.07
   const handleNameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const rName = /^[가-힣]{2,10}$/;
@@ -46,7 +46,7 @@ const AdminOnly = (props: AdminOnlyType) => {
       const isNameValid = rName.test(value);
       setValids({
         ...valids,
-        name: isNameValid,
+        name: value === "" ? null : isNameValid,
       });
     }, 800);
     setTimer(newTimer);
@@ -59,7 +59,7 @@ const AdminOnly = (props: AdminOnlyType) => {
         <input
           type="password"
           name="adminNo"
-          placeholder="회사에서 제공한 개인 고유 번호를 입력해주세요"
+          placeholder="개인 고유 번호를 입력해주세요"
           value={infos.adminNo === 0 ? "" : infos.adminNo}
           onChange={(e) => {
             handleInput(e);

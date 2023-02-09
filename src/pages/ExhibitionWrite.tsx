@@ -23,6 +23,7 @@ import isApiError from "../utils/isApiError";
 import useRefreshTokenApi from "../apis/useRefreshToken";
 import { theme } from "../styles/theme";
 import SimpleDialog from "../components/SimpleDialog";
+import Modal from "../Modal";
 
 interface ModeType {
   mode: string;
@@ -31,7 +32,6 @@ interface ModeType {
 const ExhibitionWrite = (props: ModeType) => {
   const formData = new FormData();
   const navigate = useNavigate();
-  const [isCancel, setIsCancel] = useState(false);
   const refreshTokenApi = useRefreshTokenApi();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -39,6 +39,8 @@ const ExhibitionWrite = (props: ModeType) => {
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
+  const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
+  const [exhbId, setExhbId] = useState(0);
   const [detail, setDetail] = useState<ExhbCreateRes>({
     title: "",
     status: "",
@@ -61,7 +63,7 @@ const ExhibitionWrite = (props: ModeType) => {
     if (mode === "edit") {
       const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
       const { data } = res;
-
+      setExhbId(data.id);
       setDetail(data);
       setPriceWithCommas(data.adultPrice.toString());
       setThumbnail(data.posterUrl);
@@ -255,16 +257,38 @@ const ExhibitionWrite = (props: ModeType) => {
 
   // 수정 api 호출
   const clickEditBtn = async () => {
-    try {
-      const res: AxiosResponse<string> = await exhbUpdateApi(id, detail);
-      const { data } = res;
-      if (data === "전시글 정보 수정이 완료되었습니다.") {
-        alert("수정이 완료되었습니다.");
-        navigate(`/exhibition/${id}`);
-      } else alert("예기치 못한 오류입니다. 관리자에게 문의하세요.");
-    } catch (err) {
-      isApiError(err);
-    }
+    const regDetail = /^https:\/\//;
+    if (detail.title === "") {
+      alert("제목을 입력해주세요.");
+    } else if (detail.type === "") {
+      alert("전시 타입을 선택해주세요.");
+    } else if (detail.status === "") {
+      alert("전시 관람여부를 선택해주세요.");
+    } else if (detail.duration === "") {
+      alert("전시 일정을 선택해주세요.");
+    } else if (thumbnail === "") {
+      alert("전시 포스터를 등록해주세요.");
+    } else if (detail.space === "") {
+      alert("전시 장소를 입력해주세요.");
+    } else if (detail.content === "") {
+      alert("전시 내용을 작성해주세요.");
+    } else if (detail.author === "") {
+      alert("작가정보를 작성해주세요.");
+    } else if (detail.webLink === "") {
+      alert("전시회 웹페이지 주소를 작성해주세요.");
+    } else if (!regDetail.test(detail.webLink)) {
+      alert("웹페이지 주소는 'https://'로 시작해야합니다.");
+    } else
+      try {
+        const res: AxiosResponse<string> = await exhbUpdateApi(id, detail);
+        const { data } = res;
+        if (data === "전시글 정보 수정이 완료되었습니다.") {
+          alert("수정이 완료되었습니다.");
+          navigate(`/exhibition/${id}`);
+        } else alert("예기치 못한 오류입니다. 관리자에게 문의하세요.");
+      } catch (err) {
+        isApiError(err);
+      }
   };
 
   return (
@@ -411,9 +435,9 @@ const ExhibitionWrite = (props: ModeType) => {
           variant="primary"
           size="large"
           type="button"
-          onClick={() => setIsCancel(true)}
+          onClick={() => setOpenWithdrawalModal(true)}
         >
-          취소
+          취소하기
         </CancelBtn>
         {mode === "edit" ? (
           <SubmitBtn
@@ -435,15 +459,18 @@ const ExhibitionWrite = (props: ModeType) => {
           </SubmitBtn>
         )}
       </ButtonWrapper>
-      {isCancel && (
+      <Modal
+        open={openWithdrawalModal}
+        handleModal={() => setOpenWithdrawalModal(!openWithdrawalModal)}
+      >
         <SimpleDialog
-          message="전시글 작성을 정말 취소하시겠습니까? 작성중이던 내용은 저장되지 않습니다."
-          cancelMessage="취소"
-          confirmMessage="확인"
-          clickCancleBtn={() => setIsCancel(false)}
-          clickConfirmBtn={() => navigate("/")}
+          message={`${exhbId ? "수정" : "작성"}을 취소하시겠습니까?`}
+          cancelMessage={`계속 ${exhbId ? "수정" : "작성"}하기`}
+          confirmMessage={`${exhbId ? "수정" : "작성"} 취소하기`}
+          clickCancleBtn={() => setOpenWithdrawalModal(false)}
+          clickConfirmBtn={() => (exhbId ? navigate(-1) : navigate("/"))}
         />
-      )}
+      </Modal>
     </WriteExhibitionContainer>
   );
 };
