@@ -2,7 +2,8 @@ import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import useRefreshTokenApi from "./useRefreshToken";
 import apiInstance from "../utils/apiInstance";
-import isApiError, { errorAlert } from "../utils/isApiError";
+import isApiError from "../utils/isApiError";
+import { alertError } from "../utils/alerts";
 import removeLocalStorageItem from "../utils/removeLocalStorageItem";
 
 // 로그아웃 커스텀훅_박예선_2023.02.07
@@ -38,7 +39,7 @@ const useLogOut = () => {
             navigate("/");
           }
         } catch {
-          errorAlert();
+          alertError();
         }
       }
     }
