@@ -1,4 +1,6 @@
-import React, { useRef, useState } from "react";
+// eslint-disable-line no-script-url
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import useLogOut from "../apis/logOut";
 import ProfileImg from "../assets/icons/profileImg.svg";
@@ -10,14 +12,16 @@ interface PropsType {
 
 const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
+  const location = useLocation();
+  const isLocationKey = location.key;
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
-  const [info, setInfo] = useState({
+  const info = {
     nickname: localStorage.getItem("nickname"),
     memberImage: localStorage.getItem("memberImage")!,
     email: localStorage.getItem("email"),
     authority: localStorage.getItem("authority"),
-  });
+  };
 
   const toggleMenu = () => {
     if (!menuRef.current) {
@@ -26,6 +30,13 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
     setIsShowMenu(false);
     setIsMenuOpen(false);
   };
+
+  useEffect(() => {
+    if (isLocationKey !== location.key) {
+      setIsShowMenu(false);
+      setIsMenuOpen(false);
+    }
+  }, [location, isLocationKey, setIsShowMenu]);
 
   return (
     <Background>
@@ -36,23 +47,44 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
               {localStorage.getItem("accessToken") ? (
                 <MenuWrapper>
                   <Subtitle>계정</Subtitle>
-                  <MypageArea href="/mypage/edit">
-                    <ProfileWrapper>
-                      <img
-                        src={
-                          info.memberImage === ""
-                            ? ProfileImg
-                            : info.memberImage
-                        }
-                        alt="profile-img"
-                        style={{ width: "40px" }}
-                      />
-                    </ProfileWrapper>
-                    <div>
-                      <Nickname>{info.nickname}</Nickname>
-                      <Email className="email">{info.email}</Email>
-                    </div>
-                  </MypageArea>
+                  {localStorage.getItem("authority") === "ROLE_USER" ? (
+                    <MypageArea href="/mypage/edit">
+                      <ProfileWrapper>
+                        <img
+                          src={
+                            info.memberImage === ""
+                              ? ProfileImg
+                              : info.memberImage
+                          }
+                          alt="profile-img"
+                          style={{ width: "40px" }}
+                        />
+                      </ProfileWrapper>
+                      <div>
+                        <Nickname>{info.nickname}</Nickname>
+                        <Email className="email">{info.email}</Email>
+                      </div>
+                    </MypageArea>
+                  ) : (
+                    <MypageArea as="div">
+                      <ProfileWrapper>
+                        <img
+                          src={
+                            info.memberImage === ""
+                              ? ProfileImg
+                              : info.memberImage
+                          }
+                          alt="profile-img"
+                          style={{ width: "40px" }}
+                        />
+                      </ProfileWrapper>
+                      <div>
+                        <Nickname>{info.nickname}</Nickname>
+                        <Email className="email">{info.email}</Email>
+                      </div>
+                    </MypageArea>
+                  )}
+
                   <LogoutButton type="button" onClick={logOut}>
                     로그아웃
                   </LogoutButton>
@@ -111,8 +143,8 @@ const Background = styled.div`
 `;
 
 const MenuOutSide = styled.div`
-  position: absolute;
-  z-index: 99;
+  position: fixed;
+  z-index: 98;
   width: 100vw;
   height: 100vh;
 `;
@@ -122,7 +154,6 @@ const MenuOutSideWrapper = styled.div`
   position: relative;
   width: 100vw;
   max-width: 1440px;
-  height: 100vh;
   margin-inline: auto;
 `;
 
@@ -133,9 +164,10 @@ const MenuContainer = styled.div`
   top: 57px;
   width: 215px;
   padding: 10px;
-  border: 1px solid ${theme.colors.greys40};
+  border: 1px solid ${theme.colors.secondary5};
   border-radius: 10px;
   background-color: ${theme.colors.white100};
+  box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
 const MenuWrapper = styled.div`

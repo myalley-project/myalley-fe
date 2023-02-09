@@ -4,16 +4,16 @@ import styled from "styled-components";
 import { useQuery } from "react-query";
 import { theme } from "../styles/theme";
 import Selectbox from "../components/atom/Selectbox";
-import BlogReviewListWrapper from "../components/blogreview/container/BlogReviewList";
+import ReviewCardList from "../components/blogReviewList/ReviewCardList";
 import Button from "../components/atom/Button";
 import blogReviewApis from "../apis/blogReviewApis";
 import Pagination from "../components/Pagination";
 import { BlogReviewResponse } from "../types/blogReview";
 
-const BlogReview = () => {
+const BlogReviewList = () => {
   const navigate = useNavigate();
   const [pages, setPages] = useState({
-    started: 0,
+    started: 1,
     selected: 1,
   });
   const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
@@ -78,24 +78,19 @@ const BlogReview = () => {
           </Button>
         </Flex>
       </SelectContainer>
-      {data ? (
-        <BlogReviewListWrapper
-          blogInfo={data.blogInfo}
-          pageInfo={data.pageInfo}
-        />
-      ) : null}
-      {totalPageNumber > 0 ? (
-        <Pagination
-          pages={pages}
-          setPages={setPages}
-          totalPage={totalPageNumber}
-        />
-      ) : null}
+      {data && (
+        <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
+      )}
+      <Pagination
+        pages={pages}
+        setPages={setPages}
+        totalPage={totalPageNumber}
+      />
     </Container>
   );
 };
 
-export default BlogReview;
+export default BlogReviewList;
 
 const Container = styled.div`
   max-width: 1200px;
@@ -107,7 +102,7 @@ const Title = styled.h2`
   font-size: 28px;
   color: ${theme.colors.greys90};
   text-align: center;
-  margin-bottom: 50px;
+  margin: 40px 0 50px;
 `;
 
 const Divider = styled.div`

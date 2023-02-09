@@ -53,7 +53,7 @@ export const exhbDeleteApi = async (id: number) => {
 // 전시글 북마크
 export const exhbBookMarkApi = async (id: number) => {
   const res: AxiosResponse<BookMarkRes> = await apiInstance.put(
-    `/api/exhibitions/bookmarks/${id}`
+    `/api/bookmarks/exhibitions/${id}`
   );
   return res;
 };

@@ -47,7 +47,8 @@ const ExhbMateList = () => {
     <ExhbMateContainer>
       <Header>
         <Text>
-          <span>{pageInfoData.size}</span> 개의 리뷰를 확인해보세요!
+          <span>{pageInfoData.totalElement}</span> 개의 메이트 모집글을
+          확인해보세요!
         </Text>
         <a href="/mate-write">
           <Button variant="primary" size="small">
@@ -56,7 +57,7 @@ const ExhbMateList = () => {
         </a>
       </Header>
       {mateList.length === 0 ? (
-        <NoList notice="아직 작성한 글이 없습니다" />
+        <NoList notice="아직 등록된 메이트 모집글이 없습니다" />
       ) : (
         mateList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}

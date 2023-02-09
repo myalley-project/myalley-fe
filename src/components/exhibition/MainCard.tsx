@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -21,6 +21,8 @@ export interface MainCardType {
   webLink: string;
   id: number;
   bookmarked: boolean;
+  type: string;
+  viewCount: number;
 }
 const MainCard = ({
   posterUrl,
@@ -31,6 +33,8 @@ const MainCard = ({
   webLink,
   id,
   bookmarked,
+  type,
+  viewCount,
 }: MainCardType) => {
   const auth = localStorage.getItem("authority");
   const navigate = useNavigate();
@@ -55,6 +59,11 @@ const MainCard = ({
 
   // 북마크 버튼
   const toggleBookMark = async () => {
+    if (!localStorage.getItem("accessToken")) return;
+    if (localStorage.getItem("authority") === "ROLE_ADMIN") {
+      alert("관리자는 북마크를 할 수 없습니다.");
+      return;
+    }
     try {
       const res: AxiosResponse<BookMarkRes> = await exhbBookMarkApi(id);
       const { msg } = res.data;
@@ -71,21 +80,33 @@ const MainCard = ({
       if (typeof errorRes !== "object") return;
       const { errorCode, errorMsg } = errorRes;
       if (errorCode === 404 && errorMsg === "회원 정보 없음") {
-        alert("북마크 추가는 로그인 후 가능합니다.");
+        alert("유효하지 않은 토큰입니다. 다시 로그인해주세요.");
       }
     }
   };
 
   // 공유하기 버튼
   const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert("주소가 복사되었습니다.");
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => {
+        alert("주소가 복사되었습니다.");
+      })
+      .catch(() => {
+        alert(
+          "주소 복사에 실패했습니다. 다시 시도해주세요. (해당 기능은 현재 크롬에서만 가능합니다.)"
+        );
+      });
   };
 
   return (
-    <CardContainer>
+    <CardContainer height={auth === "ROLE_ADMIN" ? "520px" : "462px"}>
       <Card>
-        <PosterImg src={posterUrl} alt="poster-img" />
+        <PosterImg
+          src={posterUrl}
+          alt="poster-img"
+          height={auth === "ROLE_ADMIN" ? "420px" : "362px"}
+        />
         <InfoContainer>
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
@@ -103,11 +124,19 @@ const MainCard = ({
               <dt>장소</dt>
               <dd>{place}</dd>
             </InfoDetail>
-            <InfoDetail style={{ marginBottom: "0px" }}>
+            <InfoDetail>
               <dt>관람비용</dt>
               <dd>
                 {charge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
               </dd>
+            </InfoDetail>
+            <InfoDetail>
+              <dt>전시 유형</dt>
+              <dd>{type}</dd>
+            </InfoDetail>
+            <InfoDetail style={{ marginBottom: "0px" }}>
+              <dt>조회수</dt>
+              <dd>{viewCount}</dd>
             </InfoDetail>
           </div>
           <Footer>
@@ -127,10 +156,10 @@ const MainCard = ({
 
 export default MainCard;
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ height: string }>`
   display: flex;
   width: 100%;
-  height: 458px;
+  height: ${(props) => props.height};
   align-items: center;
   justify-content: center;
   border-radius: 0px;
@@ -143,10 +172,14 @@ const Card = styled.div`
   width: 83vw;
   border: 1px solid rgba(127, 103, 190, 0.3);
   background-color: ${theme.colors.white100};
+  box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
-const PosterImg = styled.img`
-  width: 278px;
+const PosterImg = styled.img<{ height: string }>`
+  width: 380px;
+  height: ${(props) => props.height};
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 `;
 
 const InfoContainer = styled.div`
