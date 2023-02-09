@@ -10,8 +10,9 @@ import { ReactComponent as EyeOn } from "../assets/icons/eyeOn.svg";
 import loginApi, { LoginRes } from "../apis/login";
 import { getMyInfoApi, MyInfoRes } from "../apis/member";
 import isApiError from "../utils/isApiError";
+import { alertPreparing } from "../utils/alerts";
 
-// 로그인 컴포넌트_박예선_23.02.01
+// 로그인 컴포넌트_박예선_23.02.08
 const Login = () => {
   const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
@@ -145,11 +146,11 @@ const Login = () => {
           회원가입
         </Button>
         <div className="find-account">
-          <Link to="/login" onClick={() => alert("준비중인 기능입니다.")}>
+          <Link to="/login" onClick={alertPreparing}>
             비밀번호 찾기
           </Link>
           <div className="line" />
-          <Link to="/login" onClick={() => alert("준비중인 기능입니다.")}>
+          <Link to="/login" onClick={alertPreparing}>
             이메일 찾기
           </Link>
         </div>

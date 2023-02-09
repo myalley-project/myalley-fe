@@ -9,8 +9,8 @@ import Pagination, { PagesState } from "../components/Pagination";
 import { Mate, MateListType } from "../types/mateList";
 import { theme } from "../styles/theme";
 import { mateListApi } from "../apis/mate";
-import { errorAlert } from "../utils/isApiError";
 import NoList from "../components/NoList";
+import { alertError } from "../utils/alerts";
 
 // 메이트글 목록 페이지_박예선_23.02.01
 const MateList = () => {
@@ -32,7 +32,7 @@ const MateList = () => {
         setMateList(mates);
         setTotalPage(pageInfo.totalPage);
       } catch (err) {
-        errorAlert();
+        alertError();
       }
     },
     []
