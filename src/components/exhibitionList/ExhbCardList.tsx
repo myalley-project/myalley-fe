@@ -137,7 +137,7 @@ const ContentTop = styled.div`
   }
   .space {
     line-height: 16px;
-    margin: 1.3% 0 0;
+    margin: 3% 0 0;
     font-size: 12px;
     color: ${theme.colors.greys60};
     @media (max-width: 1064px) {
