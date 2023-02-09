@@ -79,10 +79,10 @@ const ExhibitionListContainer = styled.div`
     justify-content: space-between;
   }
   @media (max-width: 1280px) {
-    padding: 40px 20px 0;
+    padding: 0 20px;
   }
   @media (max-width: 1064px) {
-    padding: 40px 16px 0;
+    padding: 0 16px;
   }
 `;
 
