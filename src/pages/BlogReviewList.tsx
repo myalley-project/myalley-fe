@@ -49,7 +49,7 @@ const BlogReviewList = () => {
     <Container>
       <Title>전시 리뷰</Title>
       <Divider />
-      <SelectContainer>
+      <TopLineContainer>
         <Flex>
           <Selectbox
             placeholder="최신 순"
@@ -76,7 +76,7 @@ const BlogReviewList = () => {
             리뷰 등록
           </Button>
         </Flex>
-      </SelectContainer>
+      </TopLineContainer>
       {data && (
         <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
       )}
@@ -110,10 +110,12 @@ const Divider = styled.div`
   margin-bottom: 14px;
 `;
 
-const SelectContainer = styled.div`
+const TopLineContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
   padding: 0px;
   margin-bottom: 30px;
 `;

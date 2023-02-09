@@ -11,7 +11,7 @@ interface MateListFilterType {
   setMateStatusFilter: React.Dispatch<React.SetStateAction<MateStatusType>>;
 }
 
-// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.02.08
+// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.02.10
 const MateListFilter = (props: MateListFilterType) => {
   const { setMateStatusFilter } = props;
   const navigate = useNavigate();
@@ -76,6 +76,8 @@ const MATE_STATUS_ARRAY: MateStatusType[] = ["전체", "모집 중", "모집 완
 const FilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
   width: 100%;
   margin-bottom: 30px;
   padding-top: 14px;
@@ -91,11 +93,15 @@ const FilterContainer = styled.div`
   }
   .mate-write-btn {
     width: 130px;
-    margin-left: 10px;
     font-size: 14px;
     line-height: 20px;
   }
   .flex {
     display: flex;
+  }
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 `;
