@@ -139,7 +139,7 @@ const MainCard = ({
             <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
               사이트 방문
             </WebLink>
-            {localStorage.getItem("authority") === "ROLE_USER" && (
+            {localStorage.getItem("authority") !== "ROLE_ADMIN" && (
               <BookMarkBtn>
                 <BookMark onClick={toggleBookMark} marked={bookmarked} />
               </BookMarkBtn>
