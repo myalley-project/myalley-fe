@@ -296,7 +296,7 @@ const MateWrite = () => {
           />
         </Section>
         <SubTitle text="원하는 메이트 나이" />
-        <Section className="flex">
+        <Section className="flex mate-age">
           <div className="flex">
             <SelectLabel>최소</SelectLabel>
             <Selectbox
@@ -517,8 +517,10 @@ const Section = styled.div`
   .flex {
     display: flex;
   }
-  .maximum-age {
-    margin: 0px 20px 0px;
+  &.mate-age {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 30px;
   }
   .exhb-choice {
     margin-right: 30px;
