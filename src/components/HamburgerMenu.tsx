@@ -89,7 +89,7 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
                     </List>
                   )}
                   {info.authority !== "ROLE_ADMIN" && (
-                    <List as="a" href="/">
+                    <List as="a" href="/blogreview-list">
                       전시회 리뷰
                     </List>
                   )}
