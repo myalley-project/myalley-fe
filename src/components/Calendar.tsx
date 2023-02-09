@@ -22,7 +22,9 @@ interface CalendarProps {
 
 const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
   const [showedMonth, setShowedMonth] = useState<Date>(selectedDate);
-  const [selectedNumber, setSelectedNumber] = useState(selectedDate.getDate());
+  const [selectedDayNumber, setSelectedDayNumber] = useState(
+    selectedDate.getDate()
+  );
 
   const calendarDays = useMemo(
     () => getCalendarDays(showedMonth),
@@ -31,7 +33,7 @@ const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
 
   useEffect(() => {
     setShowedMonth(selectedDate);
-    setSelectedNumber(selectedDate.getDate());
+    setSelectedDayNumber(selectedDate.getDate());
   }, [selectedDate, setShowedMonth]);
 
   const clickArrowLeft = () => {
@@ -49,7 +51,7 @@ const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
     if (e.target.dataset.valid === "true") {
       const day = e.target.dataset.value as string;
       const numberDay = parseInt(day, 10);
-      setSelectedNumber(numberDay);
+      setSelectedDayNumber(numberDay);
 
       const selectedDay = new Date(
         getYear(showedMonth),
@@ -94,7 +96,7 @@ const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
         {calendarDays.map((each) => (
           <Day
             key={each.id}
-            className={each.day === selectedNumber ? "selected" : ""}
+            className={each.day === selectedDayNumber ? "selected" : ""}
             data-valid={each.isValid}
             data-value={each.day}
             onClick={clickCalendarDay}
