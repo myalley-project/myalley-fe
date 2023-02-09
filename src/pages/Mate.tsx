@@ -140,7 +140,7 @@ const Mate = () => {
             <SubTitle type="greys90" marginTop={50}>
               연락가능 메신저
             </SubTitle>
-            <Span size={14}>{mateInfo.contact}</Span>
+            <Span size={16}>{mateInfo.contact}</Span>
           </div>
           <MemberInfoContainer>
             <MemberProfileImg
@@ -223,7 +223,7 @@ const MateContentContainer = styled.div`
   }
   .title-info {
     align-items: center;
-    font-size: 12px;
+    font-size: 14px;
     color: ${theme.colors.greys60};
     .border {
       height: 8px;
@@ -319,7 +319,7 @@ const MemberInfoContainer = styled.div`
   span {
     margin-right: 10px;
     color: ${theme.colors.greys60};
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
   }
 `;

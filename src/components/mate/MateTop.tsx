@@ -81,7 +81,7 @@ export const BtnColored = styled.button`
   padding: 0 20px;
   background-color: ${theme.colors.primry60};
   color: ${theme.colors.white100};
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   &:disabled {
     cursor: default;
