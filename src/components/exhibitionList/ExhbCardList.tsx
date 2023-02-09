@@ -10,6 +10,7 @@ interface ExhbCardListType {
   type: "myPage" | "exhbList";
 }
 
+// 전시회 카드 목록 컴포넌트_박예선_23.02.10
 const ExhbCardList = ({ exhbList, type }: ExhbCardListType) => (
   <CardListContainer>
     {exhbList.length === 0 && <NoList notice="등록된 전시글이 없습니다" />}
@@ -39,6 +40,8 @@ const ExhbCardList = ({ exhbList, type }: ExhbCardListType) => (
 );
 
 export default ExhbCardList;
+
+/* font-size: 1064px 이하일 때 4씩, 624px 이하일 때 2씩 감소 */
 
 const CardListContainer = styled.div`
   display: flex;
@@ -87,6 +90,15 @@ const ExhibitionCard = styled.div<{
     height: 30%;
     text-decoration: none;
   }
+  @media (max-width: 1440px) {
+    width: 31.66%;
+    :nth-child(3n) {
+      margin-right: 0;
+    }
+    :nth-child(4n) {
+      margin-right: 2.5%;
+    }
+  }
 `;
 
 const Thumbnail = styled.img`
@@ -116,12 +128,24 @@ const ContentTop = styled.div`
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
+    @media (max-width: 1064px) {
+      font-size: 16px;
+    }
+    @media (max-width: 624px) {
+      font-size: 14px;
+    }
   }
   .space {
     line-height: 16px;
     margin: 1.3% 0 0;
     font-size: 12px;
     color: ${theme.colors.greys60};
+    @media (max-width: 1064px) {
+      font-size: 12px;
+    }
+    @media (max-width: 624px) {
+      font-size: 10px;
+    }
   }
 `;
 
@@ -138,5 +162,11 @@ const ContentFooter = styled.div`
   }
   .viewCount {
     color: ${theme.colors.greys60};
+  }
+  @media (max-width: 1064px) {
+    font-size: 10px;
+  }
+  @media (max-width: 624px) {
+    font-size: 8px;
   }
 `;
