@@ -23,6 +23,7 @@ import isApiError from "../utils/isApiError";
 import useRefreshTokenApi from "../apis/useRefreshToken";
 import { theme } from "../styles/theme";
 import SimpleDialog from "../components/SimpleDialog";
+import Modal from "../Modal";
 
 interface ModeType {
   mode: string;
@@ -31,7 +32,6 @@ interface ModeType {
 const ExhibitionWrite = (props: ModeType) => {
   const formData = new FormData();
   const navigate = useNavigate();
-  const [isCancel, setIsCancel] = useState(false);
   const refreshTokenApi = useRefreshTokenApi();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -39,6 +39,8 @@ const ExhibitionWrite = (props: ModeType) => {
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
+  const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
+  const [exhbId, setExhbId] = useState(0);
   const [detail, setDetail] = useState<ExhbCreateRes>({
     title: "",
     status: "",
@@ -61,7 +63,7 @@ const ExhibitionWrite = (props: ModeType) => {
     if (mode === "edit") {
       const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
       const { data } = res;
-
+      setExhbId(data.id);
       setDetail(data);
       setPriceWithCommas(data.adultPrice.toString());
       setThumbnail(data.posterUrl);
@@ -255,6 +257,10 @@ const ExhibitionWrite = (props: ModeType) => {
 
   // 수정 api 호출
   const clickEditBtn = async () => {
+    const regDetail = /^https:\/\//;
+    if (!regDetail.test(detail.webLink)) {
+      alert("웹페이지 주소는 'https://'로 시작해야합니다.");
+    }
     try {
       const res: AxiosResponse<string> = await exhbUpdateApi(id, detail);
       const { data } = res;
@@ -411,9 +417,9 @@ const ExhibitionWrite = (props: ModeType) => {
           variant="primary"
           size="large"
           type="button"
-          onClick={() => setIsCancel(true)}
+          onClick={() => setOpenWithdrawalModal(true)}
         >
-          취소
+          취소하기
         </CancelBtn>
         {mode === "edit" ? (
           <SubmitBtn
@@ -435,15 +441,18 @@ const ExhibitionWrite = (props: ModeType) => {
           </SubmitBtn>
         )}
       </ButtonWrapper>
-      {isCancel && (
+      <Modal
+        open={openWithdrawalModal}
+        handleModal={() => setOpenWithdrawalModal(!openWithdrawalModal)}
+      >
         <SimpleDialog
-          message="전시글 작성을 정말 취소하시겠습니까? 작성중이던 내용은 저장되지 않습니다."
-          cancelMessage="취소"
-          confirmMessage="확인"
-          clickCancleBtn={() => setIsCancel(false)}
-          clickConfirmBtn={() => navigate("/")}
+          message={`${exhbId ? "수정" : "작성"}을 취소하시겠습니까?`}
+          cancelMessage={`계속 ${exhbId ? "수정" : "작성"}하기`}
+          confirmMessage={`${exhbId ? "수정" : "작성"} 취소하기`}
+          clickCancleBtn={() => setOpenWithdrawalModal(false)}
+          clickConfirmBtn={() => (exhbId ? navigate(-1) : navigate("/"))}
         />
-      )}
+      </Modal>
     </WriteExhibitionContainer>
   );
 };

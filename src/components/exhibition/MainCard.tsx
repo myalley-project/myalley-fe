@@ -60,10 +60,6 @@ const MainCard = ({
   // 북마크 버튼
   const toggleBookMark = async () => {
     if (!localStorage.getItem("accessToken")) return;
-    if (localStorage.getItem("authority") === "ROLE_ADMIN") {
-      alert("관리자는 북마크를 할 수 없습니다.");
-      return;
-    }
     try {
       const res: AxiosResponse<BookMarkRes> = await exhbBookMarkApi(id);
       const { msg } = res.data;
@@ -143,9 +139,11 @@ const MainCard = ({
             <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
               사이트 방문
             </WebLink>
-            <BookMarkBtn>
-              <BookMark onClick={toggleBookMark} marked={bookmarked} />
-            </BookMarkBtn>
+            {localStorage.getItem("authority") === "ROLE_USER" && (
+              <BookMarkBtn>
+                <BookMark onClick={toggleBookMark} marked={bookmarked} />
+              </BookMarkBtn>
+            )}
             <ShareBtn type="button" onClick={copyLink} />
           </Footer>
         </InfoContainer>
