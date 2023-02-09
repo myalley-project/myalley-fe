@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useMateDeleteApi } from "../../apis/mate";
 import { theme } from "../../styles/theme";
 import { MateRes } from "../../types/mate";
+import { alertPreparing } from "../../utils/alerts";
 import ExhbCard from "./ExhbCard";
 
 interface MateTopType {
@@ -12,7 +13,7 @@ interface MateTopType {
   mateInfo: MateRes;
 }
 
-// 메이트 상세페이지 상단 배경색 있는 부분 컴포넌트_박예선_23.02.08
+// 메이트 상세페이지 상단 배경색 있는 부분 컴포넌트_박예선_23.02.09
 const MateTop = (props: MateTopType) => {
   const { isMyPost, mateId, mateInfo } = props;
   const navigate = useNavigate();
@@ -30,13 +31,8 @@ const MateTop = (props: MateTopType) => {
           <BtnTransparent onClick={() => navigate("/mate-list")}>
             목록
           </BtnTransparent>
-          <BtnTransparent onClick={() => alert("준비중 붙이기")}>
-            이전 글
-          </BtnTransparent>
-          <BtnTransparent onClick={() => alert("준비중 붙이기")}>
-            다음 글
-          </BtnTransparent>
-          {/* 준비중 알림창 붙이기 */}
+          {/* <BtnTransparent onClick={alertPreparing}>이전 글</BtnTransparent>
+          <BtnTransparent onClick={alertPreparing}>다음 글</BtnTransparent> */}
         </div>
         <div className={isMyPost ? "" : "none"}>
           <BtnTransparent
