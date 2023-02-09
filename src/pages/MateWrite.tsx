@@ -322,7 +322,7 @@ const MateWrite = () => {
             onClick={clickAgeRegardless}
           />
         </Section>
-        <Section className="flex">
+        <Section className="flex exhb-duration">
           <div className="exhb-choice">
             <SubTitle text="전시회" />
             <ExhbChoiceBtn
@@ -482,11 +482,15 @@ const Section = styled.div`
   .flex {
     display: flex;
   }
+  .maximum-age {
+    margin: 0px 20px 0px;
+  }
   .exhb-choice {
     margin-right: 30px;
   }
-  .maximum-age {
-    margin: 0px 20px 0px;
+  &.exhb-duration {
+    flex-wrap: wrap;
+    gap: 30px;
   }
 `;
 
