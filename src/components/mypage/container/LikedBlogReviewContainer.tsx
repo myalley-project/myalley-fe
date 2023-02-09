@@ -11,6 +11,7 @@ import useGetNewTokenApi from "../../../apis/useGetRefreshToken";
 import ReviewCardList from "../../blogReviewList/ReviewCardList";
 import isApiError from "../../../utils/isApiError";
 import NoList from "../../NoList";
+import Pagination from "../../Pagination";
 
 const LikedBlogReviewContainer = () => {
   const getNewTokenApi = useGetNewTokenApi;
@@ -49,14 +50,24 @@ const LikedBlogReviewContainer = () => {
   if (isError) return <div>...isError</div>;
 
   return (
-    <div>
-      {/* {data?.pageInfo.totalElement === 0 ? (
+    <div style={{ marginTop: "10px" }}>
+      {data?.pageInfo.totalElement === 0 ? (
         <NoList notice="북마크한 블로그 리뷰가 없습니다." />
       ) : (
         data?.blogInfo && (
-          <ReviewCardList blogInfo={data?.blogInfo} pageInfo={data?.pageInfo} />
+          <>
+            <ReviewCardList
+              blogInfo={data?.blogInfo}
+              pageInfo={data?.pageInfo}
+            />
+            <Pagination
+              pages={pages}
+              setPages={setPages}
+              totalPage={data?.pageInfo.totalPage}
+            />
+          </>
         )
-      )} */}
+      )}
     </div>
   );
 };
