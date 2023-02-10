@@ -1,5 +1,5 @@
 import React from "react";
-import NewCarousel from "../components/NewCarousel";
+import NewCarousel from "../components/main/NewCarousel";
 import MainArticle from "../components/main/MainArticle";
 
 const Main = () => (

@@ -122,7 +122,7 @@ const Mate = () => {
             <SubTitle type="greys90" marginTop={50}>
               관람예정일
             </SubTitle>
-            <Calender handleSelectedDate={() => {}} />
+            <Calender selectedDate={new Date()} handleSelectedDate={() => {}} />
           </div>
           <div>
             <SubTitle type="greys90" marginTop={50}>

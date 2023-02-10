@@ -1,4 +1,3 @@
-// eslint-disable-line no-script-url
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -13,7 +12,7 @@ interface PropsType {
 const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
   const location = useLocation();
-  const isLocationKey = location.key;
+  const [isLocationKey, setIsLocationKey] = useState(location.key);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const info = {
@@ -48,44 +47,23 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
               {localStorage.getItem("accessToken") ? (
                 <MenuWrapper>
                   <Subtitle>계정</Subtitle>
-                  {localStorage.getItem("authority") === "ROLE_USER" ? (
-                    <MypageArea href="/mypage/edit">
-                      <ProfileWrapper>
-                        <img
-                          src={
-                            info.memberImage === ""
-                              ? ProfileImg
-                              : info.memberImage
-                          }
-                          alt="profile-img"
-                          style={{ width: "40px" }}
-                        />
-                      </ProfileWrapper>
-                      <div>
-                        <Nickname>{info.nickname}</Nickname>
-                        <Email className="email">{info.email}</Email>
-                      </div>
-                    </MypageArea>
-                  ) : (
-                    <MypageArea as="div">
-                      <ProfileWrapper>
-                        <img
-                          src={
-                            info.memberImage === ""
-                              ? ProfileImg
-                              : info.memberImage
-                          }
-                          alt="profile-img"
-                          style={{ width: "40px" }}
-                        />
-                      </ProfileWrapper>
-                      <div>
-                        <Nickname>{info.nickname}</Nickname>
-                        <Email className="email">{info.email}</Email>
-                      </div>
-                    </MypageArea>
-                  )}
-
+                  <MypageArea href="/mypage/edit">
+                    <ProfileWrapper>
+                      <img
+                        src={
+                          info.memberImage === ""
+                            ? ProfileImg
+                            : info.memberImage
+                        }
+                        alt="profile-img"
+                        style={{ width: "40px" }}
+                      />
+                    </ProfileWrapper>
+                    <div>
+                      <Nickname>{info.nickname}</Nickname>
+                      <Email className="email">{info.email}</Email>
+                    </div>
+                  </MypageArea>
                   <LogoutButton type="button" onClick={logOut}>
                     로그아웃
                   </LogoutButton>
