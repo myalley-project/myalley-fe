@@ -9,6 +9,7 @@ import BookMarkedPosts from "../components/mypage/BookMarkedPosts";
 import { getMyInfoApi, MyInfoRes } from "../apis/member";
 import useGetNewTokenApi from "../apis/useGetRefreshToken";
 import isApiError from "../utils/isApiError";
+import LikedBlogReviewContainer from "../components/mypage/container/LikedBlogReviewContainer";
 
 const Mypage = () => {
   const location = useLocation();
@@ -59,6 +60,7 @@ const Mypage = () => {
       {pathname === "/mypage/edit" && <EditProfile infoData={infoData} />}
       {pathname === "/mypage/write" && <WrittenPosts />}
       {pathname === "/mypage/bookmark" && <BookMarkedPosts />}
+      {pathname === "/mypage/likes" && <LikedBlogReviewContainer />}
     </MypageContainer>
   );
 };

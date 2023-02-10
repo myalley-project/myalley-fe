@@ -22,6 +22,7 @@ const BlogReview = () => {
     memberImage: "",
     nickname: "",
   };
+  const isMemberId = !!localStorage.getItem("memberId");
 
   if (isLoading) return <div>...loading</div>;
 
@@ -29,13 +30,16 @@ const BlogReview = () => {
 
   return (
     <>
-      <TopContainer>
-        <BlogReviewTop
-          id={data?.exhibitionInfo.id as number}
-          memberInfo={memberInfo}
-          blogReviewId={data?.id as number}
-        />
-      </TopContainer>
+      {data && (
+        <TopContainer>
+          <BlogReviewTop
+            id={data?.exhibitionInfo.id}
+            memberInfo={memberInfo}
+            blogReviewId={data?.id}
+            exhibitionInfo={data?.exhibitionInfo}
+          />
+        </TopContainer>
+      )}
       {data && (
         <PresentationContainer>
           <BlogReviewPresentation
@@ -84,4 +88,8 @@ const PresentationContainer = styled.div`
   @media (max-width: 1064px) {
     padding: 0 16px;
   }
+`;
+
+const Divider = styled.div`
+  margin-bottom: 2rem;
 `;

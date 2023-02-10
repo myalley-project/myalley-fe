@@ -24,6 +24,7 @@ const colors = {
   greys100: "#1C1C1C",
   success: "#54C60E",
   error: "#FD3D51",
+  pageBg: "#958da50d",
 };
 
 export type Responsive = typeof responsive;

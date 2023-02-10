@@ -16,11 +16,20 @@ interface BlogReviewTopProps {
     memberImage: string;
   };
   blogReviewId: number;
+  exhibitionInfo: {
+    id: number;
+    title: string;
+    posterUrl: string;
+    duration: string;
+    space: string;
+    type: string;
+  };
 }
 
 const BlogReviewTop = ({
   id,
   memberInfo,
+  exhibitionInfo,
   blogReviewId,
 }: BlogReviewTopProps) => {
   const navigate = useNavigate();
@@ -98,6 +107,7 @@ const BlogReviewTop = ({
             exhibitionSpace: exhbData.space,
             posterUrl: exhbData.posterUrl,
             exhibitionDuration: exhbData.duration,
+            type: exhbData.type,
           }}
         />
       )}
