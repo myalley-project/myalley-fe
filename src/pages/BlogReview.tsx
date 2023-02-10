@@ -3,8 +3,8 @@ import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import blogReviewApis from "../apis/blogReviewApis";
-import BlogReviewDetailPresentation from "../components/blogreview/presentation/BlogReviewDetailPresentation";
-import BlogReviewDetailContainer from "../components/blogreview/container/BlogReviewDetailContainer";
+import BlogReviewPresentation from "../components/blogreview/presentation/BlogReviewPresentation";
+import BlogReviewTop from "../components/blogreview/container/BlogReviewTop";
 
 interface LocationState {
   state: number;
@@ -28,15 +28,17 @@ const BlogReview = () => {
   if (isError) return <div>에러가 발생했습니다</div>;
 
   return (
-    <Container>
-      <BlogReviewDetailContainer
-        id={data?.exhibitionInfo.id as number}
-        memberInfo={memberInfo}
-        blogReviewId={data?.id as number}
-      />
-      <div>
-        {data && (
-          <BlogReviewDetailPresentation
+    <>
+      <TopContainer>
+        <BlogReviewTop
+          id={data?.exhibitionInfo.id as number}
+          memberInfo={memberInfo}
+          blogReviewId={data?.id as number}
+        />
+      </TopContainer>
+      {data && (
+        <PresentationContainer>
+          <BlogReviewPresentation
             id={data.id}
             title={data.title}
             content={data.content}
@@ -55,16 +57,25 @@ const BlogReview = () => {
             imageInfo={data.imageInfo}
             exhibitionInfo={data.exhibitionInfo}
           />
-        )}
-      </div>
-    </Container>
+        </PresentationContainer>
+      )}
+    </>
   );
 };
 
 export default BlogReview;
 
-const Container = styled.div`
-  width: 83vw;
-  max-width: 1200px;
-  margin: 50px auto;
+const TopContainer = styled.div`
+  padding: 50px 0;
+  border-radius: 0;
+  background-color: rgba(149, 141, 165, 0.05);
+  @media (max-width: 1280px) {
+    padding: 50px 40px;
+  }
+`;
+
+const PresentationContainer = styled.div`
+  @media (max-width: 1280px) {
+    padding: 0 40px;
+  }
 `;

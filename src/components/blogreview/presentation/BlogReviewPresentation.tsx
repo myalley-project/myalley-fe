@@ -10,7 +10,7 @@ import { BlogReviewDetailResponse } from "../../../types/blogReview";
 import bloglikeApis from "../../../apis/bloglikeApis";
 import blogDetailbookmarkApis from "../../../apis/blogdetailbookMarkApis";
 
-const BlogReviewDetailPresentation = ({
+const BlogReviewPresentation = ({
   id,
   createdAt,
   viewCount,
@@ -97,7 +97,7 @@ const BlogReviewDetailPresentation = ({
   };
 
   return (
-    <Container>
+    <PrsentationContainer>
       <DetailTitle>{title}</DetailTitle>
       <Divider />
       <DetailInformation>
@@ -122,25 +122,6 @@ const BlogReviewDetailPresentation = ({
           <p>{revisit}</p>
         </DetailDiv>
       </DetailInformation>
-      <MainPart>
-        <StyledSWiper
-          slidesPerView={1.6}
-          spaceBetween={30}
-          pagination={{
-            clickable: true,
-          }}
-          modules={[Pagination]}
-        >
-          {imageInfo
-            ? imageInfo.map((each) => (
-                <SwiperSlide key={each.id}>
-                  <img src={each.url} alt="전시회 상세조회 포스터" />
-                </SwiperSlide>
-              ))
-            : null}
-        </StyledSWiper>
-        <p>{content}</p>
-      </MainPart>
       <UserInfo>
         <UserThumbnail>
           <img
@@ -176,13 +157,16 @@ const BlogReviewDetailPresentation = ({
           {bookmarkStatus ? "저장됨" : "저장하기"} {bookmarkCount}
         </Button>
       </ButtonGroup>
-    </Container>
+    </PrsentationContainer>
   );
 };
 
-export default BlogReviewDetailPresentation;
+export default BlogReviewPresentation;
 
-const Container = styled.div`
+const PrsentationContainer = styled.div`
+  width: 100%;
+  max-width: 1200px;
+  margin: 50px auto;
   padding: 30px;
   border: 1px solid ${theme.colors.greys40};
 `;

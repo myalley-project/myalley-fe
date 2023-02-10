@@ -52,7 +52,7 @@ export default ExhbCard;
 
 const ExhbCardContainer = styled.div`
   display: flex;
-  width: 83vw;
+  width: 100%;
   max-width: 1200px;
   height: 244px;
   margin-top: 14px;
