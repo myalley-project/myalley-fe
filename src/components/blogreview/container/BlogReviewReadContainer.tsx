@@ -7,6 +7,7 @@ import Pagination from "../../Pagination";
 import BlogReviewCard from "../../blogReviewList/ReviewCard";
 import blogReviewApis from "../../../apis/blogReviewApis";
 import { BlogReviewResponse } from "../../../types/blogReview";
+import NoList from "../../NoList";
 
 type OrderType = "Recent" | "ViewCount" | "StarScore";
 
@@ -66,17 +67,21 @@ const BlogReviewReadContainer = ({
       />
       <Container>
         <CardWrapper>
-          {data?.blogInfo.map((each) => (
-            <BlogReviewCard
-              key={each.id}
-              id={each.id}
-              title={each.title}
-              writer={each.writer}
-              viewDate={each.viewDate}
-              viewCount={each.viewCount}
-              imageInfo={each.imageInfo}
-            />
-          ))}
+          {(data?.pageInfo.totalElement as number) > 0 ? (
+            data?.blogInfo.map((each) => (
+              <BlogReviewCard
+                key={each.id}
+                id={each.id}
+                title={each.title}
+                writer={each.writer}
+                viewDate={each.viewDate}
+                viewCount={each.viewCount}
+                imageInfo={each.imageInfo}
+              />
+            ))
+          ) : (
+            <NoList notice="아직 작성된 블로그 리뷰가 없습니다." />
+          )}
         </CardWrapper>
         {data?.pageInfo ? (
           <Pagination
