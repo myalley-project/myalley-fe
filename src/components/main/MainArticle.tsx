@@ -28,13 +28,13 @@ const MainArticle = () => {
             <span>전시 정보를</span> 찾아보세요
           </p>
         </CardTextContainer>
-        <LinkContainer>
+        <SeeMore>
           <p>
             <span>자세히</span>
             보기
           </p>
           <img src={arrowRight} alt="자세히 보기" />
-        </LinkContainer>
+        </SeeMore>
       </Article>
       <Article
         onMouseOver={() => setReviewStroke(`${theme.colors.primry80}`)}
@@ -49,13 +49,13 @@ const MainArticle = () => {
             <span>전시 리뷰를</span> 찾아보세요
           </p>
         </CardTextContainer>
-        <LinkContainer>
+        <SeeMore>
           <p>
             <span>자세히</span>
             보기
           </p>
           <img src={arrowRight} alt="자세히 보기" />
-        </LinkContainer>
+        </SeeMore>
       </Article>
       <Article
         onMouseOver={() => setMateStroke(`${theme.colors.primry80}`)}
@@ -71,12 +71,12 @@ const MainArticle = () => {
             <span>친구를</span> 찾아보세요
           </p>
         </CardTextContainer>
-        <LinkContainer>
+        <SeeMore>
           <p>
             <span>자세히</span> 보기
           </p>
           <img src={arrowRight} alt="자세히 보기" />
-        </LinkContainer>
+        </SeeMore>
       </Article>
     </ArticleContainer>
   );
@@ -149,7 +149,7 @@ const CardTextContainer = styled.div`
   }
 `;
 
-const LinkContainer = styled.div`
+const SeeMore = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
