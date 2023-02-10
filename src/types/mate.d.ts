@@ -15,9 +15,11 @@ export interface MateRes {
     exhibitionId: number;
     exhibitionTitle: string;
     exhibitionSpace: string;
+    exhibitionType: string;
     posterUrl: string;
     exhibitionDuration: string; // yyyy-mm-dd ~ yyyy-mm-dd
     status: "현재 전시" | "예정 전시" | "지난 전시";
+    type: string;
   };
   member: {
     memberId: number;

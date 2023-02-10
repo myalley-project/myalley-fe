@@ -94,13 +94,12 @@ export default BlogReviewReadContainer;
 
 const Container = styled.div`
   width: 62.5vw;
-  margin-inline: auto;
 `;
 
 const CardWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, 380px);
+  grid-template-columns: repeat(3, 380px);
   grid-template-rows: auto;
   gap: 30px;
-  margin-bottom: 120px;
+  margin-bottom: 30px;
 `;
