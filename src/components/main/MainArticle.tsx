@@ -28,7 +28,7 @@ const MainArticle = () => {
             <span>전시 정보를</span> 찾아보세요
           </p>
         </div>
-        <LinkContainer className="linkContainer">
+        <LinkContainer>
           <p>
             <span>자세히</span>
             보기
@@ -49,7 +49,7 @@ const MainArticle = () => {
             <span>전시 리뷰를</span> 찾아보세요
           </p>
         </div>
-        <LinkContainer className="linkContainer">
+        <LinkContainer>
           <p>
             <span>자세히</span>
             보기
@@ -71,7 +71,7 @@ const MainArticle = () => {
             <span>친구를</span> 찾아보세요
           </p>
         </div>
-        <LinkContainer className="linkContainer">
+        <LinkContainer>
           <p>
             <span>자세히</span> 보기
           </p>
@@ -125,7 +125,7 @@ const Article = styled.article`
     border: 1px solid ${theme.colors.primry60};
     & h3,
     p,
-    .linkContainer {
+    span {
       color: ${theme.colors.primry80};
     }
   }
