@@ -14,7 +14,7 @@ interface ExhbCardType {
   };
 }
 
-// 메이트 모집글 전시회 카드컴포넌트_박예선_23.02.09
+// 메이트 모집글 전시회 카드컴포넌트_박예선_23.02.10
 const ExhbCard = (props: ExhbCardType) => {
   const { exhbData } = props;
   const {
@@ -32,18 +32,18 @@ const ExhbCard = (props: ExhbCardType) => {
       <InfoContainer>
         <div className="title">{exhibitionTitle}</div>
         <DetailContainer>
-          <div className="flex">
+          <Detail>
             <div className="detail-name">일정</div>
             <div>{exhibitionDuration}</div>
-          </div>
-          <div className="flex">
+          </Detail>
+          <Detail>
             <div className="detail-name">장소</div>
             <div>{exhibitionSpace}</div>
-          </div>
-          <div className="flex">
+          </Detail>
+          <Detail>
             <div className="detail-name">전시 유형</div>
             <div>{status}</div>
-          </div>
+          </Detail>
         </DetailContainer>
       </InfoContainer>
     </ExhbCardContainer>
@@ -71,12 +71,17 @@ const Thumbnail = styled.img`
   object-fit: cover;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  @media (max-width: 624px) {
+    width: 40%;
+  }
 `;
 
 const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 30px;
   .title {
-    height: 104px;
     color: ${(props) => props.theme.colors.greys90};
     font-size: 42px;
     font-weight: 700;
@@ -88,16 +93,19 @@ const DetailContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 50px;
-  div > div {
+`;
+
+const Detail = styled.div`
+  display: flex;
+  div {
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
     color: ${theme.colors.greys90};
-    &.detail-name {
-      width: 72px;
-      margin-right: 30px;
-      color: ${theme.colors.greys60};
-    }
+  }
+  .detail-name {
+    width: 72px;
+    margin-right: 30px;
+    color: ${theme.colors.greys60};
   }
 `;
