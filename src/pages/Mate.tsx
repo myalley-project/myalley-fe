@@ -319,7 +319,7 @@ const MemberInfoContainer = styled.div`
   align-items: center;
   margin: 50px auto 0;
   span {
-    color: ${theme.colors.greys60};
+    color: ${theme.colors.greys90};
     font-size: 16px;
     font-weight: 500;
   }
