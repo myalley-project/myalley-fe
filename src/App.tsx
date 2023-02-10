@@ -16,7 +16,7 @@ import MateWrite from "./pages/MateWrite";
 import BlogReviewList from "./pages/BlogReviewList";
 import BlogReviewWrite from "./pages/BlogReviewWrite";
 import BlogReviewUpdate from "./pages/BlogReviewModify";
-import BlogReviewDetail from "./pages/BlogReviewDetail";
+import BlogReview from "./pages/BlogReview";
 import Footer from "./components/Footer";
 
 const App = () => (
@@ -44,7 +44,7 @@ const App = () => (
       <Route path="/blogreview-list" element={<BlogReviewList />} />
       <Route path="/blogreview-write" element={<BlogReviewWrite />} />
       <Route path="/blogreview-edit" element={<BlogReviewUpdate />} />
-      <Route path="/blogreview-detail" element={<BlogReviewDetail />} />
+      <Route path="/blogreview" element={<BlogReview />} />
     </Routes>
     <ReactQueryDevtools />
     <Footer />
