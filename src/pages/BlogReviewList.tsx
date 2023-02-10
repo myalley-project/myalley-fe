@@ -53,7 +53,7 @@ const BlogReviewList = () => {
         <Flex>
           <Selectbox
             placeholder="최신 순"
-            options={["최신 순", "인기 순"]}
+            options={["최신 순", "조회수 순"]}
             width="130px"
             name="정렬 필터"
             onClick={handleOrderType}
