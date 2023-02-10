@@ -111,7 +111,7 @@ const FiltersContainer = styled.div`
     margin-bottom: 14px;
     font-size: 14px;
     button {
-      font-size: 14px;
+      font-size: 16px;
       line-height: inherit;
       &.selected {
         color: ${theme.colors.greys100};
