@@ -38,8 +38,8 @@ const Footer = () => {
             Copyright 2022 © mane. All rights reserved.
           </Copyright>
           <Terms>
-            <span>이용약관</span> | <span>개인정보처리방침</span> |
-            <span> 청소년보호정책</span> |
+            <span>이용약관</span>|<span>개인정보처리방침</span>|
+            <span>청소년보호정책</span>|
             <span>
               <Link
                 href="https://docs.google.com/forms/d/1UX8MuID74mg9afbzWdIfKU1CagQMA_FoXoDqvORx50w/edit"
@@ -61,18 +61,18 @@ const FooterContainer = styled.div`
   display: flex;
   justify-content: start;
   width: 100vw;
-  height: fit-content;
-  min-height: 466px;
+  padding: 120px 0;
   border-radius: 0px;
   background-color: rgba(149, 141, 165, 0.05);
   @media (max-width: 1440px) {
-    padding: 0 20px;
+    padding: 9.3vw 20px;
   }
 `;
 
 const FooterWrapper = styled.div`
+  width: 100%;
   max-width: 1440px;
-  margin: 120px auto 0px auto;
+  margin: auto;
 `;
 
 const TopArea = styled.div`
@@ -82,13 +82,15 @@ const TopArea = styled.div`
 `;
 
 const Developers = styled.div`
+  width: 80%;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 10px;
 `;
 
 const JobGroup = styled.div`
-  width: 215px;
+  min-width: 115px;
   font-family: "Roboto";
 `;
 
@@ -99,6 +101,9 @@ const JobTitle = styled.p`
   line-height: 20px;
   letter-spacing: 1px;
   color: ${theme.colors.primry70};
+  @media (max-width: 1064px) {
+    font-size: 16px;
+  }
 `;
 
 const People = styled.p`
@@ -106,6 +111,9 @@ const People = styled.p`
   font-size: 18px;
   line-height: 24px;
   color: ${theme.colors.secondary50};
+  @media (max-width: 1064px) {
+    font-size: 16px;
+  }
 `;
 
 const BottomArea = styled.div`
@@ -117,6 +125,9 @@ const BottomArea = styled.div`
   font-size: 14px;
   line-height: 16px;
   color: ${theme.colors.secondary40};
+  @media (max-width: 1064px) {
+    font-size: 12px;
+  }
 `;
 
 const Copyright = styled.div`
@@ -124,10 +135,13 @@ const Copyright = styled.div`
 `;
 
 const Terms = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   font-weight: 400;
 `;
 
 const Link = styled.a`
+  color: ${theme.colors.primry80};
   text-decoration: none;
-  color: ${theme.colors.secondary40};
 `;
