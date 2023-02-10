@@ -21,19 +21,19 @@ const MainArticle = () => {
         onClick={() => navigate("/exhibition-list")}
       >
         <Exhibition stroke={exhbStroke} />
-        <div>
+        <CardTextContainer>
           <h3>전시회</h3>
-          <p className="card-discription">
+          <p>
             <span>다양한</span>
             <span>전시 정보를</span> 찾아보세요
           </p>
-        </div>
+        </CardTextContainer>
         <LinkContainer>
           <p>
             <span>자세히</span>
             보기
           </p>
-          <img src={arrowRight} alt="" />
+          <img src={arrowRight} alt="자세히 보기" />
         </LinkContainer>
       </Article>
       <Article
@@ -42,19 +42,19 @@ const MainArticle = () => {
         onClick={() => navigate("/blogreview-list")}
       >
         <Review stroke={reviewStroke} />
-        <div>
+        <CardTextContainer>
           <h3>전시 리뷰</h3>
-          <p className="card-discription">
+          <p>
             <span>다양한</span>
             <span>전시 리뷰를</span> 찾아보세요
           </p>
-        </div>
+        </CardTextContainer>
         <LinkContainer>
           <p>
             <span>자세히</span>
             보기
           </p>
-          <img src={arrowRight} alt="" />
+          <img src={arrowRight} alt="자세히 보기" />
         </LinkContainer>
       </Article>
       <Article
@@ -63,19 +63,19 @@ const MainArticle = () => {
         onClick={() => navigate("/mate-list")}
       >
         <Mate stroke={mateStroke} />
-        <div>
+        <CardTextContainer>
           <h3>메이트</h3>
-          <p className="card-discription">
+          <p>
             <span>전시회에</span>
             <span>같이 갈</span>
             <span>친구를</span> 찾아보세요
           </p>
-        </div>
+        </CardTextContainer>
         <LinkContainer>
           <p>
             <span>자세히</span> 보기
           </p>
-          <img src={arrowRight} alt="" />
+          <img src={arrowRight} alt="자세히 보기" />
         </LinkContainer>
       </Article>
     </ArticleContainer>
@@ -112,28 +112,30 @@ const Article = styled.article`
   text-align: center;
   z-index: 99;
   cursor: pointer;
-  & h3 {
-    margin-bottom: 1rem;
-    font-weight: bold;
-    font-size: 28px;
-  }
-  & p {
-    color: ${theme.colors.greys60};
-    font-size: 14px;
-  }
   &:hover {
     border: 1px solid ${theme.colors.primry60};
+    box-shadow: 0px 0px 20px rgba(56, 30, 114, 0.1);
     & h3,
     p,
     span {
       color: ${theme.colors.primry80};
     }
   }
-  .card-discription {
+`;
+
+const CardTextContainer = styled.div`
+  h3 {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 28px;
+  }
+  p {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 2.5px;
+    color: ${theme.colors.greys60};
+    font-size: 14px;
   }
   @media (max-width: 1439px) {
     & h3 {
