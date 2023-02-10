@@ -70,12 +70,18 @@ const TopContainer = styled.div`
   border-radius: 0;
   background-color: rgba(149, 141, 165, 0.05);
   @media (max-width: 1280px) {
-    padding: 50px 40px;
+    padding: 50px 20px;
+  }
+  @media (max-width: 1064px) {
+    padding: 50px 16px;
   }
 `;
 
 const PresentationContainer = styled.div`
   @media (max-width: 1280px) {
-    padding: 0 40px;
+    padding: 0 20px;
+  }
+  @media (max-width: 1064px) {
+    padding: 0 16px;
   }
 `;
