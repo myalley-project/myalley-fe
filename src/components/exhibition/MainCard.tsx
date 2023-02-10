@@ -100,13 +100,9 @@ const MainCard = ({
   };
 
   return (
-    <CardContainer height={auth === "ROLE_ADMIN" ? "520px" : "462px"}>
+    <CardContainer>
       <Card>
-        <PosterImg
-          src={posterUrl}
-          alt="poster-img"
-          height={auth === "ROLE_ADMIN" ? "420px" : "362px"}
-        />
+        <PosterImg src={posterUrl} alt="poster-img" />
         <InfoContainer>
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
@@ -114,6 +110,10 @@ const MainCard = ({
               <Button onClick={handleDelete}>삭제</Button>
             </EditButtons>
           )}
+          <ViewCount>
+            <dt>조회수</dt>
+            <dd>{viewCount}</dd>
+          </ViewCount>
           <Title>{title}</Title>
           <div style={{ padding: "30px 0" }}>
             <InfoDetail>
@@ -125,29 +125,27 @@ const MainCard = ({
               <dd>{place}</dd>
             </InfoDetail>
             <InfoDetail>
+              <dt>전시 유형</dt>
+              <dd>{type}</dd>
+            </InfoDetail>
+            <InfoDetail style={{ marginBottom: "0px" }}>
               <dt>관람비용</dt>
               <dd>
                 {charge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
               </dd>
             </InfoDetail>
-            <InfoDetail>
-              <dt>전시 유형</dt>
-              <dd>{type}</dd>
-            </InfoDetail>
-            <InfoDetail style={{ marginBottom: "0px" }}>
-              <dt>조회수</dt>
-              <dd>{viewCount}</dd>
-            </InfoDetail>
           </div>
-          <Footer>
-            <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
-              사이트 방문
-            </WebLink>
-            <BookMarkBtn>
-              <BookMark onClick={toggleBookMark} marked={bookmarked} />
-            </BookMarkBtn>
-            <ShareBtn type="button" onClick={copyLink} />
-          </Footer>
+          <div style={{ height: "34px" }}>
+            <Footer>
+              <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
+                사이트 방문
+              </WebLink>
+              <BookMarkBtn>
+                <BookMark onClick={toggleBookMark} marked={bookmarked} />
+              </BookMarkBtn>
+              <ShareBtn type="button" onClick={copyLink} />
+            </Footer>
+          </div>
         </InfoContainer>
       </Card>
     </CardContainer>
@@ -156,10 +154,11 @@ const MainCard = ({
 
 export default MainCard;
 
-const CardContainer = styled.div<{ height: string }>`
+const CardContainer = styled.div`
   display: flex;
   width: 100%;
-  height: ${(props) => props.height};
+  height: fit-content;
+  padding: 50px 0;
   align-items: center;
   justify-content: center;
   border-radius: 0px;
@@ -175,11 +174,11 @@ const Card = styled.div`
   box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
-const PosterImg = styled.img<{ height: string }>`
+const PosterImg = styled.img`
   width: 380px;
-  height: ${(props) => props.height};
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  object-fit: cover;
 `;
 
 const InfoContainer = styled.div`
@@ -233,6 +232,15 @@ const InfoDetail = styled.dl`
   }
   dd {
     font-weight: 400;
+  }
+`;
+
+const ViewCount = styled(InfoDetail)`
+  margin-left: auto;
+  margin-bottom: 8px;
+  dt {
+    width: 38px;
+    margin-right: 8px;
   }
 `;
 
