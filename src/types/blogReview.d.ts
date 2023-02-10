@@ -90,5 +90,6 @@ export interface BlogReviewDetailResponse {
     posterUrl: string;
     duration: string;
     space: string;
+    type: string;
   };
 }

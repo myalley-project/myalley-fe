@@ -43,7 +43,7 @@ const ReviewCard = ({
 export default ReviewCard;
 
 const Container = styled.div`
-  border: 1px solid ${theme.colors.greys60};
+  border: 1px solid ${theme.colors.greys40};
   aspect-ratio: 1/1.05;
   :hover {
     border: 1px solid ${theme.colors.primry60};
