@@ -80,7 +80,9 @@ const BlogReviewReadContainer = ({
               />
             ))
           ) : (
-            <NoList notice="아직 작성된 블로그 리뷰가 없습니다." />
+            <FlexCenter>
+              <NoList notice="아직 작성된 블로그 리뷰가 없습니다." />
+            </FlexCenter>
           )}
         </CardWrapper>
         {data?.pageInfo ? (
@@ -107,4 +109,8 @@ const CardWrapper = styled.div`
   grid-template-rows: auto;
   gap: 30px;
   margin-bottom: 30px;
+`;
+
+const FlexCenter = styled.div`
+  grid-column: 2;
 `;
