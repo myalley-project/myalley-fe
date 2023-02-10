@@ -10,7 +10,7 @@ interface ExhbCardType {
     exhibitionSpace: string;
     posterUrl: string;
     exhibitionDuration: string; // yyyy-mm-dd ~ yyyy-mm-dd
-    status: string;
+    type: string;
   };
 }
 
@@ -22,8 +22,8 @@ const ExhbCard = (props: ExhbCardType) => {
     exhibitionTitle,
     exhibitionSpace,
     exhibitionDuration,
+    type,
     posterUrl,
-    status,
   } = exhbData;
   const navigate = useNavigate();
   return (
@@ -42,7 +42,7 @@ const ExhbCard = (props: ExhbCardType) => {
           </Detail>
           <Detail>
             <div className="detail-name">전시 유형</div>
-            <div>{status}</div>
+            <div>{type}</div>
           </Detail>
         </DetailContainer>
       </InfoContainer>

@@ -105,6 +105,9 @@ const Login = () => {
             className="pw-input"
             value={loginInfo.password}
             onChange={handleInput}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") clickLoginBtn();
+            }}
             spellCheck="false"
           />
           <button type="button" onClick={clickEyeIcon}>

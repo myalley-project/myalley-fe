@@ -56,7 +56,7 @@ const MateTopContainer = styled.div`
   width: 100vw;
   padding: 50px 0;
   border-radius: 0;
-  background-color: #958da50d;
+  background-color: ${theme.colors.pageBg};
 `;
 
 const TopBtnsContainer = styled.div`

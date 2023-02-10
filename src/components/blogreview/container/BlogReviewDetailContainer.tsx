@@ -16,11 +16,20 @@ interface BlogReviewDetailContainerProps {
     memberImage: string;
   };
   blogReviewId: number;
+  exhibitionInfo: {
+    id: number;
+    title: string;
+    posterUrl: string;
+    duration: string;
+    space: string;
+    type: string;
+  };
 }
 
 const BlogReviewDetailContainer = ({
   id,
   memberInfo,
+  exhibitionInfo,
   blogReviewId,
 }: BlogReviewDetailContainerProps) => {
   const navigate = useNavigate();
@@ -98,7 +107,7 @@ const BlogReviewDetailContainer = ({
             exhibitionSpace: exhbData.space,
             posterUrl: exhbData.posterUrl,
             exhibitionDuration: exhbData.duration,
-            status: exhbData.status,
+            type: exhbData.type,
           }}
         />
       )}
