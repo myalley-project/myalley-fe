@@ -122,6 +122,25 @@ const BlogReviewPresentation = ({
           <p>{revisit}</p>
         </DetailDiv>
       </DetailInformation>
+      <MainPart>
+        <StyledSWiper
+          slidesPerView={1.6}
+          spaceBetween={30}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Pagination]}
+        >
+          {imageInfo
+            ? imageInfo.map((each) => (
+                <SwiperSlide key={each.id}>
+                  <img src={each.url} alt="전시회 상세조회 포스터" />
+                </SwiperSlide>
+              ))
+            : null}
+        </StyledSWiper>
+        <p>{content}</p>
+      </MainPart>
       <UserInfo>
         <UserThumbnail>
           <img
