@@ -164,9 +164,9 @@ const Review = styled.div`
 const ReviewInfo = styled.div`
   & > .exhibition-title {
     color: ${theme.colors.greys90};
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
   }
   & > img {
     margin-bottom: 10px;
