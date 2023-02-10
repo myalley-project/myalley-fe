@@ -107,7 +107,7 @@ const BlogReviewDetailContainer = ({
             exhibitionSpace: exhbData.space,
             posterUrl: exhbData.posterUrl,
             exhibitionDuration: exhbData.duration,
-            exhibitionType: exhbData.type,
+            type: exhbData.type,
           }}
         />
       )}
