@@ -101,8 +101,12 @@ const MainCard = ({
 
   return (
     <CardContainer>
-      <Card>
-        <PosterImg src={posterUrl} alt="poster-img" />
+      <Card
+        minHeight={
+          localStorage.getItem("authority") === "ROLE_ADMIN" ? "484px" : "420px"
+        }
+      >
+        <PosterImg src={posterUrl} alt="poster-img" height="482px" />
         <InfoContainer>
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
@@ -114,7 +118,9 @@ const MainCard = ({
             <dt>조회수</dt>
             <dd>{viewCount}</dd>
           </ViewCount>
-          <Title>{title}</Title>
+          <TitleContainer>
+            <Title>{title}</Title>
+          </TitleContainer>
           <div style={{ padding: "30px 0" }}>
             <InfoDetail>
               <dt>일정</dt>
@@ -131,21 +137,23 @@ const MainCard = ({
             <InfoDetail style={{ marginBottom: "0px" }}>
               <dt>관람비용</dt>
               <dd>
-                {charge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+                {charge > 0
+                  ? `${charge
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                  : "무료"}
               </dd>
             </InfoDetail>
           </div>
-          <div style={{ height: "34px" }}>
-            <Footer>
-              <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
-                사이트 방문
-              </WebLink>
-              <BookMarkBtn>
-                <BookMark onClick={toggleBookMark} marked={bookmarked} />
-              </BookMarkBtn>
-              <ShareBtn type="button" onClick={copyLink} />
-            </Footer>
-          </div>
+          <Footer>
+            <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
+              사이트 방문
+            </WebLink>
+            <BookMarkBtn>
+              <BookMark onClick={toggleBookMark} marked={bookmarked} />
+            </BookMarkBtn>
+            <ShareBtn type="button" onClick={copyLink} />
+          </Footer>
         </InfoContainer>
       </Card>
     </CardContainer>
@@ -165,17 +173,19 @@ const CardContainer = styled.div`
   background-color: rgba(149, 141, 165, 0.05);
 `;
 
-const Card = styled.div`
+const Card = styled.div<{ minHeight: string }>`
   display: flex;
   max-width: 1200px;
   width: 83vw;
+  max-height: ${(props) => props.minHeight};
   border: 1px solid rgba(127, 103, 190, 0.3);
   background-color: ${theme.colors.white100};
   box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
-const PosterImg = styled.img`
+const PosterImg = styled.img<{ height: string }>`
   width: 380px;
+  height: ${(props) => props.height};
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   object-fit: cover;
@@ -198,12 +208,18 @@ const EditButtons = styled.div`
 const Button = styled.button`
   padding: 0;
   color: ${theme.colors.greys60};
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   &:hover {
     font-weight: 700;
     color: ${theme.colors.greys100};
   }
+`;
+
+const TitleContainer = styled.div`
+  /* min-height: 104px; */
+  display: flex;
+  align-items: center;
 `;
 
 const Title = styled.h1`
@@ -220,7 +236,7 @@ const InfoDetail = styled.dl`
   display: flex;
   width: fit-content;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
   color: ${theme.colors.greys80};
   text-align: left;
@@ -238,6 +254,7 @@ const InfoDetail = styled.dl`
 const ViewCount = styled(InfoDetail)`
   margin-left: auto;
   margin-bottom: 8px;
+  font-size: 14px;
   dt {
     width: 38px;
     margin-right: 8px;
@@ -262,6 +279,7 @@ const WebLink = styled.a`
   padding: 4px 10px;
   border-radius: 10px;
   line-height: 24px;
+  font-size: 16px;
   text-decoration: none;
   color: ${theme.colors.primry70};
   &:hover {
