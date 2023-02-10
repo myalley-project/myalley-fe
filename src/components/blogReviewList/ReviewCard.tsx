@@ -17,7 +17,7 @@ const ReviewCard = ({
   const imageUrl = imageInfo?.url;
 
   return (
-    <Container onClick={() => navigate("/blogreview-detail", { state: id })}>
+    <Container onClick={() => navigate("/blogreview", { state: id })}>
       <ThumbnailContainer>
         {imageUrl && <img src={imageInfo.url} alt="블로그 리뷰 사진" />}
         {!imageUrl && (

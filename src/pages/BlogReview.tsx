@@ -10,7 +10,7 @@ interface LocationState {
   state: number;
 }
 
-const BlogReviewDetail = () => {
+const BlogReview = () => {
   const location: LocationState = useLocation();
 
   const { isLoading, isError, error, data } = useQuery({
@@ -61,7 +61,7 @@ const BlogReviewDetail = () => {
   );
 };
 
-export default BlogReviewDetail;
+export default BlogReview;
 
 const Container = styled.div`
   width: 83vw;
