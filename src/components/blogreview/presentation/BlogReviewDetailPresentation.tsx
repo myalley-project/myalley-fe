@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useMutation, useQueryClient } from "react-query";
+import { Pagination } from "swiper";
 import { theme } from "../../../styles/theme";
 import profileImage from "../../../assets/icons/profileImg.svg";
 import Button from "../../atom/Button";
 import { BlogReviewDetailResponse } from "../../../types/blogReview";
+import bloglikeApis from "../../../apis/bloglikeApis";
+import blogDetailbookmarkApis from "../../../apis/blogdetailbookMarkApis";
 
 const BlogReviewDetailPresentation = ({
+  id,
   createdAt,
   viewCount,
   title,
@@ -22,30 +27,73 @@ const BlogReviewDetailPresentation = ({
   likeStatus,
   bookmarkCount,
   bookmarkStatus,
+  exhibitionInfo,
 }: BlogReviewDetailResponse) => {
   const token = localStorage.getItem("accessToken");
+  const queryClient = useQueryClient();
 
-  // 유익해요, 북마크 버튼 클릭해서 저장되면 그에 따라 디자인 변경되도록 했습니다.
-  // api만 연결하시면 됩니다.
+  const bookmarkAddMutation = useMutation({
+    mutationFn: () => blogDetailbookmarkApis.addbookmark(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogReviewDetail"]);
+      console.log("북마크 여부", bookmarkStatus);
+      console.log("북마크 카운트", bookmarkCount);
+    },
+  });
 
-  // 유익해요 버튼 클릭 함수_박예선_23.02.07
+  const bookmarkDeleteMutation = useMutation({
+    mutationFn: () => blogDetailbookmarkApis.deletebookmark(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogReviewDetail"]);
+    },
+  });
+
+  const bolglikeMutation = useMutation({
+    mutationFn: () => bloglikeApis.like(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogReviewDetail"]);
+    },
+  });
+
+  const bolgDislikeMutation = useMutation({
+    mutationFn: () => bloglikeApis.dislike(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogReviewDetail"]);
+    },
+  });
+  console.log("좋아요 여부", bookmarkStatus);
+  console.log("좋아요 카운트", bookmarkCount);
+
   const clickLikeBtn = () => {
     if (!token) {
       alert("로그인이 필요한 기능입니다.");
     }
-    // 블로그리뷰 좋아요 api 붙이셔야합니다. 필요하시면 수정하셔도 됩니다 - 예선
-    // 블로그리뷰 좋아요 api 성공하면 다시 정보 받아오기
-    // -> 그래야 likeCount, likeStatus 반영됨
+
+    if (memberInfo.memberId === Number(localStorage.getItem("memberId"))) {
+      alert("자신의 글에는 좋아요를 누를 수 없습니다.");
+    }
+
+    if (likeStatus) {
+      bolgDislikeMutation.mutate();
+    } else {
+      bolglikeMutation.mutate();
+    }
   };
 
-  // 북마크 버튼 클릭 함수_박예선_23.02.07
   const clickBookmarkBtn = () => {
     if (!token) {
       alert("로그인이 필요한 기능입니다.");
     }
-    // 블로그리뷰 북마크 api 붙이셔야합니다. 필요하시면 수정하셔도 됩니다 - 예선
-    // 블로그리뷰 북마크 api 성공하면 다시 정보 받아오기
-    // -> 그래야 bookmarkCount, bookmarkStatus 반영됨
+
+    if (memberInfo.memberId === Number(localStorage.getItem("memberId"))) {
+      alert("자신의 글에는 북마크를 누를 수 없습니다.");
+    }
+
+    if (bookmarkStatus) {
+      bookmarkDeleteMutation.mutate();
+    } else {
+      bookmarkAddMutation.mutate();
+    }
   };
 
   return (
@@ -75,7 +123,14 @@ const BlogReviewDetailPresentation = ({
         </DetailDiv>
       </DetailInformation>
       <MainPart>
-        <StyledSWiper>
+        <StyledSWiper
+          slidesPerView={1.6}
+          spaceBetween={30}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Pagination]}
+        >
           {imageInfo
             ? imageInfo.map((each) => (
                 <SwiperSlide key={each.id}>
@@ -87,7 +142,12 @@ const BlogReviewDetailPresentation = ({
         <p>{content}</p>
       </MainPart>
       <UserInfo>
-        <img src={profileImage} alt="프로필 이미지" />
+        <UserThumbnail>
+          <img
+            src={memberInfo.memberImage ? memberInfo.memberImage : profileImage}
+            alt="프로필 이미지"
+          />
+        </UserThumbnail>
         <h3>{memberInfo.nickname}</h3>
         <DateAndView>
           <p>
@@ -167,10 +227,20 @@ const MainPart = styled.div`
 `;
 
 const StyledSWiper = styled(Swiper)`
+  display: block;
   width: 100%;
   height: 383px;
-  background-color: ${theme.colors.primry60};
   margin-bottom: 30px;
+  .swiper-slide {
+    width: 100%;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const UserInfo = styled.div`
@@ -180,6 +250,21 @@ const UserInfo = styled.div`
   align-items: center;
   gap: 14px;
   margin-bottom: 50px;
+`;
+
+const UserThumbnail = styled.div`
+  position: relative;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  & > img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 const DateAndView = styled.div`

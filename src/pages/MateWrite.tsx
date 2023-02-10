@@ -3,6 +3,7 @@ import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import format from "date-fns/format";
 import { theme } from "../styles/theme";
 import plus from "../assets/icons/plus.svg";
 import Button from "../components/atom/Button";
@@ -12,14 +13,15 @@ import Calender from "../components/Calendar";
 import SubTitle from "../components/SubTitle";
 import Editor from "../components/Editor";
 import SimpleDialog from "../components/SimpleDialog";
+import ExhibitionChoice from "../components/ExhibitionChoice";
 import { MateRes, MateWriteType } from "../types/mate";
 import { mateApi, mateWriteApi, MateWriteRes } from "../apis/mate";
 import useRefreshTokenApi from "../apis/useRefreshToken";
-import isApiError, { errorAlert } from "../utils/isApiError";
-import ExhibitionChoice from "../components/ExhibitionChoice";
+import isApiError from "../utils/isApiError";
+import { alertError } from "../utils/alerts";
 import Modal from "../Modal";
 
-// 메이트글 작성/수정 페이지_박예선_23.02.02
+// 메이트글 작성/수정 페이지_박예선_23.02.09
 const MateWrite = () => {
   const refreshTokenApi = useRefreshTokenApi();
   const location = useLocation();
@@ -35,7 +37,7 @@ const MateWrite = () => {
     status: "모집 중",
     mateGender: "성별 무관",
     mateAge: "",
-    availableDate: "",
+    availableDate: format(new Date(), "yyyy-MM-dd"),
     content: "",
     contact: "",
     exhibitionId: 0,
@@ -44,9 +46,8 @@ const MateWrite = () => {
     minimum: "",
     maximum: "",
   });
-  const [selectedDate, setSelectedDate] = useState("");
   const [openExhbModal, setOpenExhbModal] = useState(false);
-  const [selectedExhb, setSelectedExhb] = useState({
+  const [exhbData, setExhbData] = useState({
     thumbnail: "",
     status: "",
     title: "",
@@ -66,21 +67,25 @@ const MateWrite = () => {
     exhibitionId,
   } = writeData;
 
-  // 전시회 선택 모달 연결하기
-
-  // 토큰 없을 때 접속하면 로그인페이지로 리다이렉트_박예선_23.01.29
+  // 로그인을 안했거나, 관리자일 경우 리다이렉트_박예선_23.02.08
   useEffect(() => {
     if (!memberId) {
       alert("로그인이 필요한 기능입니다.");
       navigate("/login");
+      return;
+    }
+    if (localStorage.getItem("authority") === "ROLE_ADMIN") {
+      alert("관리자는 메이트글을 작성/수정할 수 없습니다.");
+      navigate("/mate-list", { replace: true });
     }
   }, [memberId, navigate]);
 
-  // 기존 메이트글 정보 조회 api 호출_박예선_23.01.28
+  // 기존 메이트글 정보 조회 api 호출_박예선_23.02.08
   const getMate = useCallback(async () => {
     try {
       const res: AxiosResponse<MateRes> = await mateApi(mateId, memberId);
       const { data } = res;
+      const { exhibition } = data;
       if (memberId !== data.member.memberId) {
         alert("본인이 작성한 메이트글만 수정할 수 있습니다.");
         navigate("/mate-list");
@@ -96,18 +101,24 @@ const MateWrite = () => {
         contact: data.contact,
         exhibitionId: data.exhibition.exhibitionId,
       });
+      setExhbData({
+        thumbnail: exhibition.posterUrl,
+        status: exhibition.status,
+        title: exhibition.exhibitionTitle,
+        duration: exhibition.exhibitionDuration,
+      });
       if (data.mateAge !== "연령 무관")
         setAgeRange({
           minimum: data.mateAge.split(" ~ ")[0],
           maximum: data.mateAge.split(" ~ ")[1],
         });
     } catch (err) {
-      errorAlert();
+      alertError();
       navigate("/");
     }
   }, [mateId, memberId, navigate]);
 
-  // 메이트글 작성/수정 api 호출_박예선_23.01.29
+  // 메이트글 작성/수정 api 호출_박예선_23.02.08
   const clickApplyBtn = async (type: "post" | "put") => {
     try {
       const res: AxiosResponse<MateWriteRes> = await mateWriteApi(
@@ -120,19 +131,23 @@ const MateWrite = () => {
     } catch (err) {
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
-        refreshTokenApi();
-        const res: AxiosResponse<MateWriteRes> = await mateWriteApi(
-          type,
-          writeData,
-          mateId
-        );
-        alert(res.data);
+        try {
+          refreshTokenApi();
+          const res: AxiosResponse<MateWriteRes> = await mateWriteApi(
+            type,
+            writeData,
+            mateId
+          );
+          alert(res.data);
+        } catch {
+          alertError();
+        }
         navigate(-1);
       }
       if (typeof errorRes !== "object") return;
       const { errorMsg } = errorRes;
       alert(errorMsg);
-      navigate("/mate-list");
+      navigate(-1);
     }
   };
 
@@ -215,22 +230,23 @@ const MateWrite = () => {
       setWriteData({ ...writeData, mateAge: `${minimum} ~ ${maximum}` });
   };
 
-  // 관람일 미정 체크박스 클릭함수_박예선_23.01.28
+  // 관람일 미정 체크박스 클릭함수_박예선_23.02.09
   const clickDateRegardless = () => {
     if (availableDate !== "미정")
       setWriteData({ ...writeData, availableDate: "미정" });
     if (availableDate === "미정")
-      setWriteData({ ...writeData, availableDate: selectedDate });
+      setWriteData({
+        ...writeData,
+        availableDate: format(new Date(), "yyyy-MM-dd"),
+      });
   };
 
-  // 달력 클릭 함수_박예선_23.01.31
+  // 달력 클릭 함수_박예선_23.02.09
   const clickCalendar = (date: string) => {
-    setSelectedDate(date);
-    if (availableDate !== "미정")
-      setWriteData({ ...writeData, availableDate: date });
+    setWriteData({ ...writeData, availableDate: date });
   };
 
-  // 전시회 선택 함수_박예선_23.01.31
+  // 전시회 선택 함수_박예선_23.02.08
   const handleExhbModal = (
     url: string,
     id: number,
@@ -239,7 +255,7 @@ const MateWrite = () => {
     status: string
   ) => {
     setWriteData({ ...writeData, exhibitionId: id });
-    setSelectedExhb({
+    setExhbData({
       title,
       thumbnail: url,
       status,
@@ -321,14 +337,14 @@ const MateWrite = () => {
               {exhibitionId !== 0 && (
                 <img
                   className="thumbnail"
-                  src={selectedExhb.thumbnail}
+                  src={exhbData.thumbnail}
                   alt="선택된 전시회"
                 />
               )}
               {exhibitionId !== 0 && isThumbnailHovered && (
                 <ThumbnailHover>
                   <Button variant="primary" size="small" className="status">
-                    {selectedExhb.status}
+                    {exhbData.status}
                   </Button>
                   <button
                     type="button"
@@ -339,8 +355,8 @@ const MateWrite = () => {
                   >
                     X
                   </button>
-                  <div className="title">{selectedExhb.title}</div>
-                  <div className="duration">{selectedExhb.duration}</div>
+                  <div className="title">{exhbData.title}</div>
+                  <div className="duration">{exhbData.duration}</div>
                 </ThumbnailHover>
               )}
             </ExhbChoiceBtn>
@@ -362,7 +378,26 @@ const MateWrite = () => {
               onClick={clickDateRegardless}
             />
             <CalenderContainer>
-              <Calender handleSelectedDate={clickCalendar} />
+              {mateId !== 0 && (
+                <Calender
+                  selectedDate={
+                    writeData.availableDate === "미정"
+                      ? new Date()
+                      : new Date(writeData.availableDate)
+                  }
+                  handleSelectedDate={clickCalendar}
+                />
+              )}
+              {!mateId && (
+                <Calender
+                  selectedDate={
+                    writeData.availableDate === "미정"
+                      ? new Date()
+                      : new Date(writeData.availableDate)
+                  }
+                  handleSelectedDate={clickCalendar}
+                />
+              )}
             </CalenderContainer>
           </div>
         </Section>

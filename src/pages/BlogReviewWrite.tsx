@@ -257,29 +257,33 @@ const BlogReviewWrite = () => {
     };
     const formData = new FormData();
 
-    if (Object.values(blogInfo).includes("")) {
+    if (!Object.values(blogInfo).includes("")) {
+      formData.append(
+        "blogInfo",
+        new Blob([JSON.stringify(blogInfo)], { type: "application/json" })
+      );
+
+      formData.append(
+        "exhibitionId",
+        new Blob([JSON.stringify(selectedExhb.id)], {
+          type: "application/json",
+        })
+      );
+
+      if (imageFiles !== null) {
+        Array.from(imageFiles).forEach((file) =>
+          formData.append("images", file)
+        );
+      }
+      try {
+        blogPostMutation.mutate(formData);
+        navigate("/blogreview-list");
+      } catch (err) {
+        const errResponese = isApiError(err);
+        if (errResponese === "accessToken 만료") refreshTokenApi();
+      }
+    } else {
       alert("빈 칸으로 남겨진 데이터를 입력해주세요.");
-    }
-
-    formData.append(
-      "blogInfo",
-      new Blob([JSON.stringify(blogInfo)], { type: "application/json" })
-    );
-
-    formData.append(
-      "exhibitionId",
-      new Blob([JSON.stringify(selectedExhb.id)], { type: "application/json" })
-    );
-
-    if (imageFiles !== null) {
-      Array.from(imageFiles).forEach((file) => formData.append("images", file));
-    }
-    try {
-      blogPostMutation.mutate(formData);
-      navigate("/blogreview-list");
-    } catch (err) {
-      const errResponese = isApiError(err);
-      if (errResponese === "accessToken 만료") refreshTokenApi();
     }
   };
 
@@ -295,7 +299,10 @@ const BlogReviewWrite = () => {
           />
           <div>
             <SubTitle text="관람일" />
-            <Calender handleSelectedDate={setSelectedDate} />
+            <Calender
+              selectedDate={new Date()}
+              handleSelectedDate={setSelectedDate}
+            />
           </div>
         </ExhibitionPicker>
         <SelectorConatiner>

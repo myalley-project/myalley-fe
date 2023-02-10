@@ -6,6 +6,8 @@ import { OnelineReviewPostType } from "../../../types/oneLineReview";
 import oneLineReviewApis from "../../../apis/oneLineReviewApis";
 import isApiError from "../../../utils/isApiError";
 import useRefreshTokenApi from "../../../apis/useRefreshToken";
+import OnelineModify from "../presentation/OnelineModify";
+import { ModifyPlaceholder } from "../../../types/modifyPlaceholder";
 
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
@@ -90,19 +92,17 @@ type Payload = {
   content: string;
 };
 
-type WriteType = "create" | "modify";
-
-interface OnelineContainerProps {
+interface OnelineModifyProps {
   handleModal: () => void;
-  writeType: WriteType;
   simpleId: number;
+  modifyInfo: ModifyPlaceholder;
 }
 
-const OnelineWriteContainer = ({
-  writeType,
+const OnelineModifyContainer = ({
   simpleId,
   handleModal,
-}: OnelineContainerProps) => {
+  modifyInfo,
+}: OnelineModifyProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { id } = useParams();
   const refreshTokenApi = useRefreshTokenApi();
@@ -187,13 +187,6 @@ const OnelineWriteContainer = ({
     }
   };
 
-  const newReviewMutation = useMutation({
-    mutationFn: (payload: Payload) => oneLineReviewApis.createReview(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["simpleReviews"]);
-    },
-  });
-
   const modifyMutation = useMutation({
     mutationFn: ({
       reviewId,
@@ -221,36 +214,27 @@ const OnelineWriteContainer = ({
     }
     if (body.content.length < 10) alert("본문 내용이 너무 짧습니다");
 
-    if (writeType === "create") {
-      try {
-        newReviewMutation.mutate(body);
-        handleModal();
-      } catch (err) {
-        const errResponese = isApiError(err);
-        if (errResponese === "accessToken 만료") refreshTokenApi();
-      }
-    } else if (writeType === "modify") {
-      try {
-        const reviewId = simpleId;
-        const payload = {
-          viewDate: body.viewDate,
-          time: body.time,
-          congestion: body.congestion,
-          rate: body.rate,
-          content: body.content,
-        };
-        modifyMutation.mutate({ reviewId, payload });
-        handleModal();
-      } catch (err) {
-        const errResponese = isApiError(err);
-        if (errResponese === "accessToken 만료") refreshTokenApi();
-      }
+    try {
+      const reviewId = simpleId;
+      const payload = {
+        viewDate: body.viewDate,
+        time: body.time,
+        congestion: body.congestion,
+        rate: body.rate,
+        content: body.content,
+      };
+      modifyMutation.mutate({ reviewId, payload });
+      handleModal();
+    } catch (err) {
+      const errResponese = isApiError(err);
+      if (errResponese === "accessToken 만료") refreshTokenApi();
     }
   };
 
   return (
-    <OnelineWrite
+    <OnelineModify
       state={state}
+      modifyPlaceholder={modifyInfo}
       handleModal={handleModal}
       yearHandler={yearHandler}
       monthHandler={monthHandler}
@@ -264,7 +248,7 @@ const OnelineWriteContainer = ({
   );
 };
 
-export default OnelineWriteContainer;
+export default OnelineModifyContainer;
 
 function getPayload(
   exhibitionId: string,

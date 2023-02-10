@@ -1,21 +1,21 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { useQuery, UseQueryResult } from "react-query";
 import styled from "styled-components";
 import { OnelineReviewReadType } from "../../../types/oneLineReview";
 import ReviewSearchBar from "../../reviewCommon/ReviewSearchBar";
 import Pagination from "../../Pagination";
-import BlogReviewCard from "../presentation/BlogReviewCard";
+import BlogReviewCard from "../../blogReviewList/ReviewCard";
 import blogReviewApis from "../../../apis/blogReviewApis";
 import { BlogReviewResponse } from "../../../types/blogReview";
 
-type OrderType = "Recent" | "ViewCount";
+type OrderType = "Recent" | "ViewCount" | "StarScore";
 
 interface BlogReadProps {
   id: string;
   orderType: OrderType;
   filter: "oneline" | "blog";
   setFilter: Dispatch<SetStateAction<"oneline" | "blog">>;
-  setOrderType: Dispatch<SetStateAction<"Recent" | "ViewCount">>;
+  setOrderType: Dispatch<SetStateAction<"Recent" | "StarScore" | "ViewCount">>;
   handleReviewModal: () => void;
 }
 
@@ -30,6 +30,12 @@ const BlogReviewReadContainer = ({
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
+  });
+
+  useEffect(() => {
+    if (orderType === "StarScore") {
+      setOrderType("Recent");
+    }
   });
 
   const { isLoading, isError, error, data } = useQuery<
@@ -88,13 +94,12 @@ export default BlogReviewReadContainer;
 
 const Container = styled.div`
   width: 62.5vw;
-  margin-inline: auto;
 `;
 
 const CardWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, 380px);
+  grid-template-columns: repeat(3, 380px);
   grid-template-rows: auto;
   gap: 30px;
-  margin-bottom: 120px;
+  margin-bottom: 30px;
 `;

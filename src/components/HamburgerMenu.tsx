@@ -13,7 +13,7 @@ interface PropsType {
 const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
   const location = useLocation();
-  const isLocationKey = location.key;
+  const [isLocationKey, setIsLocationKey] = useState(location.key);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const info = {
@@ -23,12 +23,13 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
     authority: localStorage.getItem("authority"),
   };
 
-  const toggleMenu = () => {
-    if (!menuRef.current) {
-      return;
+  const toggleMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    if (!menuRef.current?.contains(target)) {
+      setIsLocationKey(location.key);
+      setIsShowMenu(false);
+      setIsMenuOpen(false);
     }
-    setIsShowMenu(false);
-    setIsMenuOpen(false);
   };
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
       {isMenuOpen && (
         <MenuOutSide onClick={toggleMenu}>
           <MenuOutSideWrapper>
-            <MenuContainer ref={menuRef}>
+            <MenuContainer ref={menuRef} className="hamburgermenu">
               {localStorage.getItem("accessToken") ? (
                 <MenuWrapper>
                   <Subtitle>계정</Subtitle>
@@ -110,7 +111,7 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
                     </List>
                   )}
                   {info.authority !== "ROLE_ADMIN" && (
-                    <List as="a" href="/">
+                    <List as="a" href="/blogreview-list">
                       전시회 리뷰
                     </List>
                   )}
@@ -143,10 +144,10 @@ const Background = styled.div`
 `;
 
 const MenuOutSide = styled.div`
-  position: fixed;
+  position: relative;
   z-index: 98;
   width: 100vw;
-  height: 100vh;
+  height: 100vw;
 `;
 
 const MenuOutSideWrapper = styled.div`

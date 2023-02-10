@@ -4,15 +4,11 @@ import { MateRes } from "./member";
 
 // 전시글 상세 조회
 export const exhbApi = async (id: number) => {
-  let memberId = localStorage.getItem("memberId");
-  if (!localStorage.getItem("memberId")) {
-    memberId = "0";
-  }
   const res: AxiosResponse<ExhibitionRes> = await apiInstance.get(
     `/exhibitions/${id}`,
     {
       headers: {
-        memberId,
+        memberId: localStorage.getItem("memberId"),
       },
     }
   );
@@ -57,7 +53,7 @@ export const exhbDeleteApi = async (id: number) => {
 // 전시글 북마크
 export const exhbBookMarkApi = async (id: number) => {
   const res: AxiosResponse<BookMarkRes> = await apiInstance.put(
-    `/api/exhibitions/bookmarks/${id}`
+    `/api/bookmarks/exhibitions/${id}`
   );
   return res;
 };

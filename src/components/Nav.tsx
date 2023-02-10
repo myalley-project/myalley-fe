@@ -51,6 +51,9 @@ const NavbarContaniner = styled.div`
   border-bottom: 1px solid ${theme.colors.greys40};
   border-radius: 0px;
   box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
+  @media (max-width: 1440px) {
+    padding: 0 20px;
+  }
 `;
 
 const NavbarWrapper = styled.div`
