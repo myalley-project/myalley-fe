@@ -90,10 +90,10 @@ const MypageOnelineCard = ({
               <img src={StarIcon} alt="별점" />
             </div>
           ) : null}
-          <div>
-            <span>{viewDate}</span> |<span>{time}</span> |{" "}
+          <DateInfo>
+            <span>{viewDate}</span> | <span>{time}</span> |{" "}
             <span>{congestion}</span>
-          </div>
+          </DateInfo>
           <p>{content}</p>
         </ReviewInfo>
       </Review>
@@ -182,6 +182,16 @@ const ReviewInfo = styled.div`
     color: ${theme.colors.greys90};
     font-weight: 700;
     font-size: 14px;
+  }
+`;
+
+const DateInfo = styled.div`
+  & > span {
+    color: ${theme.colors.greys80};
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.5px;
   }
 `;
 
