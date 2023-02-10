@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { useMateDeleteApi } from "../../apis/mate";
 import { theme } from "../../styles/theme";
 import { MateRes } from "../../types/mate";
-import { alertPreparing } from "../../utils/alerts";
 import ExhbCard from "./ExhbCard";
 
 interface MateTopType {
