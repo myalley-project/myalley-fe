@@ -11,7 +11,14 @@ import thirdSlideImage from "../../assets/images/thirdSlideImage.jpg";
 
 const NewCarousel = () => (
   <CarousalContainer>
-    <Slider dots infinite speed={800} slidesToShow={1} slidesToScroll={1}>
+    <Slider
+      className="slider"
+      dots
+      infinite
+      speed={800}
+      slidesToShow={1}
+      slidesToScroll={1}
+    >
       <SlideCard image={`${firstSlideImage}`}>
         <TextBox>
           <Title>최근 뜨고 있는 전시</Title>
@@ -45,15 +52,35 @@ export default NewCarousel;
 const CarousalContainer = styled.div`
   width: 100vw;
   max-width: 1440px;
-  height: 618px;
+  aspect-ratio: 1/0.42;
   margin: 40px auto 30px auto;
+  .slider {
+    width: 100%;
+    height: 1/0.42;
+    min-height: 400px;
+  }
+  .slick-dots {
+    left: 50%;
+    bottom: 36px;
+    transform: translate(-50%, -50%);
+  }
   @media (max-width: 1440px) {
     padding: 0 20px;
+    .slick-dots {
+      bottom: 20px;
+    }
+  }
+  @media (max-width: 624px) {
+    padding: 0 20px;
+    .slick-dots {
+      bottom: 5px;
+    }
   }
 `;
 
 const SlideCard = styled.div<{ image: string }>`
-  height: 618px;
+  aspect-ratio: 1/0.42;
+  min-height: 400px;
   border-radius: 0px;
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(${(props) => props.image});
@@ -73,6 +100,12 @@ const TextBox = styled.div`
   text-align: center;
   margin-top: 190px;
   font-weight: 500;
+  @media (max-width: 1440px) {
+    margin-top: 13.1vw;
+  }
+  @media (max-width: 1000px) {
+    margin-top: 130px;
+  }
 `;
 
 const Title = styled.h3`
@@ -82,6 +115,9 @@ const Title = styled.h3`
   text-shadow: 0px 0px 20px rgba(56, 30, 114, 0.1);
   color: ${theme.colors.white100};
   opacity: 0.8;
+  @media (max-width: 1440px) {
+    font-size: 24px;
+  }
 `;
 
 const SubTitle = styled.p`
@@ -90,4 +126,16 @@ const SubTitle = styled.p`
   letter-spacing: -1px;
   text-shadow: 0px 0px 20px rgba(56, 30, 114, 0.1);
   color: ${theme.colors.white100};
+  @media (max-width: 1439px) {
+    font-size: 4.7vw;
+    line-height: 5.2vw;
+  }
+  @media (max-width: 1064px) {
+    font-size: 35px;
+    line-height: 45px;
+  }
+  @media (max-width: 624px) {
+    font-size: 30px;
+    line-height: 45px;
+  }
 `;
