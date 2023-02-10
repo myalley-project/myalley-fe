@@ -10,6 +10,7 @@ interface ExhbCardType {
     exhibitionSpace: string;
     posterUrl: string;
     exhibitionDuration: string; // yyyy-mm-dd ~ yyyy-mm-dd
+    exhibitionType: string;
   };
 }
 
@@ -21,6 +22,7 @@ const ExhbCard = (props: ExhbCardType) => {
     exhibitionTitle,
     exhibitionSpace,
     exhibitionDuration,
+    exhibitionType,
     posterUrl,
   } = exhbData;
   const navigate = useNavigate();
@@ -40,7 +42,7 @@ const ExhbCard = (props: ExhbCardType) => {
           </div>
           <div className="flex">
             <div className="detail-name">전시 유형</div>
-            <div>전시 유형 추가돼서 연결해야 함(임시임)</div>
+            <div>{exhibitionType}</div>
           </div>
         </DetailContainer>
       </InfoContainer>
