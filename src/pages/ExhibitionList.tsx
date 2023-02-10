@@ -91,6 +91,7 @@ const TitleContainer = styled.div`
   justify-content: center;
   width: 100vw;
   margin-bottom: 50px;
+  padding: 80px 0;
   border-radius: 0;
   background-color: #958da50d;
   h1 {
@@ -98,5 +99,9 @@ const TitleContainer = styled.div`
     font-size: 42px;
     font-weight: 700;
     line-height: 52px;
+  }
+  @media (max-width: 1440px) {
+    margin-bottom: 3.4vw;
+    padding: 5.5vw 0;
   }
 `;
