@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { OnelineReviewReadType } from "../../../types/oneLineReview";
 import ReviewSearchBar from "../../reviewCommon/ReviewSearchBar";
 import Pagination from "../../Pagination";
-import BlogReviewCard from "../presentation/BlogReviewCard";
+import BlogReviewCard from "../../blogReviewList/ReviewCard";
 import blogReviewApis from "../../../apis/blogReviewApis";
 import { BlogReviewResponse } from "../../../types/blogReview";
 
@@ -94,13 +94,12 @@ export default BlogReviewReadContainer;
 
 const Container = styled.div`
   width: 62.5vw;
-  margin-inline: auto;
 `;
 
 const CardWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, 380px);
+  grid-template-columns: repeat(3, 380px);
   grid-template-rows: auto;
   gap: 30px;
-  margin-bottom: 120px;
+  margin-bottom: 30px;
 `;

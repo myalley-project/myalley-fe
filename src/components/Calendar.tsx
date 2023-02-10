@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   format,
   addMonths,
@@ -16,38 +16,46 @@ import arrowLeft from "../assets/icons/arrowLeft.svg";
 import arrowRight from "../assets/icons/arrowRight.svg";
 
 interface CalendarProps {
+  selectedDate: Date;
   handleSelectedDate: (date: string) => void;
 }
 
-const Calender = ({ handleSelectedDate }: CalendarProps) => {
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-  const [selectedNumber, setSelectedNumber] = useState(new Date().getDate());
-
-  const calendarDays = useMemo(
-    () => getCalendarDays(currentMonth),
-    [currentMonth]
+const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
+  const [showedMonth, setShowedMonth] = useState<Date>(selectedDate);
+  const [selectedDayNumber, setSelectedDayNumber] = useState(
+    selectedDate.getDate()
   );
 
-  const prevMonth = () => {
-    const prevDate = subMonths(currentMonth, 1);
-    setCurrentMonth(prevDate);
+  const calendarDays = useMemo(
+    () => getCalendarDays(showedMonth),
+    [showedMonth]
+  );
+
+  useEffect(() => {
+    setShowedMonth(selectedDate);
+    setSelectedDayNumber(selectedDate.getDate());
+  }, [selectedDate, setShowedMonth]);
+
+  const clickArrowLeft = () => {
+    const prevDate = subMonths(showedMonth, 1);
+    handleSelectedDate(format(prevDate, "yyyy-MM-dd"));
   };
-  const nextMonth = () => {
-    const nextDate = addMonths(currentMonth, 1);
-    setCurrentMonth(nextDate);
+  const clickArrowRight = () => {
+    const nextDate = addMonths(showedMonth, 1);
+    handleSelectedDate(format(nextDate, "yyyy-MM-dd"));
   };
 
-  const onDateSelect = (e: React.SyntheticEvent<HTMLDivElement>) => {
+  const clickCalendarDay = (e: React.SyntheticEvent<HTMLDivElement>) => {
     if (!(e.target instanceof HTMLDivElement)) return;
 
     if (e.target.dataset.valid === "true") {
       const day = e.target.dataset.value as string;
       const numberDay = parseInt(day, 10);
-      setSelectedNumber(numberDay);
+      setSelectedDayNumber(numberDay);
 
       const selectedDay = new Date(
-        getYear(currentMonth),
-        getMonth(currentMonth),
+        getYear(showedMonth),
+        getMonth(showedMonth),
         parseInt(day, 10)
       );
 
@@ -61,15 +69,15 @@ const Calender = ({ handleSelectedDate }: CalendarProps) => {
     <CalendarWrapper>
       <Header>
         <div>
-          <button type="button" onClick={prevMonth}>
+          <button type="button" onClick={clickArrowLeft}>
             <img src={arrowLeft} alt="이전 화살표" />
           </button>
         </div>
         <div>
-          {format(currentMonth, "M")}월 {format(currentMonth, "yyyy")}
+          {format(showedMonth, "M")}월 {format(showedMonth, "yyyy")}
         </div>
         <div>
-          <button type="button" onClick={nextMonth}>
+          <button type="button" onClick={clickArrowRight}>
             <img src={arrowRight} alt="다음 화살표" />
           </button>
         </div>
@@ -84,13 +92,14 @@ const Calender = ({ handleSelectedDate }: CalendarProps) => {
         <div>금</div>
         <div>토</div>
       </DayOfWeek>
-      <Week onClick={onDateSelect} onKeyDown={onDateSelect} role="presentation">
+      <Week role="presentation">
         {calendarDays.map((each) => (
           <Day
             key={each.id}
-            className={each.day === selectedNumber ? "selected" : ""}
+            className={each.day === selectedDayNumber ? "selected" : ""}
             data-valid={each.isValid}
             data-value={each.day}
+            onClick={clickCalendarDay}
           >
             {each.day}
           </Day>
@@ -102,8 +111,8 @@ const Calender = ({ handleSelectedDate }: CalendarProps) => {
 
 export default Calender;
 
-function getCalendarDays(currentMonth: Date) {
-  const monthStartDate = startOfMonth(currentMonth);
+function getCalendarDays(selectedDate: Date) {
+  const monthStartDate = startOfMonth(selectedDate);
   const monthEndDate = endOfMonth(monthStartDate);
 
   const calendarStartDate = startOfWeek(monthStartDate);
@@ -120,7 +129,7 @@ function getCalendarDays(currentMonth: Date) {
   return calendarDays;
 
   function getPrevDays() {
-    const prevLastDay = format(endOfMonth(subMonths(currentMonth, 1)), "d");
+    const prevLastDay = format(endOfMonth(subMonths(selectedDate, 1)), "d");
     const monthFirstDay = format(calendarStartDate, "d");
     if (format(monthStartDate, "d") === format(calendarStartDate, "d"))
       return [];
@@ -180,6 +189,9 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  button:hover {
+    cursor: pointer;
+  }
 `;
 
 const Divider = styled.div`

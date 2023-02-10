@@ -110,7 +110,7 @@ const MainCard = ({
   }, []);
 
   return (
-    <CardContainer>
+    <CardContainer height={auth === "ROLE_ADMIN" ? "520px" : "462px"}>
       <Card>
         <PosterImg
           src={posterUrl}
@@ -159,9 +159,11 @@ const MainCard = ({
             <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
               사이트 방문
             </WebLink>
-            <BookMarkBtn>
-              <BookMark onClick={toggleBookMark} marked={bookmarked} />
-            </BookMarkBtn>
+            {localStorage.getItem("authority") !== "ROLE_ADMIN" && (
+              <BookMarkBtn>
+                <BookMark onClick={toggleBookMark} marked={bookmarked} />
+              </BookMarkBtn>
+            )}
             <ShareBtn type="button" onClick={copyLink} />
           </Footer>
         </InfoContainer>
@@ -172,7 +174,7 @@ const MainCard = ({
 
 export default MainCard;
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ height: string }>`
   display: flex;
   width: 100%;
   height: fit-content;

@@ -64,13 +64,11 @@ const BookMarkedExhb = () => {
       ) : (
         <ExhbCardList exhbList={exhibitionList} type="myPage" />
       )}
-      {pageInfoList.totalPage > 0 && (
-        <Pagination
-          pages={pages}
-          setPages={setPages}
-          totalPage={pageInfoList.totalPage}
-        />
-      )}
+      <Pagination
+        pages={pages}
+        setPages={setPages}
+        totalPage={pageInfoList.totalPage}
+      />
     </div>
   );
 };

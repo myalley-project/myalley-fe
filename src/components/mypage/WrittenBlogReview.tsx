@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { BlogReviewListRes, myBlogReviewsApi } from "../../apis/member";
 import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 import isApiError from "../../utils/isApiError";
-import BlogReviewCard from "../blogreview/presentation/BlogReviewCard";
+import BlogReviewCard from "../blogReviewList/ReviewCard";
 import Pagination from "../Pagination";
 import NoList from "../NoList";
 
@@ -44,7 +44,7 @@ const WrittenBlogReview = () => {
               title={each.title}
               writer={each.writer}
               viewCount={each.viewCount}
-              viewDate={each.date}
+              viewDate={each.viewDate}
               imageInfo={each.imageInfo}
             />
           ))

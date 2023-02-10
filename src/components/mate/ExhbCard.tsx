@@ -10,10 +10,11 @@ interface ExhbCardType {
     exhibitionSpace: string;
     posterUrl: string;
     exhibitionDuration: string; // yyyy-mm-dd ~ yyyy-mm-dd
+    exhibitionType: string;
   };
 }
 
-// 메이트 모집글 전시회 카드컴포넌트_박예선_23.01.26
+// 메이트 모집글 전시회 카드컴포넌트_박예선_23.02.08
 const ExhbCard = (props: ExhbCardType) => {
   const { exhbData } = props;
   const {
@@ -21,6 +22,7 @@ const ExhbCard = (props: ExhbCardType) => {
     exhibitionTitle,
     exhibitionSpace,
     exhibitionDuration,
+    exhibitionType,
     posterUrl,
   } = exhbData;
   const navigate = useNavigate();
@@ -30,13 +32,17 @@ const ExhbCard = (props: ExhbCardType) => {
       <InfoContainer>
         <div className="title">{exhibitionTitle}</div>
         <DetailContainer>
-          <div className="date flex">
+          <div className="flex">
             <div className="detail-name">일정</div>
             <div>{exhibitionDuration}</div>
           </div>
           <div className="flex">
             <div className="detail-name">장소</div>
             <div>{exhibitionSpace}</div>
+          </div>
+          <div className="flex">
+            <div className="detail-name">전시 유형</div>
+            <div>{exhibitionType}</div>
           </div>
         </DetailContainer>
       </InfoContainer>
@@ -48,9 +54,12 @@ export default ExhbCard;
 
 const ExhbCardContainer = styled.div`
   display: flex;
+  width: 83vw;
+  max-width: 1200px;
   height: 244px;
-  margin: 14px 0 30px;
+  margin-top: 14px;
   border: 1px solid ${theme.colors.greys40};
+  background-color: ${theme.colors.white100};
   cursor: pointer;
   .flex {
     display: flex;
@@ -58,14 +67,14 @@ const ExhbCardContainer = styled.div`
 `;
 
 const Thumbnail = styled.img`
-  width: 175px;
-  height: inherit;
+  width: 31.6%;
   object-fit: cover;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 `;
 
 const InfoContainer = styled.div`
-  margin: 30px;
-  border-radius: 0;
+  padding: 30px;
   .title {
     height: 104px;
     color: ${(props) => props.theme.colors.greys90};
@@ -76,22 +85,19 @@ const InfoContainer = styled.div`
 `;
 
 const DetailContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   height: 50px;
-  margin-top: 30px;
-  div {
-    div {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 20px;
-      color: ${theme.colors.greys90};
-      &.detail-name {
-        width: 72px;
-        margin-right: 30px;
-        color: ${theme.colors.greys60};
-      }
-    }
-    &.date {
-      margin-bottom: 10px;
+  div > div {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: ${theme.colors.greys90};
+    &.detail-name {
+      width: 72px;
+      margin-right: 30px;
+      color: ${theme.colors.greys60};
     }
   }
 `;

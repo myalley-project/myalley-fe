@@ -4,15 +4,12 @@ import { MateRes } from "./member";
 
 // 전시글 상세 조회
 export const exhbApi = async (id: number) => {
-  let memberId = localStorage.getItem("memberId");
-  if (!localStorage.getItem("memberId")) {
-    memberId = "0";
-  }
+  const isMemberId = !!localStorage.getItem("memberId");
   const res: AxiosResponse<ExhibitionRes> = await apiInstance.get(
     `/exhibitions/${id}`,
     {
       headers: {
-        memberId,
+        memberId: isMemberId ? localStorage.getItem("memberId") : 0,
       },
     }
   );

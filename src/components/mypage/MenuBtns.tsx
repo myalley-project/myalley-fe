@@ -61,6 +61,23 @@ const MenuButtons = () => {
       >
         북마크
       </MenuButton>
+      <MenuButton
+        type="button"
+        style={
+          /^\/mypage\/likes/.test(pathname)
+            ? {
+                backgroundColor: `${theme.colors.primry70}`,
+                color: `${theme.colors.white100}`,
+              }
+            : {
+                backgroundColor: `${theme.colors.white100}`,
+                color: `${theme.colors.greys60}`,
+              }
+        }
+        onClick={() => navigate("/mypage/likes?type=exhibition&pageno=1")}
+      >
+        좋아요
+      </MenuButton>
     </Buttons>
   );
 };
