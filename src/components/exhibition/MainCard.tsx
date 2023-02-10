@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -39,6 +39,7 @@ const MainCard = ({
   const auth = localStorage.getItem("authority");
   const navigate = useNavigate();
   const refreshTokenApi = useRefreshTokenApi();
+  const [imgHeight, setImgHeight] = useState(52);
 
   // 전시글 삭제
   const handleDelete = async () => {
@@ -99,14 +100,23 @@ const MainCard = ({
       });
   };
 
+  useEffect(() => {
+    const titleHeight =
+      localStorage.getItem("authority") === "ROLE_ADMIN" ? 318 : 258;
+    setTimeout(() => {
+      const height = document.querySelector(".titleHeight")?.clientHeight;
+      setImgHeight(height! + titleHeight);
+    }, 100);
+  }, []);
+
   return (
     <CardContainer>
-      <Card
-        minHeight={
-          localStorage.getItem("authority") === "ROLE_ADMIN" ? "484px" : "420px"
-        }
-      >
-        <PosterImg src={posterUrl} alt="poster-img" height="482px" />
+      <Card>
+        <PosterImg
+          src={posterUrl}
+          alt="poster-img"
+          style={{ height: imgHeight }}
+        />
         <InfoContainer>
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
@@ -119,7 +129,7 @@ const MainCard = ({
             <dd>{viewCount}</dd>
           </ViewCount>
           <TitleContainer>
-            <Title>{title}</Title>
+            <Title className="titleHeight">{title}</Title>
           </TitleContainer>
           <div style={{ padding: "30px 0" }}>
             <InfoDetail>
@@ -173,19 +183,17 @@ const CardContainer = styled.div`
   background-color: rgba(149, 141, 165, 0.05);
 `;
 
-const Card = styled.div<{ minHeight: string }>`
+const Card = styled.div`
   display: flex;
   max-width: 1200px;
   width: 83vw;
-  max-height: ${(props) => props.minHeight};
   border: 1px solid rgba(127, 103, 190, 0.3);
   background-color: ${theme.colors.white100};
   box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
-const PosterImg = styled.img<{ height: string }>`
+const PosterImg = styled.img`
   width: 380px;
-  height: ${(props) => props.height};
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   object-fit: cover;
@@ -217,7 +225,6 @@ const Button = styled.button`
 `;
 
 const TitleContainer = styled.div`
-  /* min-height: 104px; */
   display: flex;
   align-items: center;
 `;
