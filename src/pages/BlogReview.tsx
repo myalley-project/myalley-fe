@@ -3,14 +3,14 @@ import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import blogReviewApis from "../apis/blogReviewApis";
-import BlogReviewDetailPresentation from "../components/blogreview/presentation/BlogReviewDetailPresentation";
-import BlogReviewDetailContainer from "../components/blogreview/container/BlogReviewDetailContainer";
+import BlogReviewPresentation from "../components/blogreview/presentation/BlogReviewPresentation";
+import BlogReviewTop from "../components/blogreview/container/BlogReviewTop";
 
 interface LocationState {
   state: number;
 }
 
-const BlogReviewDetail = () => {
+const BlogReview = () => {
   const location: LocationState = useLocation();
 
   const { isLoading, isError, error, data } = useQuery({
@@ -29,19 +29,20 @@ const BlogReviewDetail = () => {
   if (isError) return <div>에러가 발생했습니다</div>;
 
   return (
-    <Container>
+    <>
       {data && (
-        <BlogReviewDetailContainer
-          id={data?.exhibitionInfo.id}
-          memberInfo={memberInfo}
-          blogReviewId={data?.id}
-          exhibitionInfo={data?.exhibitionInfo}
-        />
+        <TopContainer>
+          <BlogReviewTop
+            id={data?.exhibitionInfo.id}
+            memberInfo={memberInfo}
+            blogReviewId={data?.id}
+            exhibitionInfo={data?.exhibitionInfo}
+          />
+        </TopContainer>
       )}
-      <Divider />
-      <div>
-        {data && (
-          <BlogReviewDetailPresentation
+      {data && (
+        <PresentationContainer>
+          <BlogReviewPresentation
             id={data.id}
             title={data.title}
             content={data.content}
@@ -60,18 +61,33 @@ const BlogReviewDetail = () => {
             imageInfo={data.imageInfo}
             exhibitionInfo={data.exhibitionInfo}
           />
-        )}
-      </div>
-    </Container>
+        </PresentationContainer>
+      )}
+    </>
   );
 };
 
-export default BlogReviewDetail;
+export default BlogReview;
 
-const Container = styled.div`
-  width: 83vw;
-  max-width: 1200px;
-  margin: 50px auto;
+const TopContainer = styled.div`
+  padding: 50px 0;
+  border-radius: 0;
+  background-color: rgba(149, 141, 165, 0.05);
+  @media (max-width: 1280px) {
+    padding: 50px 20px;
+  }
+  @media (max-width: 1064px) {
+    padding: 50px 16px;
+  }
+`;
+
+const PresentationContainer = styled.div`
+  @media (max-width: 1280px) {
+    padding: 0 20px;
+  }
+  @media (max-width: 1064px) {
+    padding: 0 16px;
+  }
 `;
 
 const Divider = styled.div`
