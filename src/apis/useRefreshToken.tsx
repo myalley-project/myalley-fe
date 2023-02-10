@@ -31,10 +31,10 @@ const useRefreshTokenApi = () => {
           removeLocalStorageItem();
           alert("자동 로그인 기간이 만료되었습니다. 다시 로그인해주세요.");
           navigate("/login");
-          return undefined;
+          return null;
         }
       }
-    return undefined;
+    return null;
   };
 
   return refreshTokenApi;
