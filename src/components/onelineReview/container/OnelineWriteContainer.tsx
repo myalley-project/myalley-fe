@@ -191,6 +191,7 @@ const OnelineWriteContainer = ({
     mutationFn: (payload: Payload) => oneLineReviewApis.createReview(payload),
     onSuccess: () => {
       queryClient.invalidateQueries(["simpleReviews"]);
+      alert("리뷰 등록에 성공했습니다!");
       handleModal();
     },
   });

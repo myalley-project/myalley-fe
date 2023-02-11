@@ -203,6 +203,7 @@ const OnelineModifyContainer = ({
     }) => oneLineReviewApis.updateReview(reviewId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries(["simpleReviews"]);
+      alert("리뷰 수정에 성공했습니다!");
       handleModal();
     },
   });
