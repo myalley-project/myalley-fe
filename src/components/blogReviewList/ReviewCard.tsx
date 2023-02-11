@@ -17,7 +17,7 @@ const ReviewCard = ({
   const imageUrl = imageInfo?.url;
 
   return (
-    <Container onClick={() => navigate("/blogreview-detail", { state: id })}>
+    <Container onClick={() => navigate("/blogreview", { state: id })}>
       <ThumbnailContainer>
         {imageUrl && <img src={imageInfo.url} alt="블로그 리뷰 사진" />}
         {!imageUrl && (
@@ -43,7 +43,7 @@ const ReviewCard = ({
 export default ReviewCard;
 
 const Container = styled.div`
-  border: 1px solid ${theme.colors.greys60};
+  border: 1px solid ${theme.colors.greys40};
   aspect-ratio: 1/1.05;
   :hover {
     border: 1px solid ${theme.colors.primry60};

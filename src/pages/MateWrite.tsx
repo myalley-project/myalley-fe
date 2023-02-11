@@ -296,7 +296,7 @@ const MateWrite = () => {
           />
         </Section>
         <SubTitle text="원하는 메이트 나이" />
-        <Section className="flex">
+        <Section className="flex mate-age">
           <div className="flex">
             <SelectLabel>최소</SelectLabel>
             <Selectbox
@@ -323,7 +323,7 @@ const MateWrite = () => {
             onClick={clickAgeRegardless}
           />
         </Section>
-        <Section className="flex">
+        <Section className="flex exhb-duration">
           <div className="exhb-choice">
             <SubTitle text="전시회" />
             <ExhbChoiceBtn
@@ -480,6 +480,18 @@ const MateWriteContainer = styled.div`
   margin: 50px auto 30px;
   padding: 30px;
   border: 1px solid ${theme.colors.greys40};
+  @media (max-width: 1440px) {
+    width: auto;
+    margin: 3.4vw auto 2vw;
+  }
+  @media (max-width: 1240px) {
+    width: auto;
+    margin: 3.4vw 20px 2vw;
+  }
+  @media (max-width: 1064px) {
+    width: auto;
+    margin: 3.4vw 16px 2vw;
+  }
 `;
 
 const TitleInput = styled.input`
@@ -502,11 +514,17 @@ const Section = styled.div`
   .flex {
     display: flex;
   }
+  &.mate-age {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 30px;
+  }
   .exhb-choice {
     margin-right: 30px;
   }
-  .maximum-age {
-    margin: 0px 20px 0px;
+  &.exhb-duration {
+    flex-wrap: wrap;
+    gap: 30px;
   }
 `;
 
@@ -525,9 +543,7 @@ const ExhbChoiceBtn = styled.div`
   justify-content: center;
   align-items: center;
   width: 280px;
-  height: 386px;
-  /* width: 19.3vw; 비율 맞춰 줄어들게 리팩토링하기 */
-  /* padding-bottom: 33.2%; */
+  aspect-ratio: 1/1.37;
   background-color: #f9f9f9;
   cursor: pointer;
   img {
@@ -539,15 +555,20 @@ const ExhbChoiceBtn = styled.div`
     height: 70px;
   }
   .thumbnail {
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    height: 100%;
+    border: 1px solid ${theme.colors.greys40};
     object-fit: cover;
+  }
+  @media (max-width: 1064px) {
+    width: 26.31vw;
+    min-width: 230px;
   }
 `;
 
 const ThumbnailHover = styled.div`
-  width: inherit;
-  height: inherit;
+  width: 100%;
+  height: 100%;
   background-color: #000000;
   color: ${theme.colors.white100};
   opacity: 80%;
@@ -599,6 +620,9 @@ const ContactInput = styled.input`
   :hover {
     border: 1px solid ${theme.colors.primry60};
     box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
+    ::placeholder {
+      color: ${theme.colors.greys90};
+    }
   }
 `;
 

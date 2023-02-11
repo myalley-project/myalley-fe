@@ -190,6 +190,7 @@ const Review = styled.div`
   gap: 30px;
   & > img {
     width: 86px;
+    border-radius: 100vmax;
     aspect-ratio: 1 / 1;
   }
 `;
