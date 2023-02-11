@@ -16,14 +16,18 @@ import arrowLeft from "../assets/icons/arrowLeft.svg";
 import arrowRight from "../assets/icons/arrowRight.svg";
 
 interface CalendarProps {
-  selectedDate: Date;
+  selectedDate: Date | null;
   handleSelectedDate: (date: string) => void;
 }
 
-const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
-  const [showedMonth, setShowedMonth] = useState<Date>(selectedDate);
+const Calender = ({
+  selectedDate = null,
+  handleSelectedDate,
+}: CalendarProps) => {
+  const [showedMonth, setShowedMonth] = useState<Date>(new Date());
+  const initialDate = !selectedDate ? new Date() : selectedDate;
   const [selectedDayNumber, setSelectedDayNumber] = useState(
-    selectedDate.getDate()
+    initialDate.getDate()
   );
 
   const calendarDays = useMemo(
