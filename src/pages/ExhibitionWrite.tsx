@@ -95,8 +95,8 @@ const ExhibitionWrite = (props: ModeType) => {
   // 전시 시작 날짜
   const handleStartDate = (date: Date) => {
     setStartDate(date);
-    const startDateFormat = date.toISOString().split("T")[0];
-    const endDateFormat = endDate.toISOString().split("T")[0];
+    const startDateFormat = date.toLocaleDateString("sv-SE");
+    const endDateFormat = startDateFormat;
     const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
       ...detail,
@@ -107,8 +107,8 @@ const ExhibitionWrite = (props: ModeType) => {
   // 전시 종료 날짜
   const handleEndDate = (date: Date) => {
     setEndDate(date);
-    const startDateFormat = startDate.toISOString().split("T")[0];
-    const endDateFormat = date.toISOString().split("T")[0];
+    const startDateFormat = startDate.toLocaleDateString("sv-SE");
+    const endDateFormat = date.toLocaleDateString("sv-SE");
     const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
       ...detail,
@@ -317,7 +317,7 @@ const ExhibitionWrite = (props: ModeType) => {
           <Label htmlFor="exhibition-status">관람 가능 여부</Label>
           <Selectbox
             placeholder={detail.status === "" ? "선택하기" : detail.status}
-            options={["지난 전시", "현재 전시", "예정 전시"]}
+            options={["현재 전시", "예정 전시", "지난 전시"]}
             width="130px"
             name="status"
             onClick={handleSetDetail}
@@ -382,7 +382,7 @@ const ExhibitionWrite = (props: ModeType) => {
         <OptionWrapper>
           <Label htmlFor="exhibition-poster">전시 포스터 등록</Label>
           <InputFileName type="text" value={detail.fileName} disabled />
-          <FileLabel htmlFor="exhibition-posterUrl">올리기</FileLabel>
+          <FileLabel htmlFor="exhibition-posterUrl">업로드</FileLabel>
           <InputFile
             type="file"
             name="fileName"
@@ -494,7 +494,7 @@ const WriteExhibitionWrapper = styled.div`
 `;
 
 const TitleWrapper = styled.div`
-  height: 66px;
+  height: 48px;
   margin-bottom: 30px;
   border-bottom: 1px solid ${theme.colors.greys40};
   border-radius: 0px;
@@ -507,13 +507,16 @@ const InputTitle = styled.input`
   font-size: 28px;
   line-height: 36px;
   color: ${theme.colors.greys90};
+  &::placeholder {
+    color: ${theme.colors.greys90};
+  }
 `;
 
 const OptionWrapper = styled.div`
   margin-bottom: 30px;
   span {
     font-weight: 500;
-    font-size: 14px;
+    font-size: 16px;
     color: ${theme.colors.greys60};
   }
 `;
@@ -522,7 +525,7 @@ const Label = styled.label`
   display: block;
   margin-bottom: 10px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
   color: ${theme.colors.greys90};
 `;
@@ -531,7 +534,7 @@ const Input = styled.input`
   border: 1px solid ${theme.colors.greys40};
   border-radius: 10000px;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   color: ${theme.colors.greys90};
   &::placeholder {
     color: ${theme.colors.greys60};
@@ -552,7 +555,7 @@ const InputFileName = styled.input`
   border: 1px solid ${theme.colors.greys40};
   border-radius: 10000px;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   color: ${theme.colors.greys60};
   margin-right: 10px;
   &:hover {
@@ -566,13 +569,15 @@ const InputFileName = styled.input`
 const FileLabel = styled.label`
   display: inline-block;
   padding: 8px 20px;
+  width: 124px;
   height: 36px;
   background: ${theme.colors.primry70};
   border-radius: 10000px;
   font-weight: 700;
-  font-size: 14px;
+  text-align: center;
+  font-size: 16px;
   line-height: 20px;
-  color: #ffffff;
+  color: ${theme.colors.white100};
   cursor: pointer;
   &:hover {
     background-color: #381e72;
@@ -591,22 +596,24 @@ const InputFile = styled.input`
 const InputTextArea = styled(Input)`
   display: inline-block;
   position: relative;
-  width: 100px;
+  width: 110px;
   margin-left: 10px;
   height: 36px;
-  padding: 8px 34px 8px 20px;
+  padding: 8px 34px 8px 18px;
   > p {
     position: absolute;
-    left: 73px;
-    top: 10px;
+    left: 76px;
+    top: 9px;
+    color: ${theme.colors.greys60};
   }
 `;
 
 const InputPrice = styled.input`
-  width: 55px;
+  width: 58px;
   height: 17px;
+  border-radius: 0px;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   text-align: right;
 `;
 
@@ -623,14 +630,15 @@ const TextArea = styled(Input)`
   height: 300px;
   border-radius: 15px;
   padding: 20px;
+  font-size: 16px;
   resize: none; // 사용자 임의 변경 불가
   ::-webkit-scrollbar {
     display: block;
-    width: 14px;
+    width: 16px;
   }
   ::-webkit-scrollbar-thumb {
     display: block;
-    width: 14px;
+    width: 16px;
     background-color: #d9d9d9;
     border-radius: 1000px;
     background-clip: padding-box;

@@ -41,8 +41,6 @@ const BookMarkedBlog = () => {
     queryFn: () => getBookMarkedBlog(pages.selected),
   });
 
-  if (isLoading) return <div>...isloading</div>;
-
   if (isError) return <div>...isError</div>;
 
   return (

@@ -45,8 +45,6 @@ const LikedBlogReviewContainer = () => {
     queryFn: () => getLikedBlog(pages.selected).then((res) => res?.data),
   });
 
-  if (isLoading) return <div>...isloading</div>;
-
   if (isError) return <div>...isError</div>;
 
   return (

@@ -8,7 +8,7 @@ import blogReviewApis from "../../../apis/blogReviewApis";
 import Button from "../../atom/Button";
 import ExhbCard from "../../mate/ExhbCard";
 
-interface BlogReviewDetailContainerProps {
+interface BlogReviewTopProps {
   id: number;
   memberInfo: {
     memberId: number;
@@ -16,13 +16,22 @@ interface BlogReviewDetailContainerProps {
     memberImage: string;
   };
   blogReviewId: number;
+  exhibitionInfo: {
+    id: number;
+    title: string;
+    posterUrl: string;
+    duration: string;
+    space: string;
+    type: string;
+  };
 }
 
-const BlogReviewDetailContainer = ({
+const BlogReviewTop = ({
   id,
   memberInfo,
+  exhibitionInfo,
   blogReviewId,
-}: BlogReviewDetailContainerProps) => {
+}: BlogReviewTopProps) => {
   const navigate = useNavigate();
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogCard"],
@@ -46,7 +55,7 @@ const BlogReviewDetailContainer = ({
   if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
-    <>
+    <Container>
       <ButtonGroup>
         <div>
           <Button
@@ -56,7 +65,7 @@ const BlogReviewDetailContainer = ({
           >
             목록
           </Button>
-          <Button
+          {/* <Button
             variant="text"
             size="small"
             onClick={() => alert("준비 중인 기능입니다.")}
@@ -69,7 +78,7 @@ const BlogReviewDetailContainer = ({
             onClick={() => alert("준비 중인 기능입니다.")}
           >
             다음글
-          </Button>
+          </Button> */}
         </div>
         <div>
           {String(memberInfo.memberId) === memeberId && (
@@ -98,14 +107,19 @@ const BlogReviewDetailContainer = ({
             exhibitionSpace: exhbData.space,
             posterUrl: exhbData.posterUrl,
             exhibitionDuration: exhbData.duration,
-            exhibitionType: exhbData.type,
+            type: exhbData.type,
           }}
         />
       )}
-    </>
+    </Container>
   );
 };
-export default BlogReviewDetailContainer;
+export default BlogReviewTop;
+
+const Container = styled.div`
+  max-width: 1200px;
+  margin: auto;
+`;
 
 const ButtonGroup = styled.div`
   display: flex;

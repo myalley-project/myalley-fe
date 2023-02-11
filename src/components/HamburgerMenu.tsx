@@ -67,7 +67,7 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
                       </div>
                     </MypageArea>
                   ) : (
-                    <MypageArea as="div">
+                    <MypageArea as="div" style={{ cursor: "auto" }}>
                       <ProfileWrapper>
                         <img
                           src={
@@ -179,7 +179,7 @@ const Subtitle = styled.h2`
   padding-bottom: 5px;
   color: ${theme.colors.greys80};
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 const MypageArea = styled.a`
@@ -198,7 +198,7 @@ const ProfileWrapper = styled.div`
 const Nickname = styled.p`
   color: ${theme.colors.greys90};
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   padding-bottom: 4px;
 `;
 
@@ -216,7 +216,7 @@ const LogoutButton = styled.button`
   padding-left: 10px;
   color: ${theme.colors.greys90};
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
   text-align: left;
   cursor: pointer;
   &:hover {

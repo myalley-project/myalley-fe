@@ -10,7 +10,7 @@ import { BlogReviewDetailResponse } from "../../../types/blogReview";
 import bloglikeApis from "../../../apis/bloglikeApis";
 import blogDetailbookmarkApis from "../../../apis/blogdetailbookMarkApis";
 
-const BlogReviewDetailPresentation = ({
+const BlogReviewPresentation = ({
   id,
   createdAt,
   viewCount,
@@ -31,13 +31,12 @@ const BlogReviewDetailPresentation = ({
 }: BlogReviewDetailResponse) => {
   const token = localStorage.getItem("accessToken");
   const queryClient = useQueryClient();
+  const isimagearray = imageInfo.length > 0;
 
   const bookmarkAddMutation = useMutation({
     mutationFn: () => blogDetailbookmarkApis.addbookmark(id),
     onSuccess: () => {
       queryClient.invalidateQueries(["blogReviewDetail"]);
-      console.log("북마크 여부", bookmarkStatus);
-      console.log("북마크 카운트", bookmarkCount);
     },
   });
 
@@ -61,8 +60,6 @@ const BlogReviewDetailPresentation = ({
       queryClient.invalidateQueries(["blogReviewDetail"]);
     },
   });
-  console.log("좋아요 여부", bookmarkStatus);
-  console.log("좋아요 카운트", bookmarkCount);
 
   const clickLikeBtn = () => {
     if (!token) {
@@ -97,7 +94,7 @@ const BlogReviewDetailPresentation = ({
   };
 
   return (
-    <Container>
+    <PrsentationContainer>
       <DetailTitle>{title}</DetailTitle>
       <Divider />
       <DetailInformation>
@@ -130,14 +127,13 @@ const BlogReviewDetailPresentation = ({
             clickable: true,
           }}
           modules={[Pagination]}
+          isimagearray={isimagearray ? true : null}
         >
-          {imageInfo
-            ? imageInfo.map((each) => (
-                <SwiperSlide key={each.id}>
-                  <img src={each.url} alt="전시회 상세조회 포스터" />
-                </SwiperSlide>
-              ))
-            : null}
+          {imageInfo.map((each) => (
+            <SwiperSlide key={each.id}>
+              <img src={each.url} alt="전시회 상세조회 포스터" />
+            </SwiperSlide>
+          ))}
         </StyledSWiper>
         <p>{content}</p>
       </MainPart>
@@ -176,13 +172,16 @@ const BlogReviewDetailPresentation = ({
           {bookmarkStatus ? "저장됨" : "저장하기"} {bookmarkCount}
         </Button>
       </ButtonGroup>
-    </Container>
+    </PrsentationContainer>
   );
 };
 
-export default BlogReviewDetailPresentation;
+export default BlogReviewPresentation;
 
-const Container = styled.div`
+const PrsentationContainer = styled.div`
+  width: 100%;
+  max-width: 1200px;
+  margin: 50px auto;
   padding: 30px;
   border: 1px solid ${theme.colors.greys40};
 `;
@@ -226,8 +225,8 @@ const MainPart = styled.div`
   margin-bottom: 50px;
 `;
 
-const StyledSWiper = styled(Swiper)`
-  display: block;
+const StyledSWiper = styled(Swiper)<{ isimagearray: boolean | null }>`
+  display: ${(props) => (props.isimagearray ? "block" : "none")};
   width: 100%;
   height: 383px;
   margin-bottom: 30px;
