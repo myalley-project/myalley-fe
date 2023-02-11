@@ -95,7 +95,7 @@ const ExhibitionWrite = (props: ModeType) => {
   // 전시 시작 날짜
   const handleStartDate = (date: Date) => {
     setStartDate(date);
-    const startDateFormat = date.toISOString().split("T")[0];
+    const startDateFormat = date.toLocaleDateString("sv-SE");
     const endDateFormat = startDateFormat;
     const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
@@ -107,8 +107,8 @@ const ExhibitionWrite = (props: ModeType) => {
   // 전시 종료 날짜
   const handleEndDate = (date: Date) => {
     setEndDate(date);
-    const startDateFormat = startDate.toISOString().split("T")[0];
-    const endDateFormat = date.toISOString().split("T")[0];
+    const startDateFormat = startDate.toLocaleDateString("sv-SE");
+    const endDateFormat = date.toLocaleDateString("sv-SE");
     const dateFormat = `${startDateFormat} ~ ${endDateFormat}`;
     setDetail({
       ...detail,
@@ -577,7 +577,7 @@ const FileLabel = styled.label`
   text-align: center;
   font-size: 16px;
   line-height: 20px;
-  color: #ffffff;
+  color: ${theme.colors.white100};
   cursor: pointer;
   &:hover {
     background-color: #381e72;
@@ -599,17 +599,19 @@ const InputTextArea = styled(Input)`
   width: 110px;
   margin-left: 10px;
   height: 36px;
-  padding: 8px 34px 8px 20px;
+  padding: 8px 34px 8px 18px;
   > p {
     position: absolute;
-    left: 73px;
-    top: 10px;
+    left: 76px;
+    top: 9px;
+    color: ${theme.colors.greys60};
   }
 `;
 
 const InputPrice = styled.input`
-  width: 55px;
+  width: 58px;
   height: 17px;
+  border-radius: 0px;
   font-weight: 400;
   font-size: 16px;
   text-align: right;

@@ -42,8 +42,8 @@ const OnelineWrite = ({
         <p>관람일</p>
         <SelectboxContainer>
           <Selectbox
-            placeholder="1950"
-            options={getYearArray()}
+            placeholder={new Date().getFullYear().toString()}
+            options={getYearArray().reverse()}
             onClick={yearHandler}
             name="년도"
             width="130px"
