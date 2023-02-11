@@ -6,6 +6,7 @@ import oneLineReviewApis from "../../../apis/oneLineReviewApis";
 import { OnelineReviewReadType } from "../../../types/oneLineReview";
 import ReviewSearchBar from "../../reviewCommon/ReviewSearchBar";
 import Pagination from "../../Pagination";
+import NoList from "../../NoList";
 
 type OrderType = "Recent" | "ViewCount" | "StarScore";
 
@@ -62,18 +63,22 @@ const OneLineReadContainer = ({
         handleReviewModal={handleReviewModal}
       />
       <OnelineDisplay>
-        {data?.simpleInfo.map((each) => (
-          <OnelineCard
-            key={each.id}
-            id={each.id}
-            viewDate={each.viewDate}
-            time={each.time}
-            congestion={each.congestion}
-            memberInfo={each.memberInfo}
-            rate={each.rate}
-            content={each.content}
-          />
-        ))}
+        {(data?.pageInfo.totalElement as number) > 0 ? (
+          data?.simpleInfo.map((each) => (
+            <OnelineCard
+              key={each.id}
+              id={each.id}
+              viewDate={each.viewDate}
+              time={each.time}
+              congestion={each.congestion}
+              memberInfo={each.memberInfo}
+              rate={each.rate}
+              content={each.content}
+            />
+          ))
+        ) : (
+          <NoList notice="아직 작성된 한 줄 리뷰가 없습니다" />
+        )}
       </OnelineDisplay>
       {data?.pageInfo ? (
         <Pagination
