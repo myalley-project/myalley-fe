@@ -111,7 +111,7 @@ const BlogReviewPresentation = ({
           <p>{congestion}</p>
         </DetailDiv>
         <DetailDiv>
-          <span>주차공간</span>
+          <span>교통수단</span>
           <p>{transportation}</p>
         </DetailDiv>
         <DetailDiv>
