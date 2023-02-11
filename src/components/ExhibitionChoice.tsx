@@ -43,8 +43,6 @@ const ExhibitionChoice = ({ getExhbInfo, handleModal }: ChoiceProps) => {
   });
   // 파일 체인지를 확인하기 위한 쓸데없는 주석입니다
 
-  if (isLoading) return <div>...loading</div>;
-
   if (isError) return <div>에러가 발생했습니다! {error.message}</div>;
 
   return (
