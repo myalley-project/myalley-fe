@@ -203,6 +203,7 @@ const OnelineModifyContainer = ({
     }) => oneLineReviewApis.updateReview(reviewId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries(["simpleReviews"]);
+      handleModal();
     },
   });
 
@@ -210,25 +211,28 @@ const OnelineModifyContainer = ({
     const body = getPayload(id as string, state);
 
     if (Object.values(body).includes("") || Object.values(body).includes(0)) {
-      throw Error("빈 칸으로 남겨진 값이 있습니다.");
+      return alert("빈 칸으로 남겨진 값이 있습니다.");
     }
-    if (body.content.length < 10) alert("본문 내용이 너무 짧습니다");
+    if (body.content.length < 10) return alert("본문 내용이 너무 짧습니다");
+    if (body.content.length >= 60) return alert("본문 내용이 너무 깁니다");
 
+    const reviewId = simpleId;
+    const payload = {
+      viewDate: body.viewDate,
+      time: body.time,
+      congestion: body.congestion,
+      rate: body.rate,
+      content: body.content,
+    };
     try {
-      const reviewId = simpleId;
-      const payload = {
-        viewDate: body.viewDate,
-        time: body.time,
-        congestion: body.congestion,
-        rate: body.rate,
-        content: body.content,
-      };
       modifyMutation.mutate({ reviewId, payload });
       handleModal();
     } catch (err) {
       const errResponese = isApiError(err);
       if (errResponese === "accessToken 만료") refreshTokenApi();
+      modifyMutation.mutate({ reviewId, payload });
     }
+    return null;
   };
 
   return (
