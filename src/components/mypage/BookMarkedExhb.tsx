@@ -10,7 +10,7 @@ import NoList from "../NoList";
 import Pagination from "../Pagination";
 
 const BookMarkedExhb = () => {
-  const getNewTokenApi = useGetNewTokenApi;
+  const getNewTokenApi = useGetNewTokenApi();
 
   const navigate = useNavigate();
   const [exhibitionList, setExhibitionList] = useState<Exhibition[] | []>([]);

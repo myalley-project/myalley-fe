@@ -11,7 +11,7 @@ import NoList from "../NoList";
 import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 
 const WrittenMate = () => {
-  const getNewTokenApi = useGetNewTokenApi;
+  const getNewTokenApi = useGetNewTokenApi();
   const navigate = useNavigate();
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
   const [pageInfoList, setPageInfoList] = useState({

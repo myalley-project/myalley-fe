@@ -10,7 +10,7 @@ import NoList from "../NoList";
 import Pagination from "../Pagination";
 
 const BookMarkedMate = () => {
-  const getNewTokenApi = useGetNewTokenApi;
+  const getNewTokenApi = useGetNewTokenApi();
   const navigate = useNavigate();
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
   const [pageInfoList, setPageInfoList] = useState({

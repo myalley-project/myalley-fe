@@ -14,7 +14,7 @@ import NoList from "../../NoList";
 import Pagination from "../../Pagination";
 
 const LikedBlogReviewContainer = () => {
-  const getNewTokenApi = useGetNewTokenApi;
+  const getNewTokenApi = useGetNewTokenApi();
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,

@@ -10,7 +10,7 @@ import isApiError from "../../utils/isApiError";
 import NoList from "../NoList";
 
 const BookMarkedBlog = () => {
-  const getNewTokenApi = useGetNewTokenApi;
+  const getNewTokenApi = useGetNewTokenApi();
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,

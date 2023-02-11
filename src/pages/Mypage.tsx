@@ -7,14 +7,14 @@ import EditProfile from "../components/mypage/EditProfile";
 import WrittenPosts from "../components/mypage/WrittenPosts";
 import BookMarkedPosts from "../components/mypage/BookMarkedPosts";
 import { getMyInfoApi, MyInfoRes } from "../apis/member";
-import useGetNewTokenApi from "../apis/useGetRefreshToken";
 import isApiError from "../utils/isApiError";
 import LikedBlogReviewContainer from "../components/mypage/container/LikedBlogReviewContainer";
+import useGetNewTokenApi from "../apis/useGetRefreshToken";
 
 const Mypage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const getNewTokenApi = useGetNewTokenApi;
+  const getNewTokenApi = useGetNewTokenApi();
   const { pathname } = location;
   const [infoData, setInfoData] = useState<MyInfoRes>({
     memberId: 0,
