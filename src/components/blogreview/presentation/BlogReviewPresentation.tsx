@@ -31,13 +31,12 @@ const BlogReviewPresentation = ({
 }: BlogReviewDetailResponse) => {
   const token = localStorage.getItem("accessToken");
   const queryClient = useQueryClient();
+  const isimagearray = imageInfo.length > 0;
 
   const bookmarkAddMutation = useMutation({
     mutationFn: () => blogDetailbookmarkApis.addbookmark(id),
     onSuccess: () => {
       queryClient.invalidateQueries(["blogReviewDetail"]);
-      console.log("북마크 여부", bookmarkStatus);
-      console.log("북마크 카운트", bookmarkCount);
     },
   });
 
@@ -61,8 +60,6 @@ const BlogReviewPresentation = ({
       queryClient.invalidateQueries(["blogReviewDetail"]);
     },
   });
-  console.log("좋아요 여부", bookmarkStatus);
-  console.log("좋아요 카운트", bookmarkCount);
 
   const clickLikeBtn = () => {
     if (!token) {
@@ -130,14 +127,13 @@ const BlogReviewPresentation = ({
             clickable: true,
           }}
           modules={[Pagination]}
+          isimagearray={isimagearray ? true : null}
         >
-          {imageInfo
-            ? imageInfo.map((each) => (
-                <SwiperSlide key={each.id}>
-                  <img src={each.url} alt="전시회 상세조회 포스터" />
-                </SwiperSlide>
-              ))
-            : null}
+          {imageInfo.map((each) => (
+            <SwiperSlide key={each.id}>
+              <img src={each.url} alt="전시회 상세조회 포스터" />
+            </SwiperSlide>
+          ))}
         </StyledSWiper>
         <p>{content}</p>
       </MainPart>
@@ -229,8 +225,8 @@ const MainPart = styled.div`
   margin-bottom: 50px;
 `;
 
-const StyledSWiper = styled(Swiper)`
-  display: block;
+const StyledSWiper = styled(Swiper)<{ isimagearray: boolean | null }>`
+  display: ${(props) => (props.isimagearray ? "block" : "none")};
   width: 100%;
   height: 383px;
   margin-bottom: 30px;
