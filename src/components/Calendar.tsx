@@ -31,18 +31,13 @@ const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
     [showedMonth]
   );
 
-  useEffect(() => {
-    setShowedMonth(selectedDate);
-    setSelectedDayNumber(selectedDate.getDate());
-  }, [selectedDate, setShowedMonth]);
-
   const clickArrowLeft = () => {
     const prevDate = subMonths(showedMonth, 1);
-    handleSelectedDate(format(prevDate, "yyyy-MM-dd"));
+    setShowedMonth(prevDate);
   };
   const clickArrowRight = () => {
     const nextDate = addMonths(showedMonth, 1);
-    handleSelectedDate(format(nextDate, "yyyy-MM-dd"));
+    setShowedMonth(nextDate);
   };
 
   const clickCalendarDay = (e: React.SyntheticEvent<HTMLDivElement>) => {
