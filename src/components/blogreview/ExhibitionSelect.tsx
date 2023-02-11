@@ -76,6 +76,31 @@ const ExhibitionButton = styled.div`
 const SelectedExhibitionImage = styled.div`
   position: relative;
   cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  &:is(:hover, :focus) {
+    .imageContainer {
+      filter: brightness(60%);
+      transition: all 0.5s ease-in-out;
+    }
+    .imageContainer + div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      position: absolute;
+      inset: 50% 0 0 50%;
+      transform: translate(-50%, -50%);
+      color: ${theme.colors.white100};
+      text-align: center;
+      & > h3 {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      & > p {
+        font-weight: 400;
+        font-size: 12px;
+      }
+    }
+  }
   .imageContainer {
     height: 400px;
     & > img {
@@ -86,22 +111,7 @@ const SelectedExhibitionImage = styled.div`
     }
   }
   .imageContainer + div {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    position: absolute;
-    inset: 50% 0 0 50%;
-    transform: translate(-50%, -50%);
-    color: ${theme.colors.white100};
-    text-align: center;
-    & > h3 {
-      font-weight: 700;
-      font-size: 14px;
-    }
-    & > p {
-      font-weight: 400;
-      font-size: 12px;
-    }
+    display: none;
   }
 `;
 
