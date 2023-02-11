@@ -77,7 +77,7 @@ export const SubTitle = styled.div<{
   margin-bottom: ${(props) => (props.type === "greys60" ? "0" : "10px")};
   color: ${(props) =>
     props.type === "greys60" ? theme.colors.greys60 : theme.colors.greys90};
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 20px;
 `;
@@ -109,7 +109,7 @@ export const TextArea = styled.textarea<{
     props.type === "comment" ? `1px solid ${theme.colors.greys40}` : "none"};
   border-radius: ${(props) => (props.type === "comment" ? "30px" : "0")};
   color: ${theme.colors.greys90};
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   resize: none;
   :focus {

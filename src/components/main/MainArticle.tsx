@@ -21,14 +21,20 @@ const MainArticle = () => {
         onClick={() => navigate("/exhibition-list")}
       >
         <Exhibition stroke={exhbStroke} />
-        <div>
+        <CardTextContainer>
           <h3>전시회</h3>
-          <p>다양한 전시 정보를 찾아보세요</p>
-        </div>
-        <LinkContainer>
-          <span className="linkContainer">자세히 보기</span>
-          <img src={arrowRight} alt="" />
-        </LinkContainer>
+          <p>
+            <span>다양한</span>
+            <span>전시 정보를</span> 찾아보세요
+          </p>
+        </CardTextContainer>
+        <SeeMore>
+          <p>
+            <span>자세히</span>
+            보기
+          </p>
+          <img src={arrowRight} alt="자세히 보기" />
+        </SeeMore>
       </Article>
       <Article
         onMouseOver={() => setReviewStroke(`${theme.colors.primry80}`)}
@@ -36,14 +42,20 @@ const MainArticle = () => {
         onClick={() => navigate("/blogreview-list")}
       >
         <Review stroke={reviewStroke} />
-        <div>
+        <CardTextContainer>
           <h3>전시 리뷰</h3>
-          <p>다양한 전시 리뷰 를 찾아보세요</p>
-        </div>
-        <LinkContainer>
-          <span className="linkContainer">자세히 보기</span>
-          <img src={arrowRight} alt="" />
-        </LinkContainer>
+          <p>
+            <span>다양한</span>
+            <span>전시 리뷰를</span> 찾아보세요
+          </p>
+        </CardTextContainer>
+        <SeeMore>
+          <p>
+            <span>자세히</span>
+            보기
+          </p>
+          <img src={arrowRight} alt="자세히 보기" />
+        </SeeMore>
       </Article>
       <Article
         onMouseOver={() => setMateStroke(`${theme.colors.primry80}`)}
@@ -51,14 +63,20 @@ const MainArticle = () => {
         onClick={() => navigate("/mate-list")}
       >
         <Mate stroke={mateStroke} />
-        <div>
+        <CardTextContainer>
           <h3>메이트</h3>
-          <p>전시회에 같이 갈 친구를 찾아보세요</p>
-        </div>
-        <LinkContainer className="linkContainer">
-          <span>자세히 보기</span>
-          <img src={arrowRight} alt="" />
-        </LinkContainer>
+          <p>
+            <span>전시회에</span>
+            <span>같이 갈</span>
+            <span>친구를</span> 찾아보세요
+          </p>
+        </CardTextContainer>
+        <SeeMore>
+          <p>
+            <span>자세히</span> 보기
+          </p>
+          <img src={arrowRight} alt="자세히 보기" />
+        </SeeMore>
       </Article>
     </ArticleContainer>
   );
@@ -94,26 +112,44 @@ const Article = styled.article`
   text-align: center;
   z-index: 99;
   cursor: pointer;
-  & h3 {
-    margin-bottom: 1rem;
-    font-weight: bold;
-    font-size: 28px;
-  }
-  & p {
-    color: ${theme.colors.greys60};
-    font-size: 14px;
-  }
   &:hover {
     border: 1px solid ${theme.colors.primry60};
+    box-shadow: 0px 0px 20px rgba(56, 30, 114, 0.1);
     & h3,
     p,
-    .linkContainer {
+    span {
       color: ${theme.colors.primry80};
     }
   }
 `;
 
-const LinkContainer = styled.div`
+const CardTextContainer = styled.div`
+  h3 {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 28px;
+  }
+  p {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2.5px;
+    color: ${theme.colors.greys60};
+    font-size: 14px;
+  }
+  @media (max-width: 1439px) {
+    & h3 {
+      font-size: 1.9vw;
+    }
+  }
+  @media (max-width: 1064px) {
+    & h3 {
+      font-size: 21px;
+    }
+  }
+`;
+
+const SeeMore = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,4 +158,10 @@ const LinkContainer = styled.div`
   font-weight: 700;
   font-size: 14px;
   text-decoration: none;
+  p {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2.5px;
+  }
 `;
