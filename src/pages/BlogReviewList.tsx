@@ -21,6 +21,14 @@ const BlogReviewList = () => {
   const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
   const [inputLength, setInputLength] = useState(0);
 
+  const handleReviewWrite = () => {
+    if (!localStorage.getItem("memberId")) {
+      alert("리뷰를 등록하려면 로그인하셔야 합니다!");
+    } else {
+      navigate("/blogreview-write");
+    }
+  };
+
   const handleOrderType = (
     event: React.MouseEvent<HTMLElement>,
     name = "정렬 필터"
@@ -68,7 +76,7 @@ const BlogReviewList = () => {
             }}
           />
           <Button
-            onClick={() => navigate("/blogreview-write")}
+            onClick={handleReviewWrite}
             style={{ padding: "8px 20px" }}
             size="large"
             variant="primary"
