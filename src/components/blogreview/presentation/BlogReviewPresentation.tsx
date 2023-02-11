@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useMutation, useQueryClient } from "react-query";
@@ -32,6 +32,7 @@ const BlogReviewPresentation = ({
   const token = localStorage.getItem("accessToken");
   const queryClient = useQueryClient();
   const isimagearray = imageInfo.length > 0;
+  const viewCountRef = useRef(viewCount);
 
   const bookmarkAddMutation = useMutation({
     mutationFn: () => blogDetailbookmarkApis.addbookmark(id),
@@ -150,7 +151,7 @@ const BlogReviewPresentation = ({
             <span>작성일</span> {createdAt}
           </p>
           <p>
-            <span>조회수</span> {viewCount}
+            <span>조회수</span> {viewCountRef.current}
           </p>
         </DateAndView>
       </UserInfo>
