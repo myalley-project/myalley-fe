@@ -89,7 +89,3 @@ const PresentationContainer = styled.div`
     padding: 0 16px;
   }
 `;
-
-const Divider = styled.div`
-  margin-bottom: 2rem;
-`;

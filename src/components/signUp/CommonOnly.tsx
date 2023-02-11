@@ -95,7 +95,7 @@ const CommonOnly = (props: CommonOnlyType) => {
         <BirthDropDownContainer>
           <Selectbox
             placeholder="년도"
-            options={getYearArray()}
+            options={getYearArray().reverse()}
             width="100px"
             name="year"
             onClick={(e, name) => {
