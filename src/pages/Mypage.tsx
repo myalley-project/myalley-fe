@@ -43,7 +43,6 @@ const Mypage = () => {
       }
       if (errorRes === "accessToken 만료") {
         const hasRefreshToken = await getNewTokenApi(refreshToken);
-        console.log(hasRefreshToken);
         const reRes: AxiosResponse<MyInfoRes> = await getMyInfoApi();
         const refreshData = reRes.data;
         setInfoData(refreshData);
