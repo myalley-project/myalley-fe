@@ -8,10 +8,9 @@ import { MateRes, myMatesApi } from "../../apis/member";
 import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
 import NoList from "../NoList";
-import useGetNewTokenApi from "../../apis/useGetRefreshToken";
+import getNewTokenApi from "../../apis/getRefreshToken";
 
 const WrittenMate = () => {
-  const getNewTokenApi = useGetNewTokenApi();
   const navigate = useNavigate();
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
   const [pageInfoList, setPageInfoList] = useState({
@@ -48,7 +47,7 @@ const WrittenMate = () => {
       }
       navigate(`?type=mate&pageno=${pageNo}`);
     },
-    [navigate, getNewTokenApi]
+    [navigate]
   );
 
   useEffect(() => {

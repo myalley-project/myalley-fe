@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookMarkedExhbApi, ExhibitionListRes } from "../../apis/member";
-import useGetNewTokenApi from "../../apis/useGetRefreshToken";
+import getNewTokenApi from "../../apis/getRefreshToken";
 import { Exhibition } from "../../types/exhbList";
 import isApiError from "../../utils/isApiError";
 import ExhbCardList from "../exhibitionList/ExhbCardList";
@@ -10,8 +10,6 @@ import NoList from "../NoList";
 import Pagination from "../Pagination";
 
 const BookMarkedExhb = () => {
-  const getNewTokenApi = useGetNewTokenApi();
-
   const navigate = useNavigate();
   const [exhibitionList, setExhibitionList] = useState<Exhibition[] | []>([]);
   const [pageInfoList, setPageInfoList] = useState({
@@ -50,7 +48,7 @@ const BookMarkedExhb = () => {
       }
       navigate(`?type=exhibition&pageno=${pageNo}`);
     },
-    [navigate, getNewTokenApi]
+    [navigate]
   );
 
   useEffect(() => {

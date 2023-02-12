@@ -4,37 +4,33 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { BlogReviewListRes, BookMarkedBlogApi } from "../../apis/member";
-import useGetNewTokenApi from "../../apis/useGetRefreshToken";
+import getNewTokenApi from "../../apis/getRefreshToken";
 import ReviewCardList from "../blogReviewList/ReviewCardList";
 import isApiError from "../../utils/isApiError";
 import NoList from "../NoList";
 
 const BookMarkedBlog = () => {
-  const getNewTokenApi = useGetNewTokenApi();
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
   });
-  const getBookMarkedBlog = useCallback(
-    async (pageNo: number) => {
-      const refreshToken = localStorage.getItem("refreshToken");
-      try {
-        const res = await BookMarkedBlogApi(pageNo);
-        return res.data;
-      } catch (err) {
-        const errorRes = isApiError(err);
-        if (errorRes === "accessToken 만료") {
-          await getNewTokenApi(refreshToken);
-          const reRes = await BookMarkedBlogApi(pageNo);
-          if (!reRes) return null;
-          const refreshData = reRes.data;
-          return refreshData;
-        }
+  const getBookMarkedBlog = useCallback(async (pageNo: number) => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    try {
+      const res = await BookMarkedBlogApi(pageNo);
+      return res.data;
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") {
+        await getNewTokenApi(refreshToken);
+        const reRes = await BookMarkedBlogApi(pageNo);
+        if (!reRes) return null;
+        const refreshData = reRes.data;
+        return refreshData;
       }
-      return null;
-    },
-    [getNewTokenApi]
-  );
+    }
+    return null;
+  }, []);
 
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["bookmarked"],

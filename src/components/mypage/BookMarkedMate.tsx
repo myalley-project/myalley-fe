@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookMarkedMateApi, MateRes } from "../../apis/member";
-import useGetNewTokenApi from "../../apis/useGetRefreshToken";
+import getNewTokenApi from "../../apis/getRefreshToken";
 import { Mate } from "../../types/mateList";
 import isApiError from "../../utils/isApiError";
 import MateCard from "../mate/MateCard";
@@ -10,7 +10,6 @@ import NoList from "../NoList";
 import Pagination from "../Pagination";
 
 const BookMarkedMate = () => {
-  const getNewTokenApi = useGetNewTokenApi();
   const navigate = useNavigate();
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
   const [pageInfoList, setPageInfoList] = useState({
@@ -45,7 +44,7 @@ const BookMarkedMate = () => {
       }
       navigate(`?type=mate&pageno=${pageNo}`);
     },
-    [navigate, getNewTokenApi]
+    [navigate]
   );
 
   useEffect(() => {

@@ -9,12 +9,12 @@ import BookMarkedPosts from "../components/mypage/BookMarkedPosts";
 import { getMyInfoApi, MyInfoRes } from "../apis/member";
 import isApiError from "../utils/isApiError";
 import LikedBlogReviewContainer from "../components/mypage/container/LikedBlogReviewContainer";
-import useGetNewTokenApi from "../apis/useGetRefreshToken";
+import getNewTokenApi from "../apis/getRefreshToken";
+import removeLocalStorageItem from "../utils/removeLocalStorageItem";
 
 const Mypage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const getNewTokenApi = useGetNewTokenApi();
   const { pathname } = location;
   const [infoData, setInfoData] = useState<MyInfoRes>({
     memberId: 0,
@@ -37,18 +37,26 @@ const Mypage = () => {
       localStorage.setItem("memberImage", data.memberImage);
     } catch (err) {
       const errorRes = isApiError(err);
+      if (!errorRes) {
+        removeLocalStorageItem();
+        navigate("/login");
+      }
       if (errorRes === "accessToken 만료") {
-        await getNewTokenApi(refreshToken);
+        const hasRefreshToken = await getNewTokenApi(refreshToken);
+        console.log(hasRefreshToken);
         const reRes: AxiosResponse<MyInfoRes> = await getMyInfoApi();
         const refreshData = reRes.data;
         setInfoData(refreshData);
       }
     }
-  }, [getNewTokenApi]);
+  }, [navigate]);
 
   useEffect(() => {
     getMyInfo();
-    if (localStorage.getItem("authority") === "ROLE_ADMIN") {
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인 후 이용 가능한 페이지입니다.");
+      navigate("/");
+    } else if (localStorage.getItem("authority") === "ROLE_ADMIN") {
       alert("일반 회원만 접근이 가능한 페이지입니다.");
       navigate("/");
     }
