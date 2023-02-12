@@ -71,7 +71,7 @@ const Privacy = styled.div`
   padding-bottom: 30px;
   p {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 14px;
     color: ${(props) => props.theme.colors.greys60};
   }
   .partition {
