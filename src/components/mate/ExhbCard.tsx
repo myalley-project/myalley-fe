@@ -32,7 +32,7 @@ const ExhbCard = (props: ExhbCardType) => {
   useEffect(() => {
     setTimeout(() => {
       const height = document.querySelector(".title")?.clientHeight;
-      setThumbnailHeight(height! + 218);
+      setThumbnailHeight(height! + 190);
     }, 100);
   }, []);
 
@@ -45,7 +45,6 @@ const ExhbCard = (props: ExhbCardType) => {
         alt="thumbnail"
       />
       <InfoContainer>
-        <ViewCount>조회수 100(임시)</ViewCount>
         <div className="title">{exhibitionTitle}</div>
         <DetailContainer>
           <Detail>
@@ -98,19 +97,12 @@ const InfoContainer = styled.div`
   width: 100%;
   padding: 30px;
   .title {
-    margin: 8px 0 30px;
+    margin-bottom: 30px;
     color: ${(props) => props.theme.colors.greys90};
     font-size: 42px;
     font-weight: 700;
     line-height: 52px;
   }
-`;
-
-const ViewCount = styled.div`
-  text-align: right;
-  color: ${theme.colors.greys80};
-  font-size: 14px;
-  line-height: 20px;
 `;
 
 const DetailContainer = styled.div`
