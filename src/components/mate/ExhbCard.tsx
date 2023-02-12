@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
@@ -14,7 +14,7 @@ interface ExhbCardType {
   };
 }
 
-// 메이트 모집글 전시회 카드컴포넌트_박예선_23.02.10
+// 메이트 모집글 전시회 카드컴포넌트_박예선_23.02.12
 const ExhbCard = (props: ExhbCardType) => {
   const { exhbData } = props;
   const {
@@ -26,10 +26,26 @@ const ExhbCard = (props: ExhbCardType) => {
     posterUrl,
   } = exhbData;
   const navigate = useNavigate();
+  const [thumbnailHeight, setThumbnailHeight] = useState(52);
+
+  // 제목의 높이에 따라 썸네일 높이 변경_박예선_23.02.12
+  useEffect(() => {
+    setTimeout(() => {
+      const height = document.querySelector(".title")?.clientHeight;
+      setThumbnailHeight(height! + 218);
+    }, 100);
+  }, []);
+
   return (
     <ExhbCardContainer onClick={() => navigate(`/exhibition/${exhibitionId}`)}>
-      <Thumbnail className="thumbnail" src={posterUrl} alt="thumbnail" />
+      <Thumbnail
+        height={thumbnailHeight}
+        className="thumbnail"
+        src={posterUrl}
+        alt="thumbnail"
+      />
       <InfoContainer>
+        <ViewCount>조회수 100(임시)</ViewCount>
         <div className="title">{exhibitionTitle}</div>
         <DetailContainer>
           <Detail>
@@ -56,7 +72,6 @@ const ExhbCardContainer = styled.div`
   display: flex;
   width: 100%;
   max-width: 1200px;
-  height: 244px;
   margin-top: 14px;
   border: 1px solid ${theme.colors.greys40};
   background-color: ${theme.colors.white100};
@@ -66,8 +81,9 @@ const ExhbCardContainer = styled.div`
   }
 `;
 
-const Thumbnail = styled.img`
+const Thumbnail = styled.img<{ height: number }>`
   width: 31.6%;
+  height: ${(props) => `${props.height}px`};
   object-fit: cover;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -79,14 +95,22 @@ const Thumbnail = styled.img`
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  width: 100%;
   padding: 30px;
   .title {
+    margin: 8px 0 30px;
     color: ${(props) => props.theme.colors.greys90};
     font-size: 42px;
     font-weight: 700;
     line-height: 52px;
   }
+`;
+
+const ViewCount = styled.div`
+  text-align: right;
+  color: ${theme.colors.greys80};
+  font-size: 14px;
+  line-height: 20px;
 `;
 
 const DetailContainer = styled.div`
@@ -100,7 +124,7 @@ const Detail = styled.div`
   div {
     font-size: 14px;
     font-weight: 500;
-    line-height: 20px;
+    line-height: 26px;
     color: ${theme.colors.greys90};
   }
   .detail-name {
