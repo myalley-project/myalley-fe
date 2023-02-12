@@ -21,7 +21,7 @@ import isApiError from "../utils/isApiError";
 import { alertError } from "../utils/alerts";
 import Modal from "../Modal";
 
-// 메이트글 작성/수정 페이지_박예선_23.02.09
+// 메이트글 작성/수정 페이지_박예선_23.02.12
 const MateWrite = () => {
   const refreshTokenApi = useRefreshTokenApi();
   const location = useLocation();
@@ -118,7 +118,7 @@ const MateWrite = () => {
     }
   }, [mateId, memberId, navigate]);
 
-  // 메이트글 작성/수정 api 호출_박예선_23.02.08
+  // 메이트글 작성/수정 api 호출_박예선_23.02.12
   const clickApplyBtn = async (type: "post" | "put") => {
     try {
       const res: AxiosResponse<MateWriteRes> = await mateWriteApi(
@@ -138,11 +138,15 @@ const MateWrite = () => {
             writeData,
             mateId
           );
-          alert(res.data);
+          if (typeof res.data === "string") {
+            alert(res.data);
+            navigate(-1);
+            return;
+          }
         } catch {
           alertError();
+          return;
         }
-        navigate(-1);
       }
       if (typeof errorRes !== "object") return;
       const { errorMsg } = errorRes;
@@ -377,28 +381,30 @@ const MateWrite = () => {
               checked={availableDate === "미정"}
               onClick={clickDateRegardless}
             />
-            <CalenderContainer>
-              {mateId !== 0 && (
-                <Calender
-                  selectedDate={
-                    writeData.availableDate === "미정"
-                      ? new Date()
-                      : new Date(writeData.availableDate)
-                  }
-                  handleSelectedDate={clickCalendar}
-                />
-              )}
-              {!mateId && (
-                <Calender
-                  selectedDate={
-                    writeData.availableDate === "미정"
-                      ? new Date()
-                      : new Date(writeData.availableDate)
-                  }
-                  handleSelectedDate={clickCalendar}
-                />
-              )}
-            </CalenderContainer>
+            {writeData.availableDate !== "미정" && (
+              <CalenderContainer>
+                {mateId !== 0 && (
+                  <Calender
+                    selectedDate={
+                      writeData.availableDate === "미정"
+                        ? new Date()
+                        : new Date(writeData.availableDate)
+                    }
+                    handleSelectedDate={clickCalendar}
+                  />
+                )}
+                {!mateId && (
+                  <Calender
+                    selectedDate={
+                      writeData.availableDate === "미정"
+                        ? new Date()
+                        : new Date(writeData.availableDate)
+                    }
+                    handleSelectedDate={clickCalendar}
+                  />
+                )}
+              </CalenderContainer>
+            )}
           </div>
         </Section>
         <Section>
