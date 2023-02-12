@@ -1,10 +1,11 @@
 import { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
 import apiInstance from "../utils/apiInstance";
 import isApiError from "../utils/isApiError";
 import removeLocalStorageItem from "../utils/removeLocalStorageItem";
 import { RefreshTokenRes } from "./useRefreshToken";
 
-const useGetNewTokenApi = async (token: string | null) => {
+const getNewTokenApi = async (token: string | null) => {
   if (token) {
     try {
       const res: AxiosResponse<RefreshTokenRes> = await apiInstance.post(
@@ -30,4 +31,4 @@ const useGetNewTokenApi = async (token: string | null) => {
   }
 };
 
-export default useGetNewTokenApi;
+export default getNewTokenApi;
