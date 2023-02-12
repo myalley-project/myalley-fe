@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, useReducer, useEffect } from "react";
 import styled from "styled-components";
 import { useMutation } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
@@ -143,7 +144,9 @@ import useRefreshTokenApi from "../apis/useRefreshToken";
 const BlogReviewWrite = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const [title, setTitle] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(
+    format(new Date(), "yyyy-MM-dd")
+  );
   const [enterTime, setEnterTime] = useState("");
   const [exitTime, setExitTime] = useState("");
   const [congestion, setCongestion] = useState("");
@@ -284,6 +287,8 @@ const BlogReviewWrite = () => {
       }
     } else {
       alert("빈 칸으로 남겨진 데이터를 입력해주세요.");
+      // 사용자 입장에선 빈 칸으로 남겨진 데이터가 없게 보이는데도 이렇게 떠서
+      // 좀 더 구체적인 안내가 필요할 듯 합니다.-예선
     }
   };
 
@@ -300,7 +305,9 @@ const BlogReviewWrite = () => {
           <div>
             <SubTitle text="관람일" />
             <Calender
-              selectedDate={new Date()}
+              selectedDate={new Date(selectedDate)}
+              // 왜 이렇게 들어가야 하는지 헷갈리시면
+              // 메이트글 작성/수정 페이지 컴포넌트인 src-pages-MateWrite.tsx 파일 참고부탁드립니다 - 예선
               handleSelectedDate={setSelectedDate}
             />
           </div>

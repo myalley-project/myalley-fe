@@ -328,6 +328,9 @@ const BlogReviewUpdate = () => {
             <SubTitle text="관람일" />
             <Calender
               selectedDate={new Date()}
+              // selectedDate={new Date(selectedDate)}
+              // 수정페이지일 때도 마찬가지로 selectedDate를 넘겨줘야 하는데,
+              // 현재 수정모드일 때 기존에 선택된 날짜를 어떻게 받아오고 계신지 모르겠어서 일단 그대로 남겨둡니다.-예선
               handleSelectedDate={setSelectedDate}
             />
           </div>
