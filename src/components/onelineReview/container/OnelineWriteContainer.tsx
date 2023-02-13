@@ -191,25 +191,8 @@ const OnelineWriteContainer = ({
     mutationFn: (payload: Payload) => oneLineReviewApis.createReview(payload),
     onSuccess: () => {
       queryClient.invalidateQueries(["simpleReviews"]);
-    },
-  });
-
-  const modifyMutation = useMutation({
-    mutationFn: ({
-      reviewId,
-      payload,
-    }: {
-      reviewId: number;
-      payload: {
-        viewDate: string;
-        time: string;
-        congestion: string;
-        rate: number;
-        content: string;
-      };
-    }) => oneLineReviewApis.updateReview(reviewId, payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["simpleReviews"]);
+      alert("리뷰 등록에 성공했습니다!");
+      handleModal();
     },
   });
 
@@ -217,35 +200,19 @@ const OnelineWriteContainer = ({
     const body = getPayload(id as string, state);
 
     if (Object.values(body).includes("") || Object.values(body).includes(0)) {
-      throw Error("빈 칸으로 남겨진 값이 있습니다.");
+      return alert("빈 칸으로 남겨진 값이 있습니다.");
     }
-    if (body.content.length < 10) alert("본문 내용이 너무 짧습니다");
+    if (body.content.length < 10) return alert("본문 내용이 너무 짧습니다");
+    if (body.content.length >= 60) return alert("본문 내용이 너무 깁니다");
 
-    if (writeType === "create") {
-      try {
-        newReviewMutation.mutate(body);
-        handleModal();
-      } catch (err) {
-        const errResponese = isApiError(err);
-        if (errResponese === "accessToken 만료") refreshTokenApi();
-      }
-    } else if (writeType === "modify") {
-      try {
-        const reviewId = simpleId;
-        const payload = {
-          viewDate: body.viewDate,
-          time: body.time,
-          congestion: body.congestion,
-          rate: body.rate,
-          content: body.content,
-        };
-        modifyMutation.mutate({ reviewId, payload });
-        handleModal();
-      } catch (err) {
-        const errResponese = isApiError(err);
-        if (errResponese === "accessToken 만료") refreshTokenApi();
-      }
+    try {
+      newReviewMutation.mutate(body);
+    } catch (err) {
+      const errResponese = isApiError(err);
+      if (errResponese === "accessToken 만료") refreshTokenApi();
+      newReviewMutation.mutate(body);
     }
+    return null;
   };
 
   return (
