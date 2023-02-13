@@ -27,7 +27,9 @@ const MateCard = ({ mate }: MateListType) => {
         {exhibition.posterUrl && (
           <Thumbnail src={exhibition.posterUrl} alt="exhibition-img" />
         )}
-        <FindMateDetail>
+        <FindMateDetail
+          width={exhibition.posterUrl === undefined ? "100%" : "68.4%"}
+        >
           <TitleAndEdit>
             <Title className="title">{title}</Title>
           </TitleAndEdit>
@@ -157,8 +159,8 @@ const Thumbnail = styled.img`
   object-fit: cover;
 `;
 
-const FindMateDetail = styled.div`
-  width: 68.4%;
+const FindMateDetail = styled.div<{ width: string }>`
+  width: ${(props) => props.width};
   padding: 30px;
 `;
 
