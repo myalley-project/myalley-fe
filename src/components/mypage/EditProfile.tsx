@@ -451,7 +451,7 @@ const MyProfileEdit = (props: MyInfoType) => {
             </EyeIconbtn>
           </PasswordWrapper>
           {passwordCheck !== infos.password && (
-            <Notice color={colors.error}>비밀번호가 일치하지 않습니다!</Notice>
+            <Notice color={colors.error}>비밀번호가 일치하지 않습니다</Notice>
           )}
         </InputWrapper>
         <EditBtn type="submit" onClick={editBtn}>
