@@ -3,7 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
-import heartOff from "../assets/icons/heartOff.svg";
+import calendar from "../assets/icons/calendar.svg";
+import gender from "../assets/icons/gender.svg";
+import personOff from "../assets/icons/personOff.svg";
 import profileImg from "../assets/icons/profileImg.svg";
 import { MateRes } from "../types/mate";
 import { BookMarkRes, mateApi, useMateBookMarkApi } from "../apis/mate";
@@ -103,21 +105,21 @@ const Mate = () => {
           </div>
           <div className="flex">
             <ColoredBox>
-              <HeartIcon src={heartOff} alt="" />
+              <Icon src={calendar} alt="달력 아이콘" />
               <div>
                 <h4>관람 예정일</h4>
                 <span>{mateInfo.availableDate}</span>
               </div>
             </ColoredBox>
             <ColoredBox>
-              <HeartIcon src={heartOff} alt="" />
+              <Icon src={gender} alt="성별 아이콘" />
               <div>
                 <h4>메이트 성별</h4>
                 <span>{mateInfo.mateGender}</span>
               </div>
             </ColoredBox>
             <ColoredBox>
-              <HeartIcon src={heartOff} alt="" />
+              <Icon src={personOff} alt="사람 아이콘" />
               <div>
                 <h4>메이트 나이</h4>
                 <span>{mateInfo.mateAge}</span>
@@ -309,7 +311,7 @@ const ColoredBox = styled.div`
   }
 `;
 
-const HeartIcon = styled.img`
+const Icon = styled.img`
   width: 40px;
   margin-right: 30px;
   @media (max-width: 1440px) {
