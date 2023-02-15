@@ -32,14 +32,15 @@ interface ModeType {
 const ExhibitionWrite = (props: ModeType) => {
   const formData = new FormData();
   const navigate = useNavigate();
+  const location = useLocation();
   const refreshTokenApi = useRefreshTokenApi();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [thumbnail, setThumbnail] = useState("");
+  const [userUploadImgFile, setUserUploadImgFile] = useState<File>();
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
-  const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
   const [exhbId, setExhbId] = useState(0);
   const [detail, setDetail] = useState<ExhbCreateRes>({
     title: "",
@@ -54,7 +55,7 @@ const ExhibitionWrite = (props: ModeType) => {
     author: "",
     webLink: "",
   });
-  const location = useLocation();
+  const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
   const id = Number(location.pathname.split("/")[2]);
   const { mode } = props;
 
@@ -72,7 +73,6 @@ const ExhibitionWrite = (props: ModeType) => {
 
   useEffect(() => {
     getEditExhb();
-    // 일반 회원 접근 못하도록
     if (localStorage.getItem("authority") === "ROLE_USER") {
       alert("관리자만 접근 가능한 페이지입니다.");
       navigate("/");
@@ -116,51 +116,66 @@ const ExhibitionWrite = (props: ModeType) => {
     });
   };
 
+  // 이미지 업로드 핸들링 함수
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
-
-    if (e.target.files !== null) {
+    const file = e.target.files;
+    if (file !== null) {
+      setUserUploadImgFile(file[0]);
       setDetail({
         ...detail,
-        fileName: e.target.files[0].name,
+        fileName: file[0].name,
       });
       reader.onload = () => {
-        if (e.target.files !== null) {
-          setThumbnail(URL.createObjectURL(e.target.files[0]));
+        if (file !== null) {
+          setThumbnail(URL.createObjectURL(file[0]));
         }
       };
-      reader.readAsDataURL(e.target.files[0]);
-      formData.append("file", e.target.files[0]);
-      // api 호출
-      postUploadImg(formData);
+      reader.readAsDataURL(file[0]);
+      formData.append("file", file[0]);
     }
   };
 
   // 이미지 업로드 api 호출
   const postUploadImg = async (imgfile: FormData) => {
-    try {
-      const res: AxiosResponse<ExhbUploadImgRes> = await exhbUploadImgApi(
-        imgfile
-      );
-      const { data } = res;
-      setDetail({
-        ...detail,
-        fileName: data.filename,
-        posterUrl: data.s3Url,
-      });
-    } catch (err) {
-      const errorRes = isApiError(err);
-      if (errorRes === "accessToken 만료") {
-        await refreshTokenApi();
-        const reRes = await exhbUploadImgApi(imgfile);
-        const { data } = reRes;
+    if (!userUploadImgFile) {
+      const imgData = { filename: detail.fileName, s3Url: detail.posterUrl };
+      updateExhb(imgData);
+    } else
+      try {
+        const res: AxiosResponse<ExhbUploadImgRes> = await exhbUploadImgApi(
+          imgfile
+        );
+        const { data } = res;
         setDetail({
           ...detail,
           fileName: data.filename,
           posterUrl: data.s3Url,
         });
+        switch (mode) {
+          case "create":
+            postExhb(data);
+            break;
+          case "edit":
+            updateExhb(data);
+            break;
+          default:
+            postExhb(data);
+            break;
+        }
+      } catch (err) {
+        const errorRes = isApiError(err);
+        if (errorRes === "accessToken 만료") {
+          await refreshTokenApi();
+          const reRes = await exhbUploadImgApi(imgfile);
+          const { data } = reRes;
+          setDetail({
+            ...detail,
+            fileName: data.filename,
+            posterUrl: data.s3Url,
+          });
+        }
       }
-    }
   };
 
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,6 +223,67 @@ const ExhibitionWrite = (props: ModeType) => {
   };
 
   // 등록 api 호출
+  const postExhb = async (imgData: ExhbUploadImgRes) => {
+    try {
+      const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi({
+        ...detail,
+        fileName: imgData.filename,
+        posterUrl: imgData.s3Url,
+      });
+      if (res.status === 200) {
+        alert("전시글 등록이 완료되었습니다.");
+        navigate("/exhibition-list");
+      }
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") {
+        await refreshTokenApi();
+        const reRes = await exhbCreateApi(detail);
+        if (reRes.status === 200) {
+          alert("전시글 등록이 완료되었습니다.");
+          navigate("/exhibition-list");
+        }
+      }
+      if (typeof errorRes !== "object") return;
+      const { errorCode } = errorRes;
+      if (errorCode === 400) {
+        alert("빈칸을 다시 확인해주세요");
+      }
+    }
+  };
+
+  // 수정 api 호출
+  const updateExhb = async (imgData: ExhbUploadImgRes) => {
+    try {
+      const res: AxiosResponse<string> = await exhbUpdateApi(id, {
+        ...detail,
+        fileName: imgData.filename,
+        posterUrl: imgData.s3Url,
+      });
+      const { data } = res;
+      if (data === "전시글 정보 수정이 완료되었습니다.") {
+        alert("수정이 완료되었습니다.");
+        navigate(`/exhibition/${id}`);
+      } else alert("예기치 못한 오류입니다. 관리자에게 문의하세요.");
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") {
+        await refreshTokenApi();
+        const reRes = await exhbUpdateApi(id, detail);
+        if (reRes.status === 200) {
+          alert("전시글 수정이 완료되었습니다. 메인 페이지로 돌아갑니다.");
+          navigate("/");
+        }
+      }
+      if (typeof errorRes !== "object") return;
+      const { errorCode } = errorRes;
+      if (errorCode === 400) {
+        alert("빈칸을 다시 확인해주세요");
+      }
+    }
+  };
+
+  // 등록하기 버튼 클릭 함수
   const clickSubmitBtn = async () => {
     const regDetail = /^https:\/\//;
     if (detail.title === "") {
@@ -230,65 +306,9 @@ const ExhibitionWrite = (props: ModeType) => {
       alert("전시회 웹페이지 주소를 작성해주세요.");
     } else if (!regDetail.test(detail.webLink)) {
       alert("웹페이지 주소는 'https://'로 시작해야합니다.");
-    } else
-      try {
-        const res: AxiosResponse<ExhbCreateRes> = await exhbCreateApi(detail);
-        if (res.status === 200) {
-          alert("전시글 등록이 완료되었습니다. 메인 페이지로 돌아갑니다.");
-          navigate("/");
-        }
-      } catch (err) {
-        const errorRes = isApiError(err);
-        if (errorRes === "accessToken 만료") {
-          await refreshTokenApi();
-          const reRes = await exhbCreateApi(detail);
-          if (reRes.status === 200) {
-            alert("전시글 등록이 완료되었습니다. 메인 페이지로 돌아갑니다.");
-            navigate("/");
-          }
-        }
-        if (typeof errorRes !== "object") return;
-        const { errorCode } = errorRes;
-        if (errorCode === 400) {
-          alert("빈칸을 다시 확인해주세요");
-        }
-      }
-  };
-
-  // 수정 api 호출
-  const clickEditBtn = async () => {
-    const regDetail = /^https:\/\//;
-    if (detail.title === "") {
-      alert("제목을 입력해주세요.");
-    } else if (detail.type === "") {
-      alert("전시 타입을 선택해주세요.");
-    } else if (detail.status === "") {
-      alert("전시 관람여부를 선택해주세요.");
-    } else if (detail.duration === "") {
-      alert("전시 일정을 선택해주세요.");
-    } else if (thumbnail === "") {
-      alert("전시 포스터를 등록해주세요.");
-    } else if (detail.space === "") {
-      alert("전시 장소를 입력해주세요.");
-    } else if (detail.content === "") {
-      alert("전시 내용을 작성해주세요.");
-    } else if (detail.author === "") {
-      alert("작가정보를 작성해주세요.");
-    } else if (detail.webLink === "") {
-      alert("전시회 웹페이지 주소를 작성해주세요.");
-    } else if (!regDetail.test(detail.webLink)) {
-      alert("웹페이지 주소는 'https://'로 시작해야합니다.");
-    } else
-      try {
-        const res: AxiosResponse<string> = await exhbUpdateApi(id, detail);
-        const { data } = res;
-        if (data === "전시글 정보 수정이 완료되었습니다.") {
-          alert("수정이 완료되었습니다.");
-          navigate(`/exhibition/${id}`);
-        } else alert("예기치 못한 오류입니다. 관리자에게 문의하세요.");
-      } catch (err) {
-        isApiError(err);
-      }
+    } else formData.append("file", userUploadImgFile!);
+    // 이미지 등록 함수 호출
+    await postUploadImg(formData);
   };
 
   return (
@@ -391,11 +411,13 @@ const ExhibitionWrite = (props: ModeType) => {
             accept="image/jpeg,image/jpg,image/png"
           />
           {thumbnail && (
-            <img
-              src={thumbnail}
-              alt="thumbnail"
-              style={{ maxWidth: "500px", marginTop: "10px" }}
-            />
+            <div>
+              <img
+                src={thumbnail}
+                alt="thumbnail"
+                style={{ maxWidth: "500px", marginTop: "10px" }}
+              />
+            </div>
           )}
         </OptionWrapper>
         <OptionWrapper>
@@ -444,7 +466,7 @@ const ExhibitionWrite = (props: ModeType) => {
             variant="primary"
             size="large"
             type="button"
-            onClick={clickEditBtn}
+            onClick={clickSubmitBtn}
           >
             수정하기
           </SubmitBtn>
