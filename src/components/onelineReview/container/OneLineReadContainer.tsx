@@ -38,16 +38,12 @@ const OneLineReadContainer = ({
     }
   });
 
-  const {
-    isLoading,
-    isError,
-    error,
-    data,
-  }: UseQueryResult<OnelineReviewReadType, Error> = useQuery({
-    queryKey: ["simpleReviews", { page: pages, orderType }],
-    queryFn: () =>
-      oneLineReviewApis.getReviews(Number(id), pages.selected, orderType),
-  });
+  const { isError, error, data }: UseQueryResult<OnelineReviewReadType, Error> =
+    useQuery({
+      queryKey: ["simpleReviews", { page: pages, orderType }],
+      queryFn: () =>
+        oneLineReviewApis.getReviews(Number(id), pages.selected, orderType),
+    });
 
   if (isError) return <div>에러가 발생했습니다. {error.message}</div>;
 
@@ -61,7 +57,7 @@ const OneLineReadContainer = ({
         handleReviewModal={handleReviewModal}
       />
       <OnelineDisplay>
-        {(data?.pageInfo.totalElement as number) > 0 ? (
+        {data &&
           data?.simpleInfo.map((each) => (
             <OnelineCard
               key={each.id}
@@ -73,10 +69,7 @@ const OneLineReadContainer = ({
               rate={each.rate}
               content={each.content}
             />
-          ))
-        ) : (
-          <NoList notice="아직 작성된 한 줄 리뷰가 없습니다" />
-        )}
+          ))}
       </OnelineDisplay>
       {data?.pageInfo ? (
         <Pagination

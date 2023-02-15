@@ -16,18 +16,14 @@ import arrowLeft from "../assets/icons/arrowLeft.svg";
 import arrowRight from "../assets/icons/arrowRight.svg";
 
 interface CalendarProps {
-  selectedDate: Date | null;
+  selectedDate: Date;
   handleSelectedDate: (date: string) => void;
 }
 
-const Calender = ({
-  selectedDate = null,
-  handleSelectedDate,
-}: CalendarProps) => {
-  const [showedMonth, setShowedMonth] = useState<Date>(new Date());
-  const initialDate = !selectedDate ? new Date() : selectedDate;
+const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
+  const [showedMonth, setShowedMonth] = useState<Date>(selectedDate);
   const [selectedDayNumber, setSelectedDayNumber] = useState(
-    initialDate.getDate()
+    selectedDate.getDate()
   );
 
   const calendarDays = useMemo(
@@ -35,13 +31,18 @@ const Calender = ({
     [showedMonth]
   );
 
+  useEffect(() => {
+    setShowedMonth(selectedDate);
+    setSelectedDayNumber(selectedDate.getDate());
+  }, [selectedDate, setShowedMonth]);
+
   const clickArrowLeft = () => {
     const prevDate = subMonths(showedMonth, 1);
-    setShowedMonth(prevDate);
+    handleSelectedDate(format(prevDate, "yyyy-MM-dd"));
   };
   const clickArrowRight = () => {
     const nextDate = addMonths(showedMonth, 1);
-    setShowedMonth(nextDate);
+    handleSelectedDate(format(nextDate, "yyyy-MM-dd"));
   };
 
   const clickCalendarDay = (e: React.SyntheticEvent<HTMLDivElement>) => {
