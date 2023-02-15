@@ -48,7 +48,14 @@ const ReviewSearchBar = ({
         </p>
       )}
       <Searchbar>
-        <SearchBar placeholder="검색" width="277px" />
+        <form
+          onSubmit={(e: React.FormEvent) => {
+            e.preventDefault();
+            return alert("아직 준비중인 기능입니다.");
+          }}
+        >
+          <SearchBar placeholder="검색" width="277px" />
+        </form>
         <Button onClick={handleReviewModal} variant="primary" size="large">
           리뷰 등록
         </Button>
@@ -93,6 +100,7 @@ const ReviewSelector = styled.div`
     font-weight: 700;
     font-size: 14px;
     border: 0;
+    cursor: pointer;
     &:is(:hover, :focus) {
       color: ${theme.colors.greys100};
     }
@@ -137,6 +145,7 @@ const ButtonItems = styled.div`
     font-weight: 500;
     font-size: 14px;
     border: 0;
+    cursor: pointer;
     &:is(:hover, :focus) {
       color: ${theme.colors.greys100};
     }

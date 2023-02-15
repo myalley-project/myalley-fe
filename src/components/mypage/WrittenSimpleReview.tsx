@@ -32,8 +32,6 @@ const WrittenSimpleReview = () => {
     queryFn: () => getSimpleReview(pages.selected),
   });
 
-  if (isLoading) return <div>...loading</div>;
-
   if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
