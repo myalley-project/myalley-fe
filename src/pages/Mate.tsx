@@ -19,7 +19,7 @@ import CommentList, {
   TextArea,
 } from "../components/mate/CommentList";
 
-// 메이트 모집글 상세페이지_박예선_23.02.10
+// 메이트 모집글 상세페이지_박예선_23.02.14
 const Mate = () => {
   const navigate = useNavigate();
   const mateBookMarkApi = useMateBookMarkApi();
@@ -103,7 +103,7 @@ const Mate = () => {
               </div>
             </div>
           </div>
-          <div className="flex">
+          <ColoredBoxContainer>
             <ColoredBox>
               <Icon src={calendar} alt="달력 아이콘" />
               <div>
@@ -125,7 +125,7 @@ const Mate = () => {
                 <span>{mateInfo.mateAge}</span>
               </div>
             </ColoredBox>
-          </div>
+          </ColoredBoxContainer>
           <div>
             <SubTitle type="greys90" marginTop={50}>
               메이트 설명글
@@ -254,6 +254,9 @@ const MateContentContainer = styled.div`
     display: flex;
     margin-top: 50px;
   }
+  @media (max-width: 624px) {
+    padding: 20px;
+  }
 `;
 
 const Title = styled.div<{
@@ -269,9 +272,16 @@ const Title = styled.div<{
   line-height: ${(props) => `${props.lineHight}px`};
 `;
 
+const ColoredBoxContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 10px 2vw;
+  margin-top: 50px;
+`;
+
 const ColoredBox = styled.div`
   display: flex;
-  margin: 50px 30px 0 0;
   padding: 30px;
   background-color: ${theme.colors.secondary5};
   border-radius: 16px;
@@ -290,7 +300,6 @@ const ColoredBox = styled.div`
     line-height: 22px;
   }
   @media (max-width: 1440px) {
-    margin-right: 2.08vw;
     padding: 2.08vw;
     h4,
     span {
@@ -298,7 +307,7 @@ const ColoredBox = styled.div`
     }
   }
   @media (max-width: 1064px) {
-    padding: 15px;
+    padding: 22px;
   }
   @media (max-width: 624px) {
     h4,
