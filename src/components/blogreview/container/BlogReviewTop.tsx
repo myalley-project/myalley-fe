@@ -42,15 +42,16 @@ const BlogReviewTop = ({
 
   const deleteReviewMutation = useMutation({
     mutationFn: () => blogReviewApis.deleteReview(blogReviewId),
+    onSuccess: () => {
+      alert("삭제되었습니다.");
+      navigate("/blogreview-list");
+    },
   });
 
   const handleDeleteReview = () => {
-    deleteReviewMutation.mutate();
-    alert("삭제되었습니다.");
-    navigate("/blogreview-list");
+    if (window.confirm("정말로 삭제하시겠습니까?"))
+      deleteReviewMutation.mutate();
   };
-
-  if (isLoading) return <div>...loading</div>;
 
   if (isError) return <div>에러가 발생했습니다.</div>;
 

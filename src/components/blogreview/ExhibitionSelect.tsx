@@ -29,7 +29,9 @@ const ExhibitionSelect = ({
     <SubTitle text="전시회" />
     {selectedExhibitonInfo.url !== "" ? (
       <SelectedExhibitionImage>
-        <img src={selectedExhibitonInfo.url} alt="선택된 전시회 이미지" />
+        <div className="imageContainer">
+          <img src={selectedExhibitonInfo.url} alt="선택된 전시회 이미지" />
+        </div>
         <div>
           <Button variant="primary" size="small">
             {selectedExhibitonInfo.status}
@@ -73,29 +75,43 @@ const ExhibitionButton = styled.div`
 
 const SelectedExhibitionImage = styled.div`
   position: relative;
-  & > img {
-    width: 280px;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  &:is(:hover, :focus) {
+    .imageContainer {
+      filter: brightness(60%);
+      transition: all 0.5s ease-in-out;
+    }
+    .imageContainer + div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      position: absolute;
+      inset: 50% 0 0 50%;
+      transform: translate(-50%, -50%);
+      color: ${theme.colors.white100};
+      text-align: center;
+      & > h3 {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      & > p {
+        font-weight: 400;
+        font-size: 12px;
+      }
+    }
   }
-  & > img + div {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    position: absolute;
-    inset: 50% 0 0 50%;
-    transform: translate(-50%, -50%);
-    color: ${theme.colors.white100};
-    text-align: center;
-    & > h3 {
-      font-weight: 700;
-      font-size: 14px;
+  .imageContainer {
+    height: 400px;
+    & > img {
+      width: 280px;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
     }
-    & > p {
-      font-weight: 400;
-      font-size: 12px;
-    }
+  }
+  .imageContainer + div {
+    display: none;
   }
 `;
 

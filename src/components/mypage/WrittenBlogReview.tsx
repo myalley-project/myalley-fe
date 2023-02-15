@@ -27,8 +27,6 @@ const WrittenBlogReview = () => {
     queryFn: () => getBlogReview(pages.selected),
   });
 
-  if (isLoading) return <div />;
-
   return (
     <Container>
       <CardWrapper>

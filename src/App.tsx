@@ -44,7 +44,7 @@ const App = () => (
       <Route path="/blogreview-list" element={<BlogReviewList />} />
       <Route path="/blogreview-write" element={<BlogReviewWrite />} />
       <Route path="/blogreview-edit" element={<BlogReviewUpdate />} />
-      <Route path="/blogreview" element={<BlogReview />} />
+      <Route path="/blog/:id" element={<BlogReview />} />
     </Routes>
     <ReactQueryDevtools />
     <Footer />

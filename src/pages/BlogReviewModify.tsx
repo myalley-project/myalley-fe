@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
+import { format } from "date-fns";
 import { useLocation, useParams } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
@@ -309,8 +310,7 @@ const BlogReviewUpdate = () => {
       setDisplayImage(newImageArray);
     }
   }
-
-  if (isLoading) return <div>...loading</div>;
+  const pathDate = data?.createdAt ? new Date(data?.createdAt) : new Date();
 
   if (isError) return <div>에러가 발생했습니다.</div>;
 
@@ -327,7 +327,7 @@ const BlogReviewUpdate = () => {
           <div>
             <SubTitle text="관람일" />
             <Calender
-              selectedDate={new Date()}
+              selectedDate={pathDate}
               handleSelectedDate={setSelectedDate}
             />
           </div>

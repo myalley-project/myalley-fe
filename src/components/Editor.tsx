@@ -144,6 +144,7 @@ const FormBox = styled.div`
     border: 1px solid ${theme.colors.greys40};
     border-radius: 30px;
     color: ${theme.colors.greys60};
+    cursor: pointer;
   }
   & > input {
     display: none;
