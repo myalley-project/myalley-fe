@@ -6,7 +6,7 @@ import SearchBar from "../atom/Searchbar";
 
 interface ReviewSearchbarProps {
   setFilter: (state: "oneline" | "blog") => void;
-  setOrderType: (state: "Recent" | "ViewCount") => void;
+  setOrderType: (state: "Recent" | "StarScore" | "ViewCount") => void;
   handleReviewModal: () => void;
   filter: "oneline" | "blog";
   totalElement: number;
@@ -48,7 +48,14 @@ const ReviewSearchBar = ({
         </p>
       )}
       <Searchbar>
-        <SearchBar placeholder="검색" width="277px" />
+        <form
+          onSubmit={(e: React.FormEvent) => {
+            e.preventDefault();
+            return alert("아직 준비중인 기능입니다.");
+          }}
+        >
+          <SearchBar placeholder="검색" width="277px" />
+        </form>
         <Button onClick={handleReviewModal} variant="primary" size="large">
           리뷰 등록
         </Button>
@@ -60,9 +67,15 @@ const ReviewSearchBar = ({
         최근순
       </button>
       <Spliter />
-      <button onClick={() => setOrderType("ViewCount")} type="button">
-        별점순
-      </button>
+      {filter === "oneline" ? (
+        <button onClick={() => setOrderType("StarScore")} type="button">
+          별점순
+        </button>
+      ) : (
+        <button onClick={() => setOrderType("ViewCount")} type="button">
+          조회수순
+        </button>
+      )}
     </ButtonItems>
   </Container>
 );
@@ -87,6 +100,7 @@ const ReviewSelector = styled.div`
     font-weight: 700;
     font-size: 14px;
     border: 0;
+    cursor: pointer;
     &:is(:hover, :focus) {
       color: ${theme.colors.greys100};
     }
@@ -131,6 +145,7 @@ const ButtonItems = styled.div`
     font-weight: 500;
     font-size: 14px;
     border: 0;
+    cursor: pointer;
     &:is(:hover, :focus) {
       color: ${theme.colors.greys100};
     }

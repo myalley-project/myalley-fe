@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
+import { theme } from "../styles/theme";
 import { Exhibition, FilterType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
-// 전시회 목록 페이지 컴포넌트_박예선_23.02.01
+// 전시회 목록 페이지 컴포넌트_박예선_23.02.10
 const ExhibitionList = () => {
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -46,7 +47,9 @@ const ExhibitionList = () => {
 
   return (
     <ExhibitionListContainer className="flex">
-      <h1>전시회</h1>
+      <TitleContainer>
+        <h1>전시회</h1>
+      </TitleContainer>
       <Filters
         selectedStatus={selectedStatus}
         setSelectedStatus={setSelectedStatus}
@@ -65,14 +68,9 @@ const ExhibitionListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  max-width: 1440px;
   margin: auto;
+  padding: 0 40px;
   font-size: 14px;
-  h1 {
-    margin: 50px 0;
-    font-size: 28px;
-    font-weight: 700;
-  }
   &.flex,
   .flex {
     display: flex;
@@ -80,11 +78,30 @@ const ExhibitionListContainer = styled.div`
   .space-between {
     justify-content: space-between;
   }
-  .border {
-    border: 1px solid ${(props) => props.theme.colors.greys40};
-    border-radius: 30px;
+  @media (max-width: 1280px) {
+    padding: 0 20px;
   }
-  .none {
-    display: none;
+  @media (max-width: 1064px) {
+    padding: 0 16px;
+  }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  margin-bottom: 50px;
+  padding: 80px 0;
+  border-radius: 0;
+  background-color: #958da50d;
+  h1 {
+    color: ${theme.colors.primry70};
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 52px;
+  }
+  @media (max-width: 1440px) {
+    margin-bottom: 3.4vw;
+    padding: 5.5vw 0;
   }
 `;

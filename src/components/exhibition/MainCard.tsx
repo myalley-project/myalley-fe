@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -21,6 +21,8 @@ export interface MainCardType {
   webLink: string;
   id: number;
   bookmarked: boolean;
+  type: string;
+  viewCount: number;
 }
 const MainCard = ({
   posterUrl,
@@ -31,10 +33,13 @@ const MainCard = ({
   webLink,
   id,
   bookmarked,
+  type,
+  viewCount,
 }: MainCardType) => {
   const auth = localStorage.getItem("authority");
   const navigate = useNavigate();
   const refreshTokenApi = useRefreshTokenApi();
+  const [imgHeight, setImgHeight] = useState(52);
 
   // 전시글 삭제
   const handleDelete = async () => {
@@ -55,6 +60,7 @@ const MainCard = ({
 
   // 북마크 버튼
   const toggleBookMark = async () => {
+    if (!localStorage.getItem("accessToken")) return;
     try {
       const res: AxiosResponse<BookMarkRes> = await exhbBookMarkApi(id);
       const { msg } = res.data;
@@ -71,21 +77,42 @@ const MainCard = ({
       if (typeof errorRes !== "object") return;
       const { errorCode, errorMsg } = errorRes;
       if (errorCode === 404 && errorMsg === "회원 정보 없음") {
-        alert("북마크 추가는 로그인 후 가능합니다.");
+        alert("유효하지 않은 토큰입니다. 다시 로그인해주세요.");
       }
     }
   };
 
   // 공유하기 버튼
   const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert("주소가 복사되었습니다.");
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => {
+        alert("주소가 복사되었습니다.");
+      })
+      .catch(() => {
+        alert(
+          "주소 복사에 실패했습니다. 다시 시도해주세요. (해당 기능은 현재 크롬에서만 가능합니다.)"
+        );
+      });
   };
 
+  useEffect(() => {
+    const titleHeight =
+      localStorage.getItem("authority") === "ROLE_ADMIN" ? 318 : 258;
+    setTimeout(() => {
+      const height = document.querySelector(".titleHeight")?.clientHeight;
+      setImgHeight(height! + titleHeight);
+    }, 100);
+  }, []);
+
   return (
-    <CardContainer>
+    <CardContainer height={auth === "ROLE_ADMIN" ? "520px" : "462px"}>
       <Card>
-        <PosterImg src={posterUrl} alt="poster-img" />
+        <PosterImg
+          src={posterUrl}
+          alt="poster-img"
+          style={{ height: imgHeight }}
+        />
         <InfoContainer>
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
@@ -93,7 +120,13 @@ const MainCard = ({
               <Button onClick={handleDelete}>삭제</Button>
             </EditButtons>
           )}
-          <Title>{title}</Title>
+          <ViewCount>
+            <dt>조회수</dt>
+            <dd>{viewCount}</dd>
+          </ViewCount>
+          <TitleContainer>
+            <Title className="titleHeight">{title}</Title>
+          </TitleContainer>
           <div style={{ padding: "30px 0" }}>
             <InfoDetail>
               <dt>일정</dt>
@@ -103,10 +136,18 @@ const MainCard = ({
               <dt>장소</dt>
               <dd>{place}</dd>
             </InfoDetail>
+            <InfoDetail>
+              <dt>전시 유형</dt>
+              <dd>{type}</dd>
+            </InfoDetail>
             <InfoDetail style={{ marginBottom: "0px" }}>
               <dt>관람비용</dt>
               <dd>
-                {charge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+                {charge > 0
+                  ? `${charge
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                  : "무료"}
               </dd>
             </InfoDetail>
           </div>
@@ -114,9 +155,11 @@ const MainCard = ({
             <WebLink href={webLink} target="_blank" rel="noopener noreferrer">
               사이트 방문
             </WebLink>
-            <BookMarkBtn>
-              <BookMark onClick={toggleBookMark} marked={bookmarked} />
-            </BookMarkBtn>
+            {localStorage.getItem("authority") !== "ROLE_ADMIN" && (
+              <BookMarkBtn>
+                <BookMark onClick={toggleBookMark} marked={bookmarked} />
+              </BookMarkBtn>
+            )}
             <ShareBtn type="button" onClick={copyLink} />
           </Footer>
         </InfoContainer>
@@ -127,10 +170,11 @@ const MainCard = ({
 
 export default MainCard;
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ height: string }>`
   display: flex;
   width: 100%;
-  height: 458px;
+  height: fit-content;
+  padding: 50px 0;
   align-items: center;
   justify-content: center;
   border-radius: 0px;
@@ -143,10 +187,14 @@ const Card = styled.div`
   width: 83vw;
   border: 1px solid rgba(127, 103, 190, 0.3);
   background-color: ${theme.colors.white100};
+  box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
 const PosterImg = styled.img`
-  width: 278px;
+  width: 380px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  object-fit: cover;
 `;
 
 const InfoContainer = styled.div`
@@ -166,12 +214,17 @@ const EditButtons = styled.div`
 const Button = styled.button`
   padding: 0;
   color: ${theme.colors.greys60};
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   &:hover {
     font-weight: 700;
     color: ${theme.colors.greys100};
   }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const Title = styled.h1`
@@ -188,7 +241,7 @@ const InfoDetail = styled.dl`
   display: flex;
   width: fit-content;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
   color: ${theme.colors.greys80};
   text-align: left;
@@ -200,6 +253,16 @@ const InfoDetail = styled.dl`
   }
   dd {
     font-weight: 400;
+  }
+`;
+
+const ViewCount = styled(InfoDetail)`
+  margin-left: auto;
+  margin-bottom: 8px;
+  font-size: 14px;
+  dt {
+    width: 38px;
+    margin-right: 8px;
   }
 `;
 
@@ -221,6 +284,7 @@ const WebLink = styled.a`
   padding: 4px 10px;
   border-radius: 10px;
   line-height: 24px;
+  font-size: 16px;
   text-decoration: none;
   color: ${theme.colors.primry70};
   &:hover {

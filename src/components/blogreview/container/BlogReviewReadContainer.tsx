@@ -1,21 +1,22 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { useQuery, UseQueryResult } from "react-query";
 import styled from "styled-components";
 import { OnelineReviewReadType } from "../../../types/oneLineReview";
 import ReviewSearchBar from "../../reviewCommon/ReviewSearchBar";
 import Pagination from "../../Pagination";
-import BlogReviewCard from "../presentation/BlogReviewCard";
+import BlogReviewCard from "../../blogReviewList/ReviewCard";
 import blogReviewApis from "../../../apis/blogReviewApis";
 import { BlogReviewResponse } from "../../../types/blogReview";
+import NoList from "../../NoList";
 
-type OrderType = "Recent" | "ViewCount";
+type OrderType = "Recent" | "ViewCount" | "StarScore";
 
 interface BlogReadProps {
   id: string;
   orderType: OrderType;
   filter: "oneline" | "blog";
   setFilter: Dispatch<SetStateAction<"oneline" | "blog">>;
-  setOrderType: Dispatch<SetStateAction<"Recent" | "ViewCount">>;
+  setOrderType: Dispatch<SetStateAction<"Recent" | "StarScore" | "ViewCount">>;
   handleReviewModal: () => void;
 }
 
@@ -28,15 +29,21 @@ const BlogReviewReadContainer = ({
   handleReviewModal,
 }: BlogReadProps) => {
   const [pages, setPages] = useState({
-    started: 0,
-    selected: 0,
+    started: 1,
+    selected: 1,
+  });
+
+  useEffect(() => {
+    if (orderType === "StarScore") {
+      setOrderType("Recent");
+    }
   });
 
   const { isLoading, isError, error, data } = useQuery<
     BlogReviewResponse,
     Error
   >({
-    queryKey: ["blogReviews"],
+    queryKey: ["blogReviews", { pages, orderType }],
     queryFn: () =>
       blogReviewApis.readExhibitionReviews(
         Number(id),
@@ -44,8 +51,6 @@ const BlogReviewReadContainer = ({
         orderType
       ),
   });
-
-  if (isLoading) return <div>...loading</div>;
 
   if (isError) return <div>에러가 발생했습니다. {error.message}</div>;
 
@@ -60,17 +65,23 @@ const BlogReviewReadContainer = ({
       />
       <Container>
         <CardWrapper>
-          {data?.blogInfo.map((each) => (
-            <BlogReviewCard
-              key={each.id}
-              id={each.id}
-              title={each.title}
-              writer={each.writer}
-              viewDate={each.viewDate}
-              viewCount={each.viewCount}
-              imageInfo={each.imageInfo}
-            />
-          ))}
+          {(data?.pageInfo.totalElement as number) > 0 ? (
+            data?.blogInfo.map((each) => (
+              <BlogReviewCard
+                key={each.id}
+                id={each.id}
+                title={each.title}
+                writer={each.writer}
+                viewDate={each.viewDate}
+                viewCount={each.viewCount}
+                imageInfo={each.imageInfo}
+              />
+            ))
+          ) : (
+            <FlexCenter>
+              <NoList notice="아직 작성된 블로그 리뷰가 없습니다." />
+            </FlexCenter>
+          )}
         </CardWrapper>
         {data?.pageInfo ? (
           <Pagination
@@ -88,13 +99,16 @@ export default BlogReviewReadContainer;
 
 const Container = styled.div`
   width: 62.5vw;
-  margin-inline: auto;
 `;
 
 const CardWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, 380px);
+  grid-template-columns: repeat(3, 380px);
   grid-template-rows: auto;
   gap: 30px;
-  margin-bottom: 120px;
+  margin-bottom: 30px;
+`;
+
+const FlexCenter = styled.div`
+  grid-column: 2;
 `;

@@ -1,11 +1,10 @@
 import React from "react";
-import { useQuery } from "react-query";
-import Carousel from "../components/Carousel";
+import NewCarousel from "../components/main/NewCarousel";
 import MainArticle from "../components/main/MainArticle";
 
 const Main = () => (
   <div>
-    <Carousel />
+    <NewCarousel />
     <MainArticle />
   </div>
 );

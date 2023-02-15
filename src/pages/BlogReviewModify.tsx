@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
+import { format } from "date-fns";
 import { useLocation, useParams } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
@@ -22,6 +23,7 @@ import returnkeys from "../utils/returnkeys";
 import xBtn from "../assets/icons/xBtn.svg";
 import Modal from "../Modal";
 import ExhibitionChoice from "../components/ExhibitionChoice";
+import { ImageInfo } from "../types/blogReview";
 
 // 차후 reducer로 일괄 조절예정
 // interface BlogReviewPost {a
@@ -160,8 +162,9 @@ const BlogReviewUpdate = () => {
   const [transportation, setTransportation] = useState("");
   const [revisit, setRevisit] = useState("");
   const [contents, setContents] = useState("");
-  const [deleteimages, setDeleteImages] = useState<string[] | []>([]);
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
+  const [displayImage, setDisplayImage] = useState<ImageInfo[] | []>([]);
+  const [deleteimages, setDeleteImages] = useState<string[] | []>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedExhb, setSelectedExhb] = useState({
     url: "",
@@ -206,9 +209,11 @@ const BlogReviewUpdate = () => {
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogDetail"],
     queryFn: () => blogReviewApis.readDetailBlogReview(location.state),
+    onSuccess: (wholeData) => {
+      setDisplayImage(wholeData.imageInfo);
+    },
   });
   const keys = returnkeys(data?.imageInfo.length as number);
-  const imagesArray = data?.imageInfo ?? [];
   const times: string[] = data?.time.split("-") ?? ["00시", "24시"];
 
   const handleTitleInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -292,17 +297,20 @@ const BlogReviewUpdate = () => {
     }
   };
 
-  function deleteExistingImg(imgInfo: { id: string; url: string }) {
+  function deleteExistingImg(imgInfo: ImageInfo) {
     if (data?.imageInfo) {
       for (let index = 0; index < data.imageInfo.length; index += 1) {
         if (data.imageInfo[index].url === imgInfo.url) {
           setDeleteImages([...deleteimages, imgInfo.id]);
         }
       }
+      const newImageArray = displayImage.filter(
+        (each) => each.id !== imgInfo.id
+      );
+      setDisplayImage(newImageArray);
     }
   }
-
-  if (isLoading) return <div>...loading</div>;
+  const pathDate = data?.createdAt ? new Date(data?.createdAt) : new Date();
 
   if (isError) return <div>에러가 발생했습니다.</div>;
 
@@ -318,7 +326,10 @@ const BlogReviewUpdate = () => {
           />
           <div>
             <SubTitle text="관람일" />
-            <Calender handleSelectedDate={setSelectedDate} />
+            <Calender
+              selectedDate={pathDate}
+              handleSelectedDate={setSelectedDate}
+            />
           </div>
         </ExhibitionPicker>
         <SelectorConatiner>
@@ -396,7 +407,7 @@ const BlogReviewUpdate = () => {
             <SubTitle text="현재 저장된 이미지" />
             <PreviewContainer>
               {data
-                ? data.imageInfo.map((each, index) => (
+                ? displayImage.map((each, index) => (
                     <Preview key={keys[index]}>
                       <PreviewImage src={each.url} alt="현재 투고된 이미지" />
                       <XButton onClick={() => deleteExistingImg(each)}>

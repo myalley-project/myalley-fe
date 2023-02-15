@@ -34,7 +34,7 @@ export interface BlogReviewCardProps {
   };
 }
 
-type ImageInfo = {
+export type ImageInfo = {
   id: string;
   url: string;
 };
@@ -46,7 +46,7 @@ export interface BlogReviewInfo {
   viewDate: string;
   viewCount: number;
   imageInfo: {
-    id: string;
+    id: number;
     url: string;
   };
 }
@@ -90,5 +90,6 @@ export interface BlogReviewDetailResponse {
     posterUrl: string;
     duration: string;
     space: string;
+    type: string;
   };
 }

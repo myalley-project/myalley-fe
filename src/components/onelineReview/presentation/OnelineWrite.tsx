@@ -39,11 +39,11 @@ const OnelineWrite = ({
   <Container>
     <SelectContainer>
       <SelectForm>
-        <p>생년 월일</p>
+        <p>관람일</p>
         <SelectboxContainer>
           <Selectbox
-            placeholder="1950"
-            options={getYearArray()}
+            placeholder={new Date().getFullYear().toString()}
+            options={getYearArray().reverse()}
             onClick={yearHandler}
             name="년도"
             width="130px"
@@ -109,6 +109,7 @@ const OnelineWrite = ({
       <SelectForm>
         <p>한 줄 리뷰 작성</p>
         <SimpleInput
+          placeholder="내용을 입력해주세요"
           inputlength={state.content.length}
           onChangeHandler={contentHandler}
         />

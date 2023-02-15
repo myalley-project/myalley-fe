@@ -40,7 +40,7 @@ const CommonOnly = (props: CommonOnlyType) => {
     }
   };
 
-  // 닉네임 유효성검사_박예선_23.01.09
+  // 닉네임 유효성검사_박예선_23.02.07
   const handleNicknameValid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const rNickname = /^[가-힣|a-z|A-Z|0-9|]{2,10}$/;
@@ -52,7 +52,7 @@ const CommonOnly = (props: CommonOnlyType) => {
       const isNicknameValid = rNickname.test(value);
       setValids({
         ...valids,
-        nickname: isNicknameValid,
+        nickname: value === "" ? null : isNicknameValid,
       });
     }, 800);
     setTimer(newTimer);
@@ -95,7 +95,7 @@ const CommonOnly = (props: CommonOnlyType) => {
         <BirthDropDownContainer>
           <Selectbox
             placeholder="년도"
-            options={getYearArray()}
+            options={getYearArray().reverse()}
             width="100px"
             name="year"
             onClick={(e, name) => {

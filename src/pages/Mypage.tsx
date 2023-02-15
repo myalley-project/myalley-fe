@@ -1,18 +1,20 @@
 import React, { useCallback, useState, useEffect } from "react";
-import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
-import { useLocation } from "react-router-dom";
-import { myInfoApi, MyInfoRes } from "../apis/member";
+import styled from "styled-components";
 import MyInfoCard from "../components/mypage/MyInfoCard";
 import EditProfile from "../components/mypage/EditProfile";
 import WrittenPosts from "../components/mypage/WrittenPosts";
 import BookMarkedPosts from "../components/mypage/BookMarkedPosts";
+import { getMyInfoApi, MyInfoRes } from "../apis/member";
 import isApiError from "../utils/isApiError";
-import useGetNewTokenApi from "../apis/useGetRefreshToken";
+import LikedBlogReviewContainer from "../components/mypage/container/LikedBlogReviewContainer";
+import getNewTokenApi from "../apis/getRefreshToken";
+import removeLocalStorageItem from "../utils/removeLocalStorageItem";
 
 const Mypage = () => {
   const location = useLocation();
-  const getNewTokenApi = useGetNewTokenApi;
+  const navigate = useNavigate();
   const { pathname } = location;
   const [infoData, setInfoData] = useState<MyInfoRes>({
     memberId: 0,
@@ -29,26 +31,35 @@ const Mypage = () => {
   const getMyInfo = useCallback(async () => {
     const refreshToken = localStorage.getItem("refreshToken");
     try {
-      const res: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
-      if (!res) return;
+      const res: AxiosResponse<MyInfoRes> = await getMyInfoApi();
       const { data } = res;
       setInfoData(data);
       localStorage.setItem("memberImage", data.memberImage);
     } catch (err) {
       const errorRes = isApiError(err);
+      if (!errorRes) {
+        removeLocalStorageItem();
+        navigate("/login");
+      }
       if (errorRes === "accessToken 만료") {
-        await getNewTokenApi(refreshToken);
-        const reRes: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
-        if (!reRes) return;
+        const hasRefreshToken = await getNewTokenApi(refreshToken);
+        const reRes: AxiosResponse<MyInfoRes> = await getMyInfoApi();
         const refreshData = reRes.data;
         setInfoData(refreshData);
       }
     }
-  }, [getNewTokenApi]);
+  }, [navigate]);
 
   useEffect(() => {
     getMyInfo();
-  }, [getMyInfo]);
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인 후 이용 가능한 페이지입니다.");
+      navigate("/");
+    } else if (localStorage.getItem("authority") === "ROLE_ADMIN") {
+      alert("일반 회원만 접근이 가능한 페이지입니다.");
+      navigate("/");
+    }
+  }, [getMyInfo, navigate]);
 
   return (
     <MypageContainer>
@@ -56,6 +67,7 @@ const Mypage = () => {
       {pathname === "/mypage/edit" && <EditProfile infoData={infoData} />}
       {pathname === "/mypage/write" && <WrittenPosts />}
       {pathname === "/mypage/bookmark" && <BookMarkedPosts />}
+      {pathname === "/mypage/likes" && <LikedBlogReviewContainer />}
     </MypageContainer>
   );
 };

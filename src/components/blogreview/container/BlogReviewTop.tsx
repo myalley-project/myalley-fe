@@ -1,13 +1,14 @@
 import React from "react";
 import { useMutation, useQuery } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { theme } from "../../../styles/theme";
 import { exhbApi } from "../../../apis/exhibition";
-import MainCard from "../../exhibition/MainCard";
-import Button from "../../atom/Button";
 import blogReviewApis from "../../../apis/blogReviewApis";
+import Button from "../../atom/Button";
+import ExhbCard from "../../mate/ExhbCard";
 
-interface BlogReviewDetailContainerProps {
+interface BlogReviewTopProps {
   id: number;
   memberInfo: {
     memberId: number;
@@ -15,30 +16,42 @@ interface BlogReviewDetailContainerProps {
     memberImage: string;
   };
   blogReviewId: number;
+  exhibitionInfo: {
+    id: number;
+    title: string;
+    posterUrl: string;
+    duration: string;
+    space: string;
+    type: string;
+  };
 }
 
-const BlogReviewDetailContainer = ({
+const BlogReviewTop = ({
   id,
   memberInfo,
+  exhibitionInfo,
   blogReviewId,
-}: BlogReviewDetailContainerProps) => {
+}: BlogReviewTopProps) => {
   const navigate = useNavigate();
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogCard"],
     queryFn: () => exhbApi(id),
   });
+  const exhbData = data?.data;
   const memeberId = localStorage.getItem("memberId") ?? "";
 
   const deleteReviewMutation = useMutation({
     mutationFn: () => blogReviewApis.deleteReview(blogReviewId),
+    onSuccess: () => {
+      alert("삭제되었습니다.");
+      navigate("/blogreview-list");
+    },
   });
 
   const handleDeleteReview = () => {
-    deleteReviewMutation.mutate();
-    navigate("/");
+    if (window.confirm("정말로 삭제하시겠습니까?"))
+      deleteReviewMutation.mutate();
   };
-
-  if (isLoading) return <div>...loading</div>;
 
   if (isError) return <div>에러가 발생했습니다.</div>;
 
@@ -46,15 +59,27 @@ const BlogReviewDetailContainer = ({
     <Container>
       <ButtonGroup>
         <div>
-          <Button variant="text" size="small">
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => navigate("/blogreview-list")}
+          >
             목록
           </Button>
-          <Button variant="text" size="small">
+          {/* <Button
+            variant="text"
+            size="small"
+            onClick={() => alert("준비 중인 기능입니다.")}
+          >
             이전글
           </Button>
-          <Button variant="text" size="small">
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => alert("준비 중인 기능입니다.")}
+          >
             다음글
-          </Button>
+          </Button> */}
         </div>
         <div>
           {String(memberInfo.memberId) === memeberId && (
@@ -75,35 +100,37 @@ const BlogReviewDetailContainer = ({
           )}
         </div>
       </ButtonGroup>
-      {data ? (
-        <MainCard
-          id={data?.data.id}
-          posterUrl={data?.data.posterUrl}
-          title={data?.data.title}
-          duration={data?.data.duration}
-          place={data?.data.space}
-          charge={data?.data.adultPrice}
-          webLink={data?.data.webLink}
-          bookmarked={data?.data.bookmarked as boolean}
+      {exhbData && (
+        <ExhbCard
+          exhbData={{
+            exhibitionId: exhbData.id,
+            exhibitionTitle: exhbData.title,
+            exhibitionSpace: exhbData.space,
+            posterUrl: exhbData.posterUrl,
+            exhibitionDuration: exhbData.duration,
+            type: exhbData.type,
+          }}
         />
-      ) : null}
+      )}
     </Container>
   );
 };
-export default BlogReviewDetailContainer;
+export default BlogReviewTop;
 
 const Container = styled.div`
-  position: relative;
-  width: 1240px;
-  margin-inline: auto;
+  max-width: 1200px;
+  margin: auto;
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
-  align-items: center;
+  button {
+    border: 1px solid ${theme.colors.greys40};
+  }
   & > div {
+    display: flex;
     gap: 10px;
   }
 `;

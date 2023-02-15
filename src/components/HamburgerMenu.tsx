@@ -1,4 +1,6 @@
-import React, { useRef, useState } from "react";
+// eslint-disable-line no-script-url
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import useLogOut from "../apis/logOut";
 import ProfileImg from "../assets/icons/profileImg.svg";
@@ -10,49 +12,80 @@ interface PropsType {
 
 const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
   const logOut = useLogOut();
+  const location = useLocation();
+  const [isLocationKey, setIsLocationKey] = useState(location.key);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
-  const [info, setInfo] = useState({
+  const info = {
     nickname: localStorage.getItem("nickname"),
     memberImage: localStorage.getItem("memberImage")!,
     email: localStorage.getItem("email"),
     authority: localStorage.getItem("authority"),
-  });
-
-  const toggleMenu = () => {
-    if (!menuRef.current) {
-      return;
-    }
-    setIsShowMenu(false);
-    setIsMenuOpen(false);
   };
+
+  const toggleMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    if (!menuRef.current?.contains(target)) {
+      setIsLocationKey(location.key);
+      setIsShowMenu(false);
+      setIsMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLocationKey !== location.key) {
+      setIsShowMenu(false);
+      setIsMenuOpen(false);
+    }
+  }, [location, isLocationKey, setIsShowMenu]);
 
   return (
     <Background>
       {isMenuOpen && (
         <MenuOutSide onClick={toggleMenu}>
           <MenuOutSideWrapper>
-            <MenuContainer ref={menuRef}>
+            <MenuContainer ref={menuRef} className="hamburgermenu">
               {localStorage.getItem("accessToken") ? (
                 <MenuWrapper>
                   <Subtitle>계정</Subtitle>
-                  <MypageArea href="/mypage/edit">
-                    <ProfileWrapper>
-                      <img
-                        src={
-                          info.memberImage === ""
-                            ? ProfileImg
-                            : info.memberImage
-                        }
-                        alt="profile-img"
-                        style={{ width: "40px" }}
-                      />
-                    </ProfileWrapper>
-                    <div>
-                      <Nickname>{info.nickname}</Nickname>
-                      <Email className="email">{info.email}</Email>
-                    </div>
-                  </MypageArea>
+                  {localStorage.getItem("authority") === "ROLE_USER" ? (
+                    <MypageArea href="/mypage/edit">
+                      <ProfileWrapper>
+                        <img
+                          src={
+                            info.memberImage === ""
+                              ? ProfileImg
+                              : info.memberImage
+                          }
+                          alt="profile-img"
+                          style={{ width: "40px" }}
+                        />
+                      </ProfileWrapper>
+                      <div>
+                        <Nickname>{info.nickname}</Nickname>
+                        <Email className="email">{info.email}</Email>
+                      </div>
+                    </MypageArea>
+                  ) : (
+                    <MypageArea as="div" style={{ cursor: "auto" }}>
+                      <ProfileWrapper>
+                        <img
+                          src={
+                            info.memberImage === ""
+                              ? ProfileImg
+                              : info.memberImage
+                          }
+                          alt="profile-img"
+                          style={{ width: "40px" }}
+                        />
+                      </ProfileWrapper>
+                      <div>
+                        <Nickname>{info.nickname}</Nickname>
+                        <Email className="email">{info.email}</Email>
+                      </div>
+                    </MypageArea>
+                  )}
+
                   <LogoutButton type="button" onClick={logOut}>
                     로그아웃
                   </LogoutButton>
@@ -78,7 +111,7 @@ const HamburgerMenu = ({ setIsShowMenu }: PropsType) => {
                     </List>
                   )}
                   {info.authority !== "ROLE_ADMIN" && (
-                    <List as="a" href="/">
+                    <List as="a" href="/blogreview-list">
                       전시회 리뷰
                     </List>
                   )}
@@ -111,10 +144,10 @@ const Background = styled.div`
 `;
 
 const MenuOutSide = styled.div`
-  position: absolute;
-  z-index: 99;
+  position: relative;
+  z-index: 98;
   width: 100vw;
-  height: 100vh;
+  height: 100vw;
 `;
 
 const MenuOutSideWrapper = styled.div`
@@ -122,7 +155,6 @@ const MenuOutSideWrapper = styled.div`
   position: relative;
   width: 100vw;
   max-width: 1440px;
-  height: 100vh;
   margin-inline: auto;
 `;
 
@@ -133,9 +165,10 @@ const MenuContainer = styled.div`
   top: 57px;
   width: 215px;
   padding: 10px;
-  border: 1px solid ${theme.colors.greys40};
+  border: 1px solid ${theme.colors.secondary5};
   border-radius: 10px;
   background-color: ${theme.colors.white100};
+  box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
 const MenuWrapper = styled.div`
@@ -146,7 +179,7 @@ const Subtitle = styled.h2`
   padding-bottom: 5px;
   color: ${theme.colors.greys80};
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 const MypageArea = styled.a`
@@ -165,7 +198,7 @@ const ProfileWrapper = styled.div`
 const Nickname = styled.p`
   color: ${theme.colors.greys90};
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   padding-bottom: 4px;
 `;
 
@@ -183,7 +216,7 @@ const LogoutButton = styled.button`
   padding-left: 10px;
   color: ${theme.colors.greys90};
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
   text-align: left;
   cursor: pointer;
   &:hover {

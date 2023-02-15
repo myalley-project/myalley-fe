@@ -5,15 +5,16 @@ import { theme } from "../../styles/theme";
 interface SimpleInputProps {
   inputlength: number;
   onChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
 }
 
-const SimpleInput = ({ onChangeHandler, inputlength }: SimpleInputProps) => (
+const SimpleInput = ({
+  onChangeHandler,
+  inputlength,
+  placeholder = "내용을 입력해주세요",
+}: SimpleInputProps) => (
   <Container>
-    <input
-      type="text"
-      placeholder="내용을 입력해주세요"
-      onChange={onChangeHandler}
-    />
+    <input type="text" placeholder={placeholder} onChange={onChangeHandler} />
     <InputLegnth inputlength={inputlength}>{inputlength}/60</InputLegnth>
   </Container>
 );
@@ -39,7 +40,7 @@ interface InputProps {
 const InputLegnth = styled.div<InputProps>`
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 5%;
   transform: translateY(-50%);
   color: ${(props) =>
     props.inputlength > 60 ? theme.colors.error : theme.colors.greys60};

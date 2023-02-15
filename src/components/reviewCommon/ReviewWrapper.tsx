@@ -11,7 +11,9 @@ type ReviewFilter = "oneline" | "blog";
 const ReviewWrapper = () => {
   const [simpleReviewModal, setSimpleReviewModal] = useState<boolean>(false);
   const [filter, setFilter] = useState<ReviewFilter>("oneline");
-  const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
+  const [orderType, setOrderType] = useState<
+    "Recent" | "StarScore" | "ViewCount"
+  >("Recent");
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -61,13 +63,4 @@ export default ReviewWrapper;
 const Container = styled.div`
   width: 1200px;
   margin-inline: auto;
-`;
-
-const OnelineDisplay = styled.div`
-  display: flex;
-  flex-flow: column;
-`;
-
-const Button = styled.button`
-  border: 1px solid blue;
 `;

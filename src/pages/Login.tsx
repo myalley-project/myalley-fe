@@ -8,10 +8,11 @@ import CheckLabel from "../components/atom/CheckLabel";
 import { ReactComponent as EyeOff } from "../assets/icons/eyeOff.svg";
 import { ReactComponent as EyeOn } from "../assets/icons/eyeOn.svg";
 import loginApi, { LoginRes } from "../apis/login";
-import { myInfoApi, MyInfoRes } from "../apis/member";
+import { getMyInfoApi, MyInfoRes } from "../apis/member";
 import isApiError from "../utils/isApiError";
+import { alertPreparing } from "../utils/alerts";
 
-// 로그인 컴포넌트_박예선_23.02.01
+// 로그인 컴포넌트_박예선_23.02.08
 const Login = () => {
   const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
@@ -66,11 +67,10 @@ const Login = () => {
     }
   };
 
-  // 로그인 성공 시 회원정보 로컬스토리지 저장 함수_박예선_23.01.25
+  // 로그인 성공 시 회원정보 로컬스토리지 저장 함수_박예선_23.02.08
   const setInfoToLocalStorage = async () => {
     try {
-      const userRes: AxiosResponse<MyInfoRes> | void = await myInfoApi("get");
-      if (!userRes) return;
+      const userRes: AxiosResponse<MyInfoRes> = await getMyInfoApi();
       const { memberId, email, nickname, memberImage, authority } =
         userRes.data;
       localStorage.setItem("memberId", String(memberId));
@@ -105,6 +105,9 @@ const Login = () => {
             className="pw-input"
             value={loginInfo.password}
             onChange={handleInput}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") clickLoginBtn();
+            }}
             spellCheck="false"
           />
           <button type="button" onClick={clickEyeIcon}>
@@ -146,11 +149,11 @@ const Login = () => {
           회원가입
         </Button>
         <div className="find-account">
-          <Link to="/login" onClick={() => alert("준비중인 기능입니다.")}>
+          <Link to="/login" onClick={alertPreparing}>
             비밀번호 찾기
           </Link>
           <div className="line" />
-          <Link to="/login" onClick={() => alert("준비중인 기능입니다.")}>
+          <Link to="/login" onClick={alertPreparing}>
             이메일 찾기
           </Link>
         </div>

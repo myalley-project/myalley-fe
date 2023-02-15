@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, useReducer, useEffect } from "react";
 import styled from "styled-components";
 import { useMutation } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
@@ -160,9 +160,13 @@ const BlogReviewWrite = () => {
     status: "",
   });
   const refreshTokenApi = useRefreshTokenApi();
+  const navigate = useNavigate();
 
   const blogPostMutation = useMutation({
     mutationFn: (formData: FormData) => blogReviewApis.createReview(formData),
+    onSuccess: () => {
+      alert("블로그리뷰가 작성되었습니다.");
+    },
   });
 
   const getExhibitionInfo = (
@@ -256,28 +260,33 @@ const BlogReviewWrite = () => {
     };
     const formData = new FormData();
 
-    if (Object.values(blogInfo).includes("")) {
+    if (!Object.values(blogInfo).includes("")) {
+      formData.append(
+        "blogInfo",
+        new Blob([JSON.stringify(blogInfo)], { type: "application/json" })
+      );
+
+      formData.append(
+        "exhibitionId",
+        new Blob([JSON.stringify(selectedExhb.id)], {
+          type: "application/json",
+        })
+      );
+
+      if (imageFiles !== null) {
+        Array.from(imageFiles).forEach((file) =>
+          formData.append("images", file)
+        );
+      }
+      try {
+        blogPostMutation.mutate(formData);
+        navigate("/blogreview-list");
+      } catch (err) {
+        const errResponese = isApiError(err);
+        if (errResponese === "accessToken 만료") refreshTokenApi();
+      }
+    } else {
       alert("빈 칸으로 남겨진 데이터를 입력해주세요.");
-    }
-
-    formData.append(
-      "blogInfo",
-      new Blob([JSON.stringify(blogInfo)], { type: "application/json" })
-    );
-
-    formData.append(
-      "exhibitionId",
-      new Blob([JSON.stringify(selectedExhb.id)], { type: "application/json" })
-    );
-
-    if (imageFiles !== null) {
-      Array.from(imageFiles).forEach((file) => formData.append("images", file));
-    }
-    try {
-      blogPostMutation.mutate(formData);
-    } catch (err) {
-      const errResponese = isApiError(err);
-      if (errResponese === "accessToken 만료") refreshTokenApi();
     }
   };
 
@@ -293,7 +302,10 @@ const BlogReviewWrite = () => {
           />
           <div>
             <SubTitle text="관람일" />
-            <Calender handleSelectedDate={setSelectedDate} />
+            <Calender
+              selectedDate={new Date()}
+              handleSelectedDate={setSelectedDate}
+            />
           </div>
         </ExhibitionPicker>
         <SelectorConatiner>

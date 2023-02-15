@@ -1,23 +1,13 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
-import { errorAlert } from "../utils/isApiError";
 import { Mate } from "../types/mateList";
 import { PageInfo } from "../types/pageInfo";
 import { Exhibition } from "../types/exhbList";
 
-// 내정보 조회/수정(회원, 관리자 공통) api_박예선_23.01.25
-export const myInfoApi = async (type: "get" | "put") => {
-  if (type === "get") {
-    const getRes: AxiosResponse<MyInfoRes> = await apiInstance.get("/api/me");
-    return getRes;
-  }
-  if (type === "put") {
-    const putRes: AxiosResponse<MyInfoRes> =
-      // await apiInstance.put("/api/me");
-      await axios.get("/data/member.json"); // 테스트용 목데이터
-    return putRes;
-  }
-  return errorAlert();
+// 내정보 조회(회원, 관리자 공통) api_박예선_23.02.08
+export const getMyInfoApi = async () => {
+  const res: AxiosResponse<MyInfoRes> = await apiInstance.get("/api/me");
+  return res;
 };
 
 // 내 정보 수정
@@ -112,6 +102,14 @@ export const BookMarkedMateApi = async (pageNo: number) => {
   return res;
 };
 
+// 좋아요한 블로그리뷰 목록 조회
+export const LikedBlogReviewApi = async (pageNo: number) => {
+  const res: AxiosResponse<BlogReviewListRes> = await apiInstance.get(
+    `/api/likes/me?page=${pageNo}`
+  );
+  return res;
+};
+
 export interface MateRes {
   mates: Mate[] | [];
   pageInfo: PageInfo;
@@ -166,12 +164,12 @@ export interface BlogReviewListRes {
 
 export interface BlogInfo {
   id: number;
-  date: string;
-  writer: string;
   title: string;
-  viewCount: 0;
+  viewDate: string;
+  writer: string;
+  viewCount: number;
   imageInfo: {
-    id: 3;
+    id: number;
     url: string;
   };
 }

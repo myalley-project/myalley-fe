@@ -1,13 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
+import { alertPreparing } from "../../utils/alerts";
 
 interface CommentListType {
   commentTextArea: string;
   setCommentTextArea: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// 댓글 목록, 작성란 컴포넌트_박예선_23.01.26
+// 댓글 목록, 작성란 컴포넌트_박예선_23.02.15
 const CommentList = (props: CommentListType) => {
   const { commentTextArea, setCommentTextArea } = props;
   const memberNickname = localStorage.getItem("nickname");
@@ -35,12 +36,8 @@ const CommentList = (props: CommentListType) => {
           type="comment"
           placeholder="내용을 입력해주세요."
           value={commentTextArea}
-          onChange={() => {
-            alert("준비중인 기능입니다.");
-          }}
-          onClick={() => {
-            alert("준비중인 기능입니다.");
-          }}
+          onChange={alertPreparing}
+          onClick={alertPreparing}
           maxLength={150}
           height={150}
         />
@@ -56,8 +53,11 @@ const CommentList = (props: CommentListType) => {
 export default CommentList;
 
 const CommentListContainer = styled.div`
-  border: 1px solid #e0e0e0;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 50px;
   padding: 30px;
+  border: 1px solid ${theme.colors.greys40};
   .comment-count {
     padding-bottom: 14px;
     border-bottom: 1px solid ${theme.colors.greys40};
@@ -66,6 +66,9 @@ const CommentListContainer = styled.div`
     span {
       color: ${theme.colors.primry60};
     }
+  }
+  @media (max-width: 624px) {
+    padding: 20px;
   }
 `;
 
@@ -77,7 +80,7 @@ export const SubTitle = styled.div<{
   margin-bottom: ${(props) => (props.type === "greys60" ? "0" : "10px")};
   color: ${(props) =>
     props.type === "greys60" ? theme.colors.greys60 : theme.colors.greys90};
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 20px;
 `;
@@ -109,7 +112,7 @@ export const TextArea = styled.textarea<{
     props.type === "comment" ? `1px solid ${theme.colors.greys40}` : "none"};
   border-radius: ${(props) => (props.type === "comment" ? "30px" : "0")};
   color: ${theme.colors.greys90};
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   resize: none;
   :focus {

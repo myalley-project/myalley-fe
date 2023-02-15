@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
-import isApiError, { errorAlert } from "../utils/isApiError";
+import isApiError from "../utils/isApiError";
+import { alertError } from "../utils/alerts";
 import removeLocalStorageItem from "../utils/removeLocalStorageItem";
 
 // refresh토큰 요청 api_박예선_2023.01.30
@@ -10,7 +11,7 @@ const useRefreshTokenApi = () => {
   const token = localStorage.getItem("refreshToken");
 
   const refreshTokenApi = async () => {
-    if (!token) return errorAlert();
+    if (!token) return alertError();
     if (token)
       try {
         const res: AxiosResponse<RefreshTokenRes> = await apiInstance.post(
@@ -30,10 +31,10 @@ const useRefreshTokenApi = () => {
           removeLocalStorageItem();
           alert("자동 로그인 기간이 만료되었습니다. 다시 로그인해주세요.");
           navigate("/login");
-          return undefined;
+          return null;
         }
       }
-    return undefined;
+    return null;
   };
 
   return refreshTokenApi;

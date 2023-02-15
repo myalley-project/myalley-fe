@@ -1,159 +1,89 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React from "react";
 import { useQuery } from "react-query";
-import { theme } from "../styles/theme";
-import Selectbox from "../components/atom/Selectbox";
-import BlogReviewListWrapper from "../components/blogreview/container/BlogReviewList";
-import Button from "../components/atom/Button";
+import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import blogReviewApis from "../apis/blogReviewApis";
-import Pagination from "../components/Pagination";
-import { BlogReviewResponse } from "../types/blogReview";
+import BlogReviewPresentation from "../components/blogreview/presentation/BlogReviewPresentation";
+import BlogReviewTop from "../components/blogreview/container/BlogReviewTop";
+
+interface LocationState {
+  state: number;
+}
 
 const BlogReview = () => {
-  const navigate = useNavigate();
-  const [pages, setPages] = useState({
-    started: 0,
-    selected: 0,
+  const location: LocationState = useLocation();
+
+  const { isLoading, isError, error, data } = useQuery({
+    queryKey: ["blogReviewDetail"],
+    queryFn: () => blogReviewApis.readDetailBlogReview(location?.state),
   });
-  const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
-  const [inputLength, setInputLength] = useState(0);
-
-  const handleOrderType = (
-    event: React.MouseEvent<HTMLElement>,
-    name = "정렬 필터"
-  ) => {
-    if (event.currentTarget.textContent === "최신 순") {
-      setOrderType("Recent");
-    } else {
-      setOrderType("ViewCount");
-    }
+  const memberInfo = data?.memberInfo ?? {
+    memberId: 0,
+    memberImage: "",
+    nickname: "",
   };
+  const isMemberId = !!localStorage.getItem("memberId");
 
-  const handleInputLength = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputLength(event.target.value.length);
-  };
-
-  const { isLoading, isError, error, data } = useQuery<
-    BlogReviewResponse,
-    Error
-  >({
-    queryKey: ["blogReviews", { page: pages.selected, orderType }],
-    queryFn: () => blogReviewApis.readBlogReviews(pages.selected, orderType),
-  });
-  const totalPageNumber = data?.pageInfo.totalPage ?? 0;
-
-  if (isLoading) return <div>...loading</div>;
-
-  if (isError) return <div>에러가 발생했습니다.</div>;
+  if (isError) return <div>에러가 발생했습니다</div>;
 
   return (
-    <Container>
-      <Title>전시 리뷰</Title>
-      <Divider />
-      <SelectContainer>
-        <Flex>
-          <Selectbox
-            placeholder="최신 순"
-            options={["최신 순", "인기 순"]}
-            width="130px"
-            name="정렬 필터"
-            onClick={handleOrderType}
+    <>
+      {data && (
+        <TopContainer>
+          <BlogReviewTop
+            id={data?.exhibitionInfo.id}
+            memberInfo={memberInfo}
+            blogReviewId={data?.id}
+            exhibitionInfo={data?.exhibitionInfo}
           />
-        </Flex>
-        <Flex style={{ gap: "10px" }}>
-          <InputContainer>
-            <Input onChange={handleInputLength} />
-            <InputLegnth inputlength={inputLength}>
-              {inputLength}/60
-            </InputLegnth>
-          </InputContainer>
-          <Button
-            onClick={() => navigate("/blogreview-write")}
-            style={{ padding: "8px 20px" }}
-            size="large"
-            variant="primary"
-          >
-            리뷰 등록
-          </Button>
-        </Flex>
-      </SelectContainer>
-      {data ? (
-        <BlogReviewListWrapper
-          blogInfo={data.blogInfo}
-          pageInfo={data.pageInfo}
-        />
-      ) : null}
-      {totalPageNumber > 0 ? (
-        <Pagination
-          pages={pages}
-          setPages={setPages}
-          totalPage={totalPageNumber}
-        />
-      ) : null}
-    </Container>
+        </TopContainer>
+      )}
+      {data && (
+        <PresentationContainer>
+          <BlogReviewPresentation
+            id={data.id}
+            title={data.title}
+            content={data.content}
+            congestion={data.congestion}
+            transportation={data.transportation}
+            revisit={data.revisit}
+            memberInfo={data.memberInfo}
+            createdAt={data.createdAt}
+            time={data.time}
+            viewCount={data.viewCount}
+            viewDate={data.viewDate}
+            likeCount={data.likeCount}
+            bookmarkCount={data.bookmarkCount}
+            bookmarkStatus={data.bookmarkStatus}
+            likeStatus={data.likeStatus}
+            imageInfo={data.imageInfo}
+            exhibitionInfo={data.exhibitionInfo}
+          />
+        </PresentationContainer>
+      )}
+    </>
   );
 };
 
 export default BlogReview;
 
-const Container = styled.div`
-  max-width: 1200px;
-  margin-inline: auto;
+const TopContainer = styled.div`
+  padding: 50px 0;
+  border-radius: 0;
+  background-color: rgba(149, 141, 165, 0.05);
+  @media (max-width: 1280px) {
+    padding: 50px 20px;
+  }
+  @media (max-width: 1064px) {
+    padding: 50px 16px;
+  }
 `;
 
-const Title = styled.h2`
-  font-weight: 700;
-  font-size: 28px;
-  color: ${theme.colors.greys90};
-  text-align: center;
-  margin-bottom: 50px;
-`;
-
-const Divider = styled.div`
-  border-radius: 0px;
-  border-bottom: 1px solid ${theme.colors.greys40};
-  margin-bottom: 14px;
-`;
-
-const SelectContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px;
-  margin-bottom: 30px;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`;
-
-const InputContainer = styled.div`
-  position: relative;
-`;
-
-const Input = styled.input`
-  width: 277px;
-  height: 36px;
-  margin: 10px auto;
-  padding-left: 10px;
-  border: 1px solid ${theme.colors.greys40};
-  border-radius: 30px;
-`;
-
-interface InputProps {
-  inputlength: number;
-}
-
-const InputLegnth = styled.div<InputProps>`
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  color: ${(props) =>
-    props.inputlength > 60 ? theme.colors.error : theme.colors.greys60};
-  font-weight: 500;
-  font-size: 14px;
+const PresentationContainer = styled.div`
+  @media (max-width: 1280px) {
+    padding: 0 20px;
+  }
+  @media (max-width: 1064px) {
+    padding: 0 16px;
+  }
 `;

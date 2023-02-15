@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import React, { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
-import ProfileImg from "../../../assets/icons/profileImg.svg";
+import profileImg from "../../../assets/icons/profileImg.svg";
 import StarIcon from "../../../assets/icons/starIcon.svg";
 import { OnelineReviewCardType } from "../../../types/oneLineReview";
 import Modal from "../../../Modal";
 import Button from "../../atom/Button";
 import oneLineReviewApis from "../../../apis/oneLineReviewApis";
-
 import OnelineWriteContainer from "../container/OnelineWriteContainer";
 import isApiError from "../../../utils/isApiError";
 import useRefreshTokenApi from "../../../apis/useRefreshToken";
+import OnelineModifyContainer from "../container/OnelineModifyContainer";
 
 const OnelineCard = ({
   id,
@@ -26,13 +26,33 @@ const OnelineCard = ({
   const [deleteModalIsopen, setDeleteModalIsopen] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const refreshTokenApi = useRefreshTokenApi();
+  const userconfirm =
+    memberInfo?.memberId === Number(localStorage.getItem("memberId"));
+
+  const placeHolder = {
+    id,
+    viewDate,
+    rate,
+    content,
+    time,
+    congestion,
+    memberInfo,
+  };
 
   const modifyModalHandler = () => {
-    setModifyModalIsopen((prev) => !prev);
+    if (memberInfo?.memberId === Number(localStorage.getItem("memberId"))) {
+      setModifyModalIsopen((prev) => !prev);
+    } else {
+      alert("리뷰를 작성한 본인이 아니면 수정할 수 없습니다.");
+    }
   };
 
   const deleteModalHandler = () => {
-    setDeleteModalIsopen((prev) => !prev);
+    if (memberInfo?.memberId === Number(localStorage.getItem("memberId"))) {
+      setDeleteModalIsopen((prev) => !prev);
+    } else {
+      alert("리뷰를 작성한 본인이 아니면 삭제할 수 없습니다.");
+    }
   };
 
   const deleteMutation = useMutation({
@@ -50,10 +70,14 @@ const OnelineCard = ({
     }
   };
 
+  /* eslint-disable */
   return (
     <Container>
       <Review>
-        <img src={ProfileImg} alt="사람 이미지" />
+        <img
+          src={memberInfo?.memberImage ? memberInfo.memberImage : profileImg}
+          alt="사람 이미지"
+        />
         <ReviewInfo>
           {rate === 1 ? (
             <div>
@@ -91,26 +115,35 @@ const OnelineCard = ({
             </div>
           ) : null}
           <div>
-            <span>{memberInfo.nickname}</span> | <span>{viewDate}</span> |
-            <span>{time}</span> | <span>{congestion}</span>
+            {memberInfo && <span>{memberInfo.nickname}</span>} |{" "}
+            <span>{viewDate}</span> |<span>{time}</span> |{" "}
+            <span>{congestion}</span>
           </div>
           <p>{content}</p>
         </ReviewInfo>
       </Review>
       <ButtonItems>
-        <button onClick={modifyModalHandler} type="button">
+        <button
+          data-visible={userconfirm}
+          onClick={modifyModalHandler}
+          type="button"
+        >
           수정
         </button>
         <Spliter />
-        <button onClick={deleteModalHandler} type="button">
+        <button
+          data-visible={userconfirm}
+          onClick={deleteModalHandler}
+          type="button"
+        >
           삭제
         </button>
       </ButtonItems>
       <Modal open={modifyModalIsopen} handleModal={modifyModalHandler}>
-        <OnelineWriteContainer
+        <OnelineModifyContainer
           simpleId={id}
           handleModal={modifyModalHandler}
-          writeType="modify"
+          modifyInfo={placeHolder}
         />
       </Modal>
       <Modal open={deleteModalIsopen} handleModal={deleteModalHandler}>
@@ -157,6 +190,7 @@ const Review = styled.div`
   gap: 30px;
   & > img {
     width: 86px;
+    border-radius: 100vmax;
     aspect-ratio: 1 / 1;
   }
 `;
@@ -179,6 +213,12 @@ const ReviewInfo = styled.div`
   }
 `;
 
+const ExhibitionTitle = styled.div`
+  color: ${theme.colors.greys90};
+  font-weight: 500;
+  font-size: 14px;
+`;
+
 const ButtonItems = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -188,6 +228,9 @@ const ButtonItems = styled.div`
     cursor: pointer;
     color: ${theme.colors.greys60};
     border: 0;
+  }
+  & > [data-visible="false"] {
+    display: none;
   }
 `;
 
