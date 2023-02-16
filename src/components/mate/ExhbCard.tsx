@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { clearTimeout } from "timers";
 import { theme } from "../../styles/theme";
 
 interface ExhbCardType {
