@@ -55,41 +55,12 @@ const MypageOnelineCard = ({
       <Review>
         <ReviewInfo>
           <div className="exhibition-title">{exhibitionInfo?.title}</div>
-          {rate === 1 ? (
-            <div>
+          {/* eslint-disable */}
+          {[...Array(rate)].map((_, index) => (
+            <div key={`star-rate-${index}`}>
               <img src={StarIcon} alt="별점" />
             </div>
-          ) : null}
-          {rate === 2 ? (
-            <div>
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-            </div>
-          ) : null}
-          {rate === 3 ? (
-            <div>
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-            </div>
-          ) : null}
-          {rate === 4 ? (
-            <div>
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-            </div>
-          ) : null}
-          {rate === 5 ? (
-            <div>
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-            </div>
-          ) : null}
+          ))}
           <DateInfo>
             <span>{viewDate}</span> | <span>{time}</span> |{" "}
             <span>{congestion}</span>
