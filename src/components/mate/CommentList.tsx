@@ -8,7 +8,7 @@ interface CommentListType {
   setCommentTextArea: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// 댓글 목록, 작성란 컴포넌트_박예선_23.02.10
+// 댓글 목록, 작성란 컴포넌트_박예선_23.02.15
 const CommentList = (props: CommentListType) => {
   const { commentTextArea, setCommentTextArea } = props;
   const memberNickname = localStorage.getItem("nickname");
@@ -66,6 +66,9 @@ const CommentListContainer = styled.div`
     span {
       color: ${theme.colors.primry60};
     }
+  }
+  @media (max-width: 624px) {
+    padding: 20px;
   }
 `;
 

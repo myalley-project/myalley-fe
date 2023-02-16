@@ -40,7 +40,7 @@ interface InputProps {
 const InputLegnth = styled.div<InputProps>`
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 5%;
   transform: translateY(-50%);
   color: ${(props) =>
     props.inputlength > 60 ? theme.colors.error : theme.colors.greys60};

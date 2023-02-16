@@ -3,14 +3,12 @@ import styled from "styled-components";
 import React, { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { BlogReviewListRes, myBlogReviewsApi } from "../../apis/member";
-import useGetNewTokenApi from "../../apis/useGetRefreshToken";
 import isApiError from "../../utils/isApiError";
 import BlogReviewCard from "../blogReviewList/ReviewCard";
 import Pagination from "../Pagination";
 import NoList from "../NoList";
 
 const WrittenBlogReview = () => {
-  const getNewTokenApi = useGetNewTokenApi;
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
@@ -28,8 +26,6 @@ const WrittenBlogReview = () => {
     queryKey: ["mypage", { pages }],
     queryFn: () => getBlogReview(pages.selected),
   });
-
-  if (isLoading) return <div />;
 
   return (
     <Container>
