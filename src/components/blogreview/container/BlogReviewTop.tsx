@@ -7,6 +7,8 @@ import { exhbApi } from "../../../apis/exhibition";
 import blogReviewApis from "../../../apis/blogReviewApis";
 import Button from "../../atom/Button";
 import ExhbCard from "../../mate/ExhbCard";
+import Modal from "../../../Modal";
+import SimpleDialog from "../../SimpleDialog";
 
 interface BlogReviewTopProps {
   id: number;
@@ -33,6 +35,12 @@ const BlogReviewTop = ({
   blogReviewId,
 }: BlogReviewTopProps) => {
   const navigate = useNavigate();
+  const [isModal, setIsModal] = React.useState<boolean>(false);
+
+  const handleModal = () => {
+    setIsModal((prev) => !prev);
+  };
+
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogCard"],
     queryFn: () => exhbApi(id),
@@ -93,7 +101,7 @@ const BlogReviewTop = ({
               >
                 수정
               </Button>
-              <Button onClick={handleDeleteReview} variant="text" size="small">
+              <Button onClick={handleModal} variant="text" size="small">
                 삭제
               </Button>
             </>
@@ -112,6 +120,15 @@ const BlogReviewTop = ({
           }}
         />
       )}
+      <Modal open={isModal} handleModal={handleModal}>
+        <SimpleDialog
+          message="블로그 리뷰를 삭제하시겠습니까?"
+          cancelMessage="리뷰 계속 보기"
+          confirmMessage="리뷰 삭제하기"
+          clickCancleBtn={handleModal}
+          clickConfirmBtn={handleDeleteReview}
+        />
+      </Modal>
     </Container>
   );
 };
