@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { clearTimeout } from "timers";
 import { theme } from "../../styles/theme";
 
 interface ExhbCardType {
@@ -30,10 +31,14 @@ const ExhbCard = (props: ExhbCardType) => {
 
   // 제목의 높이에 따라 썸네일 높이 변경_박예선_23.02.12
   useEffect(() => {
-    setTimeout(() => {
+    const heightTimeout = setTimeout(() => {
       const height = document.querySelector(".title")?.clientHeight;
       setThumbnailHeight(height! + 190);
     }, 100);
+
+    return () => {
+      clearTimeout(heightTimeout);
+    };
   }, []);
 
   return (
