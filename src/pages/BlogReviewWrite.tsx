@@ -164,6 +164,9 @@ const BlogReviewWrite = () => {
 
   const blogPostMutation = useMutation({
     mutationFn: (formData: FormData) => blogReviewApis.createReview(formData),
+    onSuccess: () => {
+      alert("블로그리뷰가 작성되었습니다.");
+    },
   });
 
   const getExhibitionInfo = (

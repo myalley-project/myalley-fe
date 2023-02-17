@@ -43,5 +43,6 @@ const Card = styled.div`
     font-size: 16px;
     line-height: 26px;
     color: ${theme.colors.greys100};
+    white-space: pre-line;
   }
 `;
