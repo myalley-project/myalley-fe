@@ -19,7 +19,7 @@ import CommentList, {
   TextArea,
 } from "../components/mate/CommentList";
 
-// 메이트 모집글 상세페이지_박예선_23.02.14
+// 메이트 모집글 상세페이지_박예선_23.02.15
 const Mate = () => {
   const navigate = useNavigate();
   const mateBookMarkApi = useMateBookMarkApi();
@@ -254,8 +254,14 @@ const MateContentContainer = styled.div`
     display: flex;
     margin-top: 50px;
   }
+  @media (max-width: 1072px) {
+    margin: 4.6vw 0 30px;
+  }
   @media (max-width: 624px) {
     padding: 20px;
+  }
+  @media (max-width: 347px) {
+    margin: 16px 0;
   }
 `;
 

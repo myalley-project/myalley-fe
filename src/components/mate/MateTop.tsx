@@ -12,7 +12,7 @@ interface MateTopType {
   mateInfo: MateRes;
 }
 
-// 메이트 상세페이지 상단 배경색 있는 부분 컴포넌트_박예선_23.02.10
+// 메이트 상세페이지 상단 배경색 있는 부분 컴포넌트_박예선_23.02.15
 const MateTop = (props: MateTopType) => {
   const { isMyPost, mateId, mateInfo } = props;
   const navigate = useNavigate();
@@ -64,7 +64,10 @@ const MateTopContainer = styled.div`
     padding: 50px 20px;
   }
   @media (max-width: 1072px) {
-    padding: 50px 16px;
+    padding: 4.6vw 16px;
+  }
+  @media (max-width: 347px) {
+    padding: 16px;
   }
 `;
 

@@ -14,7 +14,7 @@ interface ExhbCardType {
   };
 }
 
-// 메이트 모집글 전시회 카드컴포넌트_박예선_23.02.12
+// 메이트 모집글 전시회 카드컴포넌트_박예선_23.02.15
 const ExhbCard = (props: ExhbCardType) => {
   const { exhbData } = props;
   const {
@@ -45,7 +45,7 @@ const ExhbCard = (props: ExhbCardType) => {
         alt="thumbnail"
       />
       <InfoContainer>
-        <div className="title">{exhibitionTitle}</div>
+        <Title className="title">{exhibitionTitle}</Title>
         <DetailContainer>
           <Detail>
             <div className="detail-name">일정</div>
@@ -78,6 +78,9 @@ const ExhbCardContainer = styled.div`
   .flex {
     display: flex;
   }
+  @media (max-width: 370px) {
+    flex-direction: column;
+  }
 `;
 
 const Thumbnail = styled.img<{ height: number }>`
@@ -89,6 +92,13 @@ const Thumbnail = styled.img<{ height: number }>`
   @media (max-width: 624px) {
     width: 40%;
   }
+  @media (max-width: 370px) {
+    width: inherit;
+    height: 150px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 `;
 
 const InfoContainer = styled.div`
@@ -96,12 +106,30 @@ const InfoContainer = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 30px;
-  .title {
-    margin-bottom: 30px;
-    color: ${(props) => props.theme.colors.greys90};
-    font-size: 42px;
-    font-weight: 700;
-    line-height: 52px;
+  @media (max-width: 1440px) {
+    padding: 20px;
+  }
+  @media (max-width: 1072px) {
+    padding: 16px;
+  }
+`;
+
+const Title = styled.div`
+  margin-bottom: 30px;
+  color: ${(props) => props.theme.colors.greys90};
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 52px;
+  @media (max-width: 1440px) {
+    font-size: 2.9vw;
+    line-height: 3.61vw;
+  }
+  @media (max-width: 690px) {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  @media (max-width: 370px) {
+    margin-bottom: 10px;
   }
 `;
 
@@ -109,6 +137,9 @@ const DetailContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  @media (max-width: 370px) {
+    gap: 0;
+  }
 `;
 
 const Detail = styled.div`
@@ -123,5 +154,10 @@ const Detail = styled.div`
     width: 72px;
     margin-right: 30px;
     color: ${theme.colors.greys60};
+  }
+  @media (max-width: 624px) {
+    .detail-name {
+      margin-right: 5px;
+    }
   }
 `;
