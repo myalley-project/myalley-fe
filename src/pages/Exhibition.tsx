@@ -14,6 +14,7 @@ const Exhibition = () => {
   const params = useParams();
   const [exhbDetail, setExhbDetail] = useState<ExhibitionRes>();
   const [state, setState] = useState("info");
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const id = Number(params.id);
 
@@ -22,6 +23,7 @@ const Exhibition = () => {
       const res: AxiosResponse<ExhibitionRes> = await exhbApi(id);
       const { data } = res;
       setExhbDetail(data);
+      setIsLoading(false);
     } catch (err) {
       const errorRes = isApiError(err);
       if (typeof errorRes !== "object") return;
@@ -50,6 +52,7 @@ const Exhibition = () => {
         bookmarked={exhbDetail?.bookmarked ?? false}
         type={exhbDetail?.type ?? ""}
         viewCount={exhbDetail?.viewCount ?? 0}
+        isLoading={isLoading}
       />
       <ToggleSwitch setState={setState} />
       {state === "info" && (

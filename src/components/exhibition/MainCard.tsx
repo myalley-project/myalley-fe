@@ -11,6 +11,8 @@ import { theme } from "../../styles/theme";
 import isApiError from "../../utils/isApiError";
 import BookMark from "../atom/BookMark";
 import useRefreshTokenApi from "../../apis/useRefreshToken";
+import Modal from "../../Modal";
+import SimpleDialog from "../SimpleDialog";
 
 export interface MainCardType {
   posterUrl: string;
@@ -23,6 +25,7 @@ export interface MainCardType {
   bookmarked: boolean;
   type: string;
   viewCount: number;
+  isLoading: boolean;
 }
 const MainCard = ({
   posterUrl,
@@ -35,25 +38,27 @@ const MainCard = ({
   bookmarked,
   type,
   viewCount,
+  isLoading,
 }: MainCardType) => {
   const auth = localStorage.getItem("authority");
   const navigate = useNavigate();
   const refreshTokenApi = useRefreshTokenApi();
   const [imgHeight, setImgHeight] = useState(52);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   // 전시글 삭제
   const handleDelete = async () => {
     try {
       await exhbDeleteApi(id);
       alert("전시글 삭제가 완료되었습니다.");
-      navigate("/");
+      navigate("/exhibition-list");
     } catch (err) {
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
         await refreshTokenApi();
         await exhbDeleteApi(id);
         alert("전시글 삭제가 완료되었습니다.");
-        navigate("/");
+        navigate("/exhibition-list");
       }
     }
   };
@@ -99,11 +104,11 @@ const MainCard = ({
   useEffect(() => {
     const titleHeight =
       localStorage.getItem("authority") === "ROLE_ADMIN" ? 318 : 258;
-    setTimeout(() => {
+    if (!isLoading) {
       const height = document.querySelector(".titleHeight")?.clientHeight;
       setImgHeight(height! + titleHeight);
-    }, 100);
-  }, []);
+    }
+  }, [isLoading]);
 
   return (
     <CardContainer height={auth === "ROLE_ADMIN" ? "520px" : "462px"}>
@@ -117,9 +122,21 @@ const MainCard = ({
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
               <Button onClick={() => navigate("edit")}>수정</Button>
-              <Button onClick={handleDelete}>삭제</Button>
+              <Button onClick={() => setOpenDeleteModal(true)}>삭제</Button>
             </EditButtons>
           )}
+          <Modal
+            open={openDeleteModal}
+            handleModal={() => setOpenDeleteModal(!openDeleteModal)}
+          >
+            <SimpleDialog
+              message="해당 전시글을 삭제하시겠습니까?"
+              cancelMessage="전시글 보기"
+              confirmMessage="전시글 삭제하기"
+              clickCancleBtn={() => setOpenDeleteModal(false)}
+              clickConfirmBtn={handleDelete}
+            />
+          </Modal>
           <ViewCount>
             <dt>조회수</dt>
             <dd>{viewCount}</dd>
