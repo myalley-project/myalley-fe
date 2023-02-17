@@ -47,6 +47,12 @@ const Login = () => {
       if (!accessToken || !refreshToken) return;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem(
+        "refreshExpireDate",
+        JSON.stringify({
+          expire: new Date().getTime() + 1000 * 60 * 60 * 24 * 29,
+        })
+      );
       setInfoToLocalStorage();
       navigate("/");
     } catch (err) {
