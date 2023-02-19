@@ -30,10 +30,14 @@ const ExhbCard = (props: ExhbCardType) => {
 
   // 제목의 높이에 따라 썸네일 높이 변경_박예선_23.02.12
   useEffect(() => {
-    setTimeout(() => {
+    const heightTimeout = setTimeout(() => {
       const height = document.querySelector(".title")?.clientHeight;
       setThumbnailHeight(height! + 190);
     }, 100);
+
+    return () => {
+      clearTimeout(heightTimeout);
+    };
   }, []);
 
   return (
