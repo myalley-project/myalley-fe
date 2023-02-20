@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ReactQueryDevtools } from "react-query/devtools";
 import ScrollTop from "./components/ScrollTop";
 import Nav from "./components/Nav";
 import Main from "./pages/Main";
@@ -50,7 +49,6 @@ const App = () => {
         <Route path="/blogreview-edit" element={<BlogReviewUpdate />} />
         <Route path="/blog/:id" element={<BlogReview />} />
       </Routes>
-      <ReactQueryDevtools />
       <Footer />
     </BrowserRouter>
   );
