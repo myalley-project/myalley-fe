@@ -10,13 +10,13 @@ import useRefreshTokenApi from "../../../apis/useRefreshToken";
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
   date: {
-    year: "",
-    month: "",
-    day: "",
+    year: "2023",
+    month: "12",
+    day: "31",
   },
-  time: "",
-  congestion: "",
-  rate: 0,
+  time: "6시-7시",
+  congestion: "매우 혼잡",
+  rate: 1,
   content: "",
 };
 
@@ -193,6 +193,9 @@ const OnelineWriteContainer = ({
       queryClient.invalidateQueries(["simpleReviews"]);
       alert("리뷰 등록에 성공했습니다!");
       handleModal();
+    },
+    onError: (err: Error) => {
+      alert(err?.message ?? "통신 오류로 한줄리뷰 등록에 실패했습니다.");
     },
   });
 

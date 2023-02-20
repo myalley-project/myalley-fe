@@ -12,13 +12,13 @@ import { ModifyPlaceholder } from "../../../types/modifyPlaceholder";
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
   date: {
-    year: "",
-    month: "",
-    day: "",
+    year: "2013",
+    month: "12",
+    day: "31",
   },
-  time: "",
-  congestion: "",
-  rate: 0,
+  time: "6시-7시",
+  congestion: "매우 혼잡",
+  rate: 1,
   content: "",
 };
 

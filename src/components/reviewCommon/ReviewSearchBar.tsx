@@ -54,7 +54,11 @@ const ReviewSearchBar = ({
             return alert("아직 준비중인 기능입니다.");
           }}
         >
-          <SearchBar placeholder="검색" width="277px" />
+          <SearchBar
+            placeholder="검색기능은 현재 지원하지 않습니다."
+            width="277px"
+            disabled
+          />
         </form>
         <Button onClick={handleReviewModal} variant="primary" size="large">
           리뷰 등록
