@@ -9,12 +9,14 @@ interface ReviewSearchbarProps {
   setOrderType: (state: "Recent" | "StarScore" | "ViewCount") => void;
   handleReviewModal: () => void;
   filter: "oneline" | "blog";
+  orderType: "StarScore" | "Recent" | "ViewCount";
   totalElement: number;
 }
 
 const ReviewSearchBar = ({
   setFilter,
   setOrderType,
+  orderType,
   filter,
   totalElement,
   handleReviewModal,
@@ -67,16 +69,28 @@ const ReviewSearchBar = ({
     </SearchbarContainer>
     <Divider />
     <ButtonItems>
-      <button onClick={() => setOrderType("Recent")} type="button">
+      <button
+        onClick={() => setOrderType("Recent")}
+        type="button"
+        className={orderType === "Recent" ? "selected" : ""}
+      >
         최근순
       </button>
       <Spliter />
       {filter === "oneline" ? (
-        <button onClick={() => setOrderType("StarScore")} type="button">
+        <button
+          onClick={() => setOrderType("StarScore")}
+          type="button"
+          className={orderType === "StarScore" ? "selected" : ""}
+        >
           별점순
         </button>
       ) : (
-        <button onClick={() => setOrderType("ViewCount")} type="button">
+        <button
+          onClick={() => setOrderType("ViewCount")}
+          type="button"
+          className={orderType === "Recent" ? "selected" : ""}
+        >
           조회수순
         </button>
       )}

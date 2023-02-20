@@ -60,6 +60,7 @@ const BlogReviewReadContainer = ({
         totalElement={data ? data?.pageInfo.totalElement : 0}
         filter={filter}
         setFilter={setFilter}
+        orderType={orderType}
         setOrderType={setOrderType}
         handleReviewModal={handleReviewModal}
       />
