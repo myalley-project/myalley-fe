@@ -83,13 +83,15 @@ const BlogReviewReadContainer = ({
             </FlexCenter>
           )}
         </CardWrapper>
-        {data?.pageInfo ? (
-          <Pagination
-            pages={pages}
-            setPages={setPages}
-            totalPage={data.pageInfo.totalElement}
-          />
-        ) : null}
+        <MarginAuto>
+          {data?.pageInfo ? (
+            <Pagination
+              pages={pages}
+              setPages={setPages}
+              totalPage={data.pageInfo.totalElement}
+            />
+          ) : null}
+        </MarginAuto>
       </Container>
     </>
   );
@@ -111,4 +113,9 @@ const CardWrapper = styled.div`
 
 const FlexCenter = styled.div`
   grid-column: 2;
+`;
+
+const MarginAuto = styled.div`
+  width: 1200px;
+  margin: 0 auto;
 `;
