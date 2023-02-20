@@ -202,8 +202,10 @@ const OnelineWriteContainer = ({
     if (Object.values(body).includes("") || Object.values(body).includes(0)) {
       return alert("빈 칸으로 남겨진 값이 있습니다.");
     }
-    if (body.content.length < 10) return alert("본문 내용이 너무 짧습니다");
-    if (body.content.length >= 60) return alert("본문 내용이 너무 깁니다");
+    if (body.content.length < 10)
+      return alert("본문 내용이 10자 이상이어야 합니다");
+    if (body.content.length >= 60)
+      return alert("본문 내용이 60자 이하여야 합니다");
 
     try {
       newReviewMutation.mutate(body);
