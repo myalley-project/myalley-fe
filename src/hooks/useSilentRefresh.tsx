@@ -5,12 +5,16 @@ import { RefreshTokenRes } from "../apis/useRefreshToken";
 import apiInstance from "../utils/apiInstance";
 
 const useSilentRefresh = () => {
+  const token = localStorage.getItem("refreshToken");
   const [refreshStop, setRefreshStop] = useState(false);
   const RefreshExpireDate = JSON.parse(
     localStorage.getItem("refreshExpireDate") as string
   ) as string;
 
-  if (!RefreshExpireDate || new Date(RefreshExpireDate) > new Date()) {
+  if (
+    token &&
+    (!RefreshExpireDate || new Date(RefreshExpireDate) > new Date())
+  ) {
     localStorage.clear();
     alert("자동 로그인 기간이 만료되었습니다. 다시 로그인해주세요");
   }
