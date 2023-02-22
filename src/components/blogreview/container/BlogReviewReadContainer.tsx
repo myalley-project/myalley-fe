@@ -85,13 +85,11 @@ const BlogReviewReadContainer = ({
           )}
         </CardWrapper>
         <MarginAuto>
-          {data?.pageInfo ? (
-            <Pagination
-              pages={pages}
-              setPages={setPages}
-              totalPage={data.pageInfo.totalElement}
-            />
-          ) : null}
+          <Pagination
+            pages={pages}
+            setPages={setPages}
+            totalPage={data.pageInfo.totalElement}
+          />
         </MarginAuto>
       </Container>
     </>
