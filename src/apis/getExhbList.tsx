@@ -18,12 +18,6 @@ const exhbListApi = async (
   type: FilterType,
   page: number
 ) => {
-  if (type === "전체 전시") {
-    const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
-      `/main/exhibitions/?status=${status} 전시&page=${page}`
-    );
-    return res;
-  }
   const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
     `/exhibitions/?status=${status} 전시&type=${type}&page=${page}`
   );
