@@ -10,13 +10,13 @@ import useRefreshTokenApi from "../../../apis/useRefreshToken";
 const initialState: OnelineReviewPostType = {
   exhibitionId: 0,
   date: {
-    year: "",
-    month: "",
-    day: "",
+    year: "2023",
+    month: "12",
+    day: "31",
   },
-  time: "",
-  congestion: "",
-  rate: 0,
+  time: "6시-7시",
+  congestion: "매우 혼잡",
+  rate: 1,
   content: "",
 };
 
@@ -194,6 +194,9 @@ const OnelineWriteContainer = ({
       alert("리뷰 등록에 성공했습니다!");
       handleModal();
     },
+    onError: (err: Error) => {
+      alert(err?.message ?? "통신 오류로 한줄리뷰 등록에 실패했습니다.");
+    },
   });
 
   const SubmitHandler = () => {
@@ -202,8 +205,10 @@ const OnelineWriteContainer = ({
     if (Object.values(body).includes("") || Object.values(body).includes(0)) {
       return alert("빈 칸으로 남겨진 값이 있습니다.");
     }
-    if (body.content.length < 10) return alert("본문 내용이 너무 짧습니다");
-    if (body.content.length >= 60) return alert("본문 내용이 너무 깁니다");
+    if (body.content.length < 10)
+      return alert("본문 내용이 10자 이상이어야 합니다");
+    if (body.content.length >= 60)
+      return alert("본문 내용이 60자 이하여야 합니다");
 
     try {
       newReviewMutation.mutate(body);
