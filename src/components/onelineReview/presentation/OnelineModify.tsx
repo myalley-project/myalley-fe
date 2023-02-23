@@ -125,8 +125,13 @@ const OnelineModify = ({
         <Button onClick={handleModal} variant="text" size="large">
           취소하기
         </Button>
-        <Button onClick={submitHandler} variant="primary" size="large">
-          등록하기
+        <Button
+          onClick={submitHandler}
+          variant="primary"
+          size="large"
+          disabled={state.content.length < 10}
+        >
+          수정하기
         </Button>
       </ButtonContainer>
     </Container>

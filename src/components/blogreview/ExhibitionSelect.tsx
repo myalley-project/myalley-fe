@@ -61,6 +61,7 @@ export default ExhibitionSelect;
 const Container = styled.div`
   width: 280px;
   height: 100%;
+  cursor: pointer;
 `;
 
 const ExhibitionButton = styled.div`
