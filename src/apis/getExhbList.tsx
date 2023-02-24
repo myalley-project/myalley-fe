@@ -16,6 +16,7 @@ export interface ExhbListRes {
 const exhbListApi = async (
   status: StatusType,
   type: FilterType,
+  // sort:
   page: number
 ) => {
   const res: AxiosResponse<ExhbListRes> = await apiInstance.get(

@@ -83,7 +83,7 @@ export default Filters;
 
 const EXHB_STATUS_ARRAY: StatusType[] = ["현재", "예정", "지난"];
 const EXHB_SORT_ARRAY = ["최신순", "조회수순"];
-export const EXHB_TYPE_ARRAY: FilterType[] = [
+const EXHB_TYPE_ARRAY: FilterType[] = [
   "전체 전시",
   "영상 전시",
   "특별 전시",
