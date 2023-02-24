@@ -16,3 +16,5 @@ export type FilterType =
   | "기획 전시"
   | "상설 전시"
   | "소장품 전시";
+
+export type SortType = "최신순" | "조회수순";
