@@ -19,12 +19,13 @@ const Filters = (props: FiltersType) => {
     setSelectedStatus(status);
   };
 
-  // 필터 조건 핸들 함수_박예선_23.02.01
+  // 필터 조건 핸들 함수_박예선_23.02.24
   const handleFilters = (e: React.MouseEvent<HTMLLIElement>) => {
     const value = e.currentTarget.textContent;
     if (!value) return;
-    if (value === "인기순") {
+    if (value === "조회수순") {
       alert("준비중인 기능입니다.");
+      // 기능 추후 추가하기. api 준비되어있음.
       return;
     }
     for (let i = 0; i < EXHB_TYPE_ARRAY.length; i += 1) {
@@ -81,7 +82,7 @@ const Filters = (props: FiltersType) => {
 export default Filters;
 
 const EXHB_STATUS_ARRAY: StatusType[] = ["현재", "예정", "지난"];
-const EXHB_SORT_ARRAY = ["최신순", "인기순"];
+const EXHB_SORT_ARRAY = ["최신순", "조회수순"];
 export const EXHB_TYPE_ARRAY: FilterType[] = [
   "전체 전시",
   "영상 전시",
