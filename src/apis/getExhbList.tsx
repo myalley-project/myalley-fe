@@ -19,8 +19,9 @@ const exhbListApi = async (
   page: number
 ) => {
   const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
-    `/exhibitions/?status=${status} 전시&type=${type}&page=${page}`
+    `/exhibitions/?status=${status} 전시&type=${type}&page=${page}&sort=최신순`
   );
+  // 임시로 sort 최신순 추가. selectBox 인기순에서 조회수순으로 바꾸고 기능 추가후 반영하기
   return res;
 };
 
