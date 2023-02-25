@@ -105,7 +105,7 @@ export const BookMarkedMateApi = async (pageNo: number) => {
 // 좋아요한 블로그리뷰 목록 조회
 export const LikedBlogReviewApi = async (pageNo: number) => {
   const res: AxiosResponse<BlogReviewListRes> = await apiInstance.get(
-    `/api/likes/me?page=${pageNo}`
+    `/api/blogs/likes/me?page=${pageNo}`
   );
   return res;
 };
