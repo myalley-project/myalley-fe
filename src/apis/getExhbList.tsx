@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { StatusType } from "../components/exhibitionList/Filters";
-import { Exhibition, FilterType } from "../types/exhbList";
+import { Exhibition, FilterType, SortType } from "../types/exhbList";
 import apiInstance from "../utils/apiInstance";
 
 export interface ExhbListRes {
@@ -16,16 +16,11 @@ export interface ExhbListRes {
 const exhbListApi = async (
   status: StatusType,
   type: FilterType,
+  sort: SortType,
   page: number
 ) => {
-  if (type === "전체 전시") {
-    const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
-      `/main/exhibitions/?status=${status} 전시&page=${page}`
-    );
-    return res;
-  }
   const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
-    `/exhibitions/?status=${status} 전시&type=${type}&page=${page}`
+    `/exhibitions/?status=${status} 전시&type=${type}&sort=${sort}&page=${page}`
   );
   return res;
 };

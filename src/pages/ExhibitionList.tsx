@@ -2,30 +2,39 @@ import React, { useCallback, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
-import { Exhibition, FilterType } from "../types/exhbList";
+import { Exhibition, FilterType, SortType } from "../types/exhbList";
 import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
 import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
-// 전시회 목록 페이지 컴포넌트_박예선_23.02.10
+// 전시회 목록 페이지 컴포넌트_박예선_23.02.24
 const ExhibitionList = () => {
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [selectedStatus, setSelectedStatus] = useState<StatusType>("현재");
-  const [selectedFilter, setSelectedFilter] = useState<FilterType>("전체 전시");
+  const [selectedFilter, setSelectedFilter] = useState<{
+    type: FilterType;
+    sort: SortType;
+  }>({ type: "전체 전시", sort: "최신순" });
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
   });
 
-  // 전시회 목록 요청 api_박예선_23.01.18
+  // 전시회 목록 요청 api_박예선_23.01.24
   const getExhbList = useCallback(
-    async (status: StatusType, type: FilterType, page: number) => {
+    async (
+      status: StatusType,
+      type: FilterType,
+      sort: SortType,
+      page: number
+    ) => {
       try {
         const res: AxiosResponse<ExhbListRes> = await exhbListApi(
           status,
           type,
+          sort,
           page
         );
         const { exhibitions, pageInfo } = res.data;
@@ -40,9 +49,14 @@ const ExhibitionList = () => {
     []
   );
 
-  // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.02.01
+  // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.02.24
   useEffect(() => {
-    getExhbList(selectedStatus, selectedFilter, pages.selected);
+    getExhbList(
+      selectedStatus,
+      selectedFilter.type,
+      selectedFilter.sort,
+      pages.selected
+    );
   }, [getExhbList, selectedStatus, selectedFilter, pages.selected]);
 
   return (
@@ -54,6 +68,7 @@ const ExhibitionList = () => {
         selectedStatus={selectedStatus}
         setSelectedStatus={setSelectedStatus}
         setPages={setPages}
+        selectedFilter={selectedFilter}
         setSelectedFilter={setSelectedFilter}
       />
       <ExhbCardList exhbList={exhbList} type="exhbList" />
