@@ -66,7 +66,7 @@ export const myMatesApi = async (pageNo: number) => {
 // 북마크한 전시회 목록 조회
 export const BookMarkedExhbApi = async (pageNo: number) => {
   const res: AxiosResponse<ExhibitionListRes> = await apiInstance.get(
-    "/api/exhibition-bookmarks/me",
+    "/api/exhibitions/bookmarks/me",
     {
       params: {
         page: pageNo,
@@ -79,7 +79,7 @@ export const BookMarkedExhbApi = async (pageNo: number) => {
 // 북마크한 블로그 목록 조회
 export const BookMarkedBlogApi = async (pageNo: number) => {
   const res: AxiosResponse<BlogReviewListRes> = await apiInstance.get(
-    "/api/blog-bookmarks/me",
+    "/api/blogs/bookmarks/me",
     {
       params: {
         page: pageNo,
@@ -92,7 +92,7 @@ export const BookMarkedBlogApi = async (pageNo: number) => {
 // 북마크한 메이트 목록 조회
 export const BookMarkedMateApi = async (pageNo: number) => {
   const res: AxiosResponse<MateRes> = await apiInstance.get(
-    "/api/mate-bookmarks/me",
+    "/api/mates/bookmarks/me",
     {
       params: {
         page: pageNo,
