@@ -10,6 +10,10 @@ const bloglikeApis = {
     const response = await apiInstance.delete(`api/likes/blogs/${blogId}`);
     return response;
   },
+  putlike: async (blogId: number) => {
+    const response = await apiInstance.put(`/api/blogs/likes/${blogId}`);
+    return response;
+  },
 };
 
 export default bloglikeApis;

@@ -34,29 +34,15 @@ const BlogReviewPresentation = ({
   const isimagearray = imageInfo.length > 0;
   const viewCountRef = useRef(viewCount);
 
-  const bookmarkAddMutation = useMutation({
-    mutationFn: () => blogDetailbookmarkApis.addbookmark(id),
+  const bookmarkMutation = useMutation({
+    mutationFn: () => blogDetailbookmarkApis.putbookmark(id),
     onSuccess: () => {
       queryClient.invalidateQueries(["blogReviewDetail"]);
     },
   });
 
-  const bookmarkDeleteMutation = useMutation({
-    mutationFn: () => blogDetailbookmarkApis.deletebookmark(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["blogReviewDetail"]);
-    },
-  });
-
-  const bolglikeMutation = useMutation({
-    mutationFn: () => bloglikeApis.like(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["blogReviewDetail"]);
-    },
-  });
-
-  const bolgDislikeMutation = useMutation({
-    mutationFn: () => bloglikeApis.dislike(id),
+  const blogMutation = useMutation({
+    mutationFn: () => bloglikeApis.putlike(id),
     onSuccess: () => {
       queryClient.invalidateQueries(["blogReviewDetail"]);
     },
@@ -71,11 +57,7 @@ const BlogReviewPresentation = ({
       alert("자신의 글에는 좋아요를 누를 수 없습니다.");
     }
 
-    if (likeStatus) {
-      bolgDislikeMutation.mutate();
-    } else {
-      bolglikeMutation.mutate();
-    }
+    blogMutation.mutate();
   };
 
   const clickBookmarkBtn = () => {
@@ -87,11 +69,7 @@ const BlogReviewPresentation = ({
       alert("자신의 글에는 북마크를 누를 수 없습니다.");
     }
 
-    if (bookmarkStatus) {
-      bookmarkDeleteMutation.mutate();
-    } else {
-      bookmarkAddMutation.mutate();
-    }
+    bookmarkMutation.mutate();
   };
 
   return (
