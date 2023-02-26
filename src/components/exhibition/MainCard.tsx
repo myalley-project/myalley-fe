@@ -160,11 +160,12 @@ const MainCard = ({
             <InfoDetail style={{ marginBottom: "0px" }}>
               <dt>관람비용</dt>
               <dd>
-                {charge > 0
-                  ? `${charge
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
-                  : "무료"}
+                {charge === 0 && "무료"}
+                {charge === 1 && "미정"}
+                {charge > 1 &&
+                  `${charge
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`}
               </dd>
             </InfoDetail>
           </div>

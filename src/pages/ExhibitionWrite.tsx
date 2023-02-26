@@ -195,14 +195,14 @@ const ExhibitionWrite = (props: ModeType) => {
     });
   };
 
-  const handlePriceFree = () => {
+  const handlePriceFree = (price: string) => {
     setPriceFree((prev) => {
       if (!prev === true) {
         setDetail({
           ...detail,
-          adultPrice: 0,
+          adultPrice: Number(price),
         });
-        setPriceWithCommas("0");
+        setPriceWithCommas(price);
         setDisablePrice(true);
       } else setDisablePrice(false);
       return !prev;
@@ -394,7 +394,14 @@ const ExhibitionWrite = (props: ModeType) => {
               <CheckLabel
                 label="무료 관람"
                 checked={false}
-                onClick={handlePriceFree}
+                onClick={() => handlePriceFree("0")}
+              />
+            </CheckLabelArea>
+            <CheckLabelArea style={{ marginLeft: "120px" }}>
+              <CheckLabel
+                label="미정"
+                checked={false}
+                onClick={() => handlePriceFree("1")}
               />
             </CheckLabelArea>
           </div>
