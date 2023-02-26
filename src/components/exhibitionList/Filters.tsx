@@ -8,7 +8,7 @@ import { PagesState } from "../Pagination";
 import { alertPreparing } from "../../utils/alerts";
 import { FilterType, SortType } from "../../types/exhbList";
 
-// 전시글 목록 상단 필터 컴포넌트_박예선_23.02.24
+// 전시글 목록 상단 필터 컴포넌트_박예선_23.02.26
 const Filters = (props: FiltersType) => {
   const {
     setPages,
@@ -95,6 +95,10 @@ const EXHB_TYPE_ARRAY: FilterType[] = [
   "기획 전시",
   "상설 전시",
   "소장품 전시",
+  "그림 전시",
+  "사진 전시",
+  "자유 출품 전시",
+  "기타",
 ];
 
 interface FiltersType {
