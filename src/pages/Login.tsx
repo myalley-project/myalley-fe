@@ -154,15 +154,6 @@ const Login = () => {
         >
           회원가입
         </Button>
-        <div className="find-account">
-          <Link to="/login" onClick={alertPreparing}>
-            비밀번호 찾기
-          </Link>
-          <div className="line" />
-          <Link to="/login" onClick={alertPreparing}>
-            이메일 찾기
-          </Link>
-        </div>
       </BtnContainer>
     </LoginSignUp>
   );
@@ -215,22 +206,6 @@ const BtnContainer = styled.div`
     }
     .text {
       font-size: 12px;
-    }
-  }
-  .find-account {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    a {
-      font-size: 12px;
-      color: #e0e0e0;
-      text-decoration: none;
-    }
-    .line {
-      width: 0.1px;
-      height: 10px;
-      margin: 0 10px;
-      border-right: 1px solid #e0e0e0;
     }
   }
 `;
