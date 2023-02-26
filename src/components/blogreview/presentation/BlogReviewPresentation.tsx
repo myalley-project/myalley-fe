@@ -34,6 +34,7 @@ const BlogReviewPresentation = ({
   const isimagearray = imageInfo.length > 0;
   const viewCountRef = useRef(viewCount);
 
+  /* eslint-disable */
   const bookmarkMutation = useMutation<any, any, any>({
     mutationFn: (bookid: number) => blogDetailbookmarkApis.putbookmark(bookid),
     onSuccess: (data) => {
@@ -46,6 +47,7 @@ const BlogReviewPresentation = ({
     },
   });
 
+  /* eslint-disable */
   const blogMutation = useMutation<any, any, any>({
     mutationFn: (blogid: number) => bloglikeApis.putlike(blogid),
     onSuccess: (res) => {
