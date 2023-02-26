@@ -24,8 +24,6 @@ const BlogReview = () => {
   };
   const isMemberId = !!localStorage.getItem("memberId");
 
-  if (isLoading) return <div>...loading</div>;
-
   if (isError) return <div>에러가 발생했습니다</div>;
 
   return (
@@ -88,8 +86,4 @@ const PresentationContainer = styled.div`
   @media (max-width: 1064px) {
     padding: 0 16px;
   }
-`;
-
-const Divider = styled.div`
-  margin-bottom: 2rem;
 `;

@@ -34,14 +34,15 @@ const Card = styled.div`
   margin-bottom: 30px;
   h1 {
     font-weight: 700;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 26px;
     padding-bottom: 10px;
   }
   p {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 26px;
     color: ${theme.colors.greys100};
+    white-space: pre-line;
   }
 `;

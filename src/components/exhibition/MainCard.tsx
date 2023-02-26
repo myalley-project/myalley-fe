@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -11,6 +11,8 @@ import { theme } from "../../styles/theme";
 import isApiError from "../../utils/isApiError";
 import BookMark from "../atom/BookMark";
 import useRefreshTokenApi from "../../apis/useRefreshToken";
+import Modal from "../../Modal";
+import SimpleDialog from "../SimpleDialog";
 
 export interface MainCardType {
   posterUrl: string;
@@ -23,6 +25,7 @@ export interface MainCardType {
   bookmarked: boolean;
   type: string;
   viewCount: number;
+  isLoading: boolean;
 }
 const MainCard = ({
   posterUrl,
@@ -35,24 +38,27 @@ const MainCard = ({
   bookmarked,
   type,
   viewCount,
+  isLoading,
 }: MainCardType) => {
   const auth = localStorage.getItem("authority");
   const navigate = useNavigate();
   const refreshTokenApi = useRefreshTokenApi();
+  const [imgHeight, setImgHeight] = useState(52);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   // 전시글 삭제
   const handleDelete = async () => {
     try {
       await exhbDeleteApi(id);
       alert("전시글 삭제가 완료되었습니다.");
-      navigate("/");
+      navigate("/exhibition-list");
     } catch (err) {
       const errorRes = isApiError(err);
       if (errorRes === "accessToken 만료") {
         await refreshTokenApi();
         await exhbDeleteApi(id);
         alert("전시글 삭제가 완료되었습니다.");
-        navigate("/");
+        navigate("/exhibition-list");
       }
     }
   };
@@ -95,22 +101,49 @@ const MainCard = ({
       });
   };
 
+  useEffect(() => {
+    const titleHeight =
+      localStorage.getItem("authority") === "ROLE_ADMIN" ? 318 : 258;
+    if (!isLoading) {
+      const height = document.querySelector(".titleHeight")?.clientHeight;
+      setImgHeight(height! + titleHeight);
+    }
+  }, [isLoading]);
+
   return (
     <CardContainer height={auth === "ROLE_ADMIN" ? "520px" : "462px"}>
       <Card>
         <PosterImg
           src={posterUrl}
           alt="poster-img"
-          height={auth === "ROLE_ADMIN" ? "420px" : "362px"}
+          style={{ height: imgHeight }}
         />
         <InfoContainer>
           {auth === "ROLE_ADMIN" && (
             <EditButtons>
               <Button onClick={() => navigate("edit")}>수정</Button>
-              <Button onClick={handleDelete}>삭제</Button>
+              <Button onClick={() => setOpenDeleteModal(true)}>삭제</Button>
             </EditButtons>
           )}
-          <Title>{title}</Title>
+          <Modal
+            open={openDeleteModal}
+            handleModal={() => setOpenDeleteModal(!openDeleteModal)}
+          >
+            <SimpleDialog
+              message="해당 전시글을 삭제하시겠습니까?"
+              cancelMessage="전시글 보기"
+              confirmMessage="전시글 삭제하기"
+              clickCancleBtn={() => setOpenDeleteModal(false)}
+              clickConfirmBtn={handleDelete}
+            />
+          </Modal>
+          <ViewCount>
+            <dt>조회수</dt>
+            <dd>{viewCount}</dd>
+          </ViewCount>
+          <TitleContainer>
+            <Title className="titleHeight">{title}</Title>
+          </TitleContainer>
           <div style={{ padding: "30px 0" }}>
             <InfoDetail>
               <dt>일정</dt>
@@ -121,18 +154,18 @@ const MainCard = ({
               <dd>{place}</dd>
             </InfoDetail>
             <InfoDetail>
-              <dt>관람비용</dt>
-              <dd>
-                {charge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
-              </dd>
-            </InfoDetail>
-            <InfoDetail>
               <dt>전시 유형</dt>
               <dd>{type}</dd>
             </InfoDetail>
             <InfoDetail style={{ marginBottom: "0px" }}>
-              <dt>조회수</dt>
-              <dd>{viewCount}</dd>
+              <dt>관람비용</dt>
+              <dd>
+                {charge > 0
+                  ? `${charge
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                  : "무료"}
+              </dd>
             </InfoDetail>
           </div>
           <Footer>
@@ -157,7 +190,8 @@ export default MainCard;
 const CardContainer = styled.div<{ height: string }>`
   display: flex;
   width: 100%;
-  height: ${(props) => props.height};
+  height: fit-content;
+  padding: 50px 0;
   align-items: center;
   justify-content: center;
   border-radius: 0px;
@@ -173,11 +207,11 @@ const Card = styled.div`
   box-shadow: 0px 4px 30px rgba(79, 55, 139, 0.05);
 `;
 
-const PosterImg = styled.img<{ height: string }>`
+const PosterImg = styled.img`
   width: 380px;
-  height: ${(props) => props.height};
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  object-fit: cover;
 `;
 
 const InfoContainer = styled.div`
@@ -197,12 +231,17 @@ const EditButtons = styled.div`
 const Button = styled.button`
   padding: 0;
   color: ${theme.colors.greys60};
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   &:hover {
     font-weight: 700;
     color: ${theme.colors.greys100};
   }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const Title = styled.h1`
@@ -219,7 +258,7 @@ const InfoDetail = styled.dl`
   display: flex;
   width: fit-content;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
   color: ${theme.colors.greys80};
   text-align: left;
@@ -231,6 +270,16 @@ const InfoDetail = styled.dl`
   }
   dd {
     font-weight: 400;
+  }
+`;
+
+const ViewCount = styled(InfoDetail)`
+  margin-left: auto;
+  margin-bottom: 8px;
+  font-size: 14px;
+  dt {
+    width: 38px;
+    margin-right: 8px;
   }
 `;
 
@@ -252,6 +301,7 @@ const WebLink = styled.a`
   padding: 4px 10px;
   border-radius: 10px;
   line-height: 24px;
+  font-size: 16px;
   text-decoration: none;
   color: ${theme.colors.primry70};
   &:hover {

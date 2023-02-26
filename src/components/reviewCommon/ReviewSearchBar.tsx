@@ -9,12 +9,14 @@ interface ReviewSearchbarProps {
   setOrderType: (state: "Recent" | "StarScore" | "ViewCount") => void;
   handleReviewModal: () => void;
   filter: "oneline" | "blog";
+  orderType: "StarScore" | "Recent" | "ViewCount";
   totalElement: number;
 }
 
 const ReviewSearchBar = ({
   setFilter,
   setOrderType,
+  orderType,
   filter,
   totalElement,
   handleReviewModal,
@@ -48,7 +50,18 @@ const ReviewSearchBar = ({
         </p>
       )}
       <Searchbar>
-        <SearchBar placeholder="검색" width="277px" />
+        <form
+          onSubmit={(e: React.FormEvent) => {
+            e.preventDefault();
+            return alert("아직 준비중인 기능입니다.");
+          }}
+        >
+          <SearchBar
+            placeholder="검색기능은 현재 지원하지 않습니다."
+            width="277px"
+            disabled
+          />
+        </form>
         <Button onClick={handleReviewModal} variant="primary" size="large">
           리뷰 등록
         </Button>
@@ -56,16 +69,28 @@ const ReviewSearchBar = ({
     </SearchbarContainer>
     <Divider />
     <ButtonItems>
-      <button onClick={() => setOrderType("Recent")} type="button">
+      <button
+        onClick={() => setOrderType("Recent")}
+        type="button"
+        className={orderType === "Recent" ? "selected" : ""}
+      >
         최근순
       </button>
       <Spliter />
       {filter === "oneline" ? (
-        <button onClick={() => setOrderType("StarScore")} type="button">
+        <button
+          onClick={() => setOrderType("StarScore")}
+          type="button"
+          className={orderType === "StarScore" ? "selected" : ""}
+        >
           별점순
         </button>
       ) : (
-        <button onClick={() => setOrderType("ViewCount")} type="button">
+        <button
+          onClick={() => setOrderType("ViewCount")}
+          type="button"
+          className={orderType === "Recent" ? "selected" : ""}
+        >
           조회수순
         </button>
       )}
@@ -93,6 +118,7 @@ const ReviewSelector = styled.div`
     font-weight: 700;
     font-size: 14px;
     border: 0;
+    cursor: pointer;
     &:is(:hover, :focus) {
       color: ${theme.colors.greys100};
     }
@@ -137,6 +163,7 @@ const ButtonItems = styled.div`
     font-weight: 500;
     font-size: 14px;
     border: 0;
+    cursor: pointer;
     &:is(:hover, :focus) {
       color: ${theme.colors.greys100};
     }

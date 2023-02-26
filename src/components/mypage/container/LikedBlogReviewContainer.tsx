@@ -7,45 +7,39 @@ import {
   BlogReviewListRes,
   BlogInfo,
 } from "../../../apis/member";
-import useGetNewTokenApi from "../../../apis/useGetRefreshToken";
+import getNewTokenApi from "../../../apis/getRefreshToken";
 import ReviewCardList from "../../blogReviewList/ReviewCardList";
 import isApiError from "../../../utils/isApiError";
 import NoList from "../../NoList";
 import Pagination from "../../Pagination";
 
 const LikedBlogReviewContainer = () => {
-  const getNewTokenApi = useGetNewTokenApi;
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
   });
 
-  const getLikedBlog = useCallback(
-    async (pageNo: number) => {
-      const refreshToken = localStorage.getItem("refreshToken");
-      try {
-        const res = await LikedBlogReviewApi(pageNo);
-        return res;
-      } catch (err) {
-        const errorRes = isApiError(err);
-        if (errorRes === "accessToken 만료") {
-          await getNewTokenApi(refreshToken);
-          const reRes = await LikedBlogReviewApi(pageNo);
-          if (!reRes) return null;
-          return reRes;
-        }
+  const getLikedBlog = useCallback(async (pageNo: number) => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    try {
+      const res = await LikedBlogReviewApi(pageNo);
+      return res;
+    } catch (err) {
+      const errorRes = isApiError(err);
+      if (errorRes === "accessToken 만료") {
+        await getNewTokenApi(refreshToken);
+        const reRes = await LikedBlogReviewApi(pageNo);
+        if (!reRes) return null;
+        return reRes;
       }
-      return null;
-    },
-    [getNewTokenApi]
-  );
+    }
+    return null;
+  }, []);
 
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["bookmarked"],
     queryFn: () => getLikedBlog(pages.selected).then((res) => res?.data),
   });
-
-  if (isLoading) return <div>...isloading</div>;
 
   if (isError) return <div>...isError</div>;
 

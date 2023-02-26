@@ -164,6 +164,9 @@ const BlogReviewWrite = () => {
 
   const blogPostMutation = useMutation({
     mutationFn: (formData: FormData) => blogReviewApis.createReview(formData),
+    onSuccess: () => {
+      alert("블로그리뷰가 작성되었습니다.");
+    },
   });
 
   const getExhibitionInfo = (
@@ -257,7 +260,9 @@ const BlogReviewWrite = () => {
     };
     const formData = new FormData();
 
-    if (!Object.values(blogInfo).includes("")) {
+    if (Object.values(blogInfo).includes("")) {
+      alert("빈 칸으로 남겨진 데이터를 입력해주세요.");
+    } else {
       formData.append(
         "blogInfo",
         new Blob([JSON.stringify(blogInfo)], { type: "application/json" })
@@ -282,9 +287,34 @@ const BlogReviewWrite = () => {
         const errResponese = isApiError(err);
         if (errResponese === "accessToken 만료") refreshTokenApi();
       }
-    } else {
-      alert("빈 칸으로 남겨진 데이터를 입력해주세요.");
     }
+
+    // if (!Object.values(blogInfo).includes("")) {
+    //   formData.append(
+    //     "blogInfo",
+    //     new Blob([JSON.stringify(blogInfo)], { type: "application/json" })
+    //   );
+
+    //   formData.append(
+    //     "exhibitionId",
+    //     new Blob([JSON.stringify(selectedExhb.id)], {
+    //       type: "application/json",
+    //     })
+    //   );
+
+    //   if (imageFiles !== null) {
+    //     Array.from(imageFiles).forEach((file) =>
+    //       formData.append("images", file)
+    //     );
+    //   }
+    //   try {
+    //     blogPostMutation.mutate(formData);
+    //     navigate("/blogreview-list");
+    //   } catch (err) {
+    //     const errResponese = isApiError(err);
+    //     if (errResponese === "accessToken 만료") refreshTokenApi();
+    //   }
+    // }
   };
 
   return (

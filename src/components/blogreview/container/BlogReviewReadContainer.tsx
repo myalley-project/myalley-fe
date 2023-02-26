@@ -7,6 +7,7 @@ import Pagination from "../../Pagination";
 import BlogReviewCard from "../../blogReviewList/ReviewCard";
 import blogReviewApis from "../../../apis/blogReviewApis";
 import { BlogReviewResponse } from "../../../types/blogReview";
+import NoList from "../../NoList";
 
 type OrderType = "Recent" | "ViewCount" | "StarScore";
 
@@ -51,8 +52,6 @@ const BlogReviewReadContainer = ({
       ),
   });
 
-  if (isLoading) return <div>...loading</div>;
-
   if (isError) return <div>에러가 발생했습니다. {error.message}</div>;
 
   return (
@@ -61,30 +60,39 @@ const BlogReviewReadContainer = ({
         totalElement={data ? data?.pageInfo.totalElement : 0}
         filter={filter}
         setFilter={setFilter}
+        orderType={orderType}
         setOrderType={setOrderType}
         handleReviewModal={handleReviewModal}
       />
       <Container>
         <CardWrapper>
-          {data?.blogInfo.map((each) => (
-            <BlogReviewCard
-              key={each.id}
-              id={each.id}
-              title={each.title}
-              writer={each.writer}
-              viewDate={each.viewDate}
-              viewCount={each.viewCount}
-              imageInfo={each.imageInfo}
-            />
-          ))}
+          {(data?.pageInfo.totalElement as number) > 0 ? (
+            data?.blogInfo.map((each) => (
+              <BlogReviewCard
+                key={each.id}
+                id={each.id}
+                title={each.title}
+                writer={each.writer}
+                viewDate={each.viewDate}
+                viewCount={each.viewCount}
+                imageInfo={each.imageInfo}
+              />
+            ))
+          ) : (
+            <FlexCenter>
+              <NoList notice="아직 작성된 블로그 리뷰가 없습니다." />
+            </FlexCenter>
+          )}
         </CardWrapper>
-        {data?.pageInfo ? (
-          <Pagination
-            pages={pages}
-            setPages={setPages}
-            totalPage={data.pageInfo.totalElement}
-          />
-        ) : null}
+        <MarginAuto>
+          {data && (
+            <Pagination
+              pages={pages}
+              setPages={setPages}
+              totalPage={data.pageInfo.totalElement}
+            />
+          )}
+        </MarginAuto>
       </Container>
     </>
   );
@@ -102,4 +110,13 @@ const CardWrapper = styled.div`
   grid-template-rows: auto;
   gap: 30px;
   margin-bottom: 30px;
+`;
+
+const FlexCenter = styled.div`
+  grid-column: 2;
+`;
+
+const MarginAuto = styled.div`
+  width: 1200px;
+  margin: 0 auto;
 `;

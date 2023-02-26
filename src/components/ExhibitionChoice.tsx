@@ -39,11 +39,11 @@ const ExhibitionChoice = ({ getExhbInfo, handleModal }: ChoiceProps) => {
   const { isLoading, isError, error, data } = useQuery<ExhbListRes, Error>({
     queryKey: ["exhbList", { pageInfo, exhbStatus }],
     queryFn: () =>
-      exhbListApi(exhbStatus, "전체 전시", pageInfo).then((res) => res.data),
+      exhbListApi(exhbStatus, "전체 전시", "최신순", pageInfo).then(
+        (res) => res.data
+      ),
   });
   // 파일 체인지를 확인하기 위한 쓸데없는 주석입니다
-
-  if (isLoading) return <div>...loading</div>;
 
   if (isError) return <div>에러가 발생했습니다! {error.message}</div>;
 

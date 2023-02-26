@@ -6,12 +6,17 @@ import SearchInput from "../atom/SearchInput";
 import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
 import { alertPreparing } from "../../utils/alerts";
-import { FilterType } from "../../types/exhbList";
+import { FilterType, SortType } from "../../types/exhbList";
 
-// 전시글 목록 상단 필터 컴포넌트_박예선_23.02.08
+// 전시글 목록 상단 필터 컴포넌트_박예선_23.02.24
 const Filters = (props: FiltersType) => {
-  const { setPages, selectedStatus, setSelectedStatus, setSelectedFilter } =
-    props;
+  const {
+    setPages,
+    selectedStatus,
+    setSelectedStatus,
+    selectedFilter,
+    setSelectedFilter,
+  } = props;
 
   // 전시상황 버튼 클릭 함수_박예선_23.02.01
   const handleStatusBtn = (status: StatusType) => {
@@ -19,17 +24,18 @@ const Filters = (props: FiltersType) => {
     setSelectedStatus(status);
   };
 
-  // 필터 조건 핸들 함수_박예선_23.02.01
+  // 필터 조건 핸들 함수_박예선_23.02.24
   const handleFilters = (e: React.MouseEvent<HTMLLIElement>) => {
     const value = e.currentTarget.textContent;
     if (!value) return;
-    if (value === "인기순") {
-      alert("준비중인 기능입니다.");
-      return;
+    for (let i = 0; i < EXHB_SORT_ARRAY.length; i += 1) {
+      if (value === EXHB_SORT_ARRAY[i]) {
+        setSelectedFilter({ ...selectedFilter, sort: value });
+      }
     }
     for (let i = 0; i < EXHB_TYPE_ARRAY.length; i += 1) {
       if (value === EXHB_TYPE_ARRAY[i]) {
-        setSelectedFilter(value);
+        setSelectedFilter({ ...selectedFilter, type: value });
       }
     }
   };
@@ -81,8 +87,8 @@ const Filters = (props: FiltersType) => {
 export default Filters;
 
 const EXHB_STATUS_ARRAY: StatusType[] = ["현재", "예정", "지난"];
-const EXHB_SORT_ARRAY = ["최신순", "인기순"];
-export const EXHB_TYPE_ARRAY: FilterType[] = [
+const EXHB_SORT_ARRAY: SortType[] = ["최신순", "조회수순"];
+const EXHB_TYPE_ARRAY: FilterType[] = [
   "전체 전시",
   "영상 전시",
   "특별 전시",
@@ -95,7 +101,16 @@ interface FiltersType {
   setPages: React.Dispatch<React.SetStateAction<PagesState>>;
   selectedStatus: StatusType;
   setSelectedStatus: React.Dispatch<React.SetStateAction<StatusType>>;
-  setSelectedFilter: React.Dispatch<React.SetStateAction<FilterType>>;
+  selectedFilter: {
+    type: FilterType;
+    sort: SortType;
+  };
+  setSelectedFilter: React.Dispatch<
+    React.SetStateAction<{
+      type: FilterType;
+      sort: SortType;
+    }>
+  >;
 }
 export type StatusType = "현재" | "예정" | "지난";
 
@@ -111,7 +126,7 @@ const FiltersContainer = styled.div`
     margin-bottom: 14px;
     font-size: 14px;
     button {
-      font-size: 14px;
+      font-size: 16px;
       line-height: inherit;
       &.selected {
         color: ${theme.colors.greys100};

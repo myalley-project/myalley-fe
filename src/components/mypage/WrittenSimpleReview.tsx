@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import Pagination from "../Pagination";
 import MypageOnelineCard from "../onelineReview/presentation/MypageOnelineCard";
 import { MySimpleReviewRes, mySimpleReviewsApi } from "../../apis/member";
-import useGetNewTokenApi from "../../apis/useGetRefreshToken";
+import useGetNewTokenApi from "../../apis/getRefreshToken";
 import isApiError from "../../utils/isApiError";
 import NoList from "../NoList";
 
@@ -31,8 +31,6 @@ const WrittenSimpleReview = () => {
     queryKey: ["mypageonelineReview", { pages }],
     queryFn: () => getSimpleReview(pages.selected),
   });
-
-  if (isLoading) return <div>...loading</div>;
 
   if (isError) return <div>에러가 발생했습니다.</div>;
 

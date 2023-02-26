@@ -37,7 +37,7 @@ const ExhibitionWrite = (props: ModeType) => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [thumbnail, setThumbnail] = useState("");
-  const [imgFile, setImgFile] = useState<File>();
+  const [userUploadImgFile, setUserUploadImgFile] = useState<File>();
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
@@ -121,7 +121,7 @@ const ExhibitionWrite = (props: ModeType) => {
     const reader = new FileReader();
     const file = e.target.files;
     if (file !== null) {
-      setImgFile(file[0]);
+      setUserUploadImgFile(file[0]);
       setDetail({
         ...detail,
         fileName: file[0].name,
@@ -138,7 +138,7 @@ const ExhibitionWrite = (props: ModeType) => {
 
   // 이미지 업로드 api 호출
   const postUploadImg = async (imgfile: FormData) => {
-    if (!imgFile) {
+    if (!userUploadImgFile) {
       const imgData = { filename: detail.fileName, s3Url: detail.posterUrl };
       updateExhb(imgData);
     } else
@@ -231,8 +231,8 @@ const ExhibitionWrite = (props: ModeType) => {
         posterUrl: imgData.s3Url,
       });
       if (res.status === 200) {
-        alert("전시글 등록이 완료되었습니다. 메인 페이지로 돌아갑니다.");
-        navigate("/");
+        alert("전시글 등록이 완료되었습니다.");
+        navigate("/exhibition-list");
       }
     } catch (err) {
       const errorRes = isApiError(err);
@@ -240,8 +240,8 @@ const ExhibitionWrite = (props: ModeType) => {
         await refreshTokenApi();
         const reRes = await exhbCreateApi(detail);
         if (reRes.status === 200) {
-          alert("전시글 등록이 완료되었습니다. 메인 페이지로 돌아갑니다.");
-          navigate("/");
+          alert("전시글 등록이 완료되었습니다.");
+          navigate("/exhibition-list");
         }
       }
       if (typeof errorRes !== "object") return;
@@ -306,7 +306,7 @@ const ExhibitionWrite = (props: ModeType) => {
       alert("전시회 웹페이지 주소를 작성해주세요.");
     } else if (!regDetail.test(detail.webLink)) {
       alert("웹페이지 주소는 'https://'로 시작해야합니다.");
-    } else formData.append("file", imgFile!);
+    } else formData.append("file", userUploadImgFile!);
     // 이미지 등록 함수 호출
     await postUploadImg(formData);
   };

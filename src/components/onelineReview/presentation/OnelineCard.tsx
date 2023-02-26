@@ -79,41 +79,12 @@ const OnelineCard = ({
           alt="사람 이미지"
         />
         <ReviewInfo>
-          {rate === 1 ? (
-            <div>
-              <img src={StarIcon} alt="별점" />
-            </div>
-          ) : null}
-          {rate === 2 ? (
-            <div>
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-            </div>
-          ) : null}
-          {rate === 3 ? (
-            <div>
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-            </div>
-          ) : null}
-          {rate === 4 ? (
-            <div>
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-            </div>
-          ) : null}
-          {rate === 5 ? (
-            <div>
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-              <img src={StarIcon} alt="별점" />
-            </div>
-          ) : null}
+          {/* eslint-disable */}
+          <div>
+            {[...Array(rate)].map((_, index) => (
+              <img key={`star-rate-${index}`} src={StarIcon} alt="별점" />
+            ))}
+          </div>
           <div>
             {memberInfo && <span>{memberInfo.nickname}</span>} |{" "}
             <span>{viewDate}</span> |<span>{time}</span> |{" "}

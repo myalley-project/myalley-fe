@@ -3,7 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
-import heartOff from "../assets/icons/heartOff.svg";
+import calendar from "../assets/icons/calendar.svg";
+import gender from "../assets/icons/gender.svg";
+import personOff from "../assets/icons/personOff.svg";
 import profileImg from "../assets/icons/profileImg.svg";
 import { MateRes } from "../types/mate";
 import { BookMarkRes, mateApi, useMateBookMarkApi } from "../apis/mate";
@@ -17,7 +19,7 @@ import CommentList, {
   TextArea,
 } from "../components/mate/CommentList";
 
-// 메이트 모집글 상세페이지_박예선_23.02.09
+// 메이트 모집글 상세페이지_박예선_23.02.15
 const Mate = () => {
   const navigate = useNavigate();
   const mateBookMarkApi = useMateBookMarkApi();
@@ -101,29 +103,29 @@ const Mate = () => {
               </div>
             </div>
           </div>
-          <div className="flex">
+          <ColoredBoxContainer>
             <ColoredBox>
-              <HeartIcon src={heartOff} alt="" />
+              <Icon src={calendar} alt="달력 아이콘" />
               <div>
                 <h4>관람 예정일</h4>
                 <span>{mateInfo.availableDate}</span>
               </div>
             </ColoredBox>
             <ColoredBox>
-              <HeartIcon src={heartOff} alt="" />
+              <Icon src={gender} alt="성별 아이콘" />
               <div>
                 <h4>메이트 성별</h4>
                 <span>{mateInfo.mateGender}</span>
               </div>
             </ColoredBox>
             <ColoredBox>
-              <HeartIcon src={heartOff} alt="" />
+              <Icon src={personOff} alt="사람 아이콘" />
               <div>
                 <h4>메이트 나이</h4>
                 <span>{mateInfo.mateAge}</span>
               </div>
             </ColoredBox>
-          </div>
+          </ColoredBoxContainer>
           <div>
             <SubTitle type="greys90" marginTop={50}>
               메이트 설명글
@@ -208,10 +210,19 @@ const MateContainer = styled.div`
   .none {
     display: none;
   }
+  @media (min-width: 1280px) {
+    padding: 0 40px;
+  }
+  @media (max-width: 1280px) {
+    padding: 0 20px;
+  }
+  @media (max-width: 1072px) {
+    padding: 0 16px;
+  }
 `;
 
 const MateContentContainer = styled.div`
-  width: 83vw;
+  width: 100%;
   max-width: 1200px;
   margin: 50px 0 30px;
   padding: 30px;
@@ -243,6 +254,15 @@ const MateContentContainer = styled.div`
     display: flex;
     margin-top: 50px;
   }
+  @media (max-width: 1072px) {
+    margin: 4.6vw 0 30px;
+  }
+  @media (max-width: 624px) {
+    padding: 20px;
+  }
+  @media (max-width: 347px) {
+    margin: 16px 0;
+  }
 `;
 
 const Title = styled.div<{
@@ -258,9 +278,16 @@ const Title = styled.div<{
   line-height: ${(props) => `${props.lineHight}px`};
 `;
 
+const ColoredBoxContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 10px 2vw;
+  margin-top: 50px;
+`;
+
 const ColoredBox = styled.div`
   display: flex;
-  margin: 50px 30px 0 0;
   padding: 30px;
   background-color: ${theme.colors.secondary5};
   border-radius: 16px;
@@ -279,7 +306,6 @@ const ColoredBox = styled.div`
     line-height: 22px;
   }
   @media (max-width: 1440px) {
-    margin-right: 2.08vw;
     padding: 2.08vw;
     h4,
     span {
@@ -287,7 +313,7 @@ const ColoredBox = styled.div`
     }
   }
   @media (max-width: 1064px) {
-    padding: 15px;
+    padding: 22px;
   }
   @media (max-width: 624px) {
     h4,
@@ -300,7 +326,7 @@ const ColoredBox = styled.div`
   }
 `;
 
-const HeartIcon = styled.img`
+const Icon = styled.img`
   width: 40px;
   margin-right: 30px;
   @media (max-width: 1440px) {
@@ -319,7 +345,7 @@ const MemberInfoContainer = styled.div`
   align-items: center;
   margin: 50px auto 0;
   span {
-    color: ${theme.colors.greys60};
+    color: ${theme.colors.greys90};
     font-size: 16px;
     font-weight: 500;
   }
