@@ -1,5 +1,6 @@
-import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import MateListFilter, {
   MateStatusType,
@@ -12,15 +13,16 @@ import { mateListApi } from "../apis/mate";
 import NoList from "../components/NoList";
 import { alertError } from "../utils/alerts";
 
-// 메이트글 목록 페이지_박예선_23.02.01
+// 메이트글 목록 페이지_박예선_23.02.26
 const MateList = () => {
+  const navigate = useNavigate();
   const [mateList, setMateList] = useState<Mate[] | null>(null);
   const [mateStatusFilter, setMateStatusFilter] =
     useState<MateStatusType>("전체");
   const [pages, setPages] = useState<PagesState>({ started: 1, selected: 1 });
   const [totalPage, setTotalPage] = useState(1);
 
-  // 메이트글 목록 조회 api 호출_박예선_23.01.26
+  // 메이트글 목록 조회 api 호출_박예선_23.02.26
   const getMateList = useCallback(
     async (status: MateStatusType, page: number) => {
       try {
@@ -33,9 +35,10 @@ const MateList = () => {
         setTotalPage(pageInfo.totalPage);
       } catch (err) {
         alertError();
+        navigate("/");
       }
     },
-    []
+    [navigate]
   );
 
   // 메이트글 목록 조회_박예선_23.02.01
