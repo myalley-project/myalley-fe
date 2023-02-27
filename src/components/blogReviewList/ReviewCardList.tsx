@@ -6,21 +6,23 @@ import NoList from "../NoList";
 import ReviewCard from "./ReviewCard";
 
 const ReviewCardList = ({ blogInfo }: BlogReviewListRes) => (
-  <ReviewCardListContainer>
+  <>
     {blogInfo.length === 0 && <NoList notice="작성된 리뷰가 없습니다." />}
-    {blogInfo.length !== 0 &&
-      blogInfo.map((each) => (
-        <ReviewCard
-          key={each.id}
-          id={each.id}
-          title={each.title}
-          writer={each.writer}
-          viewDate={each.viewDate}
-          viewCount={each.viewCount}
-          imageInfo={each.imageInfo}
-        />
-      ))}
-  </ReviewCardListContainer>
+    <ReviewCardListContainer>
+      {blogInfo.length !== 0 &&
+        blogInfo.map((each) => (
+          <ReviewCard
+            key={each.id}
+            id={each.id}
+            title={each.title}
+            writer={each.writer}
+            viewDate={each.viewDate}
+            viewCount={each.viewCount}
+            imageInfo={each.imageInfo}
+          />
+        ))}
+    </ReviewCardListContainer>
+  </>
 );
 
 export default ReviewCardList;
