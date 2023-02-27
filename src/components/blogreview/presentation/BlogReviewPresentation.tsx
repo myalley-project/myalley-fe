@@ -34,30 +34,28 @@ const BlogReviewPresentation = ({
   const isimagearray = imageInfo.length > 0;
   const viewCountRef = useRef(viewCount);
 
-  const bookmarkAddMutation = useMutation({
-    mutationFn: () => blogDetailbookmarkApis.addbookmark(id),
-    onSuccess: () => {
+  /* eslint-disable */
+  const bookmarkMutation = useMutation<any, any, any>({
+    mutationFn: (bookid: number) => blogDetailbookmarkApis.putbookmark(bookid),
+    onSuccess: (data) => {
+      if (data === "on") {
+        alert("블로그 리뷰를 북마크에 추가했습니다.");
+      } else {
+        alert("블로그 리뷰를 북마크에서 삭제했습니다.");
+      }
       queryClient.invalidateQueries(["blogReviewDetail"]);
     },
   });
 
-  const bookmarkDeleteMutation = useMutation({
-    mutationFn: () => blogDetailbookmarkApis.deletebookmark(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["blogReviewDetail"]);
-    },
-  });
-
-  const bolglikeMutation = useMutation({
-    mutationFn: () => bloglikeApis.like(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["blogReviewDetail"]);
-    },
-  });
-
-  const bolgDislikeMutation = useMutation({
-    mutationFn: () => bloglikeApis.dislike(id),
-    onSuccess: () => {
+  /* eslint-disable */
+  const blogMutation = useMutation<any, any, any>({
+    mutationFn: (blogid: number) => bloglikeApis.putlike(blogid),
+    onSuccess: (res) => {
+      if (res === "on") {
+        alert("블로그 리뷰를 북마크에 추가했습니다.");
+      } else {
+        alert("블로그 리뷰를 북마크에서 삭제했습니다.");
+      }
       queryClient.invalidateQueries(["blogReviewDetail"]);
     },
   });
@@ -71,11 +69,7 @@ const BlogReviewPresentation = ({
       alert("자신의 글에는 좋아요를 누를 수 없습니다.");
     }
 
-    if (likeStatus) {
-      bolgDislikeMutation.mutate();
-    } else {
-      bolglikeMutation.mutate();
-    }
+    blogMutation.mutate(id);
   };
 
   const clickBookmarkBtn = () => {
@@ -87,11 +81,7 @@ const BlogReviewPresentation = ({
       alert("자신의 글에는 북마크를 누를 수 없습니다.");
     }
 
-    if (bookmarkStatus) {
-      bookmarkDeleteMutation.mutate();
-    } else {
-      bookmarkAddMutation.mutate();
-    }
+    bookmarkMutation.mutate(id);
   };
 
   return (

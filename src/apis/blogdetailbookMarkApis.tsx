@@ -1,16 +1,8 @@
 import apiInstance from "../utils/apiInstance";
 
 const blogDetailbookmarkApis = {
-  addbookmark: async (blogId: number) => {
-    const response = await apiInstance.post(
-      `api/blog-bookmarks/blogs/${blogId}`
-    );
-    return response;
-  },
-  deletebookmark: async (blogId: number) => {
-    const response = await apiInstance.delete(
-      `api/blog-bookmarks/blogs/${blogId}`
-    );
+  putbookmark: async (blogId: number) => {
+    const response = await apiInstance.put(`/api/blogs/bookmarks/${blogId}`);
     return response;
   },
 };
