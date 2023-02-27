@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -12,6 +12,10 @@ interface LocationState {
 
 const BlogReview = () => {
   const location: LocationState = useLocation();
+
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
 
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogReviewDetail"],
