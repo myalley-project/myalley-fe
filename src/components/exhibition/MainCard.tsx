@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import {
-  BookMarkRes,
-  exhbBookMarkApi,
-  exhbDeleteApi,
-} from "../../apis/exhibition";
+import { exhbDeleteApi } from "../../apis/exhibition";
 import { theme } from "../../styles/theme";
 import isApiError from "../../utils/isApiError";
 import BookMark from "../atom/BookMark";
@@ -59,30 +54,6 @@ const MainCard = ({
         await exhbDeleteApi(id);
         alert("전시글 삭제가 완료되었습니다.");
         navigate("/exhibition-list");
-      }
-    }
-  };
-
-  // 북마크 버튼
-  const toggleBookMark = async () => {
-    if (!localStorage.getItem("accessToken")) return;
-    try {
-      const res: AxiosResponse<BookMarkRes> = await exhbBookMarkApi(id);
-      const { msg } = res.data;
-      alert(msg);
-    } catch (err) {
-      isApiError(err);
-      const errorRes = isApiError(err);
-      if (errorRes === "accessToken 만료") {
-        await refreshTokenApi();
-        const reRes = await exhbBookMarkApi(id);
-        const { msg } = reRes.data;
-        alert(msg);
-      }
-      if (typeof errorRes !== "object") return;
-      const { errorCode, errorMsg } = errorRes;
-      if (errorCode === 404 && errorMsg === "회원 정보 없음") {
-        alert("유효하지 않은 토큰입니다. 다시 로그인해주세요.");
       }
     }
   };
@@ -175,7 +146,7 @@ const MainCard = ({
             </WebLink>
             {localStorage.getItem("authority") !== "ROLE_ADMIN" && (
               <BookMarkBtn>
-                <BookMark onClick={toggleBookMark} marked={bookmarked} />
+                <BookMark exhbId={id} bookmarked={bookmarked} />
               </BookMarkBtn>
             )}
             <ShareBtn type="button" onClick={copyLink} />
