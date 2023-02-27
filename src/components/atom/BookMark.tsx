@@ -21,7 +21,7 @@ const BookMark = ({ exhbId, bookmarked }: BookMarkType) => {
   }, [bookmarked]);
 
   // 북마크 추가/해제
-  const handleBookMark = async () => {
+  const handleBookMarkBtn = async () => {
     if (!localStorage.getItem("accessToken")) {
       alert("해당 기능은 로그인 후 이용 가능합니다.");
       return;
@@ -52,7 +52,7 @@ const BookMark = ({ exhbId, bookmarked }: BookMarkType) => {
   return (
     <BookMarkContainer
       type="button"
-      onClick={handleBookMark}
+      onClick={handleBookMarkBtn}
       onMouseOver={() => setIsMouseOver(true)}
       onMouseOut={() => setIsMouseOver(false)}
     >
