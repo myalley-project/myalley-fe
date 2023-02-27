@@ -8,17 +8,17 @@ import isApiError from "../../utils/isApiError";
 
 interface BookMarkType {
   exhbId: number;
-  bookmarked: boolean;
+  isBookmarked: boolean;
 }
 
-const BookMark = ({ exhbId, bookmarked }: BookMarkType) => {
+const BookMark = ({ exhbId, isBookmarked }: BookMarkType) => {
   const refreshTokenApi = useRefreshTokenApi();
-  const [isChecked, setIsChecked] = useState(bookmarked);
+  const [isChecked, setIsChecked] = useState(isBookmarked);
   const [isMouseOver, setIsMouseOver] = useState(false);
 
   useEffect(() => {
-    setIsChecked(bookmarked);
-  }, [bookmarked]);
+    setIsChecked(isBookmarked);
+  }, [isBookmarked]);
 
   // 북마크 추가/해제
   const handleBookMarkBtn = async () => {

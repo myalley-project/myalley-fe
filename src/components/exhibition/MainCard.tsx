@@ -146,7 +146,7 @@ const MainCard = ({
             </WebLink>
             {localStorage.getItem("authority") !== "ROLE_ADMIN" && (
               <BookMarkBtn>
-                <BookMark exhbId={id} bookmarked={bookmarked} />
+                <BookMark exhbId={id} isBookmarked={bookmarked} />
               </BookMarkBtn>
             )}
             <ShareBtn type="button" onClick={copyLink} />
