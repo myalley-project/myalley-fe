@@ -94,10 +94,10 @@ export interface BookMarkRes {
   data?: true | false;
 }
 
-// 메이트 목록 조회 api_박예선_23.01.26
+// 메이트 목록 조회 api_박예선_23.02.26
 export const mateListApi = async (status: MateStatusType, page: number) => {
   const res: AxiosResponse<MateListType> = await apiInstance.get(
-    `/mates?page=${page}&status=${status === "전체" ? "" : status}`
+    `/mates?page=${page}&status=${status}`
   );
   return res;
 };
