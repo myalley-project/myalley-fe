@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SubTitle from "../SubTitle";
 import Button from "../atom/Button";
 import { theme } from "../../styles/theme";
-import PlusLarge from "../../assets/icons/plus.svg";
+import Plus from "../../assets/icons/plus.svg";
 import xBtn from "../../assets/icons/xBtn.svg";
 
 type ExhibitionInfo = {
@@ -50,7 +50,7 @@ const ExhibitionSelect = ({
       </SelectedExhibitionImage>
     ) : (
       <ExhibitionButton>
-        <img src={PlusLarge} alt="전시회 선택 버튼" />
+        <img src={Plus} alt="전시회 선택 버튼" />
       </ExhibitionButton>
     )}
   </Container>
@@ -72,6 +72,10 @@ const ExhibitionButton = styled.div`
   max-height: 435px;
   border: 1px solid ${theme.colors.greys5};
   background-color: #f9f9f9;
+  img {
+    width: 70px;
+    height: 70px;
+  }
 `;
 
 const SelectedExhibitionImage = styled.div`
