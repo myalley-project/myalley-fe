@@ -69,30 +69,28 @@ const ReviewSearchBar = ({
     </SearchbarContainer>
     <Divider />
     <ButtonItems>
-      <button
+      {/* eslint-disable */}
+      <ReviewOrderType
         onClick={() => setOrderType("Recent")}
-        type="button"
         className={orderType === "Recent" ? "selected" : ""}
       >
         최근순
-      </button>
+      </ReviewOrderType>
       <Spliter />
       {filter === "oneline" ? (
-        <button
+        <ReviewOrderType
           onClick={() => setOrderType("StarScore")}
-          type="button"
           className={orderType === "StarScore" ? "selected" : ""}
         >
           별점순
-        </button>
+        </ReviewOrderType>
       ) : (
-        <button
+        <ReviewOrderType
           onClick={() => setOrderType("ViewCount")}
-          type="button"
-          className={orderType === "Recent" ? "selected" : ""}
+          className={orderType === "ViewCount" ? "selected" : ""}
         >
           조회수순
-        </button>
+        </ReviewOrderType>
       )}
     </ButtonItems>
   </Container>
@@ -103,6 +101,9 @@ export default ReviewSearchBar;
 const Container = styled.div`
   margin-bottom: 30px;
   & button.clicked {
+    color: ${theme.colors.greys100};
+  }
+  .selected {
     color: ${theme.colors.greys100};
   }
 `;
@@ -119,11 +120,20 @@ const ReviewSelector = styled.div`
     font-size: 14px;
     border: 0;
     cursor: pointer;
-    &:is(:hover, :focus) {
-      color: ${theme.colors.greys100};
-    }
   }
-  & > button.selected {
+  &:is(:hover, :focus, :focus-within) {
+    color: ${theme.colors.greys100};
+  }
+`;
+
+const ReviewOrderType = styled.div`
+  color: ${theme.colors.greys60};
+  font-weight: 700;
+  font-size: 14px;
+  border: 0;
+  cursor: pointer;
+  padding-inline: 10px;
+  &:is(:hover, :focus, :focus-within) {
     color: ${theme.colors.greys100};
   }
 `;
