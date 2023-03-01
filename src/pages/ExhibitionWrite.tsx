@@ -40,6 +40,8 @@ const ExhibitionWrite = (props: ModeType) => {
   const [userUploadImgFile, setUserUploadImgFile] = useState<File>();
   const [priceWithCommas, setPriceWithCommas] = useState("");
   const [priceFree, setPriceFree] = useState(false);
+  const [isPriceZero, setIsPriceZero] = useState(false);
+  const [isPriceOne, setIsPriceOne] = useState(false);
   const [disablePrice, setDisablePrice] = useState(false);
   const [exhbId, setExhbId] = useState(0);
   const [detail, setDetail] = useState<ExhbCreateRes>({
@@ -196,6 +198,15 @@ const ExhibitionWrite = (props: ModeType) => {
   };
 
   const handlePriceFree = (price: string) => {
+    if (price === "0") {
+      setPriceWithCommas(price);
+      setIsPriceZero(true);
+      setIsPriceOne(false);
+    } else if (price === "1") {
+      setPriceWithCommas(price);
+      setIsPriceZero(false);
+      setIsPriceOne(true);
+    }
     setPriceFree((prev) => {
       if (!prev === true) {
         setDetail({
@@ -393,14 +404,14 @@ const ExhibitionWrite = (props: ModeType) => {
             <CheckLabelArea>
               <CheckLabel
                 label="무료 관람"
-                checked={false}
+                checked={isPriceZero}
                 onClick={() => handlePriceFree("0")}
               />
             </CheckLabelArea>
             <CheckLabelArea style={{ marginLeft: "120px" }}>
               <CheckLabel
                 label="미정"
-                checked={false}
+                checked={isPriceOne}
                 onClick={() => handlePriceFree("1")}
               />
             </CheckLabelArea>
