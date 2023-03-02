@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import { format } from "date-fns";
+import parse from "date-fns/parse";
 import { useLocation, useParams } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
@@ -211,8 +211,22 @@ const BlogReviewUpdate = () => {
     queryFn: () => blogReviewApis.readDetailBlogReview(location.state),
     onSuccess: (wholeData) => {
       setDisplayImage(wholeData.imageInfo);
+      setContents(wholeData.content);
+      setTitle(wholeData.title);
+      setSelectedExhb({
+        id: wholeData.exhibitionInfo.id,
+        url: wholeData.exhibitionInfo.posterUrl,
+        title: wholeData.exhibitionInfo.title,
+        duration: wholeData.exhibitionInfo.duration,
+        status: "",
+      });
     },
   });
+  console.log(
+    "🚀 ~ file: BlogReviewModify.tsx:225 ~ BlogReviewUpdate ~ data:",
+    data
+  );
+
   const keys = returnkeys(data?.imageInfo.length as number);
   const times: string[] = data?.time.split("-") ?? ["00시", "24시"];
 
@@ -310,14 +324,13 @@ const BlogReviewUpdate = () => {
       setDisplayImage(newImageArray);
     }
   }
-  const pathDate = data?.createdAt ? new Date(data?.createdAt) : new Date();
 
   if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
     <Container>
       <div style={{ marginBottom: "30px" }}>
-        <ReviewTitle handleTitleInput={handleTitleInput} />
+        <ReviewTitle title={title} handleTitleInput={handleTitleInput} />
         <ExhibitionPicker>
           <ExhibitionSelect
             selectedExhibitonInfo={selectedExhb}
@@ -327,7 +340,11 @@ const BlogReviewUpdate = () => {
           <div>
             <SubTitle text="관람일" />
             <Calender
-              selectedDate={pathDate}
+              selectedDate={
+                data?.viewDate !== undefined
+                  ? new Date(data.viewDate)
+                  : new Date()
+              }
               handleSelectedDate={setSelectedDate}
             />
           </div>

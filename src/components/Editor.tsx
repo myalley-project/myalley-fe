@@ -21,7 +21,7 @@ interface ImageProps {
   setImageFiles: Dispatch<SetStateAction<FileList | null>>;
 }
 
-interface TextInputAreaProps {
+interface TextInputAreaProps extends React.HTMLAttributes<HTMLTextAreaElement> {
   name: string;
   value: string;
   textChangeHandler: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
