@@ -91,5 +91,5 @@ export default OneLineReadContainer;
 const OnelineDisplay = styled.div`
   display: flex;
   flex-flow: column;
-  gap: 8px;
+  gap: 1rem;
 `;

@@ -86,9 +86,9 @@ const OnelineCard = ({
             ))}
           </div>
           <div>
-            {memberInfo && <span>{memberInfo.nickname}</span>} |{" "}
-            <span>{viewDate}</span> |<span>{time}</span> |{" "}
-            <span>{congestion}</span>
+            {memberInfo && <Span>{memberInfo.nickname}</Span>} |
+            <Span>{viewDate}</Span> |<Span>{time}</Span> |
+            <Span>{congestion}</Span>
           </div>
           <p>{content}</p>
         </ReviewInfo>
@@ -173,7 +173,7 @@ const ReviewInfo = styled.div`
   & > div {
     color: ${theme.colors.greys60};
     font-size: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-align: start;
   }
   & > p {
@@ -248,4 +248,13 @@ const Title = styled.h1`
   font-weight: 400;
   font-size: 20px;
   text-align: center;
+`;
+
+const Span = styled.span`
+  display: inline-block;
+  font-size: 14px;
+  padding-right: 8px;
+  &:not(:first-child) {
+    padding-left: 8px;
+  }
 `;
