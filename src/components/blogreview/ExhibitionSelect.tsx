@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SubTitle from "../SubTitle";
 import Button from "../atom/Button";
 import { theme } from "../../styles/theme";
-import Plus from "../../assets/icons/plus.svg";
+import plus from "../../assets/icons/plus.svg";
 import xBtn from "../../assets/icons/xBtn.svg";
 
 type ExhibitionInfo = {
