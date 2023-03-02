@@ -1,8 +1,8 @@
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
-interface SearchbarProps {
+interface SearchbarProps extends HTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   width: string;
 }
