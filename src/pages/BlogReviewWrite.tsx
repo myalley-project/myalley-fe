@@ -1,7 +1,8 @@
-import React, { useState, ChangeEvent, useReducer, useEffect } from "react";
+import React, { useState, ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useMutation } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
@@ -143,7 +144,9 @@ import useRefreshTokenApi from "../apis/useRefreshToken";
 const BlogReviewWrite = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const [title, setTitle] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(
+    format(new Date(), "yyyy-mm-dd")
+  );
   const [enterTime, setEnterTime] = useState("");
   const [exitTime, setExitTime] = useState("");
   const [congestion, setCongestion] = useState("");
@@ -330,9 +333,12 @@ const BlogReviewWrite = () => {
           <div>
             <SubTitle text="관람일" />
             <Calender
-              selectedDate={new Date()}
+              selectedDate={new Date(selectedDate)}
               handleSelectedDate={setSelectedDate}
             />
+            {/* 왜 이렇게 들어가야 하는지 헷갈리시면 
+            메이트글 작성/수정 페이지 컴포넌트인
+            src-pages-MateWrite.tsx 파일 참고부탁드립니다 - 예선 */}
           </div>
         </ExhibitionPicker>
         <SelectorConatiner>
