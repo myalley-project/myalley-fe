@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
+import SimpleDialog from "../components/SimpleDialog";
 import Calender from "../components/Calendar";
 import SubTitle from "../components/SubTitle";
 import Editor from "../components/Editor";
@@ -159,6 +160,7 @@ const BlogReviewUpdate = () => {
   const [displayImage, setDisplayImage] = useState<ImageInfo[] | []>([]);
   const [deleteimages, setDeleteImages] = useState<string[] | []>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [selectedExhb, setSelectedExhb] = useState({
     url: "",
     id: 0,
@@ -220,6 +222,7 @@ const BlogReviewUpdate = () => {
       });
       setModifyDate(new Date(wholeData.viewDate));
     },
+    refetchOnWindowFocus: false,
   });
 
   const keys = returnkeys(data?.imageInfo.length as number);
@@ -278,15 +281,25 @@ const BlogReviewUpdate = () => {
       blogReviewApis.deleteImage(location.state, each);
     });
 
-    const postData = {
-      title,
-      viewDate: selectedDate,
-      time: `${enterTime}-${exitTime}`,
-      transportation,
-      revisit,
-      congestion,
-      content: contents,
-    };
+    const payload = new Map();
+    if (title !== "") payload.set("title", title);
+    if (selectedDate !== "") {
+      payload.set("viewDate", selectedDate);
+    } else {
+      payload.set("viewDate", data?.viewDate);
+    }
+    if (enterTime !== "" && exitTime !== "") {
+      payload.set("time", `${enterTime}-${exitTime}`);
+    } else {
+      payload.set("time", data?.time);
+    }
+    if (congestion !== "") payload.set("congestion", congestion);
+    if (transportation !== "") payload.set("transportation", transportation);
+    if (revisit !== "") payload.set("revisit", revisit);
+    if (contents !== "") payload.set("content", contents);
+
+    /* eslint-disable-next-line */
+    const postData = Object.fromEntries(payload) as any;
 
     const formData = new FormData();
     formData.append(
@@ -294,15 +307,22 @@ const BlogReviewUpdate = () => {
       new Blob([JSON.stringify(postData)], { type: "application/json" })
     );
 
-    blogReviewApis.updateReviewText(location.state, postData);
+    try {
+      /* eslint-disable-next-line */
+      blogReviewApis.updateReviewText(location.state, postData);
 
-    if (imageFiles !== null) {
-      const imageFormData = new FormData();
-      Array.from(imageFiles).forEach((file) =>
-        imageFormData.append("images", file)
-      );
+      if (imageFiles !== null) {
+        const imageFormData = new FormData();
+        Array.from(imageFiles).forEach((file) => {
+          imageFormData.append("images", file);
+        });
 
-      blogReviewApis.updateReviewImage(location.state, imageFormData);
+        blogReviewApis.updateReviewImage(location.state, imageFormData);
+      }
+      alert("블로그리뷰 수정 요청이 완료되었습니다.");
+      navigate(-1);
+    } catch (err: any) {
+      throw new Error("블로그리뷰 수정에 실패했습니다.");
     }
   };
 
@@ -438,7 +458,11 @@ const BlogReviewUpdate = () => {
         </Editor>
       </div>
       <ButtonContainer>
-        <Button onClick={() => navigate(-1)} variant="text" size="large">
+        <Button
+          onClick={() => setIsCancelModalOpen((prev) => !prev)}
+          variant="text"
+          size="large"
+        >
           취소하기
         </Button>
         <Button onClick={HandleSubmit} variant="primary" size="large">
@@ -449,6 +473,20 @@ const BlogReviewUpdate = () => {
         <ExhibitionChoice
           getExhbInfo={getExhibitionInfo}
           handleModal={handleSelectorModal}
+        />
+      </Modal>
+      <Modal
+        open={isCancelModalOpen}
+        handleModal={() => setIsCancelModalOpen((prev) => !prev)}
+      >
+        <SimpleDialog
+          message="블로그 리뷰 수정을 취소하시겠습니까?"
+          cancelMessage="계속 수정하기"
+          confirmMessage="수정 취소하기"
+          clickCancleBtn={() => setIsCancelModalOpen((prev) => !prev)}
+          clickConfirmBtn={() => {
+            navigate(-1);
+          }}
         />
       </Modal>
     </Container>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   format,
   addMonths,
@@ -22,17 +22,16 @@ interface CalendarProps {
 
 const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
   const [showedMonth, setShowedMonth] = useState<Date>(selectedDate);
+  const [selectedDayNumber, setSelectedDayNumber] = useState(
+    selectedDate.getDate()
+  );
 
   useEffect(() => {
     setShowedMonth(selectedDate);
     setSelectedDayNumber(selectedDate.getDate());
   }, [selectedDate]);
 
-  const [selectedDayNumber, setSelectedDayNumber] = useState(
-    selectedDate.getDate()
-  );
-
-  const calendarDays = React.useMemo(
+  const calendarDays = useMemo(
     () => getCalendarDays(showedMonth),
     [showedMonth]
   );

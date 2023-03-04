@@ -15,6 +15,7 @@ import Button from "../components/atom/Button";
 import ExhibitionChoice from "../components/ExhibitionChoice";
 import blogReviewApis from "../apis/blogReviewApis";
 import Modal from "../Modal";
+import SimpleDialog from "../components/SimpleDialog";
 import isApiError from "../utils/isApiError";
 import useRefreshTokenApi from "../apis/useRefreshToken";
 
@@ -155,6 +156,7 @@ const BlogReviewWrite = () => {
   const [contents, setContents] = useState("");
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [selectedExhb, setSelectedExhb] = useState({
     url: "",
     id: 0,
@@ -426,7 +428,11 @@ const BlogReviewWrite = () => {
         </Editor>
       </div>
       <ButtonContainer>
-        <Button onClick={() => navigate(-1)} variant="text" size="large">
+        <Button
+          onClick={() => setIsCancelModalOpen((prev) => !prev)}
+          variant="text"
+          size="large"
+        >
           취소하기
         </Button>
         <Button onClick={HandleSubmit} variant="primary" size="large">
@@ -437,6 +443,20 @@ const BlogReviewWrite = () => {
         <ExhibitionChoice
           getExhbInfo={getExhibitionInfo}
           handleModal={handleSelectorModal}
+        />
+      </Modal>
+      <Modal
+        open={isCancelModalOpen}
+        handleModal={() => setIsCancelModalOpen((prev) => !prev)}
+      >
+        <SimpleDialog
+          message="블로그 리뷰 작성을 취소하시겠습니까?"
+          cancelMessage="계속 작성하기"
+          confirmMessage="작성 취소하기"
+          clickCancleBtn={() => setIsCancelModalOpen((prev) => !prev)}
+          clickConfirmBtn={() => {
+            navigate(-1);
+          }}
         />
       </Modal>
     </Container>

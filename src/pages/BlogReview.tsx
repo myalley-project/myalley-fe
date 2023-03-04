@@ -17,12 +17,12 @@ const BlogReview = () => {
     queryKey: ["blogReviewDetail"],
     queryFn: () => blogReviewApis.readDetailBlogReview(location?.state),
   });
+  console.log("🚀 ~ file: BlogReview.tsx:20 ~ BlogReview ~ data:", data);
   const memberInfo = data?.memberInfo ?? {
     memberId: 0,
     memberImage: "",
     nickname: "",
   };
-  const isMemberId = !!localStorage.getItem("memberId");
 
   if (isError) return <div>에러가 발생했습니다</div>;
 
