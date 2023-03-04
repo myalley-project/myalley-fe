@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
@@ -10,6 +11,7 @@ import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
 // 전시회 목록 페이지 컴포넌트_박예선_23.02.24
 const ExhibitionList = () => {
+  const navigate = useNavigate();
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [selectedStatus, setSelectedStatus] = useState<StatusType>("현재");
@@ -22,7 +24,7 @@ const ExhibitionList = () => {
     selected: 1,
   });
 
-  // 전시회 목록 요청 api_박예선_23.01.24
+  // 전시회 목록 조회 api_박예선_23.03.01
   const getExhbList = useCallback(
     async (
       status: StatusType,
@@ -44,9 +46,10 @@ const ExhibitionList = () => {
         alert(
           "죄송합니다.\n전시목록을 불러오는데에 실패하였습니다. 다시 시도해주십시오."
         );
+        navigate("/");
       }
     },
-    []
+    [navigate]
   );
 
   // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.02.24
