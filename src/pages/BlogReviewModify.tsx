@@ -1,14 +1,7 @@
-import React, {
-  useState,
-  ChangeEvent,
-  useReducer,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import parse from "date-fns/parse";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
@@ -173,12 +166,12 @@ const BlogReviewUpdate = () => {
     duration: "",
     status: "",
   });
-  const [modifyDate, setModifyDate] = useState<Date | null>(null);
+  const location: LocationState = useLocation();
+  const [modifyDate, setModifyDate] = useState<Date>(new Date());
   console.log(
-    "🚀 ~ file: BlogReviewModify.tsx:177 ~ BlogReviewUpdate ~ modifyDate:",
+    "🚀 ~ file: BlogReviewModify.tsx:178 ~ BlogReviewUpdate ~ modifyDate:",
     modifyDate
   );
-  const location: LocationState = useLocation();
 
   const handleSelectorModal = () => {
     setIsModalOpen((prev) => !prev);
@@ -332,6 +325,11 @@ const BlogReviewUpdate = () => {
   }
 
   if (isError) return <div>에러가 발생했습니다.</div>;
+  // const pathDate = data?.viewDate ? new Date(data?.viewDate) : new Date();
+  // console.log(
+  //   "🚀 ~ file: BlogReviewModify.tsx:330 ~ BlogReviewUpdate ~ pathDate:",
+  //   pathDate
+  // );
 
   return (
     <Container>
@@ -346,7 +344,7 @@ const BlogReviewUpdate = () => {
           <div>
             <SubTitle text="관람일" />
             <Calender
-              selectedDate={modifyDate as Date}
+              selectedDate={modifyDate}
               handleSelectedDate={setSelectedDate}
               // selectedDate={new Date(작성 시 선택한 날짜)}
               // 수정페이지일 때도 마찬가지로 '작성 시 선택한 날짜'를 넘겨줘야 할텐데,
