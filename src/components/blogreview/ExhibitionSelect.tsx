@@ -1,4 +1,4 @@
-import React, { MouseEvent } from "react";
+import React from "react";
 import styled from "styled-components";
 import SubTitle from "../SubTitle";
 import Button from "../atom/Button";
