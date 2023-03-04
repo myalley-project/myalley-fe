@@ -174,6 +174,10 @@ const BlogReviewUpdate = () => {
     status: "",
   });
   const [modifyDate, setModifyDate] = useState<Date | null>(null);
+  console.log(
+    "🚀 ~ file: BlogReviewModify.tsx:177 ~ BlogReviewUpdate ~ modifyDate:",
+    modifyDate
+  );
   const location: LocationState = useLocation();
 
   const handleSelectorModal = () => {
