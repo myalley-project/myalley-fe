@@ -50,7 +50,7 @@ const ExhibitionSelect = ({
       </SelectedExhibitionImage>
     ) : (
       <ExhibitionButton>
-        <img src={Plus} alt="전시회 선택 버튼" />
+        <img src={plus} alt="전시회 선택 버튼" />
       </ExhibitionButton>
     )}
   </Container>
