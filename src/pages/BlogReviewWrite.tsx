@@ -426,7 +426,7 @@ const BlogReviewWrite = () => {
         </Editor>
       </div>
       <ButtonContainer>
-        <Button variant="text" size="large">
+        <Button onClick={() => navigate(-1)} variant="text" size="large">
           취소하기
         </Button>
         <Button onClick={HandleSubmit} variant="primary" size="large">

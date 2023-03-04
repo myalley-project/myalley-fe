@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
 import Calender from "../components/Calendar";
@@ -168,11 +168,7 @@ const BlogReviewUpdate = () => {
   });
   const location: LocationState = useLocation();
   const [modifyDate, setModifyDate] = useState<Date>(new Date());
-  console.log(
-    "🚀 ~ file: BlogReviewModify.tsx:178 ~ BlogReviewUpdate ~ modifyDate:",
-    modifyDate
-  );
-
+  const navigate = useNavigate();
   const handleSelectorModal = () => {
     setIsModalOpen((prev) => !prev);
   };
@@ -442,7 +438,7 @@ const BlogReviewUpdate = () => {
         </Editor>
       </div>
       <ButtonContainer>
-        <Button variant="text" size="large">
+        <Button onClick={() => navigate(-1)} variant="text" size="large">
           취소하기
         </Button>
         <Button onClick={HandleSubmit} variant="primary" size="large">
