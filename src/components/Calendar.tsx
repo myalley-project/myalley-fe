@@ -21,20 +21,28 @@ interface CalendarProps {
 }
 
 const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
-  const [showedMonth, setShowedMonth] = useState(selectedDate);
+  console.log(
+    "🚀 ~ file: Calendar.tsx:24 ~ Calender ~ selectedDate:",
+    selectedDate
+  );
+  const [showedMonth, setShowedMonth] = useState<Date>(selectedDate);
+  console.log(
+    "🚀 ~ file: Calendar.tsx:29 ~ Calender ~ showedMonth:",
+    showedMonth
+  );
+
   const [selectedDayNumber, setSelectedDayNumber] = useState(
     selectedDate.getDate()
   );
 
-  const calendarDays = useMemo(
+  // useEffect(() => {
+  //   setShowedMonth(selectedDate);
+  // }, [selectedDate]);
+
+  const calendarDays = React.useMemo(
     () => getCalendarDays(showedMonth),
     [showedMonth]
   );
-
-  // useEffect(() => {
-  //   setShowedMonth(selectedDate);
-  //   setSelectedDayNumber(selectedDate.getDate());
-  // }, [selectedDate, setShowedMonth]);
 
   const clickArrowLeft = () => {
     const prevDate = subMonths(showedMonth, 1);

@@ -173,6 +173,7 @@ const BlogReviewUpdate = () => {
     duration: "",
     status: "",
   });
+  const [modifyDate, setModifyDate] = useState<Date | null>(null);
   const location: LocationState = useLocation();
 
   const handleSelectorModal = () => {
@@ -205,11 +206,11 @@ const BlogReviewUpdate = () => {
       status: "",
     });
   };
-
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogDetail"],
     queryFn: () => blogReviewApis.readDetailBlogReview(location.state),
     onSuccess: (wholeData) => {
+      const dateArray = wholeData.exhibitionInfo.duration.split(" ~ ");
       setDisplayImage(wholeData.imageInfo);
       setContents(wholeData.content);
       setTitle(wholeData.title);
@@ -218,14 +219,15 @@ const BlogReviewUpdate = () => {
         url: wholeData.exhibitionInfo.posterUrl,
         title: wholeData.exhibitionInfo.title,
         duration: wholeData.exhibitionInfo.duration,
-        status: "",
+        status:
+          new Date(dateArray[0]) < new Date() &&
+          new Date() < new Date(dateArray[1])
+            ? "현재 전시"
+            : "예정 전시",
       });
+      setModifyDate(new Date(wholeData.viewDate));
     },
   });
-  console.log(
-    "🚀 ~ file: BlogReviewModify.tsx:225 ~ BlogReviewUpdate ~ data:",
-    data
-  );
 
   const keys = returnkeys(data?.imageInfo.length as number);
   const times: string[] = data?.time.split("-") ?? ["00시", "24시"];
@@ -340,11 +342,7 @@ const BlogReviewUpdate = () => {
           <div>
             <SubTitle text="관람일" />
             <Calender
-              selectedDate={
-                data?.viewDate !== undefined
-                  ? new Date(data.viewDate)
-                  : new Date()
-              }
+              selectedDate={modifyDate as Date}
               handleSelectedDate={setSelectedDate}
             />
           </div>

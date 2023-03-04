@@ -14,7 +14,7 @@ const ReviewTitle = ({
   <TitleContainer>
     <TitleInput
       onChange={handleTitleInput}
-      value={title ?? ""}
+      value={title}
       type="text"
       placeholder="제목을 입력해주세요"
     />
