@@ -145,7 +145,7 @@ const BlogReviewWrite = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const [title, setTitle] = useState("");
   const [selectedDate, setSelectedDate] = useState(
-    format(new Date(), "yyyy-mm-dd")
+    format(new Date(), "yyyy-MM-dd")
   );
   const [enterTime, setEnterTime] = useState("");
   const [exitTime, setExitTime] = useState("");
