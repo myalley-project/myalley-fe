@@ -31,10 +31,6 @@ const Calender = ({ selectedDate, handleSelectedDate }: CalendarProps) => {
   const [selectedDayNumber, setSelectedDayNumber] = useState(
     selectedDate.getDate()
   );
-  console.log(
-    "🚀 ~ file: Calendar.tsx:37 ~ Calender ~ selectedDayNumber:",
-    selectedDayNumber
-  );
 
   const calendarDays = React.useMemo(
     () => getCalendarDays(showedMonth),

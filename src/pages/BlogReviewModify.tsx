@@ -325,11 +325,6 @@ const BlogReviewUpdate = () => {
   }
 
   if (isError) return <div>에러가 발생했습니다.</div>;
-  // const pathDate = data?.viewDate ? new Date(data?.viewDate) : new Date();
-  // console.log(
-  //   "🚀 ~ file: BlogReviewModify.tsx:330 ~ BlogReviewUpdate ~ pathDate:",
-  //   pathDate
-  // );
 
   return (
     <Container>
@@ -346,9 +341,6 @@ const BlogReviewUpdate = () => {
             <Calender
               selectedDate={modifyDate}
               handleSelectedDate={setSelectedDate}
-              // selectedDate={new Date(작성 시 선택한 날짜)}
-              // 수정페이지일 때도 마찬가지로 '작성 시 선택한 날짜'를 넘겨줘야 할텐데,
-              // 현재 수정모드일 때 기존에 선택된 날짜를 어떻게 받아오고 계신지 모르겠어서 일단 주석만 남겨둡니다.-예선
             />
           </div>
         </ExhibitionPicker>
