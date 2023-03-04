@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -320,7 +320,8 @@ const BlogReviewUpdate = () => {
         blogReviewApis.updateReviewImage(location.state, imageFormData);
       }
       alert("블로그리뷰 수정 요청이 완료되었습니다.");
-      navigate(-1);
+
+      navigate("/blogreview-list");
     } catch (err: any) {
       throw new Error("블로그리뷰 수정에 실패했습니다.");
     }
