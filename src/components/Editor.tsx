@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   Dispatch,
+  HTMLAttributes,
   ReactElement,
   SetStateAction,
   useEffect,
@@ -16,9 +17,11 @@ interface EditorProps {
   children: ReactElement;
 }
 
-interface ImageProps {
+interface ImageProps extends HTMLAttributes<HTMLInputElement> {
   imageFiles: FileList | null;
   setImageFiles: Dispatch<SetStateAction<FileList | null>>;
+  // eslint-disable-next-line react/require-default-props
+  single?: "single" | undefined;
 }
 
 interface TextInputAreaProps extends React.HTMLAttributes<HTMLTextAreaElement> {
@@ -51,7 +54,12 @@ function usePreviewImages(imageFiles: FileList) {
   return { previewImages };
 }
 
-const ImageArea = ({ imageFiles, setImageFiles }: ImageProps) => {
+const ImageArea = ({
+  imageFiles,
+  setImageFiles,
+  single = undefined,
+  ...props
+}: ImageProps) => {
   const imageRef = useRef<HTMLInputElement | null>(null);
   const { previewImages } = usePreviewImages(imageFiles as FileList);
   const previewIds = returnkeys(previewImages.length);
@@ -80,7 +88,7 @@ const ImageArea = ({ imageFiles, setImageFiles }: ImageProps) => {
           onChange={ChangePictureHandler}
           type="file"
           accept="image/jpg, image/jpeg, image/png"
-          multiple
+          multiple={single === undefined}
           id="image-files"
           ref={imageRef}
         />

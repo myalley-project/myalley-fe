@@ -314,7 +314,7 @@ const BlogReviewUpdate = () => {
       if (imageFiles !== null) {
         const imageFormData = new FormData();
         Array.from(imageFiles).forEach((file) => {
-          imageFormData.append("images", file);
+          imageFormData.append("image", file);
         });
 
         blogReviewApis.updateReviewImage(location.state, imageFormData);
@@ -448,6 +448,7 @@ const BlogReviewUpdate = () => {
             <Editor.ImageArea
               imageFiles={imageFiles}
               setImageFiles={setImageFiles}
+              single="single"
             />
             <Editor.TextInputArea
               value={contents}
