@@ -37,8 +37,8 @@ const BlogReviewPresentation = ({
   /* eslint-disable */
   const bookmarkMutation = useMutation<any, any, any>({
     mutationFn: (bookid: number) => blogDetailbookmarkApis.putbookmark(bookid),
-    onSuccess: (data) => {
-      if (data === "on") {
+    onSuccess: (res) => {
+      if (res.data === "on") {
         alert("블로그 리뷰를 북마크에 추가했습니다.");
       } else {
         alert("블로그 리뷰를 북마크에서 삭제했습니다.");
@@ -51,10 +51,10 @@ const BlogReviewPresentation = ({
   const blogMutation = useMutation<any, any, any>({
     mutationFn: (blogid: number) => bloglikeApis.putlike(blogid),
     onSuccess: (res) => {
-      if (res === "on") {
-        alert("블로그 리뷰를 북마크에 추가했습니다.");
+      if (res.data === "on") {
+        alert("블로그 리뷰를 좋아요에 추가했습니다.");
       } else {
-        alert("블로그 리뷰를 북마크에서 삭제했습니다.");
+        alert("블로그 리뷰를 좋아요에서 삭제했습니다.");
       }
       queryClient.invalidateQueries(["blogReviewDetail"]);
     },
@@ -214,6 +214,9 @@ const DetailDiv = styled.div`
 
 const MainPart = styled.div`
   margin-bottom: 50px;
+  p {
+    line-height: 1.75rem;
+  }
 `;
 
 const StyledSWiper = styled(Swiper)<{ isimagearray: boolean | null }>`
