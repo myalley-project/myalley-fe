@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
+import Comment from "./Comment";
 import { alertPreparing } from "../../utils/alerts";
 
 interface CommentListType {
@@ -8,7 +9,7 @@ interface CommentListType {
   setCommentTextArea: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// 댓글 목록, 작성란 컴포넌트_박예선_23.02.15
+// 댓글 목록, 작성란 컴포넌트_박예선_23.03.05
 const CommentList = (props: CommentListType) => {
   const { commentTextArea, setCommentTextArea } = props;
   const memberNickname = localStorage.getItem("nickname");
@@ -25,9 +26,10 @@ const CommentList = (props: CommentListType) => {
       <div className="comment-count bold">
         댓글 <span>0</span>
       </div>
-      {/* <Comment type="comment" />
-        <Comment type="reply" />
-        댓글기능 추가되면 추가하기 */}
+      <Comment type="comment" isMyComment={false} />
+      <Comment type="reply" isMyComment />
+      <Comment type="reply" isMyComment={false} />
+      <Comment type="comment" isMyComment />
       <SubTitle type="greys90" marginTop={30}>
         {memberNickname}
       </SubTitle>

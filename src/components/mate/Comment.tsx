@@ -1,43 +1,57 @@
 import React from "react";
 import styled from "styled-components";
+import { theme } from "../../styles/theme";
+import profileImg from "../../assets/icons/profileImg.svg";
+import partition from "../../assets/icons/partition.svg";
 
 interface CommentType {
   type: "comment" | "reply";
+  isMyComment: boolean;
 }
 
-// 메이트 모집글 댓글 컴포넌트_박예선_23.01.19
-const Comment = ({ type }: CommentType) => (
-  <CommentContainer className="flex">
-    {type === "reply" && (
-      <div className="reply-icon-box">
-        <div className="icon" />
-      </div>
-    )}
-    <div className="content flex">
-      <img
-        src="https://cdn.pixabay.com/photo/2020/12/23/21/21/macarons-5856039_1280.jpg"
-        alt=""
-      />
-      <div>
-        <div>닉네임</div>
-        <div>content</div>
-        <div>
-          <span>createdDate</span>
-          <span>createdTime</span>
-          <span>createdTime</span>
+// 메이트 모집글 댓글 컴포넌트_박예선_23.03.05
+const Comment = ({ type, isMyComment }: CommentType) => {
+  const a = 1;
+
+  return (
+    <CommentContainer className="flex">
+      {type === "reply" && (
+        <div className="reply-icon-box">
+          <div className="icon" />
         </div>
+      )}
+      <div className="content flex">
+        <ProfileImg src={profileImg} alt="회원 프로필사진" />
+        <div>
+          <div>닉네임</div>
+          <div>content</div>
+          <div>
+            <span>createdDate</span>
+            <span>createdTime</span>
+            <span>createdTime</span>
+          </div>
+        </div>
+        <BtnContainer>
+          {isMyComment && (
+            <>
+              <Button type="button">수정</Button>
+              <img src={partition} alt="" />
+              <Button type="button">삭제</Button>
+            </>
+          )}
+          {!isMyComment && type === "comment" && (
+            <Button type="button">답글달기</Button>
+          )}
+        </BtnContainer>
       </div>
-      <div className="btn-container">
-        <button type="button">수정</button>
-        <button type="button">삭제</button>
-      </div>
-    </div>
-  </CommentContainer>
-);
+    </CommentContainer>
+  );
+};
 
 export default Comment;
 
 const CommentContainer = styled.div`
+  /* border: 1px solid red; */
   position: relative;
   height: 136px;
   .reply-icon-box {
@@ -56,9 +70,25 @@ const CommentContainer = styled.div`
     padding: 30px 0;
     border-bottom: 1px solid ${(props) => props.theme.colors.greys40};
     border-radius: 0;
-    .btn-container {
-      position: absolute;
-      right: 0;
-    }
   }
+`;
+
+const ProfileImg = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-right: 14px;
+`;
+
+const BtnContainer = styled.div`
+  /* border: 1px solid red; */
+  display: flex;
+  position: absolute;
+  right: 0;
+`;
+
+const Button = styled.button`
+  height: 34px;
+  padding: 0 10px;
+  color: ${theme.colors.greys60};
+  font-size: 14px;
 `;
