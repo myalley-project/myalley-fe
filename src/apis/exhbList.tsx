@@ -25,4 +25,17 @@ const exhbListApi = async (
   return res;
 };
 
+const searchedExhbListApi = async (
+  status: StatusType,
+  type: FilterType,
+  sort: SortType,
+  title: string,
+  page: number
+) => {
+  const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
+    `/exhibitions/search?status=${status}&title=${title}&page=${page}`
+  );
+  return res;
+};
+
 export default exhbListApi;
