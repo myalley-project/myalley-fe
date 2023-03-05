@@ -3,13 +3,18 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 
 type ReviewTitleProps = {
+  title: string;
   handleTitleInput: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const ReviewTitle = ({ handleTitleInput }: ReviewTitleProps) => (
+const ReviewTitle = ({
+  title,
+  handleTitleInput,
+}: Partial<ReviewTitleProps>) => (
   <TitleContainer>
     <TitleInput
       onChange={handleTitleInput}
+      value={title}
       type="text"
       placeholder="제목을 입력해주세요"
     />
