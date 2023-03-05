@@ -31,7 +31,7 @@ const BlogReviewPresentation = ({
 }: BlogReviewDetailResponse) => {
   const token = localStorage.getItem("accessToken");
   const queryClient = useQueryClient();
-  const isimagearray = imageInfo.length > 0;
+  const isimagearray = imageInfo.length > 0 ? "true" : false;
   const viewCountRef = useRef(viewCount);
 
   /* eslint-disable */

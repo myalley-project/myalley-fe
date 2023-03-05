@@ -1,16 +1,10 @@
-import React, {
-  useState,
-  ChangeEvent,
-  useReducer,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import { format } from "date-fns";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReviewTitle from "../components/blogreview/ReviewTitle";
 import ExhibitionSelect from "../components/blogreview/ExhibitionSelect";
+import SimpleDialog from "../components/SimpleDialog";
 import Calender from "../components/Calendar";
 import SubTitle from "../components/SubTitle";
 import Editor from "../components/Editor";
@@ -166,6 +160,7 @@ const BlogReviewUpdate = () => {
   const [displayImage, setDisplayImage] = useState<ImageInfo[] | []>([]);
   const [deleteimages, setDeleteImages] = useState<string[] | []>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [selectedExhb, setSelectedExhb] = useState({
     url: "",
     id: 0,
@@ -174,7 +169,8 @@ const BlogReviewUpdate = () => {
     status: "",
   });
   const location: LocationState = useLocation();
-
+  const [modifyDate, setModifyDate] = useState<Date>(new Date());
+  const navigate = useNavigate();
   const handleSelectorModal = () => {
     setIsModalOpen((prev) => !prev);
   };
@@ -205,14 +201,30 @@ const BlogReviewUpdate = () => {
       status: "",
     });
   };
-
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["blogDetail"],
     queryFn: () => blogReviewApis.readDetailBlogReview(location.state),
     onSuccess: (wholeData) => {
+      const dateArray = wholeData.exhibitionInfo.duration.split(" ~ ");
       setDisplayImage(wholeData.imageInfo);
+      setContents(wholeData.content);
+      setTitle(wholeData.title);
+      setSelectedExhb({
+        id: wholeData.exhibitionInfo.id,
+        url: wholeData.exhibitionInfo.posterUrl,
+        title: wholeData.exhibitionInfo.title,
+        duration: wholeData.exhibitionInfo.duration,
+        status:
+          new Date(dateArray[0]) < new Date() &&
+          new Date() < new Date(dateArray[1])
+            ? "현재 전시"
+            : "예정 전시",
+      });
+      setModifyDate(new Date(wholeData.viewDate));
     },
+    refetchOnWindowFocus: false,
   });
+
   const keys = returnkeys(data?.imageInfo.length as number);
   const times: string[] = data?.time.split("-") ?? ["00시", "24시"];
 
@@ -269,15 +281,25 @@ const BlogReviewUpdate = () => {
       blogReviewApis.deleteImage(location.state, each);
     });
 
-    const postData = {
-      title,
-      viewDate: selectedDate,
-      time: `${enterTime}-${exitTime}`,
-      transportation,
-      revisit,
-      congestion,
-      content: contents,
-    };
+    const payload = new Map();
+    if (title !== "") payload.set("title", title);
+    if (selectedDate !== "") {
+      payload.set("viewDate", selectedDate);
+    } else {
+      payload.set("viewDate", data?.viewDate);
+    }
+    if (enterTime !== "" && exitTime !== "") {
+      payload.set("time", `${enterTime}-${exitTime}`);
+    } else {
+      payload.set("time", data?.time);
+    }
+    if (congestion !== "") payload.set("congestion", congestion);
+    if (transportation !== "") payload.set("transportation", transportation);
+    if (revisit !== "") payload.set("revisit", revisit);
+    if (contents !== "") payload.set("content", contents);
+
+    /* eslint-disable-next-line */
+    const postData = Object.fromEntries(payload) as any;
 
     const formData = new FormData();
     formData.append(
@@ -285,15 +307,23 @@ const BlogReviewUpdate = () => {
       new Blob([JSON.stringify(postData)], { type: "application/json" })
     );
 
-    blogReviewApis.updateReviewText(location.state, postData);
+    try {
+      /* eslint-disable-next-line */
+      blogReviewApis.updateReviewText(location.state, postData);
 
-    if (imageFiles !== null) {
-      const imageFormData = new FormData();
-      Array.from(imageFiles).forEach((file) =>
-        imageFormData.append("images", file)
-      );
+      if (imageFiles !== null) {
+        const imageFormData = new FormData();
+        Array.from(imageFiles).forEach((file) => {
+          imageFormData.append("image", file);
+        });
 
-      blogReviewApis.updateReviewImage(location.state, imageFormData);
+        blogReviewApis.updateReviewImage(location.state, imageFormData);
+      }
+      alert("블로그리뷰 수정 요청이 완료되었습니다.");
+
+      navigate("/blogreview-list");
+    } catch (err: any) {
+      throw new Error("블로그리뷰 수정에 실패했습니다.");
     }
   };
 
@@ -310,14 +340,13 @@ const BlogReviewUpdate = () => {
       setDisplayImage(newImageArray);
     }
   }
-  const pathDate = data?.createdAt ? new Date(data?.createdAt) : new Date();
 
   if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
     <Container>
       <div style={{ marginBottom: "30px" }}>
-        <ReviewTitle handleTitleInput={handleTitleInput} />
+        <ReviewTitle title={title} handleTitleInput={handleTitleInput} />
         <ExhibitionPicker>
           <ExhibitionSelect
             selectedExhibitonInfo={selectedExhb}
@@ -327,11 +356,8 @@ const BlogReviewUpdate = () => {
           <div>
             <SubTitle text="관람일" />
             <Calender
-              selectedDate={pathDate}
+              selectedDate={modifyDate}
               handleSelectedDate={setSelectedDate}
-              // selectedDate={new Date(작성 시 선택한 날짜)}
-              // 수정페이지일 때도 마찬가지로 '작성 시 선택한 날짜'를 넘겨줘야 할텐데,
-              // 현재 수정모드일 때 기존에 선택된 날짜를 어떻게 받아오고 계신지 모르겠어서 일단 주석만 남겨둡니다.-예선
             />
           </div>
         </ExhibitionPicker>
@@ -423,6 +449,7 @@ const BlogReviewUpdate = () => {
             <Editor.ImageArea
               imageFiles={imageFiles}
               setImageFiles={setImageFiles}
+              single="single"
             />
             <Editor.TextInputArea
               value={contents}
@@ -433,7 +460,11 @@ const BlogReviewUpdate = () => {
         </Editor>
       </div>
       <ButtonContainer>
-        <Button variant="text" size="large">
+        <Button
+          onClick={() => setIsCancelModalOpen((prev) => !prev)}
+          variant="text"
+          size="large"
+        >
           취소하기
         </Button>
         <Button onClick={HandleSubmit} variant="primary" size="large">
@@ -444,6 +475,20 @@ const BlogReviewUpdate = () => {
         <ExhibitionChoice
           getExhbInfo={getExhibitionInfo}
           handleModal={handleSelectorModal}
+        />
+      </Modal>
+      <Modal
+        open={isCancelModalOpen}
+        handleModal={() => setIsCancelModalOpen((prev) => !prev)}
+      >
+        <SimpleDialog
+          message="블로그 리뷰 수정을 취소하시겠습니까?"
+          cancelMessage="계속 수정하기"
+          confirmMessage="수정 취소하기"
+          clickCancleBtn={() => setIsCancelModalOpen((prev) => !prev)}
+          clickConfirmBtn={() => {
+            navigate(-1);
+          }}
         />
       </Modal>
     </Container>
