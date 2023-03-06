@@ -83,6 +83,7 @@ const BlogReviewPresentation = ({
 
     bookmarkMutation.mutate(id);
   };
+  console.log(content);
 
   return (
     <PrsentationContainer>
@@ -126,7 +127,7 @@ const BlogReviewPresentation = ({
             </SwiperSlide>
           ))}
         </StyledSWiper>
-        <p>{content}</p>
+        <p style={{ whiteSpace: "pre" }}>{content}</p>
       </MainPart>
       <UserInfo>
         <UserThumbnail>
