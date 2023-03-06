@@ -261,7 +261,7 @@ const BlogReviewWrite = () => {
       transportation,
       revisit,
       congestion,
-      content: contents.replaceAll("<br/>", "\r\n"),
+      content: contents,
     };
     const formData = new FormData();
 
@@ -280,11 +280,11 @@ const BlogReviewWrite = () => {
         })
       );
 
-      // if (imageFiles !== null) {
-      //   Array.from(imageFiles).forEach((file) =>
-      //     formData.append("images", file)
-      //   );
-      // }
+      if (imageFiles !== null) {
+        Array.from(imageFiles).forEach((file) =>
+          formData.append("images", file)
+        );
+      }
       try {
         blogPostMutation.mutate(formData);
         navigate("/blogreview-list");
