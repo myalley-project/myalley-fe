@@ -126,7 +126,7 @@ const BlogReviewPresentation = ({
             </SwiperSlide>
           ))}
         </StyledSWiper>
-        <p style={{ whiteSpace: "pre" }}>{content}</p>
+        <p style={{ whiteSpace: "pre-wrap" }}>{content}</p>
       </MainPart>
       <UserInfo>
         <UserThumbnail>
