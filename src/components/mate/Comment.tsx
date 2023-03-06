@@ -9,7 +9,7 @@ interface CommentType {
   isMyComment: boolean;
 }
 
-// 메이트 모집글 댓글 컴포넌트_박예선_23.03.05
+// 메이트 모집글 댓글 컴포넌트_박예선_23.03.06
 const Comment = ({ type, isMyComment }: CommentType) => {
   const a = 1;
 
@@ -20,22 +20,22 @@ const Comment = ({ type, isMyComment }: CommentType) => {
           <div className="icon" />
         </div>
       )}
-      <div className="content flex">
+      <ContentContainer>
         <ProfileImg src={profileImg} alt="회원 프로필사진" />
         <div>
-          <div>닉네임</div>
-          <div>content</div>
-          <div>
-            <span>createdDate</span>
-            <span>createdTime</span>
-            <span>createdTime</span>
-          </div>
+          <Nickname>닉네임</Nickname>
+          <Content>content</Content>
+          <CreatedInfo>
+            <span>2022-12-14</span>
+            <img src={partition} alt="partition" />
+            <span>00 : 00</span>
+          </CreatedInfo>
         </div>
         <BtnContainer>
           {isMyComment && (
             <>
               <Button type="button">수정</Button>
-              <img src={partition} alt="" />
+              <img src={partition} alt="partition" />
               <Button type="button">삭제</Button>
             </>
           )}
@@ -43,7 +43,7 @@ const Comment = ({ type, isMyComment }: CommentType) => {
             <Button type="button">답글달기</Button>
           )}
         </BtnContainer>
-      </div>
+      </ContentContainer>
     </CommentContainer>
   );
 };
@@ -51,7 +51,6 @@ const Comment = ({ type, isMyComment }: CommentType) => {
 export default Comment;
 
 const CommentContainer = styled.div`
-  /* border: 1px solid red; */
   position: relative;
   height: 136px;
   .reply-icon-box {
@@ -65,12 +64,14 @@ const CommentContainer = styled.div`
       border-radius: 0;
     }
   }
-  .content {
-    width: 100%;
-    padding: 30px 0;
-    border-bottom: 1px solid ${(props) => props.theme.colors.greys40};
-    border-radius: 0;
-  }
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 30px 0;
+  border-bottom: 1px solid ${(props) => props.theme.colors.greys40};
+  border-radius: 0;
 `;
 
 const ProfileImg = styled.img`
@@ -79,8 +80,27 @@ const ProfileImg = styled.img`
   margin-right: 14px;
 `;
 
+const Nickname = styled.div`
+  font-weight: 700;
+  line-height: 22px;
+`;
+const Content = styled.div`
+  font-size: 16px;
+  color: ${theme.colors.greys90};
+  line-height: 26px;
+`;
+
+const CreatedInfo = styled.div`
+  font-size: 14px;
+  color: ${theme.colors.greys60};
+  line-height: 20px;
+  img {
+    height: 8px;
+    margin: 0 10px;
+  }
+`;
+
 const BtnContainer = styled.div`
-  /* border: 1px solid red; */
   display: flex;
   position: absolute;
   right: 0;
