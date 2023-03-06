@@ -83,7 +83,6 @@ const BlogReviewPresentation = ({
 
     bookmarkMutation.mutate(id);
   };
-  console.log(content);
 
   return (
     <PrsentationContainer>
