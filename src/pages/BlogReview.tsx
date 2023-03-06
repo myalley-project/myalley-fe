@@ -17,7 +17,6 @@ const BlogReview = () => {
     queryKey: ["blogReviewDetail"],
     queryFn: () => blogReviewApis.readDetailBlogReview(location?.state),
   });
-  console.log("🚀 ~ file: BlogReview.tsx:20 ~ BlogReview ~ data:", data);
   const memberInfo = data?.memberInfo ?? {
     memberId: 0,
     memberImage: "",
