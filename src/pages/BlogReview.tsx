@@ -1,21 +1,17 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import blogReviewApis from "../apis/blogReviewApis";
 import BlogReviewPresentation from "../components/blogreview/presentation/BlogReviewPresentation";
 import BlogReviewTop from "../components/blogreview/container/BlogReviewTop";
 
-interface LocationState {
-  state: number;
-}
-
 const BlogReview = () => {
-  const location: LocationState = useLocation();
+  const { id } = useParams();
 
   const { isLoading, isError, error, data } = useQuery({
-    queryKey: ["blogReviewDetail"],
-    queryFn: () => blogReviewApis.readDetailBlogReview(location?.state),
+    queryKey: ["blogReviewDetail", { id }],
+    queryFn: () => blogReviewApis.readDetailBlogReview(Number(id)),
   });
   const memberInfo = data?.memberInfo ?? {
     memberId: 0,
