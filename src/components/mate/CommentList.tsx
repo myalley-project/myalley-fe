@@ -1,25 +1,92 @@
-import React from "react";
+import { AxiosResponse } from "axios";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import {
+  ErrorDefalt,
+  getMateCommentListApi,
+  postMateCommentApi,
+} from "../../apis/mateComment";
 import { theme } from "../../styles/theme";
 import Comment from "./Comment";
-import { alertPreparing } from "../../utils/alerts";
 
 interface CommentListType {
+  mateId: number;
   commentTextArea: string;
   setCommentTextArea: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// 댓글 목록, 작성란 컴포넌트_박예선_23.03.05
+// 댓글 목록, 작성란 컴포넌트_박예선_23.03.07
 const CommentList = (props: CommentListType) => {
-  const { commentTextArea, setCommentTextArea } = props;
+  const { mateId, commentTextArea, setCommentTextArea } = props;
   const memberNickname = localStorage.getItem("nickname");
+  const [isWritingReply, setIsWritingReply] = useState(false);
+
+  // 댓글 목록 조회 요청_박예선_23.03.07_수정중
+  const getCommentList = useCallback(async () => {
+    try {
+      const res: AxiosResponse<ErrorDefalt> = await getMateCommentListApi(
+        mateId
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [mateId]);
+
+  // 렌더링 시 댓글 목록 조회_박예선_23.03.07
+  useEffect(() => {
+    getCommentList();
+  }, [getCommentList]);
 
   // 댓글입력 상태관리_박예선_23.01.26
-  // 댓글기능 추가되면 적용하기
   const handleCommentTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     if (!value.includes("\n")) setCommentTextArea(value);
   };
+
+  // 댓글/대댓글 등록api 요청_박예선_23.03.07_수정중
+  const postComment = async (type: "comment" | "reply") => {
+    try {
+      const res: AxiosResponse<string | ErrorDefalt> = await postMateCommentApi(
+        type,
+        commentTextArea,
+        11
+      );
+      alert(res.data);
+      setCommentTextArea("");
+
+      // navigate(-1);
+    } catch (err) {
+      // const errorRes = (err);
+      // if (errorRes === "accessToken 만료") {
+      //   try {
+      //     refreshTokenApi();
+      //     const res: AxiosResponse<MateWriteRes> = await mateWriteApi(
+      //       type,
+      //       writeData,
+      //       mateId
+      //     );
+      //     if (typeof res.data === "string") {
+      //       alert(res.data);
+      //       navigate(-1);
+      //       return;
+      //     }
+      //   } catch {
+      //     alertError();
+      //     return;
+      //   }
+      // }
+      // if (typeof errorRes !== "object") return;
+      // const { errorMsg } = errorRes;
+      // alert(errorMsg);
+      // navigate(-1);
+    }
+  };
+
+  // 테스트용
+  useEffect(() => {
+    console.log(mateId);
+  }, [commentTextArea, mateId]);
 
   return (
     <CommentListContainer>
@@ -38,15 +105,22 @@ const CommentList = (props: CommentListType) => {
           type="comment"
           placeholder="내용을 입력해주세요."
           value={commentTextArea}
-          onChange={alertPreparing}
-          onClick={alertPreparing}
+          onChange={handleCommentTextArea}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") postComment("comment");
+          }}
           maxLength={150}
           height={150}
         />
         <div className="input-status">
           <span>{commentTextArea.length}</span>/<span>150</span>
         </div>
-        <ApplyBtn className="comment-btn">등록</ApplyBtn>
+        <ApplyBtn
+          className="comment-btn"
+          onClick={() => postComment("comment")}
+        >
+          등록
+        </ApplyBtn>
       </TextAreaContainer>
     </CommentListContainer>
   );

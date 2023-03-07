@@ -173,6 +173,7 @@ const Mate = () => {
           )}
         </MateContentContainer>
         <CommentList
+          mateId={mateInfo.id}
           commentTextArea={commentTextArea}
           setCommentTextArea={setCommentTextArea}
         />
