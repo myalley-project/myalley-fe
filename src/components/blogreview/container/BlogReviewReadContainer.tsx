@@ -89,7 +89,7 @@ const BlogReviewReadContainer = ({
             <Pagination
               pages={pages}
               setPages={setPages}
-              totalPage={data.pageInfo.totalElement}
+              totalPage={data.pageInfo.totalPage}
             />
           )}
         </MarginAuto>
