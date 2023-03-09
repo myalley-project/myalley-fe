@@ -62,9 +62,9 @@
 
 ## 프로젝트 아키텍쳐 & 문서 🏛
 
-### [User Flow](https://github.com/myalley-project/myalley-be/wiki/USER-FLOW)
+### [User Flow](https://github.com/myalley-project/myalley-fe/wiki/USER-FLOW)
 
-### [ERD](https://github.com/myalley-project/myalley-be/wiki/ERD)
+### [ERD](https://github.com/myalley-project/myalley-fe/wiki/ERD)
 
 ### [API 문서](https://www.notion.so/API-77fb0b5a78d64873a8feece00fbe0d70?pvs=4)
 
