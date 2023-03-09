@@ -7,6 +7,7 @@ import {
   postMateCommentApi,
 } from "../../apis/mateComment";
 import { theme } from "../../styles/theme";
+import { MateCommentListRes } from "../../types/mate";
 import Comment from "./Comment";
 
 interface CommentListType {
@@ -24,9 +25,8 @@ const CommentList = (props: CommentListType) => {
   // 댓글 목록 조회 요청_박예선_23.03.07_수정중
   const getCommentList = useCallback(async () => {
     try {
-      const res: AxiosResponse<ErrorDefalt> = await getMateCommentListApi(
-        mateId
-      );
+      const res: AxiosResponse<MateCommentListRes | ErrorDefalt> =
+        await getMateCommentListApi(mateId);
       console.log(res.data);
     } catch (error) {
       console.log(error);

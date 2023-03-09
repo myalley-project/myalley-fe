@@ -40,3 +40,27 @@ export interface MateWriteType {
   contact: string;
   exhibitionId: number;
 }
+
+export interface MateCommentListRes {
+  comments: [
+    {
+      id: number;
+      nickname: string;
+      profileImg: string;
+      content: string;
+      createdAt: string; // yyyy-mm-dd
+      deleted: boolean;
+      replies:
+        | []
+        | {
+            id: number;
+            nickname: string;
+            profileImg: string;
+            content: string;
+            createdAt: string; // yyyy-mm-dd
+            deleted: boolean;
+          };
+    }
+  ];
+  totalCount: 3;
+}
