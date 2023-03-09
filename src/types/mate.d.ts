@@ -41,26 +41,21 @@ export interface MateWriteType {
   exhibitionId: number;
 }
 
-export interface MateCommentListRes {
-  comments: [
-    {
-      id: number;
-      nickname: string;
-      profileImg: string;
-      content: string;
-      createdAt: string; // yyyy-mm-dd
-      deleted: boolean;
-      replies:
-        | []
-        | {
-            id: number;
-            nickname: string;
-            profileImg: string;
-            content: string;
-            createdAt: string; // yyyy-mm-dd
-            deleted: boolean;
-          };
-    }
-  ];
-  totalCount: 3;
+export interface MateComment {
+  id: number;
+  nickname: string;
+  profileImg: string;
+  content: string;
+  createdAt: string; // yyyy-mm-dd
+  deleted: boolean;
+  replies?: MateCommentReply[];
+}
+
+export interface MateCommentReply {
+  id: number;
+  nickname: string;
+  profileImg: string;
+  content: string;
+  createdAt: string; // yyyy-mm-dd
+  deleted: boolean;
 }

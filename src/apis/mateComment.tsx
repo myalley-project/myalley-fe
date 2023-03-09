@@ -1,13 +1,19 @@
 import { AxiosResponse } from "axios";
 import apiInstance from "../utils/apiInstance";
-import { MateCommentListRes } from "../types/mate";
+import { MateComment } from "../types/mate";
 
 // 메이트글 댓글목록 조회api_박예선_23.03.09
 export const getMateCommentListApi = async (mateId: number) => {
-  const res: AxiosResponse<MateCommentListRes | ErrorDefalt> =
-    await apiInstance.get(`/mates/${mateId}/comments`);
+  const res: AxiosResponse<MateCommentListRes> = await apiInstance.get(
+    `/mates/${mateId}/comments`
+  );
   return res;
 };
+
+export interface MateCommentListRes {
+  comments: MateComment[];
+  totalCount: number;
+}
 
 // 메이트글 댓글 작성api_박예선_23.03.07
 export const postMateCommentApi = async (

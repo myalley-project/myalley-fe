@@ -1,17 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-import profileImg from "../../assets/icons/profileImg.svg";
+import profileImgIcon from "../../assets/icons/profileImg.svg";
 import partition from "../../assets/icons/partition.svg";
+import { MateComment } from "../../types/mate";
 
 interface CommentType {
   type: "comment" | "reply";
   isMyComment: boolean;
+  commentData: MateComment;
 }
 
-// 메이트 모집글 댓글 컴포넌트_박예선_23.03.06
-const Comment = ({ type, isMyComment }: CommentType) => {
-  const a = 1;
+// 메이트 모집글 댓글 컴포넌트_박예선_23.03.10
+const Comment = ({ type, isMyComment, commentData }: CommentType) => {
+  const { profileImg, nickname, content, createdAt, deleted } = commentData;
+  const createdDate = createdAt.split(" ")[0];
+  const createdTime = createdAt.split(" ")[1];
 
   return (
     <CommentContainer className="flex">
@@ -21,28 +25,35 @@ const Comment = ({ type, isMyComment }: CommentType) => {
         </div>
       )}
       <ContentContainer>
-        <ProfileImg src={profileImg} alt="회원 프로필사진" />
+        <ProfileImg
+          src={profileImg === "" || deleted ? profileImgIcon : profileImg}
+          alt="회원 프로필사진"
+        />
         <div>
-          <Nickname>닉네임</Nickname>
-          <Content>content</Content>
-          <CreatedInfo>
-            <span>2022-12-14</span>
-            <img src={partition} alt="partition" />
-            <span>00 : 00</span>
-          </CreatedInfo>
-        </div>
-        <BtnContainer>
-          {isMyComment && (
-            <>
-              <Button type="button">수정</Button>
+          {!deleted && <Nickname>{nickname}</Nickname>}
+          <Content>{deleted ? "삭제된 댓글입니다." : content}</Content>
+          {!deleted && (
+            <CreatedInfo>
+              <span>{createdDate}</span>
               <img src={partition} alt="partition" />
-              <Button type="button">삭제</Button>
-            </>
+              <span>{createdTime}</span>
+            </CreatedInfo>
           )}
-          {!isMyComment && type === "comment" && (
-            <Button type="button">답글달기</Button>
-          )}
-        </BtnContainer>
+        </div>
+        {!deleted && (
+          <BtnContainer>
+            {isMyComment && (
+              <>
+                <Button type="button">수정</Button>
+                <img src={partition} alt="partition" />
+                <Button type="button">삭제</Button>
+              </>
+            )}
+            {!isMyComment && type === "comment" && (
+              <Button type="button">답글달기</Button>
+            )}
+          </BtnContainer>
+        )}
       </ContentContainer>
     </CommentContainer>
   );

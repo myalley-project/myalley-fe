@@ -1,14 +1,15 @@
 import { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import { theme } from "../../styles/theme";
+import Comment from "./Comment";
 import {
   ErrorDefalt,
+  MateCommentListRes,
   getMateCommentListApi,
   postMateCommentApi,
 } from "../../apis/mateComment";
-import { theme } from "../../styles/theme";
-import { MateCommentListRes } from "../../types/mate";
-import Comment from "./Comment";
+import { MateComment } from "../../types/mate";
 
 interface CommentListType {
   mateId: number;
@@ -16,18 +17,21 @@ interface CommentListType {
   setCommentTextArea: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// 댓글 목록, 작성란 컴포넌트_박예선_23.03.07
+// 댓글 목록, 작성란 컴포넌트_박예선_23.03.10
 const CommentList = (props: CommentListType) => {
   const { mateId, commentTextArea, setCommentTextArea } = props;
   const memberNickname = localStorage.getItem("nickname");
+  const [commentList, setCommentList] = useState<MateComment[]>([]);
   const [isWritingReply, setIsWritingReply] = useState(false);
 
   // 댓글 목록 조회 요청_박예선_23.03.07_수정중
   const getCommentList = useCallback(async () => {
     try {
-      const res: AxiosResponse<MateCommentListRes | ErrorDefalt> =
+      const res: AxiosResponse<MateCommentListRes> =
         await getMateCommentListApi(mateId);
-      console.log(res.data);
+      const { comments } = res.data;
+      setCommentList(comments);
+      console.log(comments);
     } catch (error) {
       console.log(error);
     }
@@ -85,18 +89,39 @@ const CommentList = (props: CommentListType) => {
 
   // 테스트용
   useEffect(() => {
-    console.log(mateId);
+    // console.log(mateId);
   }, [commentTextArea, mateId]);
 
   return (
     <CommentListContainer>
-      <div className="comment-count bold">
+      <div className="comment-count">
         댓글 <span>0</span>
       </div>
-      <Comment type="comment" isMyComment={false} />
-      <Comment type="reply" isMyComment />
-      <Comment type="reply" isMyComment={false} />
-      <Comment type="comment" isMyComment />
+      {commentList
+        .filter((comment) => !comment.deleted || comment.replies?.length !== 0)
+        .map((comment) => {
+          const { id, nickname, replies } = comment;
+          return (
+            <div key={id}>
+              <Comment
+                type="comment"
+                isMyComment={memberNickname === nickname}
+                commentData={comment}
+              />
+              {replies?.length !== 0 &&
+                replies
+                  ?.filter((reply) => !reply.deleted)
+                  .map((reply) => (
+                    <Comment
+                      type="reply"
+                      isMyComment={memberNickname === reply.nickname}
+                      key={reply.id}
+                      commentData={reply}
+                    />
+                  ))}
+            </div>
+          );
+        })}
       <SubTitle type="greys90" marginTop={30}>
         {memberNickname}
       </SubTitle>
