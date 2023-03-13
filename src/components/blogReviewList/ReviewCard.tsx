@@ -87,9 +87,13 @@ const ThumbnailContainer = styled.div`
 const Content = styled.div`
   height: 38%;
   padding: 30px;
+  text-align: left;
   h2 {
     margin-bottom: 4px;
     color: ${theme.colors.greys90};
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-weight: bold;
     font-size: 20px;
     line-height: 28px;

@@ -109,6 +109,7 @@ const CardWrapper = styled.div`
   grid-template-columns: repeat(3, 380px);
   grid-template-rows: auto;
   gap: 30px;
+  text-align: left;
   margin-bottom: 30px;
 `;
 
