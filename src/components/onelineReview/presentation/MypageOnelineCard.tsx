@@ -57,9 +57,7 @@ const MypageOnelineCard = ({
           <div className="exhibition-title">{exhibitionInfo?.title}</div>
           {/* eslint-disable */}
           {[...Array(rate)].map((_, index) => (
-            <div key={`star-rate-${index}`}>
-              <img src={StarIcon} alt="별점" />
-            </div>
+            <img key={`star-rate-${index}`} src={StarIcon} alt="별점" />
           ))}
           <DateInfo>
             <span>{viewDate}</span> | <span>{time}</span> |{" "}

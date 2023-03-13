@@ -26,7 +26,7 @@ const blogReviewApis = {
     const response: AxiosResponse<BlogReviewDetailResponse> =
       await apiInstance.get(`/blogs/${blogId}`, {
         headers: {
-          memberId: localStorage.getItem("memberId"),
+          memberId: localStorage.getItem("memberId") ?? 0,
         },
       });
     return response.data;
