@@ -23,7 +23,7 @@ const exhbListApi = async (
   const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
     `/exhibitions/?status=${status} 전시&page=${page}&sort=${
       sort === "최신순" ? "" : "조회수순"
-    }&type=${type}&title=""` // title(검색)은 임시로 ""로 보냄
+    }&type=${type === "전체 전시" ? "" : type}&title=""` // title(검색)은 임시로 ""로 보냄
   );
   return res;
 };
