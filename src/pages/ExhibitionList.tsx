@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
 import { Exhibition, FilterType, SortType } from "../types/exhbList";
-import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
+import exhbListApi, { ExhbListRes } from "../apis/exhbList";
 import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 import ExhbCardList from "../components/exhibitionList/ExhbCardList";

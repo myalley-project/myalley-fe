@@ -18,9 +18,12 @@ const exhbListApi = async (
   type: FilterType,
   sort: SortType,
   page: number
+  // title:string 추후 검색 기능 추가 시 활성화할 예정
 ) => {
   const res: AxiosResponse<ExhbListRes> = await apiInstance.get(
-    `/exhibitions/?status=${status} 전시&type=${type}&sort=${sort}&page=${page}`
+    `/exhibitions/?status=${status} 전시&page=${page}&sort=${
+      sort === "최신순" ? "" : "조회수순"
+    }&type=${type === "전체 전시" ? "" : type}&title=""` // title(검색)은 임시로 ""로 보냄
   );
   return res;
 };

@@ -73,7 +73,7 @@ const Filters = (props: FiltersType) => {
           />
         </div>
         <SearchInput
-          placeholder="검색"
+          placeholder="전시회 제목으로 찾기"
           onClick={() => alert("준비 중인 기능입니다.")}
           onKeyDown={(e) => {
             if (e.key === "Enter") alertPreparing();
