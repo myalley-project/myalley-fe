@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import exhbListApi, { ExhbListRes } from "../apis/getExhbList";
+import exhbListApi, { ExhbListRes } from "../apis/exhbList";
 import { theme } from "../styles/theme";
 import ExhbCardListModal from "./exhbChoiceModal/ExhbCardListModal";
 import Button from "./atom/Button";
