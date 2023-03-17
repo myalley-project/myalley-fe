@@ -63,7 +63,7 @@ const ExhibitionChoice = ({ getExhbInfo, handleModal }: ChoiceProps) => {
           getExhbInfo={getExhbInfo}
           pages={pages}
           setPages={setPages}
-          totalPage={data.pageInfo.totalPage ?? 0}
+          totalPage={data.totalPage ?? 0}
         />
       )}
     </Container>
