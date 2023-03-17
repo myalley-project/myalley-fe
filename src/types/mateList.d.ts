@@ -1,5 +1,3 @@
-import { PageInfo } from "./pageInfo";
-
 export interface Mate {
   mateId: number;
   title: string;
@@ -21,5 +19,5 @@ export interface Mate {
 
 export interface MateListType {
   mates: Mate[];
-  pageInfo: PageInfo;
+  totalPage: number;
 }
