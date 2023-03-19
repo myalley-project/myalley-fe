@@ -30,9 +30,9 @@ const MateList = () => {
           status,
           page
         );
-        const { mates, pageInfo } = res.data;
+        const { mates } = res.data;
         setMateList(mates);
-        setTotalPage(pageInfo.totalPage);
+        setTotalPage(res.data.totalPage);
       } catch (err) {
         alertError();
         navigate("/");
