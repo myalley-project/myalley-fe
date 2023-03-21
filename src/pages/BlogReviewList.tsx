@@ -43,10 +43,7 @@ const BlogReviewList = () => {
 
   const debounceText = useDebounce(handleText, 500);
 
-  const handleOrderType = (
-    event: React.MouseEvent<HTMLElement>,
-    name = "정렬 필터"
-  ) => {
+  const handleOrderType = (event: React.MouseEvent<HTMLElement>) => {
     if (event.currentTarget.textContent === "최신 순") {
       setOrderType("Recent");
     } else {
@@ -162,10 +159,4 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-`;
-
-const FlexForm = styled.form`
-  display: flex;
-  align-items: center;
-  gap: 10px;
 `;
