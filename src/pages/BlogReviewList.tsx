@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import styled from "styled-components";
+import useDebounce from "../hooks/useDebounce";
 import { theme } from "../styles/theme";
 import Button from "../components/atom/Button";
 import Selectbox from "../components/atom/Selectbox";
@@ -32,6 +33,12 @@ const BlogReviewList = () => {
     }
   };
 
+  const handleText = (e: ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
+  };
+
+  const debounceText = useDebounce(handleText, 500);
+
   const handleOrderType = (
     event: React.MouseEvent<HTMLElement>,
     name = "정렬 필터"
@@ -57,19 +64,6 @@ const BlogReviewList = () => {
 
   const totalPageNumber = data?.pageInfo.totalPage ?? 0;
 
-  function debounce<Params extends any[]>(
-    func: (...args: Params) => any,
-    timeout = 300
-  ): (...args: Params) => void {
-    let timer: NodeJS.Timeout;
-    return (...args: Params) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        func(...args);
-      }, timeout);
-    };
-  }
-
   if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
@@ -87,12 +81,7 @@ const BlogReviewList = () => {
           />
         </Flex>
         <Flex style={{ gap: "10px" }}>
-          <SearchInput
-            placeholder="검색"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setText(e.target.value)
-            }
-          />
+          <SearchInput placeholder="검색" onChange={debounceText} />
           <Button
             onClick={handleReviewWrite}
             style={{ padding: "8px 20px" }}
