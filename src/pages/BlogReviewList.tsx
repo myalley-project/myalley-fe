@@ -8,7 +8,6 @@ import Selectbox from "../components/atom/Selectbox";
 import SearchInput from "../components/atom/SearchInput";
 import ReviewCardList from "../components/blogReviewList/ReviewCardList";
 import Pagination from "../components/Pagination";
-import { alertPreparing } from "../utils/alerts";
 import { BlogReviewResponse } from "../types/blogReview";
 import blogReviewApis from "../apis/blogReviewApis";
 
@@ -19,7 +18,7 @@ const BlogReviewList = () => {
     selected: 1,
   });
   const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
-  const [inputLength, setInputLength] = useState(0);
+  const [text, setText] = React.useState("");
 
   const handleReviewWrite = () => {
     if (!localStorage.getItem("memberId")) {
@@ -65,27 +64,33 @@ const BlogReviewList = () => {
             onClick={handleOrderType}
           />
         </Flex>
-        <Flex style={{ gap: "10px" }}>
+        <FlexForm>
           <SearchInput
             placeholder="검색"
-            onClick={() => {}}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") alertPreparing();
-            }}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setText(e.target.value)
+            }
           />
           <Button
             onClick={handleReviewWrite}
             style={{ padding: "8px 20px" }}
+            type="button"
             size="large"
             variant="primary"
           >
             리뷰 등록
           </Button>
-        </Flex>
+        </FlexForm>
       </TopLineContainer>
-      {data && (
-        <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
-      )}
+      {data &&
+        (text === "" ? (
+          <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
+        ) : (
+          <ReviewCardList
+            blogInfo={data.blogInfo.filter((blog) => blog.title.includes(text))}
+            pageInfo={data.pageInfo}
+          />
+        ))}
       <Pagination
         pages={pages}
         setPages={setPages}
@@ -130,4 +135,10 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+`;
+
+const FlexForm = styled.form`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
