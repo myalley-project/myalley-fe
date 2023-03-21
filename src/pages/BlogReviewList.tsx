@@ -24,6 +24,10 @@ const BlogReviewList = () => {
   const defferedText = React.useDeferredValue(text);
   const [searchedData, setSearchedData] =
     React.useState<BlogReviewResponse | null>(null);
+  const [searchedPage, setSearchedPage] = React.useState({
+    started: 1,
+    selected: 1,
+  });
 
   const handleReviewWrite = () => {
     if (!localStorage.getItem("memberId")) {
@@ -52,17 +56,17 @@ const BlogReviewList = () => {
 
   React.useEffect(() => {
     apiInstance
-      .get(`/blogs/search?title=${defferedText}&page=1`)
+      .get(
+        `/blogs/search?title=${defferedText}&page=${searchedPage.selected ?? 1}`
+      )
       .then((res) => res.data as BlogReviewResponse)
       .then(setSearchedData);
-  }, [defferedText]);
+  }, [defferedText, searchedPage.selected]);
 
   const { isError, data } = useQuery<BlogReviewResponse, Error>({
     queryKey: ["blogReviews", { page: pages.selected, orderType }],
     queryFn: () => blogReviewApis.readBlogReviews(pages.selected, orderType),
   });
-
-  const totalPageNumber = data?.pageInfo.totalPage ?? 0;
 
   if (isError) return <div>에러가 발생했습니다.</div>;
 
@@ -96,20 +100,29 @@ const BlogReviewList = () => {
       {searchedData &&
       searchedData?.pageInfo?.totalElement > 0 &&
       defferedText !== "" ? (
-        <ReviewCardList
-          blogInfo={searchedData.blogInfo}
-          pageInfo={searchedData.pageInfo}
-        />
+        <>
+          <ReviewCardList
+            blogInfo={searchedData.blogInfo}
+            pageInfo={searchedData.pageInfo}
+          />
+          <Pagination
+            pages={searchedPage}
+            setPages={setSearchedPage}
+            totalPage={searchedData?.pageInfo.totalPage ?? 0}
+          />
+        </>
       ) : (
         data && (
-          <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
+          <>
+            <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
+            <Pagination
+              pages={pages}
+              setPages={setPages}
+              totalPage={data?.pageInfo.totalPage ?? 0}
+            />
+          </>
         )
       )}
-      <Pagination
-        pages={pages}
-        setPages={setPages}
-        totalPage={totalPageNumber}
-      />
     </Container>
   );
 };
