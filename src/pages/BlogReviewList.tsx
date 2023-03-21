@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import SearchInput from "../components/atom/SearchInput";
 import ReviewCardList from "../components/blogReviewList/ReviewCardList";
 import Pagination from "../components/Pagination";
 import { BlogReviewResponse } from "../types/blogReview";
+import apiInstance from "../utils/apiInstance";
 import blogReviewApis from "../apis/blogReviewApis";
 
 const BlogReviewList = () => {
@@ -19,6 +20,9 @@ const BlogReviewList = () => {
   });
   const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
   const [text, setText] = React.useState("");
+  const defferedText = React.useDeferredValue(text);
+  const [searchedData, setSearchedData] =
+    React.useState<BlogReviewResponse | null>(null);
 
   const handleReviewWrite = () => {
     if (!localStorage.getItem("memberId")) {
@@ -39,14 +43,32 @@ const BlogReviewList = () => {
     }
   };
 
-  const { isLoading, isError, error, data } = useQuery<
-    BlogReviewResponse,
-    Error
-  >({
+  React.useEffect(() => {
+    apiInstance
+      .get(`/blogs/search?title=${defferedText}&page=1`)
+      .then((res) => res.data as BlogReviewResponse)
+      .then(setSearchedData);
+  }, [defferedText]);
+
+  const { isError, data } = useQuery<BlogReviewResponse, Error>({
     queryKey: ["blogReviews", { page: pages.selected, orderType }],
     queryFn: () => blogReviewApis.readBlogReviews(pages.selected, orderType),
   });
+
   const totalPageNumber = data?.pageInfo.totalPage ?? 0;
+
+  function debounce<Params extends any[]>(
+    func: (...args: Params) => any,
+    timeout = 300
+  ): (...args: Params) => void {
+    let timer: NodeJS.Timeout;
+    return (...args: Params) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func(...args);
+      }, timeout);
+    };
+  }
 
   if (isError) return <div>에러가 발생했습니다.</div>;
 
@@ -64,10 +86,10 @@ const BlogReviewList = () => {
             onClick={handleOrderType}
           />
         </Flex>
-        <FlexForm>
+        <Flex style={{ gap: "10px" }}>
           <SearchInput
             placeholder="검색"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setText(e.target.value)
             }
           />
@@ -80,17 +102,20 @@ const BlogReviewList = () => {
           >
             리뷰 등록
           </Button>
-        </FlexForm>
+        </Flex>
       </TopLineContainer>
-      {data &&
-        (text === "" ? (
+      {searchedData &&
+      searchedData?.pageInfo?.totalElement > 0 &&
+      defferedText !== "" ? (
+        <ReviewCardList
+          blogInfo={searchedData.blogInfo}
+          pageInfo={searchedData.pageInfo}
+        />
+      ) : (
+        data && (
           <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
-        ) : (
-          <ReviewCardList
-            blogInfo={data.blogInfo.filter((blog) => blog.title.includes(text))}
-            pageInfo={data.pageInfo}
-          />
-        ))}
+        )
+      )}
       <Pagination
         pages={pages}
         setPages={setPages}
