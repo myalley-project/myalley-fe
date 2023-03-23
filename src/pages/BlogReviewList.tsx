@@ -11,6 +11,7 @@ import ReviewCardList from "../components/blogReviewList/ReviewCardList";
 import Pagination from "../components/Pagination";
 import { BlogReviewResponse } from "../types/blogReview";
 import apiInstance from "../utils/apiInstance";
+import NoList from "../components/NoList";
 import blogReviewApis from "../apis/blogReviewApis";
 
 const BlogReviewList = () => {
@@ -109,7 +110,12 @@ const BlogReviewList = () => {
           />
         </>
       ) : (
-        data && (
+        data &&
+        (searchedData?.pageInfo?.totalElement === 0 && defferedText !== "" ? (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <NoList notice="검색된 블로그리뷰가 없습니다." />
+          </div>
+        ) : (
           <>
             <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
             <Pagination
@@ -118,7 +124,7 @@ const BlogReviewList = () => {
               totalPage={data?.pageInfo.totalPage ?? 0}
             />
           </>
-        )
+        ))
       )}
     </Container>
   );
