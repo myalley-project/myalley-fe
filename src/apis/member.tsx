@@ -112,7 +112,8 @@ export const LikedBlogReviewApi = async (pageNo: number) => {
 
 export interface MateRes {
   mates: Mate[] | [];
-  pageInfo: PageInfo;
+  totalElement: number;
+  totalPage: number;
 }
 
 export interface MyInfoRes {
@@ -176,5 +177,5 @@ export interface BlogInfo {
 
 export interface ExhibitionListRes {
   exhibitions: Exhibition[];
-  pageInfo: PageInfo;
+  totalPage: number;
 }
