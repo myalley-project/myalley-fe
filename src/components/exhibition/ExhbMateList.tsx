@@ -16,12 +16,8 @@ const ExhbMateList = () => {
   const params = useParams();
   const id = Number(params.id);
   const [mateList, setMateList] = useState<Mate[] | []>([]);
-  const [pageInfoData, setPageInfoData] = useState({
-    page: 0,
-    size: 0,
-    totalElement: 0,
-    totalPage: 0,
-  });
+  const [totalElementNum, setTotalElementNum] = useState(0);
+  const [totalPageNum, setTotalPageNum] = useState(0);
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
@@ -31,9 +27,10 @@ const ExhbMateList = () => {
   const getMateList = useCallback(async () => {
     try {
       const res: AxiosResponse<MateRes> = await exhbMateApi(id, pages.selected);
-      const { mates, pageInfo } = res.data;
+      const { mates, totalElement, totalPage } = res.data;
       setMateList(mates);
-      setPageInfoData(pageInfo);
+      setTotalElementNum(totalElement);
+      setTotalPageNum(totalPage);
     } catch (err) {
       isApiError(err);
     }
@@ -47,8 +44,7 @@ const ExhbMateList = () => {
     <ExhbMateContainer>
       <Header>
         <Text>
-          <span>{pageInfoData.totalElement}</span> 개의 메이트 모집글을
-          확인해보세요!
+          <span>{totalElementNum}</span> 개의 메이트 모집글을 확인해보세요!
         </Text>
         <a href="/mate-write">
           <Button variant="primary" size="small">
@@ -61,11 +57,7 @@ const ExhbMateList = () => {
       ) : (
         mateList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}
-      <Pagination
-        pages={pages}
-        setPages={setPages}
-        totalPage={pageInfoData.totalPage}
-      />
+      <Pagination pages={pages} setPages={setPages} totalPage={totalPageNum} />
     </ExhbMateContainer>
   );
 };
