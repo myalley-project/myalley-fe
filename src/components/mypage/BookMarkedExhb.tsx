@@ -12,12 +12,7 @@ import Pagination from "../Pagination";
 const BookMarkedExhb = () => {
   const navigate = useNavigate();
   const [exhibitionList, setExhibitionList] = useState<Exhibition[] | []>([]);
-  const [pageInfoList, setPageInfoList] = useState({
-    page: 0,
-    size: 0,
-    totalElement: 0,
-    totalPage: 0,
-  });
+  const [totalPageNum, setTotalPageNum] = useState(0);
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
@@ -31,9 +26,9 @@ const BookMarkedExhb = () => {
         const res: AxiosResponse<ExhibitionListRes> = await BookMarkedExhbApi(
           pageNo
         );
-        const { exhibitions, pageInfo } = res.data;
+        const { exhibitions, totalPage } = res.data;
         setExhibitionList(exhibitions);
-        setPageInfoList(pageInfo);
+        setTotalPageNum(totalPage);
       } catch (err) {
         const errorRes = isApiError(err);
         if (errorRes === "accessToken 만료") {
@@ -41,9 +36,9 @@ const BookMarkedExhb = () => {
           const reRes: AxiosResponse<ExhibitionListRes> =
             await BookMarkedExhbApi(pageNo);
           if (!reRes) return;
-          const { exhibitions, pageInfo } = reRes.data;
+          const { exhibitions, totalPage } = reRes.data;
           setExhibitionList(exhibitions);
-          setPageInfoList(pageInfo);
+          setTotalPageNum(totalPage);
         }
       }
       navigate(`?type=exhibition&pageno=${pageNo}`);
@@ -62,11 +57,7 @@ const BookMarkedExhb = () => {
       ) : (
         <ExhbCardList exhbList={exhibitionList} type="myPage" />
       )}
-      <Pagination
-        pages={pages}
-        setPages={setPages}
-        totalPage={pageInfoList.totalPage}
-      />
+      <Pagination pages={pages} setPages={setPages} totalPage={totalPageNum} />
     </div>
   );
 };
