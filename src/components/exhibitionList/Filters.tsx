@@ -18,8 +18,10 @@ const Filters = (props: FiltersType) => {
   } = props;
   const [searchInput, setSearchInput] = useState(selectedFilter.title);
 
-  // 전시상황 버튼 클릭 함수_박예선_23.02.01
+  // 전시상황 버튼 클릭 함수_박예선_23.03.30
   const handleStatusBtn = (status: StatusType) => {
+    setSelectedFilter({ ...selectedFilter, title: "" });
+    setSearchInput("");
     setPages({ started: 1, selected: 1 });
     setSelectedStatus(status);
   };
