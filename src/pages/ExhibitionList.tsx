@@ -9,7 +9,7 @@ import Pagination from "../components/Pagination";
 import Filters, { StatusType } from "../components/exhibitionList/Filters";
 import ExhbCardList from "../components/exhibitionList/ExhbCardList";
 
-// 전시회 목록 페이지 컴포넌트_박예선_23.02.24
+// 전시회 목록 페이지 컴포넌트_박예선_23.03.30
 const ExhibitionList = () => {
   const navigate = useNavigate();
   const [exhbList, setExhbList] = useState<Exhibition[]>([]);
@@ -18,26 +18,29 @@ const ExhibitionList = () => {
   const [selectedFilter, setSelectedFilter] = useState<{
     type: FilterType;
     sort: SortType;
-  }>({ type: "전체 전시", sort: "최신순" });
+    title: string;
+  }>({ type: "전체 전시", sort: "최신순", title: "" });
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
   });
 
-  // 전시회 목록 조회 api_박예선_23.03.17
+  // 전시회 목록 조회 api_박예선_23.03.30
   const getExhbList = useCallback(
     async (
       status: StatusType,
       type: FilterType,
       sort: SortType,
-      page: number
+      page: number,
+      title: string
     ) => {
       try {
         const res: AxiosResponse<ExhbListRes> = await exhbListApi(
           status,
           type,
           sort,
-          page
+          page,
+          title
         );
         const { exhibitions } = res.data;
         setExhbList(exhibitions);
@@ -52,13 +55,14 @@ const ExhibitionList = () => {
     [navigate]
   );
 
-  // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.02.24
+  // 전시상태, 전시유형 필터, 페이지 번호에 따라 전시목록 불러오는 로직_박예선_23.03.30
   useEffect(() => {
     getExhbList(
       selectedStatus,
       selectedFilter.type,
       selectedFilter.sort,
-      pages.selected
+      pages.selected,
+      selectedFilter.title
     );
   }, [getExhbList, selectedStatus, selectedFilter, pages.selected]);
 

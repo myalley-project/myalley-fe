@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
 import SearchInput from "../atom/SearchInput";
 import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
-import { alertPreparing } from "../../utils/alerts";
 import { FilterType, SortType } from "../../types/exhbList";
 
-// 전시글 목록 상단 필터 컴포넌트_박예선_23.02.26
+// 전시글 목록 상단 필터 컴포넌트_박예선_23.03.30
 const Filters = (props: FiltersType) => {
   const {
     setPages,
@@ -17,6 +16,7 @@ const Filters = (props: FiltersType) => {
     selectedFilter,
     setSelectedFilter,
   } = props;
+  const [searchInput, setSearchInput] = useState(selectedFilter.title);
 
   // 전시상황 버튼 클릭 함수_박예선_23.02.01
   const handleStatusBtn = (status: StatusType) => {
@@ -38,6 +38,16 @@ const Filters = (props: FiltersType) => {
         setSelectedFilter({ ...selectedFilter, type: value });
       }
     }
+  };
+
+  // 전시회 검색창 상태관리 함수_박예선_23.03.30
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
+  // 검색창 입력어 제출(검색) 함수_박예선_23.03.30
+  const submitSearchInput = () => {
+    setSelectedFilter({ ...selectedFilter, title: searchInput });
   };
 
   return (
@@ -74,9 +84,10 @@ const Filters = (props: FiltersType) => {
         </div>
         <SearchInput
           placeholder="전시회 제목으로 찾기"
-          onClick={() => alert("준비 중인 기능입니다.")}
+          value={searchInput}
+          onChange={handleSearchInput}
           onKeyDown={(e) => {
-            if (e.key === "Enter") alertPreparing();
+            if (e.key === "Enter") submitSearchInput();
           }}
         />
       </div>
@@ -108,11 +119,13 @@ interface FiltersType {
   selectedFilter: {
     type: FilterType;
     sort: SortType;
+    title: string;
   };
   setSelectedFilter: React.Dispatch<
     React.SetStateAction<{
       type: FilterType;
       sort: SortType;
+      title: string;
     }>
   >;
 }

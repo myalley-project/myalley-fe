@@ -28,7 +28,7 @@ const ExhibitionChoice = ({ getExhbInfo, handleModal }: ChoiceProps) => {
   const { data } = useQuery<ExhbListRes, Error>({
     queryKey: ["exhbList", { pages, exhbStatus }],
     queryFn: () =>
-      exhbListApi(exhbStatus, "전체 전시", "최신순", pages.selected).then(
+      exhbListApi(exhbStatus, "전체 전시", "최신순", pages.selected, "").then(
         (res) => res.data
       ),
   });
