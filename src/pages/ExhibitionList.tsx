@@ -24,7 +24,7 @@ const ExhibitionList = () => {
     selected: 1,
   });
 
-  // 전시회 목록 조회 api_박예선_23.03.01
+  // 전시회 목록 조회 api_박예선_23.03.17
   const getExhbList = useCallback(
     async (
       status: StatusType,
@@ -39,9 +39,9 @@ const ExhibitionList = () => {
           sort,
           page
         );
-        const { exhibitions, pageInfo } = res.data;
+        const { exhibitions } = res.data;
         setExhbList(exhibitions);
-        setTotalPage(pageInfo.totalPage);
+        setTotalPage(res.data.totalPage);
       } catch (err) {
         alert(
           "죄송합니다.\n전시목록을 불러오는데에 실패하였습니다. 다시 시도해주십시오."

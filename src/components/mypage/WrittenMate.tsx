@@ -13,12 +13,7 @@ import getNewTokenApi from "../../apis/getRefreshToken";
 const WrittenMate = () => {
   const navigate = useNavigate();
   const [matesList, setMatesList] = useState<Mate[] | []>([]);
-  const [pageInfoList, setPageInfoList] = useState({
-    page: 0,
-    size: 0,
-    totalElement: 0,
-    totalPage: 0,
-  });
+  const [totalPageNum, setTotalPageNum] = useState(0);
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
@@ -31,18 +26,18 @@ const WrittenMate = () => {
 
       try {
         const res: AxiosResponse<MateRes> = await myMatesApi(pageNo);
-        const { mates, pageInfo } = res.data;
+        const { mates, totalPage } = res.data;
         setMatesList(mates);
-        setPageInfoList(pageInfo);
+        setTotalPageNum(totalPage);
       } catch (err) {
         const errorRes = isApiError(err);
         if (errorRes === "accessToken 만료") {
           await getNewTokenApi(refreshToken);
           const reRes: AxiosResponse<MateRes> = await myMatesApi(pageNo);
           if (!reRes) return;
-          const { mates, pageInfo } = reRes.data;
+          const { mates, totalPage } = reRes.data;
           setMatesList(mates);
-          setPageInfoList(pageInfo);
+          setTotalPageNum(totalPage);
         }
       }
       navigate(`?type=mate&pageno=${pageNo}`);
@@ -61,11 +56,7 @@ const WrittenMate = () => {
       ) : (
         matesList.map((mate) => <MateCard key={mate.mateId} mate={mate} />)
       )}
-      <Pagination
-        pages={pages}
-        setPages={setPages}
-        totalPage={pageInfoList.totalPage}
-      />
+      <Pagination pages={pages} setPages={setPages} totalPage={totalPageNum} />
     </FindMateContainer>
   );
 };
