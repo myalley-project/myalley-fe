@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import useDebounce from "../hooks/useDebounce";
 import { theme } from "../styles/theme";
 import Button from "../components/atom/Button";
 import Selectbox from "../components/atom/Selectbox";
@@ -22,13 +21,6 @@ const BlogReviewList = () => {
   });
   const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
   const [text, setText] = React.useState("");
-  const defferedText = React.useDeferredValue(text);
-  const [searchedData, setSearchedData] =
-    React.useState<BlogReviewResponse | null>(null);
-  const [searchedPage, setSearchedPage] = React.useState({
-    started: 1,
-    selected: 1,
-  });
 
   const handleReviewWrite = () => {
     if (!localStorage.getItem("memberId")) {
@@ -37,12 +29,6 @@ const BlogReviewList = () => {
       navigate("/blogreview-write");
     }
   };
-
-  const handleText = (e: ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  };
-
-  const debounceText = useDebounce(handleText, 500);
 
   const handleOrderType = (event: React.MouseEvent<HTMLElement>) => {
     if (event.currentTarget.textContent === "최신 순") {
@@ -94,37 +80,19 @@ const BlogReviewList = () => {
           </Button>
         </Flex>
       </TopLineContainer>
-      {searchedData &&
-      searchedData?.pageInfo?.totalElement > 0 &&
-      defferedText !== "" ? (
-        <>
-          <ReviewCardList
-            blogInfo={searchedData.blogInfo}
-            pageInfo={searchedData.pageInfo}
-          />
-          <Pagination
-            pages={searchedPage}
-            setPages={setSearchedPage}
-            totalPage={searchedData?.pageInfo.totalPage ?? 0}
-          />
-        </>
-      ) : (
-        data &&
-        (searchedData?.pageInfo?.totalElement === 0 && defferedText !== "" ? (
+      {data &&
+        (data.pageInfo.totalElement > 0 ? (
+          <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
+        ) : (
           <div style={{ display: "flex", justifyContent: "center" }}>
             <NoList notice="검색된 블로그리뷰가 없습니다." />
           </div>
-        ) : (
-          <>
-            <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
-            <Pagination
-              pages={pages}
-              setPages={setPages}
-              totalPage={data?.pageInfo.totalPage ?? 0}
-            />
-          </>
-        ))
-      )}
+        ))}
+      <Pagination
+        pages={pages}
+        setPages={setPages}
+        totalPage={data?.pageInfo.totalPage ?? 0}
+      />
     </Container>
   );
 };
