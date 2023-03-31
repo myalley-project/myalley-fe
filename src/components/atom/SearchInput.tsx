@@ -1,14 +1,37 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/jsx-no-comment-textnodes */
+import React, { HTMLAttributes } from "react";
 import styled from "styled-components";
+import searchIcon from "../../assets/icons/search.svg";
 import { theme } from "../../styles/theme";
 
-const SearchInput = styled.input`
-  width: 277px;
+type SearchInputProps = HTMLAttributes<HTMLInputElement>;
+
+// eslint-disable-next-line react/display-name
+const SearchInput = React.forwardRef(
+  (
+    { className }: SearchInputProps,
+    ref?: React.ForwardedRef<HTMLInputElement>
+  ): React.ReactElement<HTMLDivElement> => (
+    <SearchContainer className={className}>
+      <InnerInput ref={ref} />
+      <StyledButton type="submit">
+        <img src={searchIcon} alt="돋보기 아이콘" />
+      </StyledButton>
+    </SearchContainer>
+  )
+);
+
+const SearchContainer = styled.div`
+  position: relative;
   height: 36px;
-  padding: 0 54px 0 20px;
+`;
+
+const InnerInput = styled.input`
+  width: 100%;
+  height: 100%;
+  padding-left: 15px;
   border: 1px solid ${theme.colors.greys40};
-  background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='6' stroke='%239C9C9C' stroke-width='2'/%3E%3Cpath d='M16.2071 14.7929L15.5 14.0858L14.0858 15.5L14.7929 16.2071L16.2071 14.7929ZM18.2929 19.7071C18.6834 20.0976 19.3166 20.0976 19.7071 19.7071C20.0976 19.3166 20.0976 18.6834 19.7071 18.2929L18.2929 19.7071ZM14.7929 16.2071L18.2929 19.7071L19.7071 18.2929L16.2071 14.7929L14.7929 16.2071Z' fill='%239C9C9C'/%3E%3C/svg%3E%0A")
-    no-repeat;
-  background-position: right 25px center;
   font-size: 14px;
   &::placeholder {
     color: ${(props) => props.theme.colors.greys60};
@@ -16,6 +39,14 @@ const SearchInput = styled.input`
   &:hover {
     cursor: text;
   }
+`;
+
+const StyledButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
 `;
 
 export default SearchInput;

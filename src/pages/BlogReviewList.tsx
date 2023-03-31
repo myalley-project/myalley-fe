@@ -10,12 +10,12 @@ import SearchInput from "../components/atom/SearchInput";
 import ReviewCardList from "../components/blogReviewList/ReviewCardList";
 import Pagination from "../components/Pagination";
 import { BlogReviewResponse } from "../types/blogReview";
-import apiInstance from "../utils/apiInstance";
 import NoList from "../components/NoList";
 import blogReviewApis from "../apis/blogReviewApis";
 
 const BlogReviewList = () => {
   const navigate = useNavigate();
+  const inputRef = React.createRef<HTMLInputElement>();
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
@@ -52,21 +52,11 @@ const BlogReviewList = () => {
     }
   };
 
-  React.useEffect(() => {
-    apiInstance
-      .get(
-        `/blogs/search?title=${defferedText}&page=${searchedPage.selected ?? 1}`
-      )
-      .then((res) => res.data as BlogReviewResponse)
-      .then(setSearchedData);
-  }, [defferedText, searchedPage.selected]);
-
-  const { isError, data } = useQuery<BlogReviewResponse, Error>({
-    queryKey: ["blogReviews", { page: pages.selected, orderType }],
-    queryFn: () => blogReviewApis.readBlogReviews(pages.selected, orderType),
+  const { data } = useQuery<BlogReviewResponse, Error>({
+    queryKey: ["blogReviews", { page: pages.selected, orderType, text }],
+    queryFn: () =>
+      blogReviewApis.readBlogReviews(pages.selected, orderType, text),
   });
-
-  if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
     <Container>
@@ -83,7 +73,16 @@ const BlogReviewList = () => {
           />
         </Flex>
         <Flex style={{ gap: "10px" }}>
-          <SearchInput placeholder="검색" onChange={debounceText} />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (inputRef?.current?.value) {
+                setText(inputRef.current.value);
+              }
+            }}
+          >
+            <SearchInput placeholder="검색" ref={inputRef} />
+          </form>
           <Button
             onClick={handleReviewWrite}
             style={{ padding: "8px 20px" }}
