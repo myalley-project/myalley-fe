@@ -10,11 +10,11 @@ type SearchInputProps = HTMLAttributes<HTMLInputElement>;
 // eslint-disable-next-line react/display-name
 const SearchInput = React.forwardRef(
   (
-    { className }: SearchInputProps,
+    { className, placeholder }: SearchInputProps,
     ref?: React.ForwardedRef<HTMLInputElement>
   ): React.ReactElement<HTMLDivElement> => (
     <SearchContainer className={className}>
-      <InnerInput ref={ref} />
+      <InnerInput placeholder={placeholder ?? ""} ref={ref} />
       <StyledButton type="submit">
         <img src={searchIcon} alt="돋보기 아이콘" />
       </StyledButton>

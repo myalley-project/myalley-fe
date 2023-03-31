@@ -39,13 +39,14 @@ const MateListFilter = (props: MateListFilterType) => {
         />
       </div>
       <div>
-        <SearchInput
-          placeholder="검색"
-          onClick={alertPreparing}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") alertPreparing();
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            alert("준비 중인 기능입니다.");
           }}
-        />
+        >
+          <SearchInput placeholder="검색" />
+        </form>
         {!isAdmin && (
           <Button
             variant="primary"

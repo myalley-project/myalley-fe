@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
@@ -72,13 +73,14 @@ const Filters = (props: FiltersType) => {
             onClick={handleFilters}
           />
         </div>
-        <SearchInput
-          placeholder="전시회 제목으로 찾기"
-          onClick={() => alert("준비 중인 기능입니다.")}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") alertPreparing();
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            alert("준비 중인 기능입니다.");
           }}
-        />
+        >
+          <SearchInput placeholder="전시회 제목으로 찾기" />
+        </form>
       </div>
     </FiltersContainer>
   );
