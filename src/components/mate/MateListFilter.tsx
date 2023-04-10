@@ -27,6 +27,8 @@ const MateListFilter = (props: MateListFilterType) => {
     }
   };
 
+  const inputRef = React.createRef<HTMLInputElement>();
+
   return (
     <FilterContainer>
       <div className="flex">
@@ -45,7 +47,7 @@ const MateListFilter = (props: MateListFilterType) => {
             alert("준비 중인 기능입니다.");
           }}
         >
-          <SearchInput placeholder="검색" />
+          <SearchInput ref={inputRef} placeholder="검색" />
         </form>
         {!isAdmin && (
           <Button
