@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { HTMLAttributes } from "react";
 import styled from "styled-components";
 import searchIcon from "../../assets/icons/search.svg";
