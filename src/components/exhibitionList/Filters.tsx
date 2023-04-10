@@ -42,15 +42,7 @@ const Filters = (props: FiltersType) => {
     }
   };
 
-  // 전시회 검색창 상태관리 함수_박예선_23.03.30
-  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-  };
-
-  // 검색창 입력어 제출(검색) 함수_박예선_23.03.30
-  const submitSearchInput = () => {
-    setSelectedFilter({ ...selectedFilter, title: searchInput });
-  };
+  const inputRef = React.createRef<HTMLInputElement>();
 
   return (
     <FiltersContainer>
@@ -84,14 +76,14 @@ const Filters = (props: FiltersType) => {
             onClick={handleFilters}
           />
         </div>
-        <SearchInput
-          placeholder="전시회 제목으로 찾기"
-          value={searchInput}
-          onChange={handleSearchInput}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") submitSearchInput();
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            alert("준비 중인 기능입니다.");
           }}
-        />
+        >
+          <SearchInput ref={inputRef} placeholder="전시회 제목으로 찾기" />
+        </form>
       </div>
     </FiltersContainer>
   );
