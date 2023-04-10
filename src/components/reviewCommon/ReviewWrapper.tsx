@@ -18,7 +18,9 @@ const ReviewWrapper = () => {
   const { id } = useParams();
 
   const handleOneLineReview = () => {
-    if (filter === "oneline") {
+    if (!localStorage.getItem("refreshToken")) {
+      alert("리뷰를 등록하려면 로그인하셔야 합니다.");
+    } else if (filter === "oneline") {
       setSimpleReviewModal((prev) => !prev);
     } else {
       navigate("/blogreview-write");
