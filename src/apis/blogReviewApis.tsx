@@ -15,10 +15,11 @@ const blogReviewApis = {
   },
   readBlogReviews: async (
     pageNo = 1,
-    orderType: "Recent" | "ViewCount" = "Recent"
+    orderType: "Recent" | "ViewCount" = "Recent",
+    searchtext = ""
   ) => {
     const response: AxiosResponse<BlogReviewResponse> = await apiInstance.get(
-      `/blogs?page=${pageNo}&order=${orderType}`
+      `/blogs?page=${pageNo}&order=${orderType}&title=${searchtext}`
     );
     return response.data;
   },

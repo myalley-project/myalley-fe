@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import useDebounce from "../hooks/useDebounce";
 import { theme } from "../styles/theme";
 import Button from "../components/atom/Button";
 import Selectbox from "../components/atom/Selectbox";
@@ -10,25 +9,18 @@ import SearchInput from "../components/atom/SearchInput";
 import ReviewCardList from "../components/blogReviewList/ReviewCardList";
 import Pagination from "../components/Pagination";
 import { BlogReviewResponse } from "../types/blogReview";
-import apiInstance from "../utils/apiInstance";
 import NoList from "../components/NoList";
 import blogReviewApis from "../apis/blogReviewApis";
 
 const BlogReviewList = () => {
   const navigate = useNavigate();
+  const inputRef = React.createRef<HTMLInputElement>();
   const [pages, setPages] = useState({
     started: 1,
     selected: 1,
   });
   const [orderType, setOrderType] = useState<"Recent" | "ViewCount">("Recent");
   const [text, setText] = React.useState("");
-  const defferedText = React.useDeferredValue(text);
-  const [searchedData, setSearchedData] =
-    React.useState<BlogReviewResponse | null>(null);
-  const [searchedPage, setSearchedPage] = React.useState({
-    started: 1,
-    selected: 1,
-  });
 
   const handleReviewWrite = () => {
     if (!localStorage.getItem("memberId")) {
@@ -38,12 +30,6 @@ const BlogReviewList = () => {
     }
   };
 
-  const handleText = (e: ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  };
-
-  const debounceText = useDebounce(handleText, 500);
-
   const handleOrderType = (event: React.MouseEvent<HTMLElement>) => {
     if (event.currentTarget.textContent === "최신 순") {
       setOrderType("Recent");
@@ -52,21 +38,11 @@ const BlogReviewList = () => {
     }
   };
 
-  React.useEffect(() => {
-    apiInstance
-      .get(
-        `/blogs/search?title=${defferedText}&page=${searchedPage.selected ?? 1}`
-      )
-      .then((res) => res.data as BlogReviewResponse)
-      .then(setSearchedData);
-  }, [defferedText, searchedPage.selected]);
-
-  const { isError, data } = useQuery<BlogReviewResponse, Error>({
-    queryKey: ["blogReviews", { page: pages.selected, orderType }],
-    queryFn: () => blogReviewApis.readBlogReviews(pages.selected, orderType),
+  const { data } = useQuery<BlogReviewResponse, Error>({
+    queryKey: ["blogReviews", { page: pages.selected, orderType, text }],
+    queryFn: () =>
+      blogReviewApis.readBlogReviews(pages.selected, orderType, text),
   });
-
-  if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
     <Container>
@@ -83,7 +59,16 @@ const BlogReviewList = () => {
           />
         </Flex>
         <Flex style={{ gap: "10px" }}>
-          <SearchInput placeholder="검색" onChange={debounceText} />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (inputRef?.current?.value) {
+                setText(inputRef.current.value);
+              }
+            }}
+          >
+            <SearchInput placeholder="검색" ref={inputRef} />
+          </form>
           <Button
             onClick={handleReviewWrite}
             style={{ padding: "8px 20px" }}
@@ -95,37 +80,19 @@ const BlogReviewList = () => {
           </Button>
         </Flex>
       </TopLineContainer>
-      {searchedData &&
-      searchedData?.pageInfo?.totalElement > 0 &&
-      defferedText !== "" ? (
-        <>
-          <ReviewCardList
-            blogInfo={searchedData.blogInfo}
-            pageInfo={searchedData.pageInfo}
-          />
-          <Pagination
-            pages={searchedPage}
-            setPages={setSearchedPage}
-            totalPage={searchedData?.pageInfo.totalPage ?? 0}
-          />
-        </>
-      ) : (
-        data &&
-        (searchedData?.pageInfo?.totalElement === 0 && defferedText !== "" ? (
+      {data &&
+        (data.pageInfo.totalElement > 0 ? (
+          <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
+        ) : (
           <div style={{ display: "flex", justifyContent: "center" }}>
             <NoList notice="검색된 블로그리뷰가 없습니다." />
           </div>
-        ) : (
-          <>
-            <ReviewCardList blogInfo={data.blogInfo} pageInfo={data.pageInfo} />
-            <Pagination
-              pages={pages}
-              setPages={setPages}
-              totalPage={data?.pageInfo.totalPage ?? 0}
-            />
-          </>
-        ))
-      )}
+        ))}
+      <Pagination
+        pages={pages}
+        setPages={setPages}
+        totalPage={data?.pageInfo.totalPage ?? 0}
+      />
     </Container>
   );
 };
