@@ -47,13 +47,13 @@ const Filters = (props: FiltersType) => {
 
   // 검색창 입력어 제출(검색) 함수_박예선_23.04.25
   const submitSearchInput = () => {
-    if (inputRef.current?.value)
+    if (inputRef.current)
       setSelectedFilter({ ...selectedFilter, title: inputRef.current?.value });
   };
 
   // 검색창 초기화 함수_박예선_23.04.25
   const clearSearchBar = () => {
-    if (inputRef.current?.value) {
+    if (inputRef.current) {
       inputRef.current.value = "";
     }
     setSelectedFilter({ ...selectedFilter, title: "" });
