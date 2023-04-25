@@ -55,8 +55,8 @@ const Filters = (props: FiltersType) => {
   const clearSearchBar = () => {
     if (inputRef.current?.value) {
       inputRef.current.value = "";
-      setSelectedFilter({ ...selectedFilter, title: "" });
     }
+    setSelectedFilter({ ...selectedFilter, title: "" });
   };
 
   return (
