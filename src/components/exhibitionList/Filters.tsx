@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
@@ -7,7 +7,7 @@ import Selectbox from "../atom/Selectbox";
 import { PagesState } from "../Pagination";
 import { FilterType, SortType } from "../../types/exhbList";
 
-// 전시글 목록 상단 필터 컴포넌트_박예선_23.03.30
+// 전시글 목록 상단 필터 컴포넌트_박예선_23.04.25
 const Filters = (props: FiltersType) => {
   const {
     setPages,
@@ -16,12 +16,15 @@ const Filters = (props: FiltersType) => {
     selectedFilter,
     setSelectedFilter,
   } = props;
-  const [searchInput, setSearchInput] = useState(selectedFilter.title);
+  const inputRef = React.createRef<HTMLInputElement>();
 
-  // 전시상황 버튼 클릭 함수_박예선_23.03.30
+  // 전시상황 버튼 클릭 함수_박예선_23.04.25
   const handleStatusBtn = (status: StatusType) => {
-    setSelectedFilter({ ...selectedFilter, title: "" });
-    setSearchInput("");
+    if (inputRef.current?.value) {
+      setSelectedFilter({ ...selectedFilter, title: inputRef.current?.value });
+    } else {
+      setSelectedFilter({ ...selectedFilter, title: "" });
+    }
     setPages({ started: 1, selected: 1 });
     setSelectedStatus(status);
   };
@@ -42,7 +45,19 @@ const Filters = (props: FiltersType) => {
     }
   };
 
-  const inputRef = React.createRef<HTMLInputElement>();
+  // 검색창 입력어 제출(검색) 함수_박예선_23.04.25
+  const submitSearchInput = () => {
+    if (inputRef.current)
+      setSelectedFilter({ ...selectedFilter, title: inputRef.current?.value });
+  };
+
+  // 검색창 초기화 함수_박예선_23.04.25
+  const clearSearchBar = () => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    setSelectedFilter({ ...selectedFilter, title: "" });
+  };
 
   return (
     <FiltersContainer>
@@ -76,14 +91,23 @@ const Filters = (props: FiltersType) => {
             onClick={handleFilters}
           />
         </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            alert("준비 중인 기능입니다.");
-          }}
-        >
-          <SearchInput ref={inputRef} placeholder="전시회 제목으로 찾기" />
-        </form>
+        <div className="search-container">
+          <Button variant="primary" size="small" onClick={clearSearchBar}>
+            초기화
+          </Button>
+          <form
+            onSubmit={(e) => {
+              submitSearchInput();
+              e.preventDefault();
+            }}
+          >
+            <SearchInput
+              className="search-input"
+              ref={inputRef}
+              placeholder="전시회 제목으로 찾기"
+            />
+          </form>
+        </div>
       </div>
     </FiltersContainer>
   );
@@ -162,6 +186,17 @@ const FiltersContainer = styled.div`
       div {
         margin-right: 10px;
       }
+    }
+    .search-input {
+      width: 277px;
+    }
+  }
+  .search-container {
+    display: flex;
+    gap: 10px;
+    button {
+      display: flex;
+      align-items: center;
     }
   }
 `;
