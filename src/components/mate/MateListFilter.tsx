@@ -133,6 +133,14 @@ const FilterContainer = styled.div`
     font-size: 14px;
     line-height: 20px;
   }
+  .clear-btn {
+    display: flex;
+    align-items: center;
+    height: 36px;
+  }
+  .search-input {
+    width: 277px;
+  }
   .flex {
     display: flex;
   }
