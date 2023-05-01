@@ -5,29 +5,51 @@ import { theme } from "../../styles/theme";
 import Button from "../atom/Button";
 import Selectbox from "../atom/Selectbox";
 import SearchInput from "../atom/SearchInput";
-import { alertPreparing } from "../../utils/alerts";
 
 interface MateListFilterType {
-  setMateStatusFilter: React.Dispatch<React.SetStateAction<MateStatusType>>;
+  mateFilter: {
+    status: MateStatusType;
+    title: string;
+  };
+  setMateFilter: React.Dispatch<
+    React.SetStateAction<{
+      status: MateStatusType;
+      title: string;
+    }>
+  >;
 }
 
-// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.02.10
+// 메이트목록 상단 필터, 검색 컴포넌트_박예선_23.05.01
 const MateListFilter = (props: MateListFilterType) => {
-  const { setMateStatusFilter } = props;
+  const { mateFilter, setMateFilter } = props;
   const navigate = useNavigate();
   const isAdmin = localStorage.getItem("authority") === "ROLE_ADMIN";
+  const inputRef = React.createRef<HTMLInputElement>();
 
-  // 필터 조건 핸들 함수_박예선_23.02.01
+  // 필터 조건 핸들 함수_박예선_23.05.01
   const handleFilters = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const value = e.currentTarget.textContent;
     for (let i = 0; i < MATE_STATUS_ARRAY.length; i += 1) {
       if (value === MATE_STATUS_ARRAY[i]) {
-        setMateStatusFilter(value);
+        setMateFilter({ ...mateFilter, status: value });
       }
     }
   };
 
-  const inputRef = React.createRef<HTMLInputElement>();
+  // 검색창 입력어 제출(검색) 함수_박예선_23.05.01
+  const submitSearchInput = () => {
+    if (inputRef.current) {
+      setMateFilter({ ...mateFilter, title: inputRef.current?.value });
+    }
+  };
+
+  // 검색창 초기화 함수_박예선_23.05.01
+  const clearSearchBar = () => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    setMateFilter({ ...mateFilter, title: "" });
+  };
 
   return (
     <FilterContainer>
@@ -41,13 +63,25 @@ const MateListFilter = (props: MateListFilterType) => {
         />
       </div>
       <div>
+        <Button
+          variant="primary"
+          size="small"
+          onClick={clearSearchBar}
+          className="clear-btn"
+        >
+          초기화
+        </Button>
         <form
           onSubmit={(e) => {
+            submitSearchInput();
             e.preventDefault();
-            alert("준비 중인 기능입니다.");
           }}
         >
-          <SearchInput ref={inputRef} placeholder="검색" />
+          <SearchInput
+            className="search-input"
+            ref={inputRef}
+            placeholder="모집글 제목으로 찾기"
+          />
         </form>
         {!isAdmin && (
           <Button
@@ -106,5 +140,10 @@ const FilterContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+  }
+  .clear-btn {
+    display: flex;
+    align-items: center;
+    height: 36px;
   }
 `;

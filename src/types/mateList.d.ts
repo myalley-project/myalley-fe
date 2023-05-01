@@ -19,5 +19,6 @@ export interface Mate {
 
 export interface MateListType {
   mates: Mate[];
+  title: string;
   totalPage: number;
 }
