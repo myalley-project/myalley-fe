@@ -18,6 +18,7 @@ const NoListContainer = styled.div`
   width: -webkit-fill-available;
   min-height: 528px;
   display: flex;
+  justify-content: center;
   align-items: center;
 `;
 

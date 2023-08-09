@@ -29,23 +29,25 @@ const WrittenBlogReview = () => {
 
   return (
     <Container>
-      <CardWrapper>
+      <div>
         {data?.blogInfo.length === 0 ? (
           <NoList notice="아직 작성한 블로그 리뷰 글이 없습니다." />
         ) : (
-          data?.blogInfo.map((each) => (
-            <BlogReviewCard
-              key={each.id}
-              id={each.id}
-              title={each.title}
-              writer={each.writer}
-              viewCount={each.viewCount}
-              viewDate={each.viewDate}
-              imageInfo={each.imageInfo}
-            />
-          ))
+          <CardWrapper>
+            {data?.blogInfo.map((each) => (
+              <BlogReviewCard
+                key={each.id}
+                id={each.id}
+                title={each.title}
+                writer={each.writer}
+                viewCount={each.viewCount}
+                viewDate={each.viewDate}
+                imageInfo={each.imageInfo}
+              />
+            ))}
+          </CardWrapper>
         )}
-      </CardWrapper>
+      </div>
       {data?.pageInfo && (
         <Pagination
           pages={pages}
@@ -69,4 +71,9 @@ const CardWrapper = styled.div`
   grid-template-rows: auto;
   gap: 30px;
   margin-bottom: 120px;
+`;
+
+const NoListContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
